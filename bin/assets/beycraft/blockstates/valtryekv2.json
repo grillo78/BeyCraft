@@ -1,0 +1,44 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "beycraft:valtryekv2.obj"
+    },
+    "variants": {
+        "inventory": 
+        [
+        {
+        	"transform": {
+                "thirdperson_lefthand": {
+                    "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+                    "translation": [ 0, 0, 0 ],
+                    "scale": 0.010
+                },
+                "thirdperson_righthand": {
+                    "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+                    "translation": [ 0, 0, 0 ],
+                    "scale": 0.010
+                },
+                "gui": {
+                    "rotation": [ { "x": 20 }, { "y": -30 }, { "z": 0 } ],
+                    "translation": [ 0, 0, 0 ],
+                    "scale": 0.1
+                },
+                "firstperson_righthand": {
+                    "rotation": [ { "x": 0 }, { "y": -25 }, { "z": 0 } ],
+                    "translation": [ 0, 0.15, 0 ],
+                    "scale": 0.025
+                },
+                "firstperson_lefthand": {
+                    "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+                    "translation": [ 0, 0, 0 ],
+                    "scale": 0.025
+                },
+                "ground": {
+                    "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+                    "scale": 0.025
+                }
+			}
+        }
+        ]
+    }
+}
