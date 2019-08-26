@@ -12,24 +12,9 @@ import net.minecraftforge.items.ItemStackHandler;
 public class BeyBladeProvider implements ICapabilityProvider, ICapabilitySerializable{
 
 	private final ItemStackHandler inventory;
-	private NBTTagCompound nbt;
 	
-	public BeyBladeProvider(NBTTagCompound nbt) {
+	public BeyBladeProvider() {
 		inventory = new ItemStackHandler(3);
-		this.nbt = nbt;
-	}
-	
-	
-	
-	@Override
-	public NBTBase serializeNBT() {
-		
-		return nbt;
-	}
-
-	@Override
-	public void deserializeNBT(NBTBase nbt) {
-		this.nbt.setTag("inventory", nbt);
 	}
 
 	@Override
@@ -46,6 +31,17 @@ public class BeyBladeProvider implements ICapabilityProvider, ICapabilitySeriali
 			return (T) inventory; 
 		}
 		return null;
+	}
+
+	@Override
+	public NBTBase serializeNBT() {
+		return inventory.serializeNBT();
+	}
+
+	@Override
+	public void deserializeNBT(NBTBase nbt) {
+		inventory.deserializeNBT((NBTTagCompound) nbt);
+		
 	}
 
 }

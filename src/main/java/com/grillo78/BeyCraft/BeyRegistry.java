@@ -25,6 +25,8 @@ public class BeyRegistry {
 	public static List<Item> ITEMS = Lists.newArrayList();
 	public static final EntityEntry VICTORY_VALTRYEK = new EntityEntry(EntityVictoryValtryek.class, "ValtryekV2");
 	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("ValtryekV2");
+	public static final ItemBeyLayer VALTRYEKV3 = new ItemBeyLayer("ValtryekV3");
+	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4");
 	public static final ItemBeyDisk BOOSTDISK = new ItemBeyDisk("boostdisk");
 	public static final ItemBeyDriver VARIABLEDRIVER = new ItemBeyDriver("Variable_Driver");
 	static {

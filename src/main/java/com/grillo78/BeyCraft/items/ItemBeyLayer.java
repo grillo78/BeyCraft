@@ -29,7 +29,7 @@ public class ItemBeyLayer extends Item implements IHasModel{
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 		if( stack.getItem() == this ) {
-			return new BeyBladeProvider(nbt);
+			return new BeyBladeProvider();
 		}
 		return null;
 	}

@@ -11,31 +11,32 @@
                 "thirdperson_lefthand": {
                     "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
                     "translation": [ 0, 0, 0 ],
-                    "scale": 0.010
+                    "scale": 5
                 },
                 "thirdperson_righthand": {
                     "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
                     "translation": [ 0, 0, 0 ],
-                    "scale": 0.010
+                    "scale": 5
                 },
                 "gui": {
                     "rotation": [ { "x": 20 }, { "y": -30 }, { "z": 0 } ],
-                    "translation": [ 0, 0, 0 ],
-                    "scale": 0.1
+                    "translation": [ 0.899, 1.1, 2 ],
+                    "scale": 5
                 },
                 "firstperson_righthand": {
                     "rotation": [ { "x": 0 }, { "y": -25 }, { "z": 0 } ],
-                    "translation": [ 0, 0.15, 0 ],
-                    "scale": 0.025
+                    "translation": [ 6, 3, 2.5 ],
+                    "scale": 10
                 },
                 "firstperson_lefthand": {
-                    "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
-                    "translation": [ 0, 0, 0 ],
-                    "scale": 0.025
+                    "rotation": [ { "x": 0 }, { "y": -25 }, { "z": 0 } ],
+                    "translation": [ 0, 0.15, 0 ],
+                    "scale": 5
                 },
                 "ground": {
                     "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
-                    "scale": 0.025
+                    "translation": [ 1.13, 1, 1.13 ],
+                    "scale": 2.25
                 }
 			}
         }
