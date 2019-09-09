@@ -8,16 +8,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class BeyGuiContainer extends Container{
-
+public class LauncherGuiContainer extends Container{
+	
 	public ItemStack stackBey;
 	
-	public BeyGuiContainer(InventoryPlayer playerInventory, ItemStack beyBlade) {
+	public LauncherGuiContainer(InventoryPlayer playerInventory, ItemStack beyBlade) {
 		stackBey = beyBlade;
 		IItemHandler handler = beyBlade.getCapability( CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null );
 		
-		this.addSlotToContainer(new SlotBeyDisk(handler, 0, 10, 10));
-		this.addSlotToContainer(new SlotBeyDriver(handler, 1, 10, 30));
+		this.addSlotToContainer(new SlotBeyLayer(handler, 0, 10, 10));
+		this.addSlotToContainer(new SlotBeyDisk(handler, 1, 10, 30));
+		this.addSlotToContainer(new SlotBeyDriver(handler, 2, 10, 50));
+		this.addSlotToContainer(new SlotHandle(handler, 3, 62, 10));
 		for (int i = 0; i < 3; ++i)
         {
             for (int j = 0; j < 9; ++j)
@@ -31,11 +33,6 @@ public class BeyGuiContainer extends Container{
             this.addSlotToContainer(new Slot(playerInventory, k, 8 + k * 18, 142));
         }
 	}
-	
-//	@Override
-//	public void onContainerClosed(EntityPlayer playerIn) {
-//		super.onContainerClosed(playerIn);
-//	}
 	
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
@@ -68,7 +65,6 @@ public class BeyGuiContainer extends Container{
 	
 	@Override
 	public boolean canInteractWith(EntityPlayer playerIn) {
-		
 		return true;
 	}
 

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.grillo78.BeyCraft.proxy.CommonProxy;
 import com.grillo78.BeyCraft.tab.BeyCraftTab;
+import com.grillo78.BeyCraft.util.SoundHandler;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
@@ -37,6 +38,6 @@ public class BeyCraft
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-    	
+    	SoundHandler.init();
     }
 }

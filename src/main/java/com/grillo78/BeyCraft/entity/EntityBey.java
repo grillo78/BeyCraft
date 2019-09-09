@@ -1,10 +1,13 @@
 package com.grillo78.BeyCraft.entity;
 
 import com.grillo78.BeyCraft.BeyCraft;
+import com.grillo78.BeyCraft.util.SoundHandler;
 
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityBey extends EntityCreature{
@@ -30,8 +33,23 @@ public class EntityBey extends EntityCreature{
 	
 	@Override
 	public void onRemovedFromWorld() {
-		BeyCraft.logger.info("Valtryek muerto");
+		BeyCraft.logger.info("Bey die");
 		super.onRemovedFromWorld();
 	}
 
+	@Override
+	protected boolean canDespawn() {
+		return false;
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound() {
+		// TODO Auto-generated method stub
+		return SoundHandler.BEY_HIT;
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return SoundHandler.BEY_HIT;
+	}
 }

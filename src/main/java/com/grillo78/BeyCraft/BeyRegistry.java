@@ -7,6 +7,8 @@ import com.grillo78.BeyCraft.entity.EntityBey;
 import com.grillo78.BeyCraft.items.ItemBeyDisk;
 import com.grillo78.BeyCraft.items.ItemBeyDriver;
 import com.grillo78.BeyCraft.items.ItemBeyLayer;
+import com.grillo78.BeyCraft.items.ItemLauncher;
+import com.grillo78.BeyCraft.items.ItemLauncherHandle;
 import com.grillo78.BeyCraft.util.IHasModel;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -32,6 +34,8 @@ public class BeyRegistry {
 	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk");
 	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver");
 	public static final ItemBeyDriver VARIABLEDRIVER = new ItemBeyDriver("Variable_Driver");
+	public static final ItemLauncher REDLAUNCHER = new ItemLauncher("Red_Launcher");
+	public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("LauncherHandle");
 	static {
 		BEYENTITY.setRegistryName(new ResourceLocation(Reference.MODID, "bey"));
 		BEYENTITY.setEgg(new EntityEggInfo(new ResourceLocation(Reference.MODID, "bey") , 1, 2));

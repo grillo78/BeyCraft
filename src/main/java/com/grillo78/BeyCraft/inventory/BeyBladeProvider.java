@@ -14,7 +14,7 @@ public class BeyBladeProvider implements ICapabilityProvider, ICapabilitySeriali
 	private final ItemStackHandler inventory;
 	
 	public BeyBladeProvider() {
-		inventory = new ItemStackHandler(3);
+		inventory = new ItemStackHandler(5);
 	}
 
 	@Override

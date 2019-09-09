@@ -1,0 +1,8 @@
+{
+	"bey.hit":
+	{
+		"category": "entity",
+		"subtitle": "bey.hit",
+		"sounds":[{"name": "beycraft:bey/hit", "stream": true}]
+	}
+}
