@@ -1,8 +1,8 @@
 {
     "forge_marker": 1,
     "defaults": {
-    	"custom": { "flip-v": true },
-        "model": "beycraft:valtryekv3.obj"
+    	"custom": { "flip-v": false },
+        "model": "beycraft:xtend_driver.obj"
     },
     "variants": {
         "inventory": 

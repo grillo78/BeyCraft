@@ -3,7 +3,7 @@ package com.grillo78.BeyCraft;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.grillo78.BeyCraft.entity.EntityVictoryValtryek;
+import com.grillo78.BeyCraft.entity.EntityBey;
 import com.grillo78.BeyCraft.items.ItemBeyDisk;
 import com.grillo78.BeyCraft.items.ItemBeyDriver;
 import com.grillo78.BeyCraft.items.ItemBeyLayer;
@@ -23,21 +23,24 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 @EventBusSubscriber(modid = Reference.MODID)
 public class BeyRegistry {
 	public static List<Item> ITEMS = Lists.newArrayList();
-	public static final EntityEntry VICTORY_VALTRYEK = new EntityEntry(EntityVictoryValtryek.class, "ValtryekV2");
+	public static final EntityEntry BEYENTITY = new EntityEntry(EntityBey.class, "bey");
 	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("ValtryekV2");
 	public static final ItemBeyLayer VALTRYEKV3 = new ItemBeyLayer("ValtryekV3");
+	public static final ItemBeyLayer SALAMANDERS4 = new ItemBeyLayer("SalamanderS4");
 	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4");
 	public static final ItemBeyDisk BOOSTDISK = new ItemBeyDisk("boostdisk");
+	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk");
+	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver");
 	public static final ItemBeyDriver VARIABLEDRIVER = new ItemBeyDriver("Variable_Driver");
 	static {
-		VICTORY_VALTRYEK.setRegistryName(new ResourceLocation(Reference.MODID, "valtryekv2"));
-		VICTORY_VALTRYEK.setEgg(new EntityEggInfo(new ResourceLocation(Reference.MODID, "valtryekv2") , 1, 2));
+		BEYENTITY.setRegistryName(new ResourceLocation(Reference.MODID, "bey"));
+		BEYENTITY.setEgg(new EntityEggInfo(new ResourceLocation(Reference.MODID, "bey") , 1, 2));
 	}
 	
 	
 	@SubscribeEvent
 	public static void registerBey(RegistryEvent.Register<EntityEntry> event) {
-		event.getRegistry().register(VICTORY_VALTRYEK);
+		event.getRegistry().register(BEYENTITY);
 	}
 	
 	@SubscribeEvent

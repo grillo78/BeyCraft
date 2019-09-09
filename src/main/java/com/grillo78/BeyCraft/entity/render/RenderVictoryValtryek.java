@@ -1,7 +1,7 @@
 package com.grillo78.BeyCraft.entity.render;
 
 import com.grillo78.BeyCraft.Reference;
-import com.grillo78.BeyCraft.entity.EntityVictoryValtryek;
+import com.grillo78.BeyCraft.entity.EntityBey;
 import com.grillo78.BeyCraft.entity.model.ModelVictoryValtryek;
 
 import net.minecraft.client.model.ModelCreeper;
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderVictoryValtryek extends RenderLiving<EntityVictoryValtryek>{
+public class RenderVictoryValtryek extends RenderLiving<EntityBey>{
 
 	protected ResourceLocation victoryValtryekTexture = new ResourceLocation("minecraft", "textures/entity/creeper/creeper.png");
 	public static final Factory FACTORY = new Factory();
@@ -30,14 +30,14 @@ public class RenderVictoryValtryek extends RenderLiving<EntityVictoryValtryek>{
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EntityVictoryValtryek entity) {
+	protected ResourceLocation getEntityTexture(EntityBey entity) {
 		return victoryValtryekTexture;
 	}
 
-	public static class Factory implements IRenderFactory<EntityVictoryValtryek>{
+	public static class Factory implements IRenderFactory<EntityBey>{
 
 		@Override
-		public Render<? super EntityVictoryValtryek> createRenderFor(RenderManager manager) {
+		public Render<? super EntityBey> createRenderFor(RenderManager manager) {
 			return new RenderVictoryValtryek(manager, model);
 		}
 		

@@ -7,9 +7,9 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.world.World;
 
-public class EntityVictoryValtryek extends EntityCreature{
+public class EntityBey extends EntityCreature{
 
-	public EntityVictoryValtryek(World worldIn) {
+	public EntityBey(World worldIn) {
 		super(worldIn);
 		this.setSize(100, 100);
 	}

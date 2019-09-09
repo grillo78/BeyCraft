@@ -1,6 +1,7 @@
 {
     "forge_marker": 1,
     "defaults": {
+    	"custom": { "flip-v": true },
         "model": "beycraft:achillesa4.obj"
     },
     "variants": {
