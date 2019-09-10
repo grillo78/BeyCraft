@@ -1,0 +1,10 @@
+{
+    "name": "BeyRanking",
+    "author": "Grillo78",
+    "description": "",
+    "version": "1.0",
+    "icon": "appsmod:textures/app/icon/Ranking.png",
+    "screenshots": [
+    	"beycraft:textures/app/screenshot/Ranking_screenshot_1.png"
+    ]
+}

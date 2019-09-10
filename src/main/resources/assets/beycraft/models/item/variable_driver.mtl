@@ -1,7 +1,7 @@
 # Blender MTL File: 'None'
-# Material Count: 4
+# Material Count: 3
 
-newmtl mat0.007
+newmtl mat0.004
 Ns 179.999996
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -10,32 +10,10 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 3
-map_Kd beycraft:beys/layers/valtryek_v21
+map_Kd beycraft:beys/drivers/variable_driver1
+map_d beycraft:beys/drivers/variable_driver1
 
-newmtl mat0.008
-Ns 179.999996
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 2.000000 2.000000 2.000000
-Ke 0.0 0.0 0.0
-Ni 1.450000
-d 1.000000
-illum 3
-map_Kd beycraft:beys/layers/valtryek_v22
-
-newmtl mat0.009
-Ns 179.999996
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 2.000000 2.000000 2.000000
-Ke 0.0 0.0 0.0
-Ni 1.450000
-d 1.000000
-illum 3
-map_Kd beycraft:beys/layers/valtryek_v23
-map_d beycraft:beys/layers/valtryek_v23
-
-newmtl mat0.010
+newmtl mat0.005
 Ns 179.999996
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -45,3 +23,17 @@ Ni 1.450000
 d 1.000000
 illum 3
 map_Kd beycraft:beys/layers/valtryek_v24
+map_d beycraft:beys/layers/valtryek_v24
+
+newmtl mat0.006
+Ns 179.999996
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 2.000000 2.000000 2.000000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd beycraft:beys/drivers/variable_driver2
+map_d beycraft:beys/drivers/variable_driver2
+

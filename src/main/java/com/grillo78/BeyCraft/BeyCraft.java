@@ -42,12 +42,15 @@ public class BeyCraft
     public void init(FMLInitializationEvent event)
     {
     	SoundHandler.init();
-    	if (isDeviceModInstalled()) registerApplication();
+    	logger.info(isDeviceModInstalled());
+    	if (isDeviceModInstalled()) {
+    		registerApplication();
+    	}
     }
     
     public boolean isDeviceModInstalled() {
     	try {
-    		Class.forName("");
+    		Class.forName("com.mrcrayfish.device.MrCrayfishDeviceMod");
     		return true;
     	} catch (Exception e) {
 			return false;

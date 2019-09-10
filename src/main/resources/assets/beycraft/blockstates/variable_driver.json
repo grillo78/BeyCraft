@@ -1,7 +1,8 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "beycraft:boostdisk.obj"
+    	"custom": { "flip-v": false },
+        "model": "beycraft:variable_driver.obj"
     },
     "variants": {
         "inventory": 

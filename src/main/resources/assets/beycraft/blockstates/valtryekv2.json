@@ -1,6 +1,7 @@
 {
     "forge_marker": 1,
     "defaults": {
+    	"custom": { "flip-v": true },
         "model": "beycraft:valtryekv2.obj"
     },
     "variants": {
@@ -10,33 +11,37 @@
         	"transform": {
                 "thirdperson_lefthand": {
                     "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
-                    "translation": [ 0, 0, 0 ],
-                    "scale": 5
+                    "translation": [ 0.14, 0, 0 ],
+                    "scale": 0.25
                 },
                 "thirdperson_righthand": {
                     "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
-                    "translation": [ 0, 0, 0 ],
-                    "scale": 5
+                    "translation": [ 0.14, 0, 0 ],
+                    "scale": 0.25
                 },
                 "gui": {
                     "rotation": [ { "x": 20 }, { "y": -30 }, { "z": 0 } ],
-                    "translation": [ 0.899, 1.1, 2 ],
-                    "scale": 5
+                    "translation": [ 0.3, 0.3, 0 ],
+                    "scale": 1.5
                 },
                 "firstperson_righthand": {
                     "rotation": [ { "x": 0 }, { "y": -25 }, { "z": 0 } ],
-                    "translation": [ 6, 3, 2.5 ],
-                    "scale": 10
+                    "translation": [ 0.5, 0.15, 0 ],
+                    "scale": 0.5
                 },
                 "firstperson_lefthand": {
-                    "rotation": [ { "x": 0 }, { "y": -25 }, { "z": 0 } ],
-                    "translation": [ 0, 0.15, 0 ],
-                    "scale": 5
+                    "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+                    "translation": [ 0.15, 0.15, 0 ],
+                    "scale": 0.5
                 },
                 "ground": {
                     "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
-                    "translation": [ 1.13, 1, 1.13 ],
-                    "scale": 2.25
+                    "translation": [ 0.25, 0.1, 0.25 ],
+                    "scale": 0.5
+                },
+                "fixed": {
+                	"rotation": [ { "x": -90 }, { "y": 0 }, { "z": 0 } ],
+                    "translation": [ 0.5, 0.5, -0.45 ]
                 }
 			}
         }
