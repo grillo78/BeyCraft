@@ -2,11 +2,14 @@ package com.grillo78.BeyCraft;
 
 import org.apache.logging.log4j.Logger;
 
+import com.grillo78.BeyCraft.programs.BeyRanking;
 import com.grillo78.BeyCraft.proxy.CommonProxy;
 import com.grillo78.BeyCraft.tab.BeyCraftTab;
 import com.grillo78.BeyCraft.util.SoundHandler;
+import com.mrcrayfish.device.api.ApplicationManager;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -39,5 +42,20 @@ public class BeyCraft
     public void init(FMLInitializationEvent event)
     {
     	SoundHandler.init();
+    	if (isDeviceModInstalled()) registerApplication();
     }
+    
+    public boolean isDeviceModInstalled() {
+    	try {
+    		Class.forName("");
+    		return true;
+    	} catch (Exception e) {
+			return false;
+		}
+    }
+    
+    public void registerApplication(){
+    	ApplicationManager.registerApplication(new ResourceLocation(Reference.MODID, "beyranking"), BeyRanking.class);
+    }
+    
 }

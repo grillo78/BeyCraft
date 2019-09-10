@@ -20,6 +20,20 @@ compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
 
+repositories {
+	maven { url "https://mrcrayfish.com/maven" }
+	maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "modmaven.k-4u.nl"
+    }
+}
+
 minecraft {
     version = "1.12.2-14.23.5.2768"
     runDir = "run"
@@ -54,6 +68,8 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+	compile 'com.mrcrayfish:device-api:0.4.0-1.12.2'
+    runtime "mezz.jei:jei_1.12.2:4.9.1.179"
 
 }
 
