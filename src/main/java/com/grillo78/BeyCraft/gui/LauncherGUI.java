@@ -34,6 +34,8 @@ public class LauncherGUI extends GuiContainer{
 		this.fontRenderer.drawString("Layer", 30, 15, 4210752);
 		this.fontRenderer.drawString("Disk", 30, 35, 4210752);
 		this.fontRenderer.drawString("Driver", 30, 55, 4210752);
+		this.fontRenderer.drawString("Handle", 82, 15, 4210752);
+		this.fontRenderer.drawString("BeyLogger", 82, 35, 4210752);
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 	}
 	

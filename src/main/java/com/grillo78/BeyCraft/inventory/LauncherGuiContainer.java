@@ -20,6 +20,7 @@ public class LauncherGuiContainer extends Container{
 		this.addSlotToContainer(new SlotBeyDisk(handler, 1, 10, 30));
 		this.addSlotToContainer(new SlotBeyDriver(handler, 2, 10, 50));
 		this.addSlotToContainer(new SlotHandle(handler, 3, 62, 10));
+		this.addSlotToContainer(new SlotBeyLogger(handler, 4, 62, 30));
 		for (int i = 0; i < 3; ++i)
         {
             for (int j = 0; j < 9; ++j)
