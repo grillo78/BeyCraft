@@ -4,19 +4,37 @@ import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.util.SoundHandler;
 
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class EntityBey extends EntityCreature{
 
+	private static ItemStackHandler inventory;
+
 	public EntityBey(World worldIn) {
 		super(worldIn);
-		this.setSize(100, 100);
+		this.setSize(0.7F, 2.4F);
+		inventory = new ItemStackHandler(3);
 	}
-
+	
+	@Override
+	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+		this.setEquipmentBasedOnDifficulty(difficulty);
+		return super.onInitialSpawn(difficulty, livingdata);
+	}
+	
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
@@ -27,6 +45,7 @@ public class EntityBey extends EntityCreature{
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAIWander(this, 1.0D));
+//		this.tasks.addTask(0, new EntityAI);
 		super.initEntityAI();
 	}
 	
@@ -44,7 +63,6 @@ public class EntityBey extends EntityCreature{
 	
 	@Override
 	protected SoundEvent getDeathSound() {
-		// TODO Auto-generated method stub
 		return SoundHandler.BEY_HIT;
 	}
 	
@@ -52,4 +70,25 @@ public class EntityBey extends EntityCreature{
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return SoundHandler.BEY_HIT;
 	}
+	
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		    return true;
+		  }
+		return super.hasCapability(capability, facing);
+	}
+	
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		    return (T) inventory;
+		  }
+		return super.getCapability(capability, facing);
+	}
+	
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
+    {
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
+    }
 }

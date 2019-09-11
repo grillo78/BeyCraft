@@ -60,5 +60,4 @@ public class BeyCraft
     public void registerApplication(){
     	ApplicationManager.registerApplication(new ResourceLocation(Reference.MODID, "beyranking"), BeyRanking.class);
     }
-    
 }
