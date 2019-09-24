@@ -27,13 +27,16 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 public class BeyRegistry {
 	public static List<Item> ITEMS = Lists.newArrayList();
 	public static final EntityEntry BEYENTITY = new EntityEntry(EntityBey.class, "bey");
-	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("ValtryekV2");
 	public static final ItemBeyLayer VALTRYEKV3 = new ItemBeyLayer("ValtryekV3");
 	public static final ItemBeyLayer SALAMANDERS4 = new ItemBeyLayer("SalamanderS4");
 	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4");
-	public static final ItemBeyDisk BOOSTDISK = new ItemBeyDisk("boostdisk");
 	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk");
 	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver");
+	public static final ItemBeyLayer VALTRYEKV4 = new ItemBeyLayer("ValtryekV4");
+	public static final ItemBeyDisk TWELVEDISK = new ItemBeyDisk("12disk");
+	public static final ItemBeyDriver VOLCANICDRIVER = new ItemBeyDriver("Volcanic_Driver");
+	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("ValtryekV2");
+	public static final ItemBeyDisk BOOSTDISK = new ItemBeyDisk("boostdisk");
 	public static final ItemBeyDriver VARIABLEDRIVER = new ItemBeyDriver("Variable_Driver");
 	public static final ItemLauncher REDLAUNCHER = new ItemLauncher("Red_Launcher");
 	public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("LauncherHandle");
