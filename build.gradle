@@ -5,6 +5,7 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+		classpath "com.github.jengelman.gradle.plugins:shadow:1.2.4"
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -20,6 +21,26 @@ compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
 
+shadowJar {
+	dependencies{
+		exclude 'cfm-6.3.0-mc1.12.2.jar'
+		exclude 'chiselsandbits-14.33.jar'
+		exclude 'GitWeb+Builder-1.1.jar'
+		exclude 'obfuscate-0.2.6-1.12.2.jar'
+		exclude 'vehicle-mod-0.41.1-1.12.2.jar'
+		exclude 'worldedit-forge-mc1.12.2-6.1.10-SNAPSHOT-dist.jar'
+		exclude(dependency('com.mrcrayfish:device-api:0.4.0-1.12.2'))
+		exclude(dependency('mezz.jei:jei_1.12.2:4.9.1.179'))
+	}
+	relocate 'org.apache.collections4', 'shadow.apache.collections4'
+	relocate 'org.slf4j', 'shadow.slf4j'
+	relocate 'org.json', 'shadow.json'
+	classifier '' // Replace the default JAR
+}
+
+reobf {
+    shadowJar {} // Reobfuscate the shadowed JAR
+}
 repositories {
 	maven { url "https://mrcrayfish.com/maven" }
 	maven {
@@ -27,6 +48,7 @@ repositories {
         name = "Progwml6 maven"
         url = "http://dvs1.progwml6.com/files/maven"
     }
+    mavenCentral()
     maven {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
@@ -68,6 +90,7 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+	//compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.17'
 	compile 'com.mrcrayfish:device-api:0.4.0-1.12.2'
     runtime "mezz.jei:jei_1.12.2:4.9.1.179"
 
