@@ -34,10 +34,13 @@ public class BeyRegistry {
 	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver");
 	public static final ItemBeyLayer VALTRYEKV4 = new ItemBeyLayer("ValtryekV4");
 	public static final ItemBeyDisk TWELVEDISK = new ItemBeyDisk("12disk");
+	public static final ItemBeyDisk ZENITHDISK = new ItemBeyDisk("zenithdisk");
 	public static final ItemBeyDriver VOLCANICDRIVER = new ItemBeyDriver("Volcanic_Driver");
 	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("ValtryekV2");
+	public static final ItemBeyLayer VALTRYEKV5 = new ItemBeyLayer("ValtryekV5");
 	public static final ItemBeyDisk BOOSTDISK = new ItemBeyDisk("boostdisk");
 	public static final ItemBeyDriver VARIABLEDRIVER = new ItemBeyDriver("Variable_Driver");
+	public static final ItemBeyDriver EVOLUTIONDRIVER = new ItemBeyDriver("evolution_driver");
 	public static final ItemLauncher REDLAUNCHER = new ItemLauncher("Red_Launcher");
 	public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("LauncherHandle");
 	public static final ItemBeyLogger BEYLOGGER = new ItemBeyLogger("Beylogger");
