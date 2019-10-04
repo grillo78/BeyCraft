@@ -15,7 +15,7 @@ public class ItemBeyDriver extends Item implements IHasModel{
 		setRegistryName(name);
 		setUnlocalizedName(name);
 		setMaxStackSize(1);
-		BeyRegistry.ITEMS.add(this);
+		BeyRegistry.ITEMSDRIVER.add(this);
 	}
 	
 	@Override

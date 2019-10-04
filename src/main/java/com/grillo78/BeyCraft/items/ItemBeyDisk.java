@@ -15,7 +15,7 @@ public class ItemBeyDisk extends Item implements IHasModel{
 		this.setRegistryName(name);
 		this.setUnlocalizedName(name);
 		this.setMaxStackSize(1);
-		BeyRegistry.ITEMS.add(this);
+		BeyRegistry.ITEMSDISK.add(this);
 	}
 	
 	@Override

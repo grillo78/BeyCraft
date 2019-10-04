@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-public class ItemLauncher extends Item implements IHasModel{
+public class ItemLauncher extends Item{
 
 	public ItemLauncher(String name) {
 		setCreativeTab(BeyCraft.beyCraftTab);
@@ -40,12 +40,5 @@ public class ItemLauncher extends Item implements IHasModel{
 			playerIn.openGui(BeyCraft.instance, 0, worldIn, 0, 0, 0);
 		}
 		return super.onItemRightClick(worldIn, playerIn, handIn);
-	}
-
-	
-	
-	@Override
-	public void registerModels() {
-		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(this.getRegistryName(),"inventory"));
 	}
 }

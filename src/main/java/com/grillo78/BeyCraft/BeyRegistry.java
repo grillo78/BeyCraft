@@ -8,6 +8,7 @@ import com.grillo78.BeyCraft.items.ItemBeyDisk;
 import com.grillo78.BeyCraft.items.ItemBeyDriver;
 import com.grillo78.BeyCraft.items.ItemBeyLayer;
 import com.grillo78.BeyCraft.items.ItemBeyLogger;
+import com.grillo78.BeyCraft.items.ItemBeyPackage;
 import com.grillo78.BeyCraft.items.ItemLauncher;
 import com.grillo78.BeyCraft.items.ItemLauncherHandle;
 import com.grillo78.BeyCraft.util.IHasModel;
@@ -26,7 +27,11 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 @EventBusSubscriber(modid = Reference.MODID)
 public class BeyRegistry {
 	public static List<Item> ITEMS = Lists.newArrayList();
+	public static List<Item> ITEMSLAYER = Lists.newArrayList();
+	public static List<Item> ITEMSDISK = Lists.newArrayList();
+	public static List<Item> ITEMSDRIVER = Lists.newArrayList();
 	public static final EntityEntry BEYENTITY = new EntityEntry(EntityBey.class, "bey");
+	public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("Package");
 	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4");
 	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk");
 	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver");
@@ -64,11 +69,35 @@ public class BeyRegistry {
 		for (Item item : ITEMS) {
 			event.getRegistry().register(item);
 		}
+		for (Item item : ITEMSLAYER) {
+			event.getRegistry().register(item);
+		}
+		for (Item item : ITEMSDISK) {
+			event.getRegistry().register(item);
+		}
+		for (Item item : ITEMSDRIVER) {
+			event.getRegistry().register(item);
+		}
 	}
 	
 	@SubscribeEvent
 	public static void onModelRegister(ModelRegistryEvent event) {
 		for(Item item : ITEMS) {
+			if(item instanceof IHasModel) {
+				ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(),"inventory"));
+			}
+		}
+		for(Item item : ITEMSLAYER) {
+			if(item instanceof IHasModel) {
+				ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(),"inventory"));
+			}
+		}
+		for(Item item : ITEMSDISK) {
+			if(item instanceof IHasModel) {
+				ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(),"inventory"));
+			}
+		}
+		for(Item item : ITEMSDRIVER) {
 			if(item instanceof IHasModel) {
 				ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(),"inventory"));
 			}

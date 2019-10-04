@@ -15,7 +15,7 @@ public class ItemBeyLayer extends Item implements IHasModel{
 		setRegistryName(name);
 		setUnlocalizedName(name);
 		setMaxStackSize(1);
-		BeyRegistry.ITEMS.add(this);
+		BeyRegistry.ITEMSLAYER.add(this);
 	}
 	
 	@Override
