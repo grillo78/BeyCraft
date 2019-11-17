@@ -14,7 +14,6 @@ import com.grillo78.BeyCraft.items.ItemLauncherHandle;
 import com.grillo78.BeyCraft.util.IHasModel;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.EntityList.EntityEggInfo;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -23,6 +22,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 
 @EventBusSubscriber(modid = Reference.MODID)
 public class BeyRegistry {
@@ -30,7 +30,7 @@ public class BeyRegistry {
 	public static List<Item> ITEMSLAYER = Lists.newArrayList();
 	public static List<Item> ITEMSDISK = Lists.newArrayList();
 	public static List<Item> ITEMSDRIVER = Lists.newArrayList();
-	public static final EntityEntry BEYENTITY = new EntityEntry(EntityBey.class, "bey");
+	public static final EntityEntry BEYENTITY = EntityEntryBuilder.create().entity(EntityBey.class).id(new ResourceLocation(Reference.MODID, "bey"), 33).name("bey").tracker(160, 2, false).build();
 	public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("Package");
 	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4");
 	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk");
@@ -53,10 +53,6 @@ public class BeyRegistry {
 	public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("LauncherHandle");
 	public static final ItemBeyLogger BEYLOGGER = new ItemBeyLogger("Beylogger");
 	public static final ItemBeyLogger BEYLOGGERPLUS = new ItemBeyLogger("Beylogger_Plus");
-	static {
-		BEYENTITY.setRegistryName(new ResourceLocation(Reference.MODID, "bey"));
-		BEYENTITY.setEgg(new EntityEggInfo(new ResourceLocation(Reference.MODID, "bey") , 1, 2));
-	}
 	
 	
 	@SubscribeEvent

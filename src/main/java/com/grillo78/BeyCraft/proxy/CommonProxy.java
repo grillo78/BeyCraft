@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class CommonProxy implements IGuiHandler{
 	public void registerRenders() {
+		
 	}
 
 	public void onPreInit() {

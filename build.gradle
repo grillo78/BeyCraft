@@ -94,6 +94,7 @@ dependencies {
 	//compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.17'
 	compile 'com.mrcrayfish:device-api:0.4.0-1.12.2'
     runtime "mezz.jei:jei_1.12.2:4.9.1.179"
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.17'
 
 }
 

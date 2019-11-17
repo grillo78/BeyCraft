@@ -25,7 +25,8 @@ public class EntityBey extends EntityCreature{
 
 	public EntityBey(World worldIn) {
 		super(worldIn);
-		this.setSize(0.7F, 2.4F);
+		this.setSize(0.25F, 0.25F);
+		this.height = 0.253F;
 		inventory = new ItemStackHandler(3);
 	}
 	
@@ -38,7 +39,7 @@ public class EntityBey extends EntityCreature{
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100);
+//		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.16D);
 	}
 	
@@ -49,6 +50,10 @@ public class EntityBey extends EntityCreature{
 		super.initEntityAI();
 	}
 	
+	public float getEyeHeight()
+    {
+        return this.height;
+    }
 	
 	@Override
 	public void onRemovedFromWorld() {
@@ -91,4 +96,10 @@ public class EntityBey extends EntityCreature{
     {
         this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
     }
+	
+//	@Override
+//	public void setEntityBoundingBox(AxisAlignedBB bb) {
+//		bb = new AxisAlignedBB(0, 0, 0, 1, 1, 1);
+//		super.setEntityBoundingBox(bb);
+//	}
 }
