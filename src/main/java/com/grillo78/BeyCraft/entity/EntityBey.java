@@ -46,7 +46,6 @@ public class EntityBey extends EntityCreature{
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAIWander(this, 1.0D));
-//		this.tasks.addTask(0, new EntityAI);
 		super.initEntityAI();
 	}
 	
