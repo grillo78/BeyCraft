@@ -28,7 +28,6 @@ public class ClientProxy extends CommonProxy{
 
 			@Override
 			public Render<? super EntityBey> createRenderFor(RenderManager manager) {
-				// TODO Auto-generated method stub
 				return new RenderBey(manager);
 			}
 		});

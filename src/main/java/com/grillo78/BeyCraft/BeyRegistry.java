@@ -98,12 +98,6 @@ public class BeyRegistry {
 				ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(),"inventory"));
 			}
 		}
-		
-//		for(Block block: BLOCKS) {
-//			if(block instanceof IHasModel) {
-//				((IHasModel)block).registerModels();
-//			}
-//		}
 	}
 	
 }

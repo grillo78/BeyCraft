@@ -39,7 +39,7 @@ public class EntityBey extends EntityCreature{
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-//		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.16D);
 	}
 	
