@@ -1,13 +1,10 @@
 package com.grillo78.BeyCraft.entity;
 
-import com.grillo78.BeyCraft.BeyRegistry;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderBey extends RenderLiving<EntityBey>{
@@ -29,12 +26,12 @@ public class RenderBey extends RenderLiving<EntityBey>{
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y+0.28, z);
 		GlStateManager.rotate(90, 1, 0, 0);
-		itemRenderer.renderItem(new ItemStack(BeyRegistry.ACHILLESA4), ItemCameraTransforms.TransformType.FIXED);
+		itemRenderer.renderItem(entity.layer, ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.rotate(-40, 0, 0, 1);
 		GlStateManager.translate(0, 0, 0.08);
-		itemRenderer.renderItem(new ItemStack(BeyRegistry.ELEVENDISK), ItemCameraTransforms.TransformType.FIXED);
+		itemRenderer.renderItem(entity.disk, ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.translate(0, 0, 0.15);
-		itemRenderer.renderItem(new ItemStack(BeyRegistry.XTENDDRIVER), ItemCameraTransforms.TransformType.FIXED);
+		itemRenderer.renderItem(entity.driver, ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.popMatrix();
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 	}

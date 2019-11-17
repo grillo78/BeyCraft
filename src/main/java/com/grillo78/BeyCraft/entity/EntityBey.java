@@ -11,23 +11,27 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 public class EntityBey extends EntityCreature{
 
-	private static ItemStackHandler inventory;
+	public ItemStack layer;
+	public ItemStack disk;
+	public ItemStack driver;
 
 	public EntityBey(World worldIn) {
 		super(worldIn);
 		this.setSize(0.25F, 0.25F);
 		this.height = 0.253F;
-		inventory = new ItemStackHandler(3);
+	}
+	
+	public EntityBey(World worldIn, ItemStack layerIn, ItemStack diskIn, ItemStack driverIn) {
+		this(worldIn);
+		layer = layerIn;
+		disk = diskIn;
+		driver = driverIn;
 	}
 	
 	@Override
@@ -73,22 +77,6 @@ public class EntityBey extends EntityCreature{
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return SoundHandler.BEY_HIT;
-	}
-	
-	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-		    return true;
-		  }
-		return super.hasCapability(capability, facing);
-	}
-	
-	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-		    return (T) inventory;
-		  }
-		return super.getCapability(capability, facing);
 	}
 	
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
