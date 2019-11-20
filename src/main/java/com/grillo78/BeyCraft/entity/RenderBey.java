@@ -10,7 +10,6 @@ import net.minecraft.util.ResourceLocation;
 public class RenderBey extends RenderLiving<EntityBey>{
 
     private final RenderItem itemRenderer;
-    private float angle = 0;
 	public RenderBey(RenderManager rendermanagerIn, RenderItem itemRendererIn) {
 		super(rendermanagerIn, new ModelTest(), 0.1F);
         this.itemRenderer = itemRendererIn;
@@ -23,19 +22,26 @@ public class RenderBey extends RenderLiving<EntityBey>{
 
 	@Override
 	public void doRender(EntityBey entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y+0.15, z);
-		GlStateManager.scale(0.5, 0.5, 0.5);
-		GlStateManager.rotate(entity.rotationYaw, 0, 1, 0);
-		GlStateManager.rotate(90, 1, 0, 0);
-		itemRenderer.renderItem(entity.layer, ItemCameraTransforms.TransformType.FIXED);
-		GlStateManager.rotate(-40, 0, 0, 1);
-		GlStateManager.translate(0, 0, 0.08);
-		itemRenderer.renderItem(entity.disk, ItemCameraTransforms.TransformType.FIXED);
-		GlStateManager.translate(0, 0, 0.15);
-		itemRenderer.renderItem(entity.driver, ItemCameraTransforms.TransformType.FIXED);
-		GlStateManager.popMatrix();
-//		angle-=entity.rotationSpeed;
-		super.doRender(entity, x, y, z, entityYaw, partialTicks);
+        if(!entity.getDroppedItem()) {
+        	GlStateManager.pushMatrix();
+            GlStateManager.translate(x, y+0.15, z);
+    		GlStateManager.scale(0.5, 0.5, 0.5);
+            GlStateManager.translate(0, -0.02, 0);
+    		if(entity.radius!=0 || entity.rotationSpeed==0) {
+    			GlStateManager.rotate(30, (float) entity.getLook(partialTicks).z, 0, (float) -entity.getLook(partialTicks).x);
+    		}else {
+    			GlStateManager.rotate(0, 1, 0, 1);
+    		}
+    		GlStateManager.rotate(entity.angle/2, 0, 1, 0);
+    		GlStateManager.rotate(90, 1, 0, 0);
+    		itemRenderer.renderItem(entity.layer, ItemCameraTransforms.TransformType.FIXED);
+    		GlStateManager.rotate(-40, 0, 0, 1);
+    		GlStateManager.translate(0, 0, 0.08);
+    		itemRenderer.renderItem(entity.disk, ItemCameraTransforms.TransformType.FIXED);
+    		GlStateManager.translate(0, 0, 0.15);
+    		itemRenderer.renderItem(entity.driver, ItemCameraTransforms.TransformType.FIXED);
+    		GlStateManager.popMatrix();
+    		super.doRender(entity, x, y, z, entityYaw, partialTicks);
+        }
 	}
 }
