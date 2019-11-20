@@ -1,6 +1,5 @@
 package com.grillo78.BeyCraft.entity;
 
-import com.google.common.util.concurrent.RateLimiter;
 import com.grillo78.BeyCraft.BeyRegistry;
 import com.grillo78.BeyCraft.util.SoundHandler;
 
@@ -14,7 +13,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -102,8 +100,8 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		if (entityIn instanceof EntityBey) {
 			if (((EntityBey) entityIn).rotationSpeed < 0) {
 				((EntityBey) entityIn).rotationSpeed += 0.001;
-				((EntityBey) entityIn).radius = 0.5f;
-				radius = 0.5f;
+				((EntityBey) entityIn).radius = 0.2f;
+				radius = 0.2f;
 				this.move(MoverType.SELF, entityIn.getLookVec().x, entityIn.getLookVec().y, entityIn.getLookVec().z);
 			} else {
 				((EntityBey) entityIn).rotationSpeed = 0;
