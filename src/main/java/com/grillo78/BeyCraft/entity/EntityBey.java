@@ -1,6 +1,7 @@
 package com.grillo78.BeyCraft.entity;
 
 import com.grillo78.BeyCraft.BeyRegistry;
+import com.grillo78.BeyCraft.items.ItemBeyLayer;
 import com.grillo78.BeyCraft.util.SoundHandler;
 
 import io.netty.buffer.ByteBuf;
@@ -29,7 +30,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	public ItemStack driver;
 	public float rotationSpeed;
 	public float angle;
-	public float radius = 0.5F;
+	public float radius = 0.2F;
 	private boolean droppedItems = false;
 
 	public EntityBey(World worldIn) {
@@ -41,23 +42,23 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		super(worldIn);
 		this.setSize(0.25F, 0.25F);
 		this.height = 0.253F;
-		this.rotationSpeed = -10;
+		this.rotationSpeed = -5;
 		angle = 10;
-		layer = layerIn;
-		disk = diskIn;
-		driver = driverIn;
+		layer = layerIn.copy();
+		disk = diskIn.copy();
+		driver = driverIn.copy();
 	}
 
 	public boolean getDroppedItem() {
 		return droppedItems;
 	}
-	
+
 	@Override
 	public void onUpdate() {
 		if (this.rotationSpeed < 0) {
-			rotationSpeed += 0.01;
-			rotationYaw -= rotationSpeed;
-			angle += rotationSpeed * 20;
+			rotationSpeed += 0.001;
+			rotationYaw += rotationSpeed * ((ItemBeyLayer)layer.getItem()).rotationDirection;
+			angle += rotationSpeed * 10;
 
 		} else {
 			rotationSpeed = 0;
@@ -67,7 +68,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		} else {
 			radius = 0;
 		}
-		if(getHealth()==0 && !droppedItems) {
+		if (getHealth() == 0 && !droppedItems) {
 			dropItems();
 			droppedItems = true;
 		}

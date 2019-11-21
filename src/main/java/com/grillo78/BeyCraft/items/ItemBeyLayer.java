@@ -11,13 +11,15 @@ import net.minecraftforge.client.model.ModelLoader;
 public class ItemBeyLayer extends Item implements IHasModel{
 	
 	public float height;
+	public float rotationDirection;
 	
-	public ItemBeyLayer(String name, float height) {
+	public ItemBeyLayer(String name, float height, int rotationDirection) {
 		setCreativeTab(BeyCraft.beyCraftTab);
 		setRegistryName(name);
 		setUnlocalizedName(name);
 		setMaxStackSize(1);
 		this.height = height;
+		this.rotationDirection = rotationDirection;
 		BeyRegistry.ITEMSLAYER.add(this);
 	}
 	

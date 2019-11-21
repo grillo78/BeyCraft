@@ -50,23 +50,23 @@ public class BeyRegistry {
 
 	/* Items */
 	public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("Package");
-	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4",-0.08F);
+	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4",-0.08F, 1);
 	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk",-0.15F);
 	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver", 0.15F);
-	public static final ItemBeyLayer VALTRYEKV4 = new ItemBeyLayer("ValtryekV4",-0.08F);
+	public static final ItemBeyLayer VALTRYEKV4 = new ItemBeyLayer("ValtryekV4",-0.08F, 1);
 	public static final ItemBeyDisk TWELVEDISK = new ItemBeyDisk("12disk",-0.15F);
 	public static final ItemBeyDriver VOLCANICDRIVER = new ItemBeyDriver("Volcanic_Driver", 0.15F);
-	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("ValtryekV2",-0.08F);
+	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("ValtryekV2",-0.08F, 1);
 	public static final ItemBeyDisk BOOSTDISK = new ItemBeyDisk("boostdisk",-0.15F);
 	public static final ItemBeyDriver VARIABLEDRIVER = new ItemBeyDriver("Variable_Driver", 0.15F);
-	public static final ItemBeyLayer VALTRYEKV5 = new ItemBeyLayer("ValtryekV5",-0.15F);
+	public static final ItemBeyLayer VALTRYEKV5 = new ItemBeyLayer("ValtryekV5",-0.15F, 1);
 	public static final ItemBeyDisk ZENITHDISK = new ItemBeyDisk("zenithdisk",-0.15F);
 	public static final ItemBeyDriver EVOLUTIONDRIVER = new ItemBeyDriver("evolution_driver", 0.15F);
-	public static final ItemBeyLayer TURBOSPRYZEN = new ItemBeyLayer("TurboSpryzen",-0.08F);
-	public static final ItemBeyDisk ZEROWDISK = new ItemBeyDisk("0wdisk",-0.15F);
+	public static final ItemBeyLayer TURBOSPRYZEN = new ItemBeyLayer("TurboSpryzen",-0.08F, 1);
+	public static final ItemBeyDisk ZEROWDISK = new ItemBeyDisk("0wdisk",-0.2F);
 	public static final ItemBeyDriver ZETASDRIVER = new ItemBeyDriver("zetas_driver", 0.15F);
-	public static final ItemBeyLayer SALAMANDERS4 = new ItemBeyLayer("SalamanderS4",-0.08F);
-	public static final ItemBeyLayer VALTRYEKV3 = new ItemBeyLayer("ValtryekV3",-0.08F);
+	public static final ItemBeyLayer SALAMANDERS4 = new ItemBeyLayer("SalamanderS4",-0.08F, -1);
+	public static final ItemBeyLayer VALTRYEKV3 = new ItemBeyLayer("ValtryekV3",-0.08F, 1);
 	public static final ItemLauncher REDLAUNCHER = new ItemLauncher("Red_Launcher");
 	public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("LauncherHandle");
 	public static final ItemBeyLogger BEYLOGGER = new ItemBeyLogger("Beylogger");
