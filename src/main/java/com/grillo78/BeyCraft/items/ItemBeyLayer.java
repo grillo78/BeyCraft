@@ -10,11 +10,14 @@ import net.minecraftforge.client.model.ModelLoader;
 
 public class ItemBeyLayer extends Item implements IHasModel{
 	
-	public ItemBeyLayer(String name) {
+	public float height;
+	
+	public ItemBeyLayer(String name, float height) {
 		setCreativeTab(BeyCraft.beyCraftTab);
 		setRegistryName(name);
 		setUnlocalizedName(name);
 		setMaxStackSize(1);
+		this.height = height;
 		BeyRegistry.ITEMSLAYER.add(this);
 	}
 	

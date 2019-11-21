@@ -10,11 +10,14 @@ import net.minecraftforge.client.model.ModelLoader;
 
 public class ItemBeyDisk extends Item implements IHasModel{
 
-	public ItemBeyDisk(String name) {
+	public float height;
+	
+	public ItemBeyDisk(String name, float height) {
 		this.setCreativeTab(BeyCraft.beyCraftTab);
 		this.setRegistryName(name);
 		this.setUnlocalizedName(name);
 		this.setMaxStackSize(1);
+		this.height = height;
 		BeyRegistry.ITEMSDISK.add(this);
 	}
 	
