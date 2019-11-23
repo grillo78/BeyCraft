@@ -2,6 +2,7 @@ package com.grillo78.BeyCraft.entity;
 
 import java.util.Random;
 
+import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
 import com.grillo78.BeyCraft.items.ItemBeyLayer;
 import com.grillo78.BeyCraft.util.SoundHandler;
@@ -58,8 +59,8 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	@Override
 	public void onUpdate() {
 		if (this.rotationSpeed < 0) {
-			rotationSpeed += 0.001;
-			rotationYaw += rotationSpeed * ((ItemBeyLayer)layer.getItem()).rotationDirection;
+			rotationSpeed += 0.005;
+			rotationYaw -= rotationSpeed * ((ItemBeyLayer)layer.getItem()).rotationDirection;
 			angle += rotationSpeed * 10;
 
 		} else {
@@ -71,8 +72,6 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 			radius = 0;
 		}
 		if (getHealth() == 0 && !droppedItems) {
-			dropItems();
-			droppedItems = true;
 		}
 		super.onUpdate();
 	}
@@ -91,20 +90,26 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	}
 
 	@Override
+	public void onDeath(DamageSource cause) {
+		world.removeEntity(this);
+	}
+	
+	@Override
 	public void onRemovedFromWorld() {
+		dropItems();
 		super.onRemovedFromWorld();
 	}
 
 	@Override
 	protected void collideWithEntity(Entity entityIn) {
 		if (entityIn instanceof EntityPlayer) {
-			setHealth(0);
+			world.removeEntity(this);
 		}
 		if (entityIn instanceof EntityBey) {
 			if (((EntityBey) entityIn).rotationSpeed < 0) {
 				((EntityBey) entityIn).rotationSpeed += new Random().nextFloat()/10;
 				((EntityBey) entityIn).radius = 0.2f;
-				((EntityBey) entityIn).damageEntity(DamageSource.FALL, new Random().nextInt(80));
+				((EntityBey) entityIn).damageEntity(DamageSource.FALL, new Random().nextInt(10));
 				this.move(MoverType.SELF, entityIn.getLookVec().x, entityIn.getLookVec().y, entityIn.getLookVec().z);
 			} else {
 				((EntityBey) entityIn).rotationSpeed = 0;

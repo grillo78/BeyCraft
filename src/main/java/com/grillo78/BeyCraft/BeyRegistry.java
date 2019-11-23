@@ -3,6 +3,8 @@ package com.grillo78.BeyCraft;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.grillo78.BeyCraft.blocks.ExpositoryBlock;
+import com.grillo78.BeyCraft.capabilities.Provider;
 import com.grillo78.BeyCraft.entity.AigerModel;
 import com.grillo78.BeyCraft.entity.EntityBey;
 import com.grillo78.BeyCraft.items.ItemBeyDisk;
@@ -16,15 +18,17 @@ import com.grillo78.BeyCraft.items.armor.ItemBladerArmor;
 import com.grillo78.BeyCraft.util.IHasModel;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -53,7 +57,7 @@ public class BeyRegistry {
 	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4",-0.08F, 1);
 	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk",-0.15F);
 	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver", 0.15F);
-	public static final ItemBeyLayer VALTRYEKV4 = new ItemBeyLayer("ValtryekV4",-0.08F, 1);
+	public static final ItemBeyLayer VALTRYEKV4 = new ItemBeyLayer("ValtryekV4",-0.13F, 1);
 	public static final ItemBeyDisk TWELVEDISK = new ItemBeyDisk("12disk",-0.15F);
 	public static final ItemBeyDriver VOLCANICDRIVER = new ItemBeyDriver("Volcanic_Driver", 0.15F);
 	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("ValtryekV2",-0.08F, 1);
@@ -77,6 +81,9 @@ public class BeyRegistry {
 			EntityEquipmentSlot.LEGS, new AigerModel());
 	public static final ItemBladerArmor AIGER_BOOTS = new ItemBladerArmor(AIGER_MATERIAL, "Aiger_boots",
 			EntityEquipmentSlot.FEET, new AigerModel());
+	
+	/* Blocks */
+	public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.ANVIL, "Expository");
 
 	@SubscribeEvent
 	public static void registerBey(RegistryEvent.Register<EntityEntry> event) {
@@ -100,31 +107,45 @@ public class BeyRegistry {
 	}
 
 	@SubscribeEvent
+	public static void registerBlock(RegistryEvent.Register<Block> event) {
+		for (Block block : BLOCKS) {
+			event.getRegistry().register(block);
+		}
+	}
+
+	@SubscribeEvent
 	public static void onModelRegister(ModelRegistryEvent event) {
 		for (Item item : ITEMS) {
 			if (item instanceof IHasModel) {
-				ModelLoader.setCustomModelResourceLocation(item, 0,
-						new ModelResourceLocation(item.getRegistryName(), "inventory"));
+				((IHasModel) item).registerModels();
 			}
 		}
 		for (Item item : ITEMSLAYER) {
 			if (item instanceof IHasModel) {
-				ModelLoader.setCustomModelResourceLocation(item, 0,
-						new ModelResourceLocation(item.getRegistryName(), "inventory"));
+				((IHasModel) item).registerModels();
 			}
 		}
 		for (Item item : ITEMSDISK) {
 			if (item instanceof IHasModel) {
-				ModelLoader.setCustomModelResourceLocation(item, 0,
-						new ModelResourceLocation(item.getRegistryName(), "inventory"));
+				((IHasModel) item).registerModels();
 			}
 		}
 		for (Item item : ITEMSDRIVER) {
 			if (item instanceof IHasModel) {
-				ModelLoader.setCustomModelResourceLocation(item, 0,
-						new ModelResourceLocation(item.getRegistryName(), "inventory"));
+				((IHasModel) item).registerModels();
+			}
+		}
+		for(Block block : BLOCKS) {
+			if (block instanceof IHasModel) {
+				((IHasModel) block).registerModels();
 			}
 		}
 	}
 
+	@SubscribeEvent
+	public static void playerCapabilitiesInjection(AttachCapabilitiesEvent<Entity> event) {
+		if (event.getObject() instanceof EntityPlayer) {
+            event.addCapability(new ResourceLocation(Reference.MODID, "BladerLevel"), new Provider());
+		}
+	}
 }

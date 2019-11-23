@@ -44,7 +44,7 @@ public class RenderBey extends RenderLiving<EntityBey>{
     		GlStateManager.translate(0, 0, ((ItemBeyDisk) entity.disk.getItem()).height);
     		itemRenderer.renderItem(entity.disk, ItemCameraTransforms.TransformType.FIXED);
     		GlStateManager.translate(0, 0, ((ItemBeyLayer) entity.layer.getItem()).height);
-    		GlStateManager.rotate(entity.getHealth()-40, 0, 0, 1);
+    		GlStateManager.rotate(entity.getHealth()-40*((ItemBeyLayer)entity.layer.getItem()).rotationDirection, 0, 0, 1);
     		itemRenderer.renderItem(entity.layer, ItemCameraTransforms.TransformType.FIXED);
     		GlStateManager.popMatrix();
     		super.doRender(entity, x, y, z, entityYaw, partialTicks);

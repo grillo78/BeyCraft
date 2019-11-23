@@ -1,12 +1,16 @@
 package com.grillo78.BeyCraft.proxy;
 
 import com.grillo78.BeyCraft.BeyCraft;
+import com.grillo78.BeyCraft.capabilities.BladerLevelStorage;
+import com.grillo78.BeyCraft.capabilities.Factory;
+import com.grillo78.BeyCraft.capabilities.IBladerLevel;
 import com.grillo78.BeyCraft.gui.LauncherGUI;
 import com.grillo78.BeyCraft.inventory.LauncherGuiContainer;
 import com.grillo78.BeyCraft.items.ItemLauncher;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
@@ -17,6 +21,7 @@ public class CommonProxy implements IGuiHandler{
 
 	public void onPreInit() {
 		NetworkRegistry.INSTANCE.registerGuiHandler(BeyCraft.instance, this);
+		CapabilityManager.INSTANCE.register(IBladerLevel.class, new BladerLevelStorage(), new Factory());
 	}
 	
 	@Override

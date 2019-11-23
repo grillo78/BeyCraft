@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import com.grillo78.BeyCraft.programs.BeyRanking;
 import com.grillo78.BeyCraft.proxy.CommonProxy;
 import com.grillo78.BeyCraft.tab.BeyCraftTab;
+import com.grillo78.BeyCraft.tileentity.ExpositoryTileEntity;
 import com.grillo78.BeyCraft.util.DatabaseConnection;
 import com.grillo78.BeyCraft.util.SoundHandler;
 import com.mrcrayfish.device.api.ApplicationManager;
@@ -28,6 +29,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
@@ -55,7 +57,8 @@ public class BeyCraft
     {
         logger = event.getModLog();
         dbConn = new DatabaseConnection();
-        proxy.onPreInit();
+        GameRegistry.registerTileEntity(ExpositoryTileEntity.class, new ResourceLocation(Reference.MODID,"tileEntity3DPrinter"));
+		proxy.onPreInit();
         proxy.registerRenders();
     }
 

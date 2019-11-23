@@ -4,7 +4,9 @@ import java.util.Random;
 
 import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
+import com.grillo78.BeyCraft.util.IHasModel;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -12,8 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 
-public class ItemBeyPackage extends Item{
+public class ItemBeyPackage extends Item implements IHasModel{
 	public ItemBeyPackage(String name) {
 		this.setCreativeTab(BeyCraft.beyCraftTab);
 		this.setRegistryName(name);
@@ -36,5 +39,10 @@ public class ItemBeyPackage extends Item{
 
 		}
 		return super.onItemRightClick(worldIn, playerIn, handIn);
+	}
+	
+	@Override
+	public void registerModels() {
+		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(this.getRegistryName(),"inventory"));
 	}
 }
