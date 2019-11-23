@@ -38,8 +38,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
  */
 public class ExpositoryBlock extends BlockContainer implements IHasModel {
 
-    protected static final AxisAlignedBB COLLISION_BOX = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
-    
+	protected static final AxisAlignedBB COLLISION_BOX = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
+
 	public ExpositoryBlock(Material materialIn, String name) {
 		super(materialIn);
 		setUnlocalizedName(name);
@@ -53,10 +53,10 @@ public class ExpositoryBlock extends BlockContainer implements IHasModel {
 	}
 
 	@Override
-		public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-			return COLLISION_BOX;
-		}
-	
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return COLLISION_BOX;
+	}
+
 	@Override
 	public void registerModels() {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
@@ -69,33 +69,34 @@ public class ExpositoryBlock extends BlockContainer implements IHasModel {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 
 		if (tileentity instanceof ExpositoryTileEntity) {
-			if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyLayer && ((ExpositoryTileEntity)tileentity).getStackInSlot(0).getCount()==0) {
+			if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyLayer
+					&& ((ExpositoryTileEntity) tileentity).getStackInSlot(0).getCount() == 0) {
 				((ExpositoryTileEntity) tileentity).setInventorySlotContents(0, playerIn.getHeldItem(hand).copy());
 				playerIn.getHeldItem(hand).shrink(1);
 				return true;
-			} else if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDisk && ((ExpositoryTileEntity)tileentity).getStackInSlot(1).getCount()==0) {
+			} else if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDisk
+					&& ((ExpositoryTileEntity) tileentity).getStackInSlot(1).getCount() == 0) {
 				((ExpositoryTileEntity) tileentity).setInventorySlotContents(1, playerIn.getHeldItem(hand).copy());
 				playerIn.getHeldItem(hand).shrink(1);
 				return true;
-			} else if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDriver && ((ExpositoryTileEntity)tileentity).getStackInSlot(2).getCount()==0) {
+			} else if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDriver
+					&& ((ExpositoryTileEntity) tileentity).getStackInSlot(2).getCount() == 0) {
 				((ExpositoryTileEntity) tileentity).setInventorySlotContents(2, playerIn.getHeldItem(hand).copy());
 				playerIn.getHeldItem(hand).shrink(1);
 				return true;
-			}if(playerIn.getHeldItem(hand).getItem() instanceof ItemLauncher && ((ExpositoryTileEntity)tileentity).getStackInSlot(0).getCount()==1 && ((ExpositoryTileEntity)tileentity).getStackInSlot(1).getCount()==1 && ((ExpositoryTileEntity)tileentity).getStackInSlot(2).getCount()==1) {
-				playerIn.getHeldItem(hand)
-				.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
-				.insertItem(0, ((ExpositoryTileEntity)tileentity).getStackInSlot(0).copy(), false);
-				((ExpositoryTileEntity)tileentity).getStackInSlot(0).shrink(1);
-				playerIn.getHeldItem(hand)
-				.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
-				.insertItem(1, ((ExpositoryTileEntity)tileentity).getStackInSlot(1).copy(), false);
-				((ExpositoryTileEntity)tileentity).getStackInSlot(1).shrink(1);
-				playerIn.getHeldItem(hand)
-				.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
-				.insertItem(2, ((ExpositoryTileEntity)tileentity).getStackInSlot(2).copy(), false);
-				((ExpositoryTileEntity)tileentity).getStackInSlot(2).shrink(1);
+			}else if (playerIn.getHeldItem(hand).getItem() instanceof ItemLauncher) {
+				for (int i = 0; i < 3; i++) {
+					if(playerIn.getHeldItem(hand)
+							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+							.getStackInSlot(i).getCount()==0) {
+						playerIn.getHeldItem(hand)
+						.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+						.insertItem(i, ((ExpositoryTileEntity) tileentity).getStackInSlot(i).copy(), false);
+				((ExpositoryTileEntity) tileentity).getStackInSlot(i).shrink(1);
+					}
+				}
 				return true;
-			}else {
+			} else {
 				for (int i = 0; i < 3; i++) {
 					if (((ExpositoryTileEntity) tileentity).getStackInSlot(i) != ItemStack.EMPTY) {
 						if (!worldIn.isRemote) {
@@ -105,13 +106,13 @@ public class ExpositoryBlock extends BlockContainer implements IHasModel {
 						((ExpositoryTileEntity) tileentity).getStackInSlot(i).shrink(1);
 					}
 				}
+				return true;
 			}
 		}
 		return false;
+
 	}
 
-	
-	
 	@Override
 	public boolean hasTileEntity() {
 		return true;
