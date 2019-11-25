@@ -62,7 +62,6 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 	@Override
 	public boolean canBreatheUnderwater() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -124,7 +123,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 				}
 				((EntityBey) entityIn).rotationSpeed += damage;
 				((EntityBey) entityIn).radius = 0.2f;
-				((EntityBey) entityIn).damageEntity(DamageSource.FALL, new Random().nextInt(10));
+				((EntityBey) entityIn).damageEntity(DamageSource.FALL, new Random().nextInt(5));
 				this.move(MoverType.SELF, entityIn.getLookVec().x, entityIn.getLookVec().y, entityIn.getLookVec().z);
 			} else {
 				((EntityBey) entityIn).rotationSpeed = 0;
@@ -204,6 +203,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		compound.setTag("Disk", disk.writeToNBT(new NBTTagCompound()));
 		compound.setTag("Driver", driver.writeToNBT(new NBTTagCompound()));
 		compound.setFloat("RotationSpeed", rotationSpeed);
+		compound.setInteger("RotationDirection", rotationDirection);
 		compound.setFloat("Radius", radius);
 		ByteBufUtils.writeTag(buffer, compound);
 	}
@@ -217,6 +217,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 			disk = new ItemStack(compound.getCompoundTag("Disk"));
 			driver = new ItemStack(compound.getCompoundTag("Driver"));
 			rotationSpeed = compound.getFloat("RotationSpeed");
+			rotationDirection = compound.getInteger("RotationDirection");
 			radius = compound.getFloat("Radius");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -225,9 +226,5 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 	public int getRotationDirection() {
 		return rotationDirection;
-	}
-
-	public void setRotationDirection(int rotationDirection) {
-		this.rotationDirection = rotationDirection;
 	}
 }
