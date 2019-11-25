@@ -68,6 +68,7 @@ public class BeyRegistry {
 	public static final ItemBeyDisk ZENITHDISK = new ItemBeyDisk("zenithdisk",-0.15F);
 	public static final ItemBeyDriver EVOLUTIONDRIVER = new ItemBeyDriver("evolution_driver", 0.15F,1,1);
 	public static final ItemBeyLayer REQUIEMSPRYZEN = new ItemBeyLayerDual("requiem_spryzen",-0.05F, true);
+	public static final ItemBeyDisk ZERODISK = new ItemBeyDisk("0disk",-0.20F);
 	public static final ItemBeyLayer TURBOSPRYZEN = new ItemBeyLayerDual("TurboSpryzen",-0.08F, false);
 	public static final ItemBeyDisk ZEROWDISK = new ItemBeyDisk("0wdisk",-0.20F);
 	public static final ItemBeyDriver ZETASDRIVER = new ItemBeyDriver("zetas_driver", 0.15F,1,1);
