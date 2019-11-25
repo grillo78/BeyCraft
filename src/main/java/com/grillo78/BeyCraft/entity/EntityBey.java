@@ -124,7 +124,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 				}
 				((EntityBey) entityIn).rotationSpeed += damage;
 				((EntityBey) entityIn).radius = 0.2f;
-//				((EntityBey) entityIn).damageEntity(DamageSource.FALL, new Random().nextInt(10));
+				((EntityBey) entityIn).damageEntity(DamageSource.FALL, new Random().nextInt(10));
 				this.move(MoverType.SELF, entityIn.getLookVec().x, entityIn.getLookVec().y, entityIn.getLookVec().z);
 			} else {
 				((EntityBey) entityIn).rotationSpeed = 0;
