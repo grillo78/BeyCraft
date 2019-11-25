@@ -2,6 +2,8 @@ package com.grillo78.BeyCraft.items;
 
 import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
+import com.grillo78.BeyCraft.capabilities.IBladerLevel;
+import com.grillo78.BeyCraft.capabilities.Provider;
 import com.grillo78.BeyCraft.entity.EntityBey;
 import com.grillo78.BeyCraft.inventory.BeyBladeProvider;
 import com.grillo78.BeyCraft.util.IHasModel;
@@ -21,11 +23,14 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 public class ItemLauncher extends Item implements IHasModel {
 
-	public ItemLauncher(String name) {
+	private int rotation;
+
+	public ItemLauncher(String name, int rotation) {
 		setCreativeTab(BeyCraft.beyCraftTab);
 		setRegistryName(name);
 		setUnlocalizedName(name);
 		setMaxStackSize(1);
+		this.rotation = rotation;
 		BeyRegistry.ITEMS.add(this);
 	}
 
@@ -59,18 +64,35 @@ public class ItemLauncher extends Item implements IHasModel {
 							playerIn.getHeldItem(handIn)
 									.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
 									.getStackInSlot(1),
-									playerIn.getHeldItem(handIn)
-									.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP).getStackInSlot(2));
+							playerIn.getHeldItem(handIn)
+									.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+									.getStackInSlot(2),
+							((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
+									.getBladerLevel(),
+							rotation);
 					beyEntity.setLocationAndAngles(playerIn.posX + playerIn.getLookVec().x, playerIn.posY,
-							playerIn.posZ + playerIn.getLookVec().z, playerIn.cameraYaw, -playerIn.cameraPitch);
+							playerIn.posZ + playerIn.getLookVec().z,
+							playerIn.rotationYaw - 115 * rotation,
+							0);
+					BeyCraft.logger.info(playerIn.rotationYaw);
 					worldIn.spawnEntity(beyEntity);
-					playerIn.getHeldItem(handIn).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP).getStackInSlot(0).shrink(1);
-					playerIn.getHeldItem(handIn).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP).getStackInSlot(1).shrink(1);
-					playerIn.getHeldItem(handIn).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP).getStackInSlot(2).shrink(1);
+					playerIn.getHeldItem(handIn)
+							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+							.getStackInSlot(0).shrink(1);
+					playerIn.getHeldItem(handIn)
+							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+							.getStackInSlot(1).shrink(1);
+					playerIn.getHeldItem(handIn)
+							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+							.getStackInSlot(2).shrink(1);
 				}
 			}
 		}
 		return super.onItemRightClick(worldIn, playerIn, handIn);
+	}
+
+	public int getRotation() {
+		return rotation;
 	}
 
 	@Override

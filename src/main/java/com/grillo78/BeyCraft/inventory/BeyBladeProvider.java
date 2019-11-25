@@ -9,6 +9,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+@SuppressWarnings("rawtypes")
 public class BeyBladeProvider implements ICapabilityProvider, ICapabilitySerializable{
 
 	private final ItemStackHandler inventory;
@@ -25,6 +26,7 @@ public class BeyBladeProvider implements ICapabilityProvider, ICapabilitySeriali
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getCapability( Capability<T> capability, EnumFacing facing ) {
 		if( capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ) {

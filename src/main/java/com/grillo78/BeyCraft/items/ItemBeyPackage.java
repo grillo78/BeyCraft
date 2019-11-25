@@ -21,7 +21,6 @@ public class ItemBeyPackage extends Item implements IHasModel{
 		this.setCreativeTab(BeyCraft.beyCraftTab);
 		this.setRegistryName(name);
 		this.setUnlocalizedName(name);
-		this.setMaxStackSize(1);
 		BeyRegistry.ITEMS.add(this);
 	}
 	
@@ -36,6 +35,7 @@ public class ItemBeyPackage extends Item implements IHasModel{
 			worldIn.spawnEntity(itemDisk);
 			EntityItem itemDriver = new EntityItem(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, new ItemStack(BeyRegistry.ITEMSDRIVER.get(new Random().nextInt(BeyRegistry.ITEMSDRIVER.size()-1)), 1));
 			worldIn.spawnEntity(itemDriver);
+			playerIn.getHeldItem(handIn).shrink(1);
 
 		}
 		return super.onItemRightClick(worldIn, playerIn, handIn);

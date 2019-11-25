@@ -2,8 +2,8 @@ package com.grillo78.BeyCraft.entity;
 
 import java.util.Random;
 
-import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
+import com.grillo78.BeyCraft.items.ItemBeyDriver;
 import com.grillo78.BeyCraft.items.ItemBeyLayer;
 import com.grillo78.BeyCraft.util.SoundHandler;
 
@@ -15,6 +15,7 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -35,17 +36,20 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	public float angle;
 	public float radius = 0.2F;
 	private boolean droppedItems = false;
+	private int rotationDirection;
 
 	public EntityBey(World worldIn) {
 		this(worldIn, new ItemStack(BeyRegistry.ACHILLESA4), new ItemStack(BeyRegistry.ELEVENDISK),
-				new ItemStack(BeyRegistry.XTENDDRIVER));
+				new ItemStack(BeyRegistry.XTENDDRIVER), 1, 1);
 	}
 
-	public EntityBey(World worldIn, ItemStack layerIn, ItemStack diskIn, ItemStack driverIn) {
+	public EntityBey(World worldIn, ItemStack layerIn, ItemStack diskIn, ItemStack driverIn, int bladerLevel,
+			int rotationDirection) {
 		super(worldIn);
 		this.setSize(0.25F, 0.25F);
 		this.height = 0.253F;
-		this.rotationSpeed = -5;
+		this.rotationSpeed = -9 + bladerLevel;
+		this.rotationDirection = rotationDirection;
 		angle = 10;
 		layer = layerIn.copy();
 		disk = diskIn.copy();
@@ -57,21 +61,28 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	}
 
 	@Override
+	public boolean canBreatheUnderwater() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
 	public void onUpdate() {
+		if (world.getBlockState(this.getPosition().down()).getBlock() != Blocks.GRASS && onGround) {
+			rotationSpeed = 0;
+		}
 		if (this.rotationSpeed < 0) {
 			rotationSpeed += 0.005;
-			rotationYaw -= rotationSpeed * ((ItemBeyLayer)layer.getItem()).rotationDirection;
-			angle += rotationSpeed * 10;
+			rotationYaw -= rotationSpeed * rotationDirection * ((ItemBeyDriver) driver.getItem()).friction;
+			angle += rotationSpeed * 10 * rotationDirection;
 
 		} else {
 			rotationSpeed = 0;
 		}
 		if (radius > 0) {
-			radius -= 0.001;
+			radius -= 0.0001f * ((ItemBeyDriver) driver.getItem()).radiusReducion * -9 / rotationSpeed;
 		} else {
 			radius = 0;
-		}
-		if (getHealth() == 0 && !droppedItems) {
 		}
 		super.onUpdate();
 	}
@@ -93,7 +104,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	public void onDeath(DamageSource cause) {
 		world.removeEntity(this);
 	}
-	
+
 	@Override
 	public void onRemovedFromWorld() {
 		dropItems();
@@ -107,9 +118,13 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		}
 		if (entityIn instanceof EntityBey) {
 			if (((EntityBey) entityIn).rotationSpeed < 0) {
-				((EntityBey) entityIn).rotationSpeed += new Random().nextFloat()/10;
+				float damage = new Random().nextFloat();
+				if (((ItemBeyLayer) layer.getItem()).canAbsorb(this)) {
+					this.rotationSpeed -= damage;
+				}
+				((EntityBey) entityIn).rotationSpeed += damage;
 				((EntityBey) entityIn).radius = 0.2f;
-				((EntityBey) entityIn).damageEntity(DamageSource.FALL, new Random().nextInt(10));
+//				((EntityBey) entityIn).damageEntity(DamageSource.FALL, new Random().nextInt(10));
 				this.move(MoverType.SELF, entityIn.getLookVec().x, entityIn.getLookVec().y, entityIn.getLookVec().z);
 			} else {
 				((EntityBey) entityIn).rotationSpeed = 0;
@@ -206,5 +221,13 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public int getRotationDirection() {
+		return rotationDirection;
+	}
+
+	public void setRotationDirection(int rotationDirection) {
+		this.rotationDirection = rotationDirection;
 	}
 }

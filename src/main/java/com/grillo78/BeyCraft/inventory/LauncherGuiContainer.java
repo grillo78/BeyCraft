@@ -12,11 +12,11 @@ public class LauncherGuiContainer extends Container{
 	
 	public ItemStack stackBey;
 	
-	public LauncherGuiContainer(InventoryPlayer playerInventory, ItemStack beyBlade) {
+	public LauncherGuiContainer(InventoryPlayer playerInventory, ItemStack beyBlade, int rotation) {
 		stackBey = beyBlade;
 		IItemHandler handler = beyBlade.getCapability( CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null );
 		
-		this.addSlotToContainer(new SlotBeyLayer(handler, 0, 10, 10));
+		this.addSlotToContainer(new SlotBeyLayer(handler, 0, 10, 10, rotation));
 		this.addSlotToContainer(new SlotBeyDisk(handler, 1, 10, 30));
 		this.addSlotToContainer(new SlotBeyDriver(handler, 2, 10, 50));
 		this.addSlotToContainer(new SlotHandle(handler, 3, 62, 10));

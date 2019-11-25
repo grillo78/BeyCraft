@@ -14,23 +14,25 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-public class CommonProxy implements IGuiHandler{
+public class CommonProxy implements IGuiHandler {
 	public void registerRenders() {
-		
+
 	}
 
 	public void onPreInit() {
 		NetworkRegistry.INSTANCE.registerGuiHandler(BeyCraft.instance, this);
 		CapabilityManager.INSTANCE.register(IBladerLevel.class, new BladerLevelStorage(), new Factory());
 	}
-	
+
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		if(ID==0) {
+		if (ID == 0) {
 			if (player.getHeldItemMainhand().getItem() instanceof ItemLauncher) {
-				return new LauncherGuiContainer(player.inventory, player.getHeldItemMainhand());
-			}else {
-				return new LauncherGuiContainer(player.inventory, player.getHeldItemOffhand());
+				return new LauncherGuiContainer(player.inventory, player.getHeldItemMainhand(),
+						((ItemLauncher) player.getHeldItemMainhand().getItem()).getRotation());
+			} else {
+				return new LauncherGuiContainer(player.inventory, player.getHeldItemOffhand(),
+						((ItemLauncher) player.getHeldItemOffhand().getItem()).getRotation());
 			}
 		}
 		return null;
@@ -38,11 +40,17 @@ public class CommonProxy implements IGuiHandler{
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		if(ID==0) {
+		if (ID == 0) {
 			if (player.getHeldItemMainhand().getItem() instanceof ItemLauncher) {
-				return new LauncherGUI(new LauncherGuiContainer(player.inventory, player.getHeldItemMainhand()), player.inventory);
-			}else {
-				return new LauncherGUI(new LauncherGuiContainer(player.inventory, player.getHeldItemOffhand()), player.inventory);
+				return new LauncherGUI(
+						new LauncherGuiContainer(player.inventory, player.getHeldItemMainhand(),
+								((ItemLauncher) player.getHeldItemMainhand().getItem()).getRotation()),
+						player.inventory);
+			} else {
+				return new LauncherGUI(
+						new LauncherGuiContainer(player.inventory, player.getHeldItemOffhand(),
+								((ItemLauncher) player.getHeldItemOffhand().getItem()).getRotation()),
+						player.inventory);
 			}
 		}
 		return null;

@@ -120,7 +120,7 @@ public class ExpositoryTileEntity extends TileEntityLockable implements ISidedIn
 			name = this.getStackInSlot(0).getDisplayName() + name;
 		}
 		if (this.getStackInSlot(1).getCount() != 0) {
-			name = name + this.getStackInSlot(1).getDisplayName();
+			name = name + " " + this.getStackInSlot(1).getDisplayName() + " ";
 		}
 		if (this.getStackInSlot(2).getCount() != 0) {
 			name = name + this.getStackInSlot(2).getDisplayName();

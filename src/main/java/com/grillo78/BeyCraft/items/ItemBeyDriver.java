@@ -11,12 +11,17 @@ import net.minecraftforge.client.model.ModelLoader;
 public class ItemBeyDriver extends Item implements IHasModel{
 	
 	public float height;
-	public ItemBeyDriver(String name, float height) {
+	public float friction;
+	public float radiusReducion;
+	
+	public ItemBeyDriver(String name, float height, float friction, float radiusReduction) {
 		setCreativeTab(BeyCraft.beyCraftTab);
 		setRegistryName(name);
 		setUnlocalizedName(name);
 		setMaxStackSize(1);
 		this.height = height;
+		this.radiusReducion = radiusReduction;
+		this.friction = friction;
 		BeyRegistry.ITEMSDRIVER.add(this);
 	}
 	

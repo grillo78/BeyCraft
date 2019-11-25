@@ -1,7 +1,6 @@
 package com.grillo78.BeyCraft.inventory;
 
 import com.grillo78.BeyCraft.items.ItemBeyDriver;
-import com.grillo78.BeyCraft.items.ItemBeyLayer;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;

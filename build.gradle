@@ -24,21 +24,7 @@ compileJava {
 
 shadowJar {
 	dependencies{
-		exclude 'cfm-6.3.0-mc1.12.2.jar'
-		exclude 'chiselsandbits-14.33.jar'
-		exclude 'GitWeb+Builder-1.1.jar'
-		exclude 'obfuscate-0.2.6-1.12.2.jar'
-		exclude 'vehicle-mod-0.41.1-1.12.2.jar'
-		exclude 'appsmod-1.7.2.jar'
-		exclude 'iChunUtil-1.12.2-7.2.0.jar'
-		exclude 'mcef-1.12.2-1.11-api.jar'
-		exclude 'Tabula-1.12.2-7.0.0.jar'
-		exlcude 'webdisplays-1.12.2-1.1.jar'
-		exclude 'Clothing+Mod+Beta+v.0.4+by+Titoo8899.jar'
-		exclude 'iChunUtil-1.12.2-7.2.0.jar'
-		exclude 'worldedit-forge-mc1.12.2-6.1.10-SNAPSHOT-dist.jar'
-		exclude(dependency('com.mrcrayfish:device-api:0.4.0-1.12.2'))
-		exclude(dependency('mezz.jei:jei_1.12.2:4.9.1.179'))
+		exclude '/libs'
 	}
 	relocate 'org.apache.collections4', 'shadow.apache.collections4'
 	relocate 'org.slf4j', 'shadow.slf4j'
