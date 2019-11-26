@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.grillo78.BeyCraft.blocks.ExpositoryBlock;
+import com.grillo78.BeyCraft.blocks.StadiumBlock;
 import com.grillo78.BeyCraft.capabilities.Provider;
 import com.grillo78.BeyCraft.entity.AigerModel;
 import com.grillo78.BeyCraft.entity.EntityBey;
@@ -58,6 +59,9 @@ public class BeyRegistry {
 	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4",-0.08F, 1, false);
 	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk",-0.15F);
 	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver", 0.15F,1,1);
+	public static final ItemBeyLayer FAFNIRF4 = new ItemBeyLayer("wizard_fafnir",-0.08F, -1, true);
+	public static final ItemBeyDisk RATCHETDISK = new ItemBeyDisk("ratchet",-0.15F);
+	public static final ItemBeyDriver RISEDRIVER = new ItemBeyDriver("rise_driver", 0.15F,1,1);
 	public static final ItemBeyLayer VALTRYEKV4 = new ItemBeyLayer("ValtryekV4",-0.13F, 1, false);
 	public static final ItemBeyDisk TWELVEDISK = new ItemBeyDisk("12disk",-0.15F);
 	public static final ItemBeyDriver VOLCANICDRIVER = new ItemBeyDriver("Volcanic_Driver", 0.15F,1,1);
@@ -67,10 +71,10 @@ public class BeyRegistry {
 	public static final ItemBeyLayer VALTRYEKV5 = new ItemBeyLayer("ValtryekV5",-0.15F, 1, false);
 	public static final ItemBeyDisk ZENITHDISK = new ItemBeyDisk("zenithdisk",-0.15F);
 	public static final ItemBeyDriver EVOLUTIONDRIVER = new ItemBeyDriver("evolution_driver", 0.15F,1,1);
-	public static final ItemBeyLayer REQUIEMSPRYZEN = new ItemBeyLayerDual("requiem_spryzen",-0.05F, true);
-	public static final ItemBeyDisk ZERODISK = new ItemBeyDisk("0disk",-0.20F);
-	public static final ItemBeyLayer TURBOSPRYZEN = new ItemBeyLayerDual("TurboSpryzen",-0.08F, false);
-	public static final ItemBeyDisk ZEROWDISK = new ItemBeyDisk("0wdisk",-0.20F);
+	public static final ItemBeyLayer REQUIEMSPRYZEN = new ItemBeyLayerDual("requiem_spryzen",-0.23F, true);
+	public static final ItemBeyDisk ZERODISK = new ItemBeyDisk("0disk",-0.15F);
+	public static final ItemBeyLayer TURBOSPRYZEN = new ItemBeyLayerDual("TurboSpryzen",-0.12F, false);
+	public static final ItemBeyDisk ZEROWDISK = new ItemBeyDisk("0wdisk",-0.15F);
 	public static final ItemBeyDriver ZETASDRIVER = new ItemBeyDriver("zetas_driver", 0.15F,1,1);
 	public static final ItemBeyLayer SALAMANDERS4 = new ItemBeyLayer("SalamanderS4",-0.08F, -1, false);
 	public static final ItemBeyDriver OPERATEDRIVER = new ItemBeyDriver("operate_driver", 0.15F,1,1);
@@ -89,6 +93,7 @@ public class BeyRegistry {
 	
 	/* Blocks */
 	public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.ANVIL, "Expository");
+	public static final StadiumBlock STADIUM = new StadiumBlock(Material.IRON, "Stadium");
 
 	@SubscribeEvent
 	public static void registerBey(RegistryEvent.Register<EntityEntry> event) {

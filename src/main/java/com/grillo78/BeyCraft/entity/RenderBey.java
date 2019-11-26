@@ -32,13 +32,17 @@ public class RenderBey extends RenderLiving<EntityBey> {
 			GlStateManager.translate(x, y + 0.15, z);
 			GlStateManager.scale(0.5, 0.5, 0.5);
 			GlStateManager.translate(0, -0.02, 0);
-			if (entity.radius != 0F || entity.rotationSpeed == 0) {
+			if (entity.radius != 0F) {
 				GlStateManager.rotate(30, (float) entity.getLook(partialTicks).z, 0,
 						(float) -entity.getLook(partialTicks).x);
 			} else {
 				GlStateManager.rotate(0, 1, 0, 1);
 			}
 			GlStateManager.rotate(entity.angle / 2, 0, 1, 0);
+			if (entity.rotationSpeed <= 0 && entity.rotationSpeed >-1) {
+				GlStateManager.rotate(30, (float) entity.getLook(partialTicks).z, 0,
+						(float) -entity.getLook(partialTicks).x);
+			}
 			GlStateManager.rotate(90, 1, 0, 0);
 			GlStateManager.translate(0, 0, 0.08);
 			GlStateManager.translate(0, 0, ((ItemBeyDriver) entity.driver.getItem()).height);
@@ -46,9 +50,9 @@ public class RenderBey extends RenderLiving<EntityBey> {
 			GlStateManager.translate(0, 0, ((ItemBeyDisk) entity.disk.getItem()).height);
 			itemRenderer.renderItem(entity.disk, ItemCameraTransforms.TransformType.FIXED);
 			GlStateManager.translate(0, 0, ((ItemBeyLayer) entity.layer.getItem()).height);
-			GlStateManager.rotate(entity.getHealth() - 40 * entity.getRotationDirection(),
-					0, 0, 1);
+			GlStateManager.rotate(entity.getHealth() * entity.getRotationDirection() + 40, 0, 0, 1);
 			itemRenderer.renderItem(entity.layer, ItemCameraTransforms.TransformType.FIXED);
+
 			GlStateManager.popMatrix();
 			super.doRender(entity, x, y, z, entityYaw, partialTicks);
 		}

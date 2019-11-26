@@ -69,11 +69,11 @@ public class ItemLauncher extends Item implements IHasModel {
 									.getStackInSlot(2),
 							((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
 									.getBladerLevel(),
-							rotation);
+							rotation, playerIn.getName());
 					beyEntity.setLocationAndAngles(playerIn.posX + playerIn.getLookVec().x, playerIn.posY,
 							playerIn.posZ + playerIn.getLookVec().z,
 							playerIn.rotationYaw - 115 * rotation,
-							0);
+							0);beyEntity.setVelocity(playerIn.motionX, playerIn.motionY, playerIn.motionZ);
 					BeyCraft.logger.info(playerIn.rotationYaw);
 					worldIn.spawnEntity(beyEntity);
 					playerIn.getHeldItem(handIn)
