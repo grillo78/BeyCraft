@@ -28,6 +28,7 @@ public class RenderBey extends RenderLiving<EntityBey> {
 	@Override
 	public void doRender(EntityBey entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		if (!entity.getDroppedItem()) {
+			this.setRenderOutlines(true);
 			GlStateManager.pushMatrix();
 			GlStateManager.pushAttrib();
 			GlStateManager.translate(x, y + 0.15, z);
@@ -55,8 +56,7 @@ public class RenderBey extends RenderLiving<EntityBey> {
 			GlStateManager.rotate(entity.getHealth() * entity.getRotationDirection() + 40, 0, 0, 1);
 			itemRenderer.renderItem(entity.layer, ItemCameraTransforms.TransformType.FIXED);
 			GlStateManager.enableColorMaterial();
-			GlStateManager.enableOutlineMode(16777215);
-			GlStateManager.disableOutlineMode();
+			GlStateManager.enableOutlineMode(1);
 			GlStateManager.disableColorMaterial();
 			GlStateManager.popAttrib();
 			GlStateManager.popMatrix();

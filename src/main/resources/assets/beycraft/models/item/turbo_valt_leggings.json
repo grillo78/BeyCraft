@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "beycraft:items/aiger_leggins"
+        "layer0": "beycraft:items/turbo_valt_leggings"
     },
     "display": {
         "head": {

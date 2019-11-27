@@ -50,47 +50,59 @@ public class BeyRegistry {
 			.id(new ResourceLocation(Reference.MODID, "bey"), 33).name("bey").tracker(160, 2, false).build();
 
 	/* ArmorMaterials */
-	public static final ArmorMaterial AIGER_MATERIAL = EnumHelper.addArmorMaterial("Aiger_model",
-			Reference.MODID + ":Aiger_clothes", 1000, new int[] { 10, 10, 10, 10 }, 0,
+	public static final ArmorMaterial BLADER_MATERIAL = EnumHelper.addArmorMaterial("blader_model",
+			Reference.MODID + ":blader_clothes", 1000, new int[] { 10, 10, 10, 10 }, 0,
 			SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2.0F);
 
 	/* Items */
 	public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("Package");
-	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4",-0.08F, 1, false);
-	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk",-0.15F);
-	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver", 0.15F,1,1);
-	public static final ItemBeyLayer FAFNIRF4 = new ItemBeyLayer("wizard_fafnir",-0.08F, -1, true);
-	public static final ItemBeyDisk RATCHETDISK = new ItemBeyDisk("ratchet",-0.15F);
-	public static final ItemBeyDriver RISEDRIVER = new ItemBeyDriver("rise_driver", 0.15F,1,1);
-	public static final ItemBeyLayer VALTRYEKV4 = new ItemBeyLayer("ValtryekV4",-0.13F, 1, false);
-	public static final ItemBeyDisk TWELVEDISK = new ItemBeyDisk("12disk",-0.15F);
-	public static final ItemBeyDriver VOLCANICDRIVER = new ItemBeyDriver("Volcanic_Driver", 0.15F,1,1);
-	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("ValtryekV2",-0.08F, 1, false);
-	public static final ItemBeyDisk BOOSTDISK = new ItemBeyDisk("boostdisk",-0.15F);
-	public static final ItemBeyDriver VARIABLEDRIVER = new ItemBeyDriver("Variable_Driver", 0.15F,1,1);
-	public static final ItemBeyLayer VALTRYEKV5 = new ItemBeyLayer("ValtryekV5",-0.15F, 1, false);
-	public static final ItemBeyDisk ZENITHDISK = new ItemBeyDisk("zenithdisk",-0.15F);
-	public static final ItemBeyDriver EVOLUTIONDRIVER = new ItemBeyDriver("evolution_driver", 0.15F,1,1);
-	public static final ItemBeyLayer REQUIEMSPRYZEN = new ItemBeyLayerDual("requiem_spryzen",-0.23F, true);
-	public static final ItemBeyDisk ZERODISK = new ItemBeyDisk("0disk",-0.15F);
-	public static final ItemBeyLayer TURBOSPRYZEN = new ItemBeyLayerDual("TurboSpryzen",-0.12F, false);
-	public static final ItemBeyDisk ZEROWDISK = new ItemBeyDisk("0wdisk",-0.15F);
-	public static final ItemBeyDriver ZETASDRIVER = new ItemBeyDriver("zetas_driver", 0.15F,1,1);
-	public static final ItemBeyLayer SALAMANDERS4 = new ItemBeyLayer("SalamanderS4",-0.08F, -1, false);
-	public static final ItemBeyDriver OPERATEDRIVER = new ItemBeyDriver("operate_driver", 0.15F,1,1);
-	public static final ItemBeyLayer VALTRYEKV3 = new ItemBeyLayer("ValtryekV3",-0.08F, 1, false);
-	public static final ItemLauncher REDLAUNCHER = new ItemLauncher("Red_Launcher",1);
-	public static final ItemLauncher LEFTLAUNCHER = new ItemLauncher("Left_Launcher",-1);
+	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4", -0.08F, 1, false);
+	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk", -0.15F);
+	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver", 0.15F, 1, 1);
+	public static final ItemBeyLayer FAFNIRF4 = new ItemBeyLayer("wizard_fafnir", -0.08F, -1, true);
+	public static final ItemBeyDisk RATCHETDISK = new ItemBeyDisk("ratchet", -0.15F);
+	public static final ItemBeyDriver RISEDRIVER = new ItemBeyDriver("rise_driver", 0.15F, 1, 1);
+	public static final ItemBeyLayer VALTRYEKV4 = new ItemBeyLayer("ValtryekV4", -0.13F, 1, false);
+	public static final ItemBeyDisk TWELVEDISK = new ItemBeyDisk("12disk", -0.15F);
+	public static final ItemBeyDriver VOLCANICDRIVER = new ItemBeyDriver("Volcanic_Driver", 0.15F, 1, 1);
+	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("ValtryekV2", -0.08F, 1, false);
+	public static final ItemBeyDisk BOOSTDISK = new ItemBeyDisk("boostdisk", -0.15F);
+	public static final ItemBeyDriver VARIABLEDRIVER = new ItemBeyDriver("Variable_Driver", 0.15F, 1, 1);
+	public static final ItemBeyLayer VALTRYEKV5 = new ItemBeyLayer("ValtryekV5", -0.15F, 1, false);
+	public static final ItemBeyDisk ZENITHDISK = new ItemBeyDisk("zenithdisk", -0.15F);
+	public static final ItemBeyDriver EVOLUTIONDRIVER = new ItemBeyDriver("evolution_driver", 0.15F, 1, 1);
+	public static final ItemBeyLayer REQUIEMSPRYZEN = new ItemBeyLayerDual("requiem_spryzen", -0.23F, true);
+	public static final ItemBeyDisk ZERODISK = new ItemBeyDisk("0disk", -0.15F);
+	public static final ItemBeyLayer TURBOSPRYZEN = new ItemBeyLayerDual("TurboSpryzen", -0.12F, false);
+	public static final ItemBeyDisk ZEROWDISK = new ItemBeyDisk("0wdisk", -0.15F);
+	public static final ItemBeyDriver ZETASDRIVER = new ItemBeyDriver("zetas_driver", 0.15F, 1, 1);
+	public static final ItemBeyLayer SALAMANDERS4 = new ItemBeyLayer("SalamanderS4", -0.08F, -1, false);
+	public static final ItemBeyDriver OPERATEDRIVER = new ItemBeyDriver("operate_driver", 0.15F, 1, 1);
+	public static final ItemBeyLayer VALTRYEKV3 = new ItemBeyLayer("ValtryekV3", -0.08F, 1, false);
+	public static final ItemLauncher REDLAUNCHER = new ItemLauncher("Red_Launcher", 1);
+	public static final ItemLauncher LEFTLAUNCHER = new ItemLauncher("Left_Launcher", -1);
 	public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("LauncherHandle");
 	public static final ItemBeyLogger BEYLOGGER = new ItemBeyLogger("Beylogger");
 	public static final ItemBeyLogger BEYLOGGERPLUS = new ItemBeyLogger("Beylogger_Plus");
-	public static final ItemBladerArmor AIGER_CHESTPLATE = new ItemBladerArmor(AIGER_MATERIAL, "Aiger_chestplate",
+	public static final ItemBladerArmor AIGER_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_chestplate",
 			EntityEquipmentSlot.CHEST, new AigerModel());
-	public static final ItemBladerArmor AIGER_LEGGINS = new ItemBladerArmor(AIGER_MATERIAL, "Aiger_leggins",
+	public static final ItemBladerArmor AIGER_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_leggings",
 			EntityEquipmentSlot.LEGS, new AigerModel());
-	public static final ItemBladerArmor AIGER_BOOTS = new ItemBladerArmor(AIGER_MATERIAL, "Aiger_boots",
+	public static final ItemBladerArmor AIGER_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_boots",
 			EntityEquipmentSlot.FEET, new AigerModel());
-	
+	public static final ItemBladerArmor VALT_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "valt_chestplate",
+			EntityEquipmentSlot.CHEST, new AigerModel());
+	public static final ItemBladerArmor VALT_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "valt_leggings",
+			EntityEquipmentSlot.LEGS, new AigerModel());
+	public static final ItemBladerArmor VALT_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "valt_boots",
+			EntityEquipmentSlot.FEET, new AigerModel());
+	public static final ItemBladerArmor TURBO_VALT_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "turbo_valt_chestplate",
+			EntityEquipmentSlot.CHEST, new AigerModel());
+	public static final ItemBladerArmor TURBO_VALT_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "turbo_valt_leggings",
+			EntityEquipmentSlot.LEGS, new AigerModel());
+	public static final ItemBladerArmor TURBO_VALT_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "turbo_valt_boots",
+			EntityEquipmentSlot.FEET, new AigerModel());
+
 	/* Blocks */
 	public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.ANVIL, "Expository");
 	public static final StadiumBlock STADIUM = new StadiumBlock(Material.IRON, "Stadium");
@@ -115,7 +127,7 @@ public class BeyRegistry {
 			event.getRegistry().register(item);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void registerBlock(RegistryEvent.Register<Block> event) {
 		for (Block block : BLOCKS) {
@@ -145,7 +157,7 @@ public class BeyRegistry {
 				((IHasModel) item).registerModels();
 			}
 		}
-		for(Block block : BLOCKS) {
+		for (Block block : BLOCKS) {
 			if (block instanceof IHasModel) {
 				((IHasModel) block).registerModels();
 			}
@@ -155,7 +167,7 @@ public class BeyRegistry {
 	@SubscribeEvent
 	public static void playerCapabilitiesInjection(AttachCapabilitiesEvent<Entity> event) {
 		if (event.getObject() instanceof EntityPlayer) {
-            event.addCapability(new ResourceLocation(Reference.MODID, "BladerLevel"), new Provider());
+			event.addCapability(new ResourceLocation(Reference.MODID, "BladerLevel"), new Provider());
 		}
 	}
 }

@@ -1,19 +1,16 @@
 package com.grillo78.BeyCraft.entity;
 
-import java.util.Random;
-
 import com.grillo78.BeyCraft.BeyRegistry;
+import com.grillo78.BeyCraft.capabilities.IBladerLevel;
+import com.grillo78.BeyCraft.capabilities.Provider;
 import com.grillo78.BeyCraft.items.ItemBeyDriver;
-import com.grillo78.BeyCraft.items.ItemBeyLayer;
 import com.grillo78.BeyCraft.util.SoundHandler;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -41,20 +38,24 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	public float radius = 0.2F;
 	private boolean droppedItems = false;
 	private int rotationDirection;
-	private String player;
+	private String playerName;
+	private EntityPlayer player;
 
 	public EntityBey(World worldIn) {
 		this(worldIn, new ItemStack(BeyRegistry.ACHILLESA4), new ItemStack(BeyRegistry.ELEVENDISK),
-				new ItemStack(BeyRegistry.XTENDDRIVER), 1, 1, "");
+				new ItemStack(BeyRegistry.XTENDDRIVER), 1, 1, "", null);
 	}
 
 	public EntityBey(World worldIn, ItemStack layerIn, ItemStack diskIn, ItemStack driverIn, int bladerLevel,
-			int rotationDirection, String player) {
+			int rotationDirection, String playerName, EntityPlayer player) {
 		super(worldIn);
 		this.setSize(0.25F, 0.25F);
 		this.height = 0.253F;
-		this.rotationSpeed = -10;
+		if (player != null) {
+			this.rotationSpeed = -10 * player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel();
+		}
 		this.rotationDirection = rotationDirection;
+		this.playerName = playerName;
 		this.player = player;
 		angle = 10;
 		layer = layerIn.copy();
@@ -73,10 +74,9 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 	@Override
 	public void onUpdate() {
-		if (world.getBlockState(this.getPosition().down()).getBlock() != Blocks.STONE && onGround) {
-			rotationSpeed = 0;
-		}
-		if (this.rotationSpeed < 0) {
+		if (this.rotationSpeed < 0 && ((world.getBlockState(this.getPosition().down()).getBlock() == BeyRegistry.STADIUM
+				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.STONE)
+				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR)) {
 			rotationSpeed += 0.005;
 			rotationYaw -= rotationSpeed * rotationDirection * ((ItemBeyDriver) driver.getItem()).friction;
 			angle += rotationSpeed * 100 * rotationDirection;
@@ -173,7 +173,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		layer = new ItemStack(compound.getCompoundTag("Layer"));
 		disk = new ItemStack(compound.getCompoundTag("Disk"));
 		driver = new ItemStack(compound.getCompoundTag("Driver"));
-		player = compound.getString("Player");
+		playerName = compound.getString("Player");
 		rotationSpeed = compound.getFloat("RotationSpeed");
 		rotationDirection = compound.getInteger("RotationDirection");
 		radius = compound.getFloat("Radius");
@@ -186,7 +186,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		compound.setTag("Layer", layer.writeToNBT(new NBTTagCompound()));
 		compound.setTag("Disk", disk.writeToNBT(new NBTTagCompound()));
 		compound.setTag("Driver", driver.writeToNBT(new NBTTagCompound()));
-		compound.setString("Player", player);
+		compound.setString("Player", playerName);
 		compound.setInteger("RotationDirection", rotationDirection);
 		compound.setFloat("RotationSpeed", rotationSpeed);
 		compound.setFloat("Radius", radius);
@@ -200,7 +200,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		compound.setTag("Layer", layer.writeToNBT(new NBTTagCompound()));
 		compound.setTag("Disk", disk.writeToNBT(new NBTTagCompound()));
 		compound.setTag("Driver", driver.writeToNBT(new NBTTagCompound()));
-		compound.setString("Player", player);
+		compound.setString("Player", playerName);
 		compound.setFloat("RotationSpeed", rotationSpeed);
 		compound.setInteger("RotationDirection", rotationDirection);
 		compound.setFloat("Radius", radius);
@@ -216,7 +216,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 			layer = new ItemStack(compound.getCompoundTag("Layer"));
 			disk = new ItemStack(compound.getCompoundTag("Disk"));
 			driver = new ItemStack(compound.getCompoundTag("Driver"));
-			player = compound.getString("Player");
+			playerName = compound.getString("Player");
 			rotationSpeed = compound.getFloat("RotationSpeed");
 			rotationDirection = compound.getInteger("RotationDirection");
 			radius = compound.getFloat("Radius");
