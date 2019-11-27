@@ -52,7 +52,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		this.setSize(0.25F, 0.25F);
 		this.height = 0.253F;
 		if (player != null) {
-			this.rotationSpeed = -10 * player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel();
+			this.rotationSpeed = -5 * player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel();
 		}
 		this.rotationDirection = rotationDirection;
 		this.playerName = playerName;
