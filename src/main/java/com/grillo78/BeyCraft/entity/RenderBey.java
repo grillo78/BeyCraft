@@ -29,9 +29,11 @@ public class RenderBey extends RenderLiving<EntityBey> {
 	public void doRender(EntityBey entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		if (!entity.getDroppedItem()) {
 			GlStateManager.pushMatrix();
+			GlStateManager.pushAttrib();
 			GlStateManager.translate(x, y + 0.15, z);
 			GlStateManager.scale(0.5, 0.5, 0.5);
 			GlStateManager.translate(0, -0.02, 0);
+
 			if (entity.radius != 0F) {
 				GlStateManager.rotate(30, (float) entity.getLook(partialTicks).z, 0,
 						(float) -entity.getLook(partialTicks).x);
@@ -45,14 +47,18 @@ public class RenderBey extends RenderLiving<EntityBey> {
 			}
 			GlStateManager.rotate(90, 1, 0, 0);
 			GlStateManager.translate(0, 0, 0.08);
-			GlStateManager.translate(0, 0, ((ItemBeyDriver) entity.driver.getItem()).height);
+			GlStateManager.translate(0, 0, ((ItemBeyDriver) entity.driver.getItem()).height+0.01);
 			itemRenderer.renderItem(entity.driver, ItemCameraTransforms.TransformType.FIXED);
 			GlStateManager.translate(0, 0, ((ItemBeyDisk) entity.disk.getItem()).height);
 			itemRenderer.renderItem(entity.disk, ItemCameraTransforms.TransformType.FIXED);
 			GlStateManager.translate(0, 0, ((ItemBeyLayer) entity.layer.getItem()).height);
 			GlStateManager.rotate(entity.getHealth() * entity.getRotationDirection() + 40, 0, 0, 1);
 			itemRenderer.renderItem(entity.layer, ItemCameraTransforms.TransformType.FIXED);
-
+			GlStateManager.enableColorMaterial();
+			GlStateManager.enableOutlineMode(16777215);
+			GlStateManager.disableOutlineMode();
+			GlStateManager.disableColorMaterial();
+			GlStateManager.popAttrib();
 			GlStateManager.popMatrix();
 			super.doRender(entity, x, y, z, entityYaw, partialTicks);
 		}

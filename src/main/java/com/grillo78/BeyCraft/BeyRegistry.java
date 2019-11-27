@@ -115,7 +115,7 @@ public class BeyRegistry {
 			event.getRegistry().register(item);
 		}
 	}
-
+	
 	@SubscribeEvent
 	public static void registerBlock(RegistryEvent.Register<Block> event) {
 		for (Block block : BLOCKS) {

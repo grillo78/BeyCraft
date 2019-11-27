@@ -39,4 +39,6 @@ public class ItemBeyLayer extends Item implements IHasModel {
 		ModelLoader.setCustomModelResourceLocation(this, 0,
 				new ModelResourceLocation(this.getRegistryName(), "inventory"));
 	}
+	
+	
 }

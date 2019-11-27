@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -19,6 +18,8 @@ import net.minecraftforge.client.model.ModelLoader;
 
 public class StadiumBlock extends Block implements IHasModel {
 
+	
+	
 	protected static final AxisAlignedBB COLLISION_BOX = new AxisAlignedBB(-1.0D, 0.0D, -1.0D, 2.0D, 0.5D, 2.0D);
 	
 	public StadiumBlock(Material materialIn, String name) {
@@ -41,10 +42,7 @@ public class StadiumBlock extends Block implements IHasModel {
 	
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return COLLISION_BOX;
-	}
-
-	public static AxisAlignedBB getCollisionBox() {
+		
 		return COLLISION_BOX;
 	}
 	
@@ -66,10 +64,5 @@ public class StadiumBlock extends Block implements IHasModel {
 	@Override
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
 	}
 }
