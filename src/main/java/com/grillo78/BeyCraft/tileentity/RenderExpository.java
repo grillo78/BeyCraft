@@ -55,10 +55,6 @@ public class RenderExpository extends TileEntitySpecialRenderer<ExpositoryTileEn
 					ItemCameraTransforms.TransformType.FIXED);
 		}
 		angle++;
-		GlStateManager.enableColorMaterial();
-		GlStateManager.enableOutlineMode(16777215);
-		GlStateManager.disableOutlineMode();
-		GlStateManager.disableColorMaterial();
 		GlStateManager.popAttrib();
 		GlStateManager.popMatrix();
 		super.render(te, x, y, z, partialTicks, destroyStage, alpha);

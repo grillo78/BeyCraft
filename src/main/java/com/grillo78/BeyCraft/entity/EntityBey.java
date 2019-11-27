@@ -39,24 +39,20 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	private boolean droppedItems = false;
 	private int rotationDirection;
 	private String playerName;
-	private EntityPlayer player;
 
 	public EntityBey(World worldIn) {
 		this(worldIn, new ItemStack(BeyRegistry.ACHILLESA4), new ItemStack(BeyRegistry.ELEVENDISK),
-				new ItemStack(BeyRegistry.XTENDDRIVER), 1, 1, "", null);
+				new ItemStack(BeyRegistry.XTENDDRIVER), 1, 1, "");
 	}
 
-	public EntityBey(World worldIn, ItemStack layerIn, ItemStack diskIn, ItemStack driverIn, int bladerLevel,
-			int rotationDirection, String playerName, EntityPlayer player) {
+	public EntityBey(World worldIn, ItemStack layerIn, ItemStack diskIn, ItemStack driverIn, float bladerLevel,
+			int rotationDirection, String playerName) {
 		super(worldIn);
 		this.setSize(0.25F, 0.25F);
 		this.height = 0.253F;
-		if (player != null) {
-			this.rotationSpeed = -5 * player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel();
-		}
+		this.rotationSpeed = -5 * bladerLevel;
 		this.rotationDirection = rotationDirection;
 		this.playerName = playerName;
-		this.player = player;
 		angle = 10;
 		layer = layerIn.copy();
 		disk = diskIn.copy();
@@ -117,11 +113,6 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	}
 
 	@Override
-	protected void collideWithEntity(Entity entityIn) {
-		super.collideWithEntity(entityIn);
-	}
-
-	@Override
 	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
 		world.removeEntity(this);
 		return super.applyPlayerInteraction(player, vec, hand);
@@ -129,8 +120,8 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 	@Override
 	protected void initEntityAI() {
-		this.tasks.addTask(0, new EntityAIRotate(this));
-		this.tasks.addTask(1, new EntityAIBeyAttack(this));
+		this.tasks.addTask(0, new EntityAIBeyAttack(this));
+		this.tasks.addTask(1, new EntityAIRotate(this));
 		super.initEntityAI();
 	}
 

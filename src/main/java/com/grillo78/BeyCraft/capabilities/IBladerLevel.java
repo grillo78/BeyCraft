@@ -2,7 +2,7 @@ package com.grillo78.BeyCraft.capabilities;
 
 public interface IBladerLevel {
 
-	public void setBladerLevel(int level);
+	public void setBladerLevel(float level);
 	
-	public int getBladerLevel();
+	public float getBladerLevel();
 }
