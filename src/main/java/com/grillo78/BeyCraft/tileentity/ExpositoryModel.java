@@ -8,10 +8,10 @@ import net.minecraft.entity.Entity;
  * ExpositorModel - Undefined
  * Created using Tabula 7.0.0
  */
-public class ExpositorModel extends ModelBase {
+public class ExpositoryModel extends ModelBase {
     public ModelRenderer shape1;
 
-    public ExpositorModel() {
+    public ExpositoryModel() {
         this.textureWidth = 64;
         this.textureHeight = 64;
         this.shape1 = new ModelRenderer(this, 0, 0);

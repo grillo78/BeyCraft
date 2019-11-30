@@ -2,6 +2,8 @@ package com.grillo78.BeyCraft;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import com.google.common.collect.Lists;
 import com.grillo78.BeyCraft.blocks.ExpositoryBlock;
 import com.grillo78.BeyCraft.blocks.StadiumBlock;
@@ -21,6 +23,10 @@ import com.grillo78.BeyCraft.util.IHasModel;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -29,6 +35,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -170,4 +178,26 @@ public class BeyRegistry {
 			event.addCapability(new ResourceLocation(Reference.MODID, "BladerLevel"), new Provider());
 		}
 	}
+	
+	@SubscribeEvent
+	public static void editHud(RenderGameOverlayEvent.Post event) {
+		 if (event.getType() == ElementType.ALL) {
+			 Minecraft.getMinecraft().fontRenderer.drawString("Blader level:"+Minecraft.getMinecraft().player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel(), 3, 3, 16777215);
+		 }
+	}
+	
+	public static void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height)
+    {
+        float f = 0.00390625F;
+        float f1 = 0.00390625F;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        buffer.pos((double)(x + 0), (double)(y + height), 0.0D).tex((double)((float)(textureX + 0) * f), (double)((float)(textureY + height) * f1)).endVertex();;
+        buffer.pos((double)(x + width), (double)(y + height), 0.0D).tex((double)((float)(textureX + width) * f), (double)((float)(textureY + height) * f1)).endVertex();
+        buffer.pos((double)(x + width), (double)(y + 0), 0.0D).tex((double)((float)(textureX + width) * f), (double)((float)(textureY + 0) * f1)).endVertex();
+        buffer.pos((double)(x + 0), (double)(y + 0), 0.0D).tex((double)((float)(textureX + 0) * f), (double)((float)(textureY + 0) * f1)).endVertex();
+        tessellator.draw();
+    }
+	
 }

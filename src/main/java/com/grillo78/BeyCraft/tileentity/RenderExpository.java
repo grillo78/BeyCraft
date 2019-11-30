@@ -16,10 +16,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderExpository extends TileEntitySpecialRenderer<ExpositoryTileEntity> {
 	private int angle;
-	private final ExpositorModel model;
+	private final ExpositoryModel model;
 
 	public RenderExpository() {
-		this.model = new ExpositorModel();
+		this.model = new ExpositoryModel();
 		this.angle = 0;
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -46,9 +46,6 @@ public class RenderExpository extends TileEntitySpecialRenderer<ExpositoryTileEn
 			Minecraft.getMinecraft().getRenderItem().renderItem(te.getStackInSlot(1),
 					ItemCameraTransforms.TransformType.FIXED);
 		}
-		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA,
-				GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE,
-				GlStateManager.DestFactor.ZERO);
 		if (te.getStackInSlot(0).getCount() != 0) {
 			GlStateManager.translate(0, 0, ((ItemBeyLayer) te.getStackInSlot(0).getItem()).height);
 			Minecraft.getMinecraft().getRenderItem().renderItem(te.getStackInSlot(0),

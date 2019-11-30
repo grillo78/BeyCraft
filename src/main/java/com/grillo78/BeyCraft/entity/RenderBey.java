@@ -34,28 +34,37 @@ public class RenderBey extends RenderLiving<EntityBey> {
 			GlStateManager.scale(0.5, 0.5, 0.5);
 			GlStateManager.translate(0, -0.02, 0);
 
-			if (entity.radius != 0F) {
-				GlStateManager.rotate(30, (float) entity.getLook(partialTicks).z, 0,
-						(float) -entity.getLook(partialTicks).x);
+			if (entity.radius != 0F && entity.rotationSpeed < -1) {
+				GlStateManager.rotate(30, (float) entity.getLook(partialTicks).x * entity.getRotationDirection(), 0,
+						(float) entity.getLook(partialTicks).z * entity.getRotationDirection());
 			} else {
-				GlStateManager.rotate(0, 1, 0, 1);
+				if(entity.radius==0 && entity.rotationSpeed < -1) {
+					GlStateManager.translate(0, 0.04, 0);
+				}
 			}
 			GlStateManager.rotate(entity.angle / 2, 0, 1, 0);
-			if (entity.rotationSpeed <= 0 && entity.rotationSpeed >-1) {
+			if (entity.rotationSpeed <= 0 && entity.rotationSpeed > -1) {
 				GlStateManager.rotate(30, (float) entity.getLook(partialTicks).z, 0,
 						(float) -entity.getLook(partialTicks).x);
 			}
 			GlStateManager.rotate(90, 1, 0, 0);
 			GlStateManager.translate(0, 0, 0.08);
-			GlStateManager.translate(0, 0, ((ItemBeyDriver) entity.driver.getItem()).height+0.01);
+			GlStateManager.translate(0, 0, ((ItemBeyDriver) entity.driver.getItem()).height + 0.01);
 			itemRenderer.renderItem(entity.driver, ItemCameraTransforms.TransformType.FIXED);
 			GlStateManager.translate(0, 0, ((ItemBeyDisk) entity.disk.getItem()).height);
 			itemRenderer.renderItem(entity.disk, ItemCameraTransforms.TransformType.FIXED);
 			GlStateManager.translate(0, 0, ((ItemBeyLayer) entity.layer.getItem()).height);
 			GlStateManager.rotate(entity.getHealth() * entity.getRotationDirection() + 40, 0, 0, 1);
 			itemRenderer.renderItem(entity.layer, ItemCameraTransforms.TransformType.FIXED);
+			GlStateManager.disableOutlineMode();
+			GlStateManager.disableColorMaterial();
 			GlStateManager.popAttrib();
 			GlStateManager.popMatrix();
+			if (this.renderManager.pointedEntity == entity) {
+				this.renderEntityName(entity, x, y + 0.6, z, entity.layer.getDisplayName(), 10);
+				this.renderEntityName(entity, x, y + 0.3, z, entity.disk.getDisplayName(), 10);
+				this.renderEntityName(entity, x, y, z, entity.driver.getDisplayName(), 10);
+			}
 			super.doRender(entity, x, y, z, entityYaw, partialTicks);
 		}
 	}

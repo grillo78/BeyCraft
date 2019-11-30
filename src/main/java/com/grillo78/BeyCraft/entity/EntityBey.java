@@ -1,15 +1,17 @@
 package com.grillo78.BeyCraft.entity;
 
+import java.util.Random;
+
 import com.grillo78.BeyCraft.BeyRegistry;
-import com.grillo78.BeyCraft.capabilities.IBladerLevel;
-import com.grillo78.BeyCraft.capabilities.Provider;
 import com.grillo78.BeyCraft.items.ItemBeyDriver;
+import com.grillo78.BeyCraft.items.ItemBeyLayer;
 import com.grillo78.BeyCraft.util.SoundHandler;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -73,8 +75,8 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		if (this.rotationSpeed < 0 && ((world.getBlockState(this.getPosition().down()).getBlock() == BeyRegistry.STADIUM
 				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.STONE)
 				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR)) {
-			rotationSpeed += 0.005;
-			rotationYaw -= rotationSpeed * rotationDirection * ((ItemBeyDriver) driver.getItem()).friction;
+			rotationSpeed += 0.005 * ((ItemBeyDriver) driver.getItem()).friction;
+			rotationYaw -= rotationSpeed * rotationDirection* ((ItemBeyDriver) driver.getItem()).radiusReducion/4;
 			angle += rotationSpeed * 100 * rotationDirection;
 
 		} else {
@@ -98,7 +100,6 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1D);
 	}
 
 	@Override
@@ -115,14 +116,37 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	@Override
 	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
 		world.removeEntity(this);
-		return super.applyPlayerInteraction(player, vec, hand);
+		return EnumActionResult.SUCCESS;
 	}
 
 	@Override
 	protected void initEntityAI() {
-		this.tasks.addTask(0, new EntityAIBeyAttack(this));
 		this.tasks.addTask(1, new EntityAIRotate(this));
-		super.initEntityAI();
+	}
+
+	@Override
+	protected void collideWithEntity(Entity entityIn) {
+		if (!world.isRemote) {
+			if (this.rotationSpeed != 0) {
+				if (this.rotationSpeed < 0) {
+					float damage = new Random().nextFloat();
+					if (((ItemBeyLayer) this.layer.getItem()).canAbsorb(this)) {
+						this.rotationSpeed -= damage;
+					}
+					this.rotationSpeed += damage;
+					damageEntity(DamageSource.GENERIC, new Random().nextInt(10));
+					this.move(MoverType.SELF, -this.getLookVec().x, this.getLookVec().y, -this.getLookVec().z);
+					applyEntityCollision(entityIn);
+				} else {
+					this.rotationSpeed = 0;
+					if (this.rotationSpeed != 0) {
+						this.move(MoverType.SELF, this.getLookVec().x, this.getLookVec().y, this.getLookVec().z);
+						applyEntityCollision(entityIn);
+					}
+				}
+			}
+		}
+		super.collideWithEntity(entityIn);
 	}
 
 	public float getEyeHeight() {

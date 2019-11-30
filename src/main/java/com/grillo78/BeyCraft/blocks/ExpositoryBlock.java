@@ -88,7 +88,7 @@ public class ExpositoryBlock extends BlockContainer implements IHasModel {
 				for (int i = 0; i < 3; i++) {
 					if(playerIn.getHeldItem(hand)
 							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
-							.getStackInSlot(i).getCount()==0) {
+							.getStackInSlot(i).getCount()==0 && playerIn.getHeldItem(hand).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).isItemValid(i, ((ExpositoryTileEntity) tileentity).getStackInSlot(i))) {
 						playerIn.getHeldItem(hand)
 						.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
 						.insertItem(i, ((ExpositoryTileEntity) tileentity).getStackInSlot(i).copy(), false);

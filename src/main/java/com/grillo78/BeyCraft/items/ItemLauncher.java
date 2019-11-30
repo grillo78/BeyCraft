@@ -6,10 +6,12 @@ import com.grillo78.BeyCraft.capabilities.IBladerLevel;
 import com.grillo78.BeyCraft.capabilities.Provider;
 import com.grillo78.BeyCraft.entity.EntityBey;
 import com.grillo78.BeyCraft.inventory.BeyBladeProvider;
+import com.grillo78.BeyCraft.network.BladerLevelMessage;
 import com.grillo78.BeyCraft.util.IHasModel;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -73,11 +75,11 @@ public class ItemLauncher extends Item implements IHasModel {
 					beyEntity.setLocationAndAngles(playerIn.posX + playerIn.getLookVec().x, playerIn.posY,
 							playerIn.posZ + playerIn.getLookVec().z, playerIn.rotationYaw - 115 * rotation, 0);
 //					beyEntity.setVelocity(playerIn.motionX, playerIn.motionY, playerIn.motionZ);
-					BeyCraft.logger.info(playerIn.rotationYaw);
 					worldIn.spawnEntity(beyEntity);
 					((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
 					.setBladerLevel(((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
-									.getBladerLevel()+0.01F);
+									.getBladerLevel()+0.1F);
+//					BeyCraft.INSTANCE.sendTo(new BladerLevelMessage((EntityPlayerMP) playerIn),(EntityPlayerMP)playerIn);
 					playerIn.getHeldItem(handIn)
 							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
 							.getStackInSlot(0).shrink(1);

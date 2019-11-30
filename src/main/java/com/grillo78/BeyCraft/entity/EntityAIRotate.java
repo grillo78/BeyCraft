@@ -20,8 +20,8 @@ public class EntityAIRotate extends EntityAIBase {
 	public boolean shouldContinueExecuting() {
 		if (bey.rotationSpeed < 0) {
 			if (bey.onGround) {
-				bey.move(MoverType.SELF, bey.getLookVec().x * bey.radius, 0,
-						bey.getLookVec().z * bey.radius);
+				bey.move(MoverType.SELF, bey.getLookVec().x * bey.radius*1.5, 0,
+						bey.getLookVec().z * bey.radius*1.5);
 			}
 		}
 		return super.shouldContinueExecuting();

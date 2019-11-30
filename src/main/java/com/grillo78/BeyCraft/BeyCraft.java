@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.apache.logging.log4j.Logger;
 
+import com.grillo78.BeyCraft.network.BladerLevelMessage;
 import com.grillo78.BeyCraft.programs.BeyRanking;
 import com.grillo78.BeyCraft.proxy.CommonProxy;
 import com.grillo78.BeyCraft.tab.BeyCraftTab;
@@ -28,11 +29,14 @@ import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.registries.IForgeRegistry;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION)
@@ -45,6 +49,7 @@ public class BeyCraft
     public static Logger logger;
     public static DatabaseConnection dbConn;
     public static final CreativeTabs beyCraftTab = new BeyCraftTab("BeyCraft");
+    public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MODID);
 
     @Instance(Reference.MODID)
     public static BeyCraft instance;
@@ -81,6 +86,7 @@ public class BeyCraft
     	if (isDeviceModInstalled()) {
     		registerApplication();
     	}
+        INSTANCE.registerMessage(BladerLevelMessage.class, BladerLevelMessage.class, 0, Side.CLIENT);
     }
     
     
