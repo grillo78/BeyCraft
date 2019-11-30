@@ -38,14 +38,16 @@ public class RenderBey extends RenderLiving<EntityBey> {
 				GlStateManager.rotate(30, (float) entity.getLook(partialTicks).x * entity.getRotationDirection(), 0,
 						(float) entity.getLook(partialTicks).z * entity.getRotationDirection());
 			} else {
-				if(entity.radius==0 && entity.rotationSpeed < -1) {
+				if (entity.radius == 0 && entity.rotationSpeed < -1) {
 					GlStateManager.translate(0, 0.04, 0);
 				}
 			}
 			GlStateManager.rotate(entity.angle / 2, 0, 1, 0);
 			if (entity.rotationSpeed <= 0 && entity.rotationSpeed > -1) {
-				GlStateManager.rotate(30, (float) entity.getLook(partialTicks).z, 0,
-						(float) -entity.getLook(partialTicks).x);
+				GlStateManager.translate(0, (0.5-(-1 - entity.rotationSpeed)/-1)*0.04, 0);
+				GlStateManager.rotate(
+						40 * ((-1 - entity.rotationSpeed) / (-1)),
+						(float) entity.getLook(partialTicks).z, 0, (float) -entity.getLook(partialTicks).x);
 			}
 			GlStateManager.rotate(90, 1, 0, 0);
 			GlStateManager.translate(0, 0, 0.08);
@@ -61,9 +63,10 @@ public class RenderBey extends RenderLiving<EntityBey> {
 			GlStateManager.popAttrib();
 			GlStateManager.popMatrix();
 			if (this.renderManager.pointedEntity == entity) {
-				this.renderEntityName(entity, x, y + 0.6, z, entity.layer.getDisplayName(), 10);
-				this.renderEntityName(entity, x, y + 0.3, z, entity.disk.getDisplayName(), 10);
-				this.renderEntityName(entity, x, y, z, entity.driver.getDisplayName(), 10);
+				this.renderEntityName(entity, x, y + 0.9, z, entity.layer.getDisplayName(), 10);
+				this.renderEntityName(entity, x, y + 0.6, z, entity.disk.getDisplayName(), 10);
+				this.renderEntityName(entity, x, y + 0.3, z, entity.driver.getDisplayName(), 10);
+				this.renderEntityName(entity, x, y, z, "Speed: "+(-entity.rotationSpeed), 10);
 			}
 			super.doRender(entity, x, y, z, entityYaw, partialTicks);
 		}

@@ -35,9 +35,10 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	public ItemStack layer;
 	public ItemStack disk;
 	public ItemStack driver;
+	private final float maxRotationSpeed;
 	public float rotationSpeed;
 	public float angle;
-	public float radius = 0.2F;
+	public float radius;
 	private boolean droppedItems = false;
 	private int rotationDirection;
 	private String playerName;
@@ -50,11 +51,13 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	public EntityBey(World worldIn, ItemStack layerIn, ItemStack diskIn, ItemStack driverIn, float bladerLevel,
 			int rotationDirection, String playerName) {
 		super(worldIn);
-		this.setSize(0.25F, 0.25F);
+		this.setSize(0.10F, 0.10F);
 		this.height = 0.253F;
-		this.rotationSpeed = -5 * bladerLevel;
+		this.rotationSpeed = -5;
+		maxRotationSpeed = rotationSpeed;
 		this.rotationDirection = rotationDirection;
 		this.playerName = playerName;
+		radius= 0.2F;
 		angle = 10;
 		layer = layerIn.copy();
 		disk = diskIn.copy();
@@ -76,14 +79,14 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.STONE)
 				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR)) {
 			rotationSpeed += 0.005 * ((ItemBeyDriver) driver.getItem()).friction;
-			rotationYaw -= rotationSpeed * rotationDirection* ((ItemBeyDriver) driver.getItem()).radiusReducion/4;
+			rotationYaw -= rotationSpeed * rotationDirection * ((ItemBeyDriver) driver.getItem()).radiusReducion/(-maxRotationSpeed*0.1);
 			angle += rotationSpeed * 100 * rotationDirection;
 
 		} else {
 			rotationSpeed = 0;
 		}
 		if (radius > 0) {
-			radius -= 0.0001f * ((ItemBeyDriver) driver.getItem()).radiusReducion * -9 / rotationSpeed;
+			radius -= 0.001f * ((ItemBeyDriver) driver.getItem()).radiusReducion * rotationSpeed / (maxRotationSpeed);
 		} else {
 			radius = 0;
 		}

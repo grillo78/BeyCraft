@@ -25,6 +25,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
@@ -104,10 +105,10 @@ public class BeyRegistry {
 			EntityEquipmentSlot.LEGS, new AigerModel());
 	public static final ItemBladerArmor VALT_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "valt_boots",
 			EntityEquipmentSlot.FEET, new AigerModel());
-	public static final ItemBladerArmor TURBO_VALT_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "turbo_valt_chestplate",
-			EntityEquipmentSlot.CHEST, new AigerModel());
-	public static final ItemBladerArmor TURBO_VALT_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "turbo_valt_leggings",
-			EntityEquipmentSlot.LEGS, new AigerModel());
+	public static final ItemBladerArmor TURBO_VALT_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL,
+			"turbo_valt_chestplate", EntityEquipmentSlot.CHEST, new AigerModel());
+	public static final ItemBladerArmor TURBO_VALT_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL,
+			"turbo_valt_leggings", EntityEquipmentSlot.LEGS, new AigerModel());
 	public static final ItemBladerArmor TURBO_VALT_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "turbo_valt_boots",
 			EntityEquipmentSlot.FEET, new AigerModel());
 
@@ -178,26 +179,36 @@ public class BeyRegistry {
 			event.addCapability(new ResourceLocation(Reference.MODID, "BladerLevel"), new Provider());
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void editHud(RenderGameOverlayEvent.Post event) {
-		 if (event.getType() == ElementType.ALL) {
-			 Minecraft.getMinecraft().fontRenderer.drawString("Blader level:"+Minecraft.getMinecraft().player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel(), 3, 3, 16777215);
-		 }
+		if (event.getType() == ElementType.ALL) {
+			Minecraft.getMinecraft().renderEngine
+					.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/bladerlevel.png"));
+			drawTexturedModalRect(0, 0, 0, 0, 140, 140);
+			Minecraft.getMinecraft().fontRenderer.drawString("Blader level:"
+					+ Minecraft.getMinecraft().player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel(), 3,
+					10, 16777215);
+		}
 	}
-	
-	public static void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height)
-    {
-        float f = 0.00390625F;
-        float f1 = 0.00390625F;
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        buffer.pos((double)(x + 0), (double)(y + height), 0.0D).tex((double)((float)(textureX + 0) * f), (double)((float)(textureY + height) * f1)).endVertex();;
-        buffer.pos((double)(x + width), (double)(y + height), 0.0D).tex((double)((float)(textureX + width) * f), (double)((float)(textureY + height) * f1)).endVertex();
-        buffer.pos((double)(x + width), (double)(y + 0), 0.0D).tex((double)((float)(textureX + width) * f), (double)((float)(textureY + 0) * f1)).endVertex();
-        buffer.pos((double)(x + 0), (double)(y + 0), 0.0D).tex((double)((float)(textureX + 0) * f), (double)((float)(textureY + 0) * f1)).endVertex();
-        tessellator.draw();
-    }
-	
+
+	public static void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
+		float f = 0.00390625F;
+		float f1 = 0.00390625F;
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder buffer = tessellator.getBuffer();
+		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		buffer.pos((double) (x + 0), (double) (y + height), 0.0D)
+				.tex((double) ((float) (textureX + 0) * f), (double) ((float) (textureY + height) * f1)).endVertex();
+		;
+		buffer.pos((double) (x + width), (double) (y + height), 0.0D)
+				.tex((double) ((float) (textureX + width) * f), (double) ((float) (textureY + height) * f1))
+				.endVertex();
+		buffer.pos((double) (x + width), (double) (y + 0), 0.0D)
+				.tex((double) ((float) (textureX + width) * f), (double) ((float) (textureY + 0) * f1)).endVertex();
+		buffer.pos((double) (x + 0), (double) (y + 0), 0.0D)
+				.tex((double) ((float) (textureX + 0) * f), (double) ((float) (textureY + 0) * f1)).endVertex();
+		tessellator.draw();
+	}
+
 }
