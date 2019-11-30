@@ -79,7 +79,7 @@ public class ItemLauncher extends Item implements IHasModel {
 					((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
 					.setBladerLevel(((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
 									.getBladerLevel()+0.1F);
-//					BeyCraft.INSTANCE.sendTo(new BladerLevelMessage((EntityPlayerMP) playerIn),(EntityPlayerMP)playerIn);
+					BeyCraft.INSTANCE.sendTo(new BladerLevelMessage((EntityPlayerMP) playerIn),(EntityPlayerMP)playerIn);
 					playerIn.getHeldItem(handIn)
 							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
 							.getStackInSlot(0).shrink(1);
