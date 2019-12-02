@@ -1,7 +1,6 @@
 package com.grillo78.BeyCraft.network;
 
 import com.grillo78.BeyCraft.BeyCraft;
-import com.grillo78.BeyCraft.capabilities.Provider;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;

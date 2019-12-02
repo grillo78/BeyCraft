@@ -31,7 +31,7 @@ public class RenderBey extends RenderLiving<EntityBey> {
 			GlStateManager.scale(0.5, 0.5, 0.5);
 			GlStateManager.translate(0, -0.02, 0);
 
-			if (entity.radius != 0F && entity.rotationSpeed < -1) {
+			if (entity.radius != 0F && entity.rotationSpeed < -2) {
 				GlStateManager.rotate(30, (float) entity.getLook(partialTicks).x * entity.getRotationDirection(), 0,
 						(float) entity.getLook(partialTicks).z * entity.getRotationDirection());
 			} else {
@@ -40,8 +40,8 @@ public class RenderBey extends RenderLiving<EntityBey> {
 				}
 			}
 			GlStateManager.rotate(entity.angle / 2, 0, 1, 0);
-			if (entity.rotationSpeed <= 0 && entity.rotationSpeed > -1) {
-				GlStateManager.translate(0, (0.5-(-1 - entity.rotationSpeed)/-1)*0.04, 0);
+			if (entity.rotationSpeed <= 0 && entity.rotationSpeed > -2) {
+				GlStateManager.translate(0, (0.5-(-2 - entity.rotationSpeed)/-2)*0.04, 0);
 				GlStateManager.rotate(
 						40 * ((-1 - entity.rotationSpeed) / (-1)),
 						(float) entity.getLook(partialTicks).z, 0, (float) -entity.getLook(partialTicks).x);

@@ -110,7 +110,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 			}
 			rotationSpeed += 0.005 * driver.friction;
 			rotationYaw -= rotationSpeed * rotationDirection / (-maxRotationSpeed * 0.1);
-			angle += rotationSpeed * 100 * rotationDirection;
+			angle += rotationSpeed * 30 * rotationDirection;
 
 		} else {
 			rotationSpeed = 0;

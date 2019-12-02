@@ -2,7 +2,6 @@ package com.grillo78.BeyCraft.tileentity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 
 /**
  * ExpositorModel - Undefined
