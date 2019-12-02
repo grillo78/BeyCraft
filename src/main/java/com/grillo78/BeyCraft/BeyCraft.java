@@ -48,7 +48,10 @@ public class BeyCraft
 	
     public static Logger logger;
     public static DatabaseConnection dbConn;
-    public static final CreativeTabs beyCraftTab = new BeyCraftTab("BeyCraft");
+    public static final CreativeTabs BEYCRAFTTAB = new BeyCraftTab("BeyCraft", BeyRegistry.REDLAUNCHER);
+    public static final CreativeTabs BEYCRAFTLAYERS = new BeyCraftTab("BeyCraft", BeyRegistry.ACHILLESA4);
+    public static final CreativeTabs BEYCRAFTDISKS = new BeyCraftTab("BeyCraft", BeyRegistry.ELEVENDISK);
+    public static final CreativeTabs BEYCRAFTDRIVERS = new BeyCraftTab("BeyCraft", BeyRegistry.XTENDDRIVER);
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MODID);
 
     @Instance(Reference.MODID)

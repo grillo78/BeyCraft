@@ -11,7 +11,7 @@ import net.minecraftforge.client.model.ModelLoader;
 public class ItemBeyLogger extends Item implements IHasModel{
 
 	public ItemBeyLogger(String name) {
-		setCreativeTab(BeyCraft.beyCraftTab);
+		setCreativeTab(BeyCraft.BEYCRAFTTAB);
 		setRegistryName(name);
 		setUnlocalizedName(name);
 		setMaxStackSize(1);

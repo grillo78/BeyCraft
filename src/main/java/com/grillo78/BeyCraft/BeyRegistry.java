@@ -66,7 +66,7 @@ public class BeyRegistry {
 	public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("Package");
 	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4", -0.08F, 1, false, 4, 1, 5, 3);
 	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk", -0.15F);
-	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver", 0.15F, 1, 1);
+	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver", 0.15F, 1, 5);
 	public static final ItemBeyLayer FAFNIRF4 = new ItemBeyLayer("wizard_fafnir", -0.08F, -1, true, 1, 3, 5, 1);
 	public static final ItemBeyDisk RATCHETDISK = new ItemBeyDisk("ratchet", -0.15F);
 	public static final ItemBeyDriver RISEDRIVER = new ItemBeyDriver("rise_driver", 0.15F, 1, 1);
@@ -92,6 +92,8 @@ public class BeyRegistry {
 	public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("LauncherHandle");
 	public static final ItemBeyLogger BEYLOGGER = new ItemBeyLogger("Beylogger");
 	public static final ItemBeyLogger BEYLOGGERPLUS = new ItemBeyLogger("Beylogger_Plus");
+	
+	/** Armors*/
 	public static final ItemBladerArmor AIGER_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_chestplate",
 			EntityEquipmentSlot.CHEST, new AigerModel());
 	public static final ItemBladerArmor AIGER_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_leggings",
@@ -113,7 +115,7 @@ public class BeyRegistry {
 
 	/* Blocks */
 	public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.ANVIL, "Expository");
-	public static final StadiumBlock STADIUM = new StadiumBlock(Material.IRON, "Stadium");
+	public static final StadiumBlock STADIUM = new StadiumBlock(Material.IRON, "stadium");
 
 	@SubscribeEvent
 	public static void registerBey(RegistryEvent.Register<EntityEntry> event) {

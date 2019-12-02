@@ -46,7 +46,7 @@ public class ExpositoryBlock extends BlockContainer implements IHasModel {
 		setRegistryName(name);
 		setHardness(1);
 		setHarvestLevel("pickaxe", 0);
-		this.setCreativeTab(BeyCraft.beyCraftTab);
+		this.setCreativeTab(BeyCraft.BEYCRAFTTAB);
 
 		BeyRegistry.BLOCKS.add(this);
 		BeyRegistry.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));

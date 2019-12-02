@@ -19,7 +19,7 @@ public class ItemBladerArmor extends ItemArmor implements IHasModel {
 	public ItemBladerArmor(ArmorMaterial materialIn, String name, EntityEquipmentSlot equipmentSlotIn,
 			ModelBiped modelIn) {
 		super(materialIn, 0, equipmentSlotIn);
-		this.setCreativeTab(BeyCraft.beyCraftTab);
+		this.setCreativeTab(BeyCraft.BEYCRAFTTAB);
 		this.setRegistryName(name);
 		this.setUnlocalizedName(name);
 		this.setMaxStackSize(1);

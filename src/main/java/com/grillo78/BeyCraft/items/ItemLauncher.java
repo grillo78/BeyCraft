@@ -28,7 +28,7 @@ public class ItemLauncher extends Item implements IHasModel {
 	private int rotation;
 
 	public ItemLauncher(String name, int rotation) {
-		setCreativeTab(BeyCraft.beyCraftTab);
+		setCreativeTab(BeyCraft.BEYCRAFTTAB);
 		setRegistryName(name);
 		setUnlocalizedName(name);
 		setMaxStackSize(1);

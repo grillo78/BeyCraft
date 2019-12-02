@@ -20,7 +20,7 @@ public class ItemBeyLayer extends Item implements IHasModel {
 	private final int burst;
 
 	public ItemBeyLayer(String name, float height, int rotationDirection, boolean canAbsorb, int attack, int defense, int weight, int burst) {
-		setCreativeTab(BeyCraft.beyCraftTab);
+		setCreativeTab(BeyCraft.BEYCRAFTLAYERS);
 		setRegistryName(name);
 		setUnlocalizedName(name);
 		setMaxStackSize(1);

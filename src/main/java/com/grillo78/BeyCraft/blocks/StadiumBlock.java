@@ -18,17 +18,16 @@ import net.minecraftforge.client.model.ModelLoader;
 
 public class StadiumBlock extends Block implements IHasModel {
 
-	
-	
-	protected static final AxisAlignedBB COLLISION_BOX = new AxisAlignedBB(-1.0D, 0.0D, -1.0D, 2.0D, 0.5D, 2.0D);
-	
+	protected static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
+	protected static final AxisAlignedBB COLLISION_BOX = new AxisAlignedBB(0, 0, 0, 1, 0.125, 1);
+
 	public StadiumBlock(Material materialIn, String name) {
 		super(materialIn);
 		setUnlocalizedName(name);
 		setRegistryName(name);
 		setHardness(1);
 		setHarvestLevel("pickaxe", 0);
-		setCreativeTab(BeyCraft.beyCraftTab);
+		setCreativeTab(BeyCraft.BEYCRAFTTAB);
 
 		BeyRegistry.BLOCKS.add(this);
 		BeyRegistry.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
@@ -42,8 +41,14 @@ public class StadiumBlock extends Block implements IHasModel {
 	
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		
-		return COLLISION_BOX;
+		return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D);
+	}
+
+	/**
+	 * @return the collisionBox
+	 */
+	public static AxisAlignedBB getCollisionBox() {
+		return BOUNDING_BOX;
 	}
 	
 	@Override

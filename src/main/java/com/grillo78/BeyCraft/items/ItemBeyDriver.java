@@ -15,7 +15,7 @@ public class ItemBeyDriver extends Item implements IHasModel{
 	public float radiusReducion;
 	
 	public ItemBeyDriver(String name, float height, float friction, float radiusReduction) {
-		setCreativeTab(BeyCraft.beyCraftTab);
+		setCreativeTab(BeyCraft.BEYCRAFTDRIVERS);
 		setRegistryName(name);
 		setUnlocalizedName(name);
 		setMaxStackSize(1);

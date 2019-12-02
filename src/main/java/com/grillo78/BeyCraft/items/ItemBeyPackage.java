@@ -18,7 +18,7 @@ import net.minecraftforge.client.model.ModelLoader;
 
 public class ItemBeyPackage extends Item implements IHasModel{
 	public ItemBeyPackage(String name) {
-		this.setCreativeTab(BeyCraft.beyCraftTab);
+		this.setCreativeTab(BeyCraft.BEYCRAFTTAB);
 		this.setRegistryName(name);
 		this.setUnlocalizedName(name);
 		BeyRegistry.ITEMS.add(this);

@@ -1,18 +1,19 @@
 package com.grillo78.BeyCraft.tab;
 
-import com.grillo78.BeyCraft.BeyRegistry;
-
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class BeyCraftTab extends CreativeTabs{
 
-	public BeyCraftTab(String label) {
+	private Item iconItem;
+	public BeyCraftTab(String label, Item item) {
 		super(label);
+		iconItem = item;
 	}
 
 	@Override
 	public ItemStack getTabIconItem() {
-		return new ItemStack(BeyRegistry.VALTRYEKV2);
+		return new ItemStack(iconItem);
 	}
 }

@@ -13,7 +13,7 @@ public class ItemBeyDisk extends Item implements IHasModel{
 	public float height;
 	
 	public ItemBeyDisk(String name, float height) {
-		this.setCreativeTab(BeyCraft.beyCraftTab);
+		this.setCreativeTab(BeyCraft.BEYCRAFTDISKS);
 		this.setRegistryName(name);
 		this.setUnlocalizedName(name);
 		this.setMaxStackSize(1);
