@@ -2,8 +2,6 @@ package com.grillo78.BeyCraft.entity;
 
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
 
 public class EntityAIRotate extends EntityAIBase {
 
