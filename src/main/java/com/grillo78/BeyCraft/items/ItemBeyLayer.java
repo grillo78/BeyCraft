@@ -11,19 +11,51 @@ import net.minecraftforge.client.model.ModelLoader;
 
 public class ItemBeyLayer extends Item implements IHasModel {
 
-	public float height;
-	protected float rotationDirection;
-	private boolean canAbsorb;
+	public final float height;
+	protected final float rotationDirection;
+	private final boolean canAbsorb;
+	private final int attack;
+	private final int defense;
+	private final int weight;
+	private final int burst;
 
-	public ItemBeyLayer(String name, float height, int rotationDirection, boolean canAbsorb) {
+	public ItemBeyLayer(String name, float height, int rotationDirection, boolean canAbsorb, int attack, int defense, int weight, int burst) {
 		setCreativeTab(BeyCraft.beyCraftTab);
 		setRegistryName(name);
 		setUnlocalizedName(name);
 		setMaxStackSize(1);
+		this.attack = attack;
+		this.defense = defense;
+		this.weight = weight;
+		this.burst = burst;
 		this.canAbsorb = canAbsorb;
 		this.height = height;
 		this.rotationDirection = rotationDirection;
 		BeyRegistry.ITEMSLAYER.add(this);
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public boolean isCanAbsorb() {
+		return canAbsorb;
+	}
+
+	public int getAttack() {
+		return attack;
+	}
+
+	public int getDefense() {
+		return defense;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public int getBurst() {
+		return burst;
 	}
 
 	public float getRotationDirection() {

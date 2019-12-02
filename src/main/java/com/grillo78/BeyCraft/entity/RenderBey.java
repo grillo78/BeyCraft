@@ -1,14 +1,11 @@
 package com.grillo78.BeyCraft.entity;
 
-import com.grillo78.BeyCraft.items.ItemBeyDisk;
-import com.grillo78.BeyCraft.items.ItemBeyDriver;
-import com.grillo78.BeyCraft.items.ItemBeyLayer;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderBey extends RenderLiving<EntityBey> {
@@ -51,21 +48,21 @@ public class RenderBey extends RenderLiving<EntityBey> {
 			}
 			GlStateManager.rotate(90, 1, 0, 0);
 			GlStateManager.translate(0, 0, 0.08);
-			GlStateManager.translate(0, 0, ((ItemBeyDriver) entity.driver.getItem()).height + 0.01);
-			itemRenderer.renderItem(entity.driver, ItemCameraTransforms.TransformType.FIXED);
-			GlStateManager.translate(0, 0, ((ItemBeyDisk) entity.disk.getItem()).height);
-			itemRenderer.renderItem(entity.disk, ItemCameraTransforms.TransformType.FIXED);
-			GlStateManager.translate(0, 0, ((ItemBeyLayer) entity.layer.getItem()).height);
+			GlStateManager.translate(0, 0, entity.driver.height + 0.01);
+			itemRenderer.renderItem(new ItemStack(entity.driver), ItemCameraTransforms.TransformType.FIXED);
+			GlStateManager.translate(0, 0, entity.disk.height);
+			itemRenderer.renderItem(new ItemStack(entity.disk), ItemCameraTransforms.TransformType.FIXED);
+			GlStateManager.translate(0, 0, entity.layer.height);
 			GlStateManager.rotate(entity.getHealth() * entity.getRotationDirection() + 40, 0, 0, 1);
-			itemRenderer.renderItem(entity.layer, ItemCameraTransforms.TransformType.FIXED);
+			itemRenderer.renderItem(new ItemStack(entity.layer), ItemCameraTransforms.TransformType.FIXED);
 			GlStateManager.disableOutlineMode();
 			GlStateManager.disableColorMaterial();
 			GlStateManager.popAttrib();
 			GlStateManager.popMatrix();
 			if (this.renderManager.pointedEntity == entity) {
-				this.renderEntityName(entity, x, y + 0.9, z, entity.layer.getDisplayName(), 10);
-				this.renderEntityName(entity, x, y + 0.6, z, entity.disk.getDisplayName(), 10);
-				this.renderEntityName(entity, x, y + 0.3, z, entity.driver.getDisplayName(), 10);
+				this.renderEntityName(entity, x, y + 0.9, z, new ItemStack(entity.layer).getDisplayName(), 10);
+				this.renderEntityName(entity, x, y + 0.6, z, new ItemStack(entity.disk).getDisplayName(), 10);
+				this.renderEntityName(entity, x, y + 0.3, z, new ItemStack(entity.driver).getDisplayName(), 10);
 				this.renderEntityName(entity, x, y, z, "Speed: "+(-entity.rotationSpeed), 10);
 			}
 			super.doRender(entity, x, y, z, entityYaw, partialTicks);
