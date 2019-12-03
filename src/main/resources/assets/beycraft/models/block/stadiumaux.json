@@ -1,0 +1,37 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "beycraft:blocks/stadium",
+		"particle": "beycraft:blocks/stadium"
+	},
+	"elements": [
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"scale": [0.1, 0.1, 0.1]
+		},
+		"thirdperson_lefthand": {
+			"scale": [0.1, 0.1, 0.1]
+		},
+		"firstperson_righthand": {
+			"translation": [3, 3, 0],
+			"scale": [0.1, 0.1, 0.1]
+		},
+		"firstperson_lefthand": {
+			"translation": [3, 3, 0],
+			"scale": [0.1, 0.1, 0.1]
+		},
+		"ground": {
+			"scale": [0.1, 0.1, 0.1]
+		},
+		"gui": {
+			"rotation": [13, 30, 16],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"fixed": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 0, -5],
+			"scale": [0.25, 0.25, 0.25]
+		}
+	}
+}

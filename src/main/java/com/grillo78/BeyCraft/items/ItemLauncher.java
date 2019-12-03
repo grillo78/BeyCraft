@@ -72,7 +72,7 @@ public class ItemLauncher extends Item implements IHasModel {
 							((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
 									.getBladerLevel(),
 							rotation, playerIn.getName());
-					beyEntity.setLocationAndAngles(playerIn.posX + playerIn.getLookVec().x, playerIn.posY,
+					beyEntity.setLocationAndAngles(playerIn.posX + playerIn.getLookVec().x, playerIn.posY+1,
 							playerIn.posZ + playerIn.getLookVec().z, playerIn.rotationYaw - 115 * rotation, 0);
 //					beyEntity.setVelocity(playerIn.motionX, playerIn.motionY, playerIn.motionZ);
 					worldIn.spawnEntity(beyEntity);

@@ -116,6 +116,7 @@ public class BeyRegistry {
 	/* Blocks */
 	public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.ANVIL, "Expository");
 	public static final StadiumBlock STADIUM = new StadiumBlock(Material.IRON, "stadium");
+//	public static final StadiumBlock STADIUMAUX = new StadiumBlock(Material.IRON, "stadiumaux");
 
 	@SubscribeEvent
 	public static void registerBey(RegistryEvent.Register<EntityEntry> event) {

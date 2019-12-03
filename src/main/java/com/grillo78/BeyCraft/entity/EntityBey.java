@@ -80,31 +80,46 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 	@Override
 	public void onUpdate() {
-		if (this.rotationSpeed < 0
-				&& ((world.getBlockState(this.getPosition().down()).getBlock() instanceof StadiumBlock
-						|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR
-						|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.STONE
-						|| world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock))) {
+		if (this.rotationSpeed < 0 && (world.getBlockState(this.getPosition().down()).getBlock() instanceof StadiumBlock
+				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR
+//				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.STONE
+				|| world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock)) {
 
 			if (!world.isRemote) {
-				if ( world.getBlockState(
+				if (world
+						.getBlockState(
 								new BlockPos(getPositionVector().x + 0.1, getPositionVector().y, getPositionVector().z))
-								.getBlock() != Blocks.AIR) {
+						.getBlock() != Blocks.AIR && world
+						.getBlockState(
+								new BlockPos(getPositionVector().x + 0.1, getPositionVector().y, getPositionVector().z))
+						.getBlock() != BeyRegistry.STADIUM) {
 					this.rotationYaw = 90;
 				}
-				if (world.getBlockState(
+				if (world
+						.getBlockState(
 								new BlockPos(getPositionVector().x - 0.1, getPositionVector().y, getPositionVector().z))
-								.getBlock() != Blocks.AIR) {
+						.getBlock() != Blocks.AIR && world
+						.getBlockState(
+								new BlockPos(getPositionVector().x - 0.1, getPositionVector().y, getPositionVector().z))
+						.getBlock() != BeyRegistry.STADIUM) {
 					this.rotationYaw = -90;
 				}
-				if (world.getBlockState(
+				if (world
+						.getBlockState(
 								new BlockPos(getPositionVector().x, getPositionVector().y, getPositionVector().z + 0.1))
-								.getBlock() != Blocks.AIR) {
+						.getBlock() != Blocks.AIR && world
+						.getBlockState(
+								new BlockPos(getPositionVector().x, getPositionVector().y, getPositionVector().z + 0.1))
+						.getBlock() != BeyRegistry.STADIUM) {
 					this.rotationYaw = 180;
 				}
-				if (world.getBlockState(
+				if (world
+						.getBlockState(
 								new BlockPos(getPositionVector().x, getPositionVector().y, getPositionVector().z - 0.1))
-								.getBlock() != Blocks.AIR) {
+						.getBlock() != Blocks.AIR && world
+						.getBlockState(
+								new BlockPos(getPositionVector().x, getPositionVector().y, getPositionVector().z - 0.1))
+						.getBlock() != BeyRegistry.STADIUM) {
 					this.rotationYaw = 0;
 				}
 			}
@@ -120,12 +135,6 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 			radius -= 0.001f * driver.radiusReducion * rotationSpeed / (maxRotationSpeed);
 		} else {
 			radius = 0;
-			if (world
-					.getBlockState(
-							new BlockPos(getPositionVector().x + 1.5, getPositionVector().y, getPositionVector().z))
-					.getBlock() != Blocks.AIR) {
-
-			}
 		}
 		super.onUpdate();
 	}

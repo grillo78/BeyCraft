@@ -1,7 +1,23 @@
 {
   "variants": {
-    "normal": {
+    "part=topleft": {
+        "model": "beycraft:stadiumaux"
+    },"part=topcenter": {
+        "model": "beycraft:stadiumaux"
+    },"part=topright": {
+        "model": "beycraft:stadiumaux"
+    },"part=middleleft": {
+        "model": "beycraft:stadiumaux"
+    },"part=middlecenter": {
         "model": "beycraft:stadium"
+    },"part=middleright": {
+        "model": "beycraft:stadiumaux"
+    },"part=bottomleft": {
+        "model": "beycraft:stadiumaux"
+    },"part=bottomcenter": {
+        "model": "beycraft:stadiumaux"
+    },"part=bottomright": {
+        "model": "beycraft:stadiumaux"
     }
   }
 }
