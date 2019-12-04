@@ -42,8 +42,9 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	private final float maxRotationSpeed;
 	public float rotationSpeed;
 	public float angle;
+	private boolean movementStarted = false;
+	private boolean stoped = false;
 	public float radius;
-	private boolean droppedItems = false;
 	private int rotationDirection;
 	private String playerName;
 
@@ -66,11 +67,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		layer = (ItemBeyLayer) layerIn.getItem();
 		disk = (ItemBeyDisk) diskIn.getItem();
 		driver = (ItemBeyDriver) driverIn.getItem();
-	}
-
-	public boolean getDroppedItem() {
-
-		return droppedItems;
+		BeyCraft.logger.info("Bey Launched");
 	}
 
 	@Override
@@ -82,43 +79,29 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	public void onUpdate() {
 		if (this.rotationSpeed < 0 && (world.getBlockState(this.getPosition().down()).getBlock() instanceof StadiumBlock
 				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR
-//				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.STONE
-				|| world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock)) {
-
-			if (!world.isRemote) {
-				if (world
+				|| (world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock && world
 						.getBlockState(
-								new BlockPos(getPositionVector().x + 0.1, getPositionVector().y, getPositionVector().z))
-						.getBlock() != Blocks.AIR && world
-						.getBlockState(
-								new BlockPos(getPositionVector().x + 0.1, getPositionVector().y, getPositionVector().z))
+								new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
+						.getBlock() instanceof StadiumBlock))) {
+			// TODO method
+			if (!world.isRemote && movementStarted) {
+				if (world.getBlockState(
+						new BlockPos(getPositionVector().x + 0.23, getPositionVector().y, getPositionVector().z))
 						.getBlock() != BeyRegistry.STADIUM) {
 					this.rotationYaw = 90;
 				}
-				if (world
-						.getBlockState(
-								new BlockPos(getPositionVector().x - 0.1, getPositionVector().y, getPositionVector().z))
-						.getBlock() != Blocks.AIR && world
-						.getBlockState(
-								new BlockPos(getPositionVector().x - 0.1, getPositionVector().y, getPositionVector().z))
+				if (world.getBlockState(
+						new BlockPos(getPositionVector().x - 0.23, getPositionVector().y, getPositionVector().z))
 						.getBlock() != BeyRegistry.STADIUM) {
 					this.rotationYaw = -90;
 				}
-				if (world
-						.getBlockState(
-								new BlockPos(getPositionVector().x, getPositionVector().y, getPositionVector().z + 0.1))
-						.getBlock() != Blocks.AIR && world
-						.getBlockState(
-								new BlockPos(getPositionVector().x, getPositionVector().y, getPositionVector().z + 0.1))
+				if (world.getBlockState(
+						new BlockPos(getPositionVector().x, getPositionVector().y, getPositionVector().z + 0.23))
 						.getBlock() != BeyRegistry.STADIUM) {
 					this.rotationYaw = 180;
 				}
-				if (world
-						.getBlockState(
-								new BlockPos(getPositionVector().x, getPositionVector().y, getPositionVector().z - 0.1))
-						.getBlock() != Blocks.AIR && world
-						.getBlockState(
-								new BlockPos(getPositionVector().x, getPositionVector().y, getPositionVector().z - 0.1))
+				if (world.getBlockState(
+						new BlockPos(getPositionVector().x, getPositionVector().y, getPositionVector().z - 0.23))
 						.getBlock() != BeyRegistry.STADIUM) {
 					this.rotationYaw = 0;
 				}
@@ -128,7 +111,29 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 			angle += rotationSpeed * 30 * rotationDirection;
 
 		} else {
-			rotationSpeed = 0;
+			if (world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock && !(world
+					.getBlockState(
+							new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
+					.getBlock() instanceof StadiumBlock)) {
+				if (world.getBlockState(getPosition().north()).getBlock() == Blocks.AIR) {
+					move(MoverType.SELF, 0, 0, -0.1);
+				}
+				if (world.getBlockState(getPosition().south()).getBlock() == Blocks.AIR) {
+					move(MoverType.SELF, 0, 0, 0.1);
+				}
+				if (world.getBlockState(getPosition().west()).getBlock() == Blocks.AIR) {
+					move(MoverType.SELF, -0.1, 0, 0);
+				}
+				if (world.getBlockState(getPosition().east()).getBlock() == Blocks.AIR) {
+					move(MoverType.SELF, 0.1, 0, 0);
+				}
+			}
+			if (!stoped) {
+				stoped = true;
+				BeyCraft.logger.info("Bey Stopped");
+				rotationSpeed = 0;
+			}
+
 		}
 
 		if (radius > 0) {
@@ -136,7 +141,16 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		} else {
 			radius = 0;
 		}
+
 		super.onUpdate();
+
+	}
+
+	/**
+	 * @return the stoped
+	 */
+	public boolean isStoped() {
+		return stoped;
 	}
 
 	@Override
@@ -164,7 +178,9 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 	@Override
 	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
-		world.removeEntity(this);
+		if (!player.isSpectator()) {
+			world.removeEntity(this);
+		}
 		return EnumActionResult.SUCCESS;
 	}
 
@@ -194,7 +210,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 						((EntityBey) entityIn).rotationSpeed += damage * layer.getAttack();
 					}
 					if (layer.getDefense() != 0) {
-						damageEntity(DamageSource.GENERIC, burstDamage * layer.getBurst()
+						damageEntity(DamageSource.GENERIC, (burstDamage + layer.getBurst())
 								* ((EntityBey) entityIn).layer.getAttack() / layer.getDefense());
 					} else {
 						damageEntity(DamageSource.GENERIC,
@@ -209,7 +225,6 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 	@Override
 	public boolean canBeCollidedWith() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -311,5 +326,13 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 	public int getRotationDirection() {
 		return rotationDirection;
+	}
+
+	public boolean isMovementStarted() {
+		return movementStarted;
+	}
+
+	public void setMovementStarted(boolean movementStarted) {
+		this.movementStarted = movementStarted;
 	}
 }

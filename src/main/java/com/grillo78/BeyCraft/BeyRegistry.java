@@ -184,13 +184,15 @@ public class BeyRegistry {
 
 	@SubscribeEvent
 	public static void editHud(RenderGameOverlayEvent.Post event) {
-		if (event.getType() == ElementType.ALL) {
-			Minecraft.getMinecraft().renderEngine
-					.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/bladerlevel.png"));
-			drawTexturedModalRect(0, 0, 0, 0, 140, 140);
-			Minecraft.getMinecraft().fontRenderer.drawString("Blader level:"
-					+ Minecraft.getMinecraft().player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel(), 3,
-					10, 16777215);
+		if(!Minecraft.getMinecraft().gameSettings.showDebugInfo){
+			if (event.getType() == ElementType.ALL) {
+				Minecraft.getMinecraft().renderEngine
+						.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/bladerlevel.png"));
+				drawTexturedModalRect(0, 0, 0, 0, 140, 140);
+				Minecraft.getMinecraft().fontRenderer.drawString("Blader level:"
+						+ Minecraft.getMinecraft().player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel(), 3,
+						10, 16777215);
+			}
 		}
 	}
 

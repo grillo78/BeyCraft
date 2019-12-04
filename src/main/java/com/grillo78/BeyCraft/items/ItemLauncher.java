@@ -58,7 +58,8 @@ public class ItemLauncher extends Item implements IHasModel {
 								.getStackInSlot(1).getItem() instanceof ItemBeyDisk
 						&& playerIn.getHeldItem(handIn)
 								.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
-								.getStackInSlot(2).getItem() instanceof ItemBeyDriver) {
+								.getStackInSlot(2).getItem() instanceof ItemBeyDriver
+						&& !worldIn.isRemote) {
 					EntityBey beyEntity = new EntityBey(worldIn,
 							playerIn.getHeldItem(handIn)
 									.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
@@ -72,14 +73,16 @@ public class ItemLauncher extends Item implements IHasModel {
 							((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
 									.getBladerLevel(),
 							rotation, playerIn.getName());
-					beyEntity.setLocationAndAngles(playerIn.posX + playerIn.getLookVec().x, playerIn.posY+1,
-							playerIn.posZ + playerIn.getLookVec().z, playerIn.rotationYaw - 115 * rotation, 0);
-//					beyEntity.setVelocity(playerIn.motionX, playerIn.motionY, playerIn.motionZ);
+					beyEntity.setLocationAndAngles(playerIn.posX + playerIn.getLookVec().x, playerIn.posY + 1,
+							playerIn.posZ + playerIn.getLookVec().z, playerIn.rotationYaw+80, 0);
+					beyEntity.rotationYawHead = beyEntity.rotationYaw;
+					beyEntity.renderYawOffset = beyEntity.rotationYaw;
 					worldIn.spawnEntity(beyEntity);
-					((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
-					.setBladerLevel(((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
-									.getBladerLevel()+0.1F);
-					BeyCraft.INSTANCE.sendTo(new BladerLevelMessage((EntityPlayerMP) playerIn),(EntityPlayerMP)playerIn);
+					((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP)).setBladerLevel(
+							((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
+									.getBladerLevel() + 0.1F);
+					BeyCraft.INSTANCE.sendTo(new BladerLevelMessage((EntityPlayerMP) playerIn),
+							(EntityPlayerMP) playerIn);
 					playerIn.getHeldItem(handIn)
 							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
 							.getStackInSlot(0).shrink(1);

@@ -1,7 +1,10 @@
 package com.grillo78.BeyCraft.blocks;
 
+import java.util.List;
+
 import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
+import com.grillo78.BeyCraft.entity.EntityBey;
 import com.grillo78.BeyCraft.util.IHasModel;
 
 import net.minecraft.block.Block;
@@ -11,7 +14,9 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -30,13 +35,13 @@ public class StadiumBlock extends Block implements IHasModel {
 	public static final PropertyEnum<StadiumBlock.EnumPartType> PART = PropertyEnum.<StadiumBlock.EnumPartType>create(
 			"part", StadiumBlock.EnumPartType.class);
 	protected static final AxisAlignedBB MIDDLECENTER_BOX = new AxisAlignedBB(-1.0D + 0.0625, 0.0D, -1.0D + 0.0625,
-			2.0D - 0.0625D, 0.375D, 2.0D - 0.0625D);
+			2.0D - 0.0625D, 0.0625 * 6D, 2.0D - 0.0625D);
 	protected static final AxisAlignedBB MIDDLELEFT_BOX = new AxisAlignedBB(2 - 0.0625, 0.0D, 3 - 0.0625, -1 + 0.0625D,
 			0.375D, 0.0625D);
 	protected static final AxisAlignedBB MIDDLERIGHT_BOX = new AxisAlignedBB(2 - 0.0625, 0.0D, 1 - 0.0625, -1 + 0.0625D,
 			0.375D, -2 + 0.0625D);
-	protected static final AxisAlignedBB TOPLEFT_BOX = new AxisAlignedBB(-2 + 0.0625, 0.0D, 0.0625, 1 - 0.0625D, 0.375D,
-			3 - 0.0625D);
+	protected static final AxisAlignedBB TOPLEFT_BOX = new AxisAlignedBB(-2 + 0.0625, 0.0D, 0.0625, 1 - 0.0625D,
+			0.0625 * 6D, 3 - 0.0625D);
 	protected static final AxisAlignedBB TOPCENTER_BOX = new AxisAlignedBB(-2 + 0.0625, 0.0D, -1.0625, 1 - 0.0625D,
 			0.375D, 2 - 0.0625D);
 	protected static final AxisAlignedBB TOPRIGHT_BOX = new AxisAlignedBB(-2 + 0.0625, 0.0D, -2.0625, 1 - 0.0625D,
@@ -44,7 +49,7 @@ public class StadiumBlock extends Block implements IHasModel {
 	protected static final AxisAlignedBB BOTTOMLEFT_BOX = new AxisAlignedBB(3 - 0.0625, 0.0D, 3 - 0.0625, 0.0625D,
 			0.375D, 0.0625D);
 	protected static final AxisAlignedBB BOTTOMCENTER_BOX = new AxisAlignedBB(0.0625, 0.0D, -1.0D + 0.0625,
-			3.0D - 0.0625D, 0.375D, 2.0D - 0.0625D);
+			3.0D - 0.0625D, 0.0625 * 6D, 2.0D - 0.0625D);
 	protected static final AxisAlignedBB BOTTOMRIGHT_BOX = new AxisAlignedBB(0.0625, 0.0D, 1 - 0.0625, 3 - 0.0625D,
 			0.375D, -2 + 0.0625D);
 
@@ -101,35 +106,492 @@ public class StadiumBlock extends Block implements IHasModel {
 		case 8:
 			return BOTTOMRIGHT_BOX;
 		default:
-			return MIDDLECENTER_BOX;
+			return new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1);
 		}
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-//		BeyCraft.logger.info("X: "+pos.getX()+" Y: "+pos.getY()+" Z: " +pos.getZ());
-		switch(getMetaFromState(blockState)) {
-		case 0:
-			return TOPLEFT_BOX;
-		case 1:
-			return TOPCENTER_BOX;
-		case 2:
-			return TOPRIGHT_BOX;
-		case 3:
-			return MIDDLELEFT_BOX;
-		case 4:
-			return MIDDLECENTER_BOX;
-		case 5:
-			return MIDDLERIGHT_BOX;
-		case 6:
-			return BOTTOMLEFT_BOX;
-		case 7:
-			return BOTTOMCENTER_BOX;
-		case 8:
-			return BOTTOMRIGHT_BOX;
-		default:
-			return MIDDLECENTER_BOX;
+	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+		if(entityIn instanceof EntityBey) {
+			
 		}
+		super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
+	}
+	
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
+			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) {
+
+		if (!(entityIn instanceof EntityPlayer)) {
+			if (getMetaFromState(state) == 0) {
+				// floor
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 2, 0, 1, 0, 0.0625 * 6, 0.0625));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625, 0.0625 * 6, 0.0625 * 2));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 4, 0, 1, 0.0625 * 2, 0.0625 * 6, 0.0625 * 3));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 5, 0, 1 - 0.0625 * 4, 0.0625 * 3, 0.0625 * 6, 0.0625 * 4));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 5, 0.0625 * 6, 0.0625 * 5));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 6, 0.0625 * 6, 0.0625 * 6));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 7, 0.0625 * 6, 0.0625 * 7));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 9, 0.0625 * 6, 0.0625 * 9));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 10, 0.0625 * 6, 0.0625 * 10));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 11, 0.0625 * 6, 0.0625 * 11));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 12, 0.0625 * 6, 0.0625 * 12));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 13, 0.0625 * 6, 0.0625 * 13));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 14, 0.0625 * 6, 0.0625 * 14));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 15, 0.0625 * 6, 0.0625 * 15));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 16, 0.0625 * 6, 0.0625 * 16));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 17, 0.0625 * 6, 0.0625 * 17));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 18, 0.0625 * 6, 0.0625 * 18));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 19, 0.0625 * 6, 0.0625 * 19));
+
+				// walls
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 2, 0, 0.0625, 1 - 0.0625 * 16, 1, 0.0625 * 2));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 4, 0, 0.0625 * 3, 1 - 0.0625 * 14, 1, 0.0625 * 3));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 5, 0, 0.0625 * 4, 1 - 0.0625 * 14, 1, 0.0625 * 4));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 14, 0, 0.0625 * 15, 1 - 0.0625, 1, 0.0625 * 13));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 13, 0, 0.0625 * 14, 1 - 0.0625 * 2, 1, 0.0625 * 12));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 12, 0, 0.0625 * 13, 1 - 0.0625 * 3, 1, 0.0625 * 11));
+			}
+			if (getMetaFromState(state) == 1) {
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(1 - 0.0625, 0, 1, 1 - 0.0625 * 3, 1, 0));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
+			}
+			if (getMetaFromState(state) == 2) {
+				// floor
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625, 0.0625 * 6, 0.0625 * 2));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 2, 0.0625 * 6, 0.0625 * 3));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 3, 0.0625 * 6, 0.0625 * 4));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 4, 0.0625 * 6, 0.0625 * 5));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 5, 0.0625 * 6, 0.0625 * 6));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 6, 0.0625 * 6, 0.0625 * 7));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 7, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 1, 0.0625 * 6, 0.0625 * 9));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 9, 0.0625 * 6, 0.0625 * 10));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 10, 0.0625 * 6, 0.0625 * 11));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 11, 0.0625 * 6, 0.0625 * 12));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 12, 0.0625 * 6, 0.0625 * 13));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 13, 0.0625 * 6, 0.0625 * 14));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 14, 0.0625 * 6, 0.0625 * 15));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 15, 0.0625 * 6, 0.0625 * 16));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 16, 0.0625 * 6, 0.0625 * 17));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 17, 0.0625 * 6, 0.0625 * 18));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 18, 0.0625 * 6, 0.0625 * 19));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 19, 0.0625 * 6, 0.0625 * 20));
+
+				// walls
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 13, 0, 0.0625, 1 - 0.0625, 1, 0.0625 * 2));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 12, 0, 0.0625, 1 - 0.0625 * 2, 1, 0.0625 * 3));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 11, 0, 0.0625, 1 - 0.0625 * 3, 1, 0.0625 * 4));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625, 0, 0.0625 * 15, 1 - 0.0625 * 14, 1, 0.0625 * 13));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 2, 0, 0.0625 * 14, 1 - 0.0625 * 13, 1, 0.0625 * 12));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 0.0625 * 13, 1 - 0.0625 * 12, 1, 0.0625 * 11));
+			}
+			if (getMetaFromState(state) == 3) {
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(1, 0, 0.0625 * 3, 0, 1, 0.0625));
+			}
+			if (getMetaFromState(state) == 4) {
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
+			}
+			if (getMetaFromState(state) == 5) {
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(1, 0, 1 - 0.0625, 0, 1, 1 - 0.0625 * 3));
+			}
+			if (getMetaFromState(state) == 6) {
+				// floor
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 14, 0, 0.0625, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 13, 0, 0.0625 * 2, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 12, 0, 0.0625 * 3, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 11, 0, 0.0625 * 4, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 10, 0, 0.0625 * 5, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 9, 0, 0.0625 * 6, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(1, 0, 0.0625 * 7, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 7, 0, 1, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 6, 0, 0.0625 * 9, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 5, 0, 0.0625 * 10, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 4, 0, 0.0625 * 11, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 0.0625 * 12, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 2, 0, 0.0625 * 13, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 1, 0, 0.0625 * 14, 1, 0.0625 * 6, 1));
+
+				// walls
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 13, 0, 0.0625, 1 - 0.0625, 1, 0.0625 * 2));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 12, 0, 0.0625, 1 - 0.0625 * 2, 1, 0.0625 * 3));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 11, 0, 0.0625, 1 - 0.0625 * 3, 1, 0.0625 * 4));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625, 0, 0.0625 * 15, 1 - 0.0625 * 14, 1, 0.0625 * 13));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 2, 0, 0.0625 * 14, 1 - 0.0625 * 13, 1, 0.0625 * 12));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 0.0625 * 13, 1 - 0.0625 * 12, 1, 0.0625 * 11));
+			}
+			if (getMetaFromState(state) == 7) {
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625, 1, 0));
+			}
+			if (getMetaFromState(state) == 8) {
+				// floor
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625, 0, 0, 1, 0.0625 * 6, 0.0625 * 2));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 2, 0, 0, 1, 0.0625 * 6, 0.0625 * 3));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 3, 0, 0, 1, 0.0625 * 6, 0.0625 * 4));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 4, 0, 0, 1, 0.0625 * 6, 0.0625 * 5));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 5, 0, 0, 1, 0.0625 * 6, 0.0625 * 6));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 6, 0, 0, 1, 0.0625 * 6, 0.0625 * 7));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 7, 0, 0, 1, 0.0625 * 6, 1));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(1, 0, 0, 1, 0.0625 * 6, 0.0625 * 9));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 9, 0, 0, 1, 0.0625 * 6, 0.0625 * 10));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 10, 0, 0, 1, 0.0625 * 6, 0.0625 * 11));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 11, 0, 0, 1, 0.0625 * 6, 0.0625 * 12));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 12, 0, 0, 1, 0.0625 * 6, 0.0625 * 13));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 13, 0, 0, 1, 0.0625 * 6, 0.0625 * 14));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 14, 0, 0, 1, 0.0625 * 6, 0.0625 * 15));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 15, 0, 0, 1, 0.0625 * 6, 0.0625 * 16));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 16, 0, 0, 1, 0.0625 * 6, 0.0625 * 17));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 17, 0, 0, 1, 0.0625 * 6, 0.0625 * 18));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 18, 0, 0, 1, 0.0625 * 6, 0.0625 * 19));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 19, 0, 0, 1, 0.0625 * 6, 0.0625 * 20));
+
+				// walls
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 2, 0, 0.0625, 1 - 0.0625 * 16, 1, 0.0625 * 2));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 4, 0, 0.0625 * 3, 1 - 0.0625 * 14, 1, 0.0625 * 3));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 5, 0, 0.0625 * 4, 1 - 0.0625 * 14, 1, 0.0625 * 4));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 14, 0, 0.0625 * 15, 1 - 0.0625, 1, 0.0625 * 13));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 13, 0, 0.0625 * 14, 1 - 0.0625 * 2, 1, 0.0625 * 12));
+				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+						new AxisAlignedBB(0.0625 * 12, 0, 0.0625 * 13, 1 - 0.0625 * 3, 1, 0.0625 * 11));
+			}
+		}
+//		if (entityIn instanceof EntityPlayer) {
+//			if (getMetaFromState(state) == 0) {
+//				// floor
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 2, 0, 1, 0, 0.0625 * 6, 0.0625));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625, 0.0625 * 6, 0.0625 * 2));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 4, 0, 1, 0.0625 * 2, 0.0625 * 6, 0.0625 * 3));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 5, 0, 1 - 0.0625 * 4, 0.0625 * 3, 0.0625 * 6, 0.0625 * 4));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 5, 0.0625 * 6, 0.0625 * 5));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 6, 0.0625 * 6, 0.0625 * 6));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 7, 0.0625 * 6, 0.0625 * 7));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 9, 0.0625 * 6, 0.0625 * 9));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 10, 0.0625 * 6, 0.0625 * 10));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 11, 0.0625 * 6, 0.0625 * 11));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 12, 0.0625 * 6, 0.0625 * 12));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 13, 0.0625 * 6, 0.0625 * 13));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 14, 0.0625 * 6, 0.0625 * 14));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 15, 0.0625 * 6, 0.0625 * 15));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 16, 0.0625 * 6, 0.0625 * 16));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 17, 0.0625 * 6, 0.0625 * 17));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 18, 0.0625 * 6, 0.0625 * 18));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 19, 0.0625 * 6, 0.0625 * 19));
+//
+//				// walls
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 2, 0, 0.0625, 1 - 0.0625 * 16, 0.625*8, 0.0625 * 2));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 4, 0, 0.0625 * 3, 1 - 0.0625 * 14, 0.625*8, 0.0625 * 3));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 5, 0, 0.0625 * 4, 1 - 0.0625 * 14, 0.625*8, 0.0625 * 4));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 14, 0, 0.0625 * 15, 1 - 0.0625, 0.625*8, 0.0625 * 13));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 13, 0, 0.0625 * 14, 1 - 0.0625 * 2, 0.625*8, 0.0625 * 12));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 12, 0, 0.0625 * 13, 1 - 0.0625 * 3, 0.625*8, 0.0625 * 11));
+//			}
+//			if (getMetaFromState(state) == 1) {
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(1 - 0.0625, 0, 1, 1 - 0.0625 * 3, 0.625*8, 0));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
+//			}
+//			if (getMetaFromState(state) == 2) {
+//				// floor
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625, 0.0625 * 6, 0.0625 * 2));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 2, 0.0625 * 6, 0.0625 * 3));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 3, 0.0625 * 6, 0.0625 * 4));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 4, 0.0625 * 6, 0.0625 * 5));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 5, 0.0625 * 6, 0.0625 * 6));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 6, 0.0625 * 6, 0.0625 * 7));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 7, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 1, 0.0625 * 6, 0.0625 * 9));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 9, 0.0625 * 6, 0.0625 * 10));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 10, 0.0625 * 6, 0.0625 * 11));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 11, 0.0625 * 6, 0.0625 * 12));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 12, 0.0625 * 6, 0.0625 * 13));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 13, 0.0625 * 6, 0.0625 * 14));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 14, 0.0625 * 6, 0.0625 * 15));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 15, 0.0625 * 6, 0.0625 * 16));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 16, 0.0625 * 6, 0.0625 * 17));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 17, 0.0625 * 6, 0.0625 * 18));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 18, 0.0625 * 6, 0.0625 * 19));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 19, 0.0625 * 6, 0.0625 * 20));
+//
+//				// walls
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 13, 0, 0.0625, 1 - 0.0625, 0.625*8, 0.0625 * 2));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 12, 0, 0.0625, 1 - 0.0625 * 2, 0.625*8, 0.0625 * 3));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 11, 0, 0.0625, 1 - 0.0625 * 3, 0.625*8, 0.0625 * 4));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625, 0, 0.0625 * 15, 1 - 0.0625 * 14, 0.625*8, 0.0625 * 13));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 2, 0, 0.0625 * 14, 1 - 0.0625 * 13, 0.625*8, 0.0625 * 12));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 0.0625 * 13, 1 - 0.0625 * 12, 0.625*8, 0.0625 * 11));
+//			}
+//			if (getMetaFromState(state) == 3) {
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(1, 0, 0.0625 * 3, 0, 0.625*8, 0.0625));
+//			}
+//			if (getMetaFromState(state) == 4) {
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
+//			}
+//			if (getMetaFromState(state) == 5) {
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(1, 0, 1 - 0.0625, 0, 0.625*8, 1 - 0.0625 * 3));
+//			}
+//			if (getMetaFromState(state) == 6) {
+//				// floor
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 14, 0, 0.0625, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 13, 0, 0.0625 * 2, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 12, 0, 0.0625 * 3, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 11, 0, 0.0625 * 4, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 10, 0, 0.0625 * 5, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 9, 0, 0.0625 * 6, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(1, 0, 0.0625 * 7, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 7, 0, 1, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 6, 0, 0.0625 * 9, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 5, 0, 0.0625 * 10, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 4, 0, 0.0625 * 11, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 0.0625 * 12, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 2, 0, 0.0625 * 13, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 1, 0, 0.0625 * 14, 1, 0.0625 * 6, 1));
+//
+//				// walls
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 13, 0, 0.0625, 1 - 0.0625, 0.625*8, 0.0625 * 2));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 12, 0, 0.0625, 1 - 0.0625 * 2, 0.625*8, 0.0625 * 3));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 11, 0, 0.0625, 1 - 0.0625 * 3, 0.625*8, 0.0625 * 4));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625, 0, 0.0625 * 15, 1 - 0.0625 * 14, 0.625*8, 0.0625 * 13));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 2, 0, 0.0625 * 14, 1 - 0.0625 * 13, 0.625*8, 0.0625 * 12));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 0.0625 * 13, 1 - 0.0625 * 12, 0.625*8, 0.0625 * 11));
+//			}
+//			if (getMetaFromState(state) == 7) {
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 0.625*8, 0.0625, 1, 0));
+//			}
+//			if (getMetaFromState(state) == 8) {
+//				// floor
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625, 0, 0, 1, 0.0625 * 6, 0.0625 * 2));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 2, 0, 0, 1, 0.0625 * 6, 0.0625 * 3));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 3, 0, 0, 1, 0.0625 * 6, 0.0625 * 4));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 4, 0, 0, 1, 0.0625 * 6, 0.0625 * 5));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 5, 0, 0, 1, 0.0625 * 6, 0.0625 * 6));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 6, 0, 0, 1, 0.0625 * 6, 0.0625 * 7));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 7, 0, 0, 1, 0.0625 * 6, 1));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(1, 0, 0, 1, 0.0625 * 6, 0.0625 * 9));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 9, 0, 0, 1, 0.0625 * 6, 0.0625 * 10));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 10, 0, 0, 1, 0.0625 * 6, 0.0625 * 11));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 11, 0, 0, 1, 0.0625 * 6, 0.0625 * 12));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 12, 0, 0, 1, 0.0625 * 6, 0.0625 * 13));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 13, 0, 0, 1, 0.0625 * 6, 0.0625 * 14));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 14, 0, 0, 1, 0.0625 * 6, 0.0625 * 15));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 15, 0, 0, 1, 0.0625 * 6, 0.0625 * 16));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 16, 0, 0, 1, 0.0625 * 6, 0.0625 * 17));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 17, 0, 0, 1, 0.0625 * 6, 0.0625 * 18));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 18, 0, 0, 1, 0.0625 * 6, 0.0625 * 19));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 19, 0, 0, 1, 0.0625 * 6, 0.0625 * 20));
+//
+//				// walls
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 2, 0, 0.0625, 1 - 0.0625 * 16, 0.625*8, 0.0625 * 2));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 4, 0, 0.0625 * 3, 1 - 0.0625 * 14, 0.625*8, 0.0625 * 3));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 5, 0, 0.0625 * 4, 1 - 0.0625 * 14, 0.625*8, 0.0625 * 4));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 14, 0, 0.0625 * 15, 1 - 0.0625, 0.625*8, 0.0625 * 13));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 13, 0, 0.0625 * 14, 1 - 0.0625 * 2, 0.625*8, 0.0625 * 12));
+//				addCollisionBoxToList(pos, entityBox, collidingBoxes,
+//						new AxisAlignedBB(0.0625 * 12, 0, 0.0625 * 13, 1 - 0.0625 * 3, 0.625*8, 0.0625 * 11));
+//			}
+//		}
 	}
 
 	@Override
