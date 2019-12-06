@@ -52,7 +52,7 @@ public class RenderBey extends RenderLiving<EntityBey> {
 		GlStateManager.translate(0, 0, entity.disk.height);
 		itemRenderer.renderItem(new ItemStack(entity.disk), ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.translate(0, 0, entity.layer.height);
-		GlStateManager.rotate(entity.getHealth() + 130, 0, 0, entity.getRotationDirection());
+		GlStateManager.rotate(entity.getHealth() + 74, 0, 0, entity.getRotationDirection());
 		itemRenderer.renderItem(new ItemStack(entity.layer), ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.disableOutlineMode();
 		GlStateManager.disableColorMaterial();

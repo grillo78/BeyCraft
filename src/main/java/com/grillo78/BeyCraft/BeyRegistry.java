@@ -8,7 +8,6 @@ import com.google.common.collect.Lists;
 import com.grillo78.BeyCraft.blocks.ExpositoryBlock;
 import com.grillo78.BeyCraft.blocks.StadiumBlock;
 import com.grillo78.BeyCraft.capabilities.Provider;
-import com.grillo78.BeyCraft.entity.AigerModel;
 import com.grillo78.BeyCraft.entity.EntityBey;
 import com.grillo78.BeyCraft.items.ItemBeyDisk;
 import com.grillo78.BeyCraft.items.ItemBeyDriver;
@@ -19,6 +18,7 @@ import com.grillo78.BeyCraft.items.ItemBeyPackage;
 import com.grillo78.BeyCraft.items.ItemLauncher;
 import com.grillo78.BeyCraft.items.ItemLauncherHandle;
 import com.grillo78.BeyCraft.items.armor.ItemBladerArmor;
+import com.grillo78.BeyCraft.network.BladerLevelMessage;
 import com.grillo78.BeyCraft.util.IHasModel;
 
 import net.minecraft.block.Block;
@@ -29,11 +29,16 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.event.ClickEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -42,6 +47,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 
@@ -95,23 +101,23 @@ public class BeyRegistry {
 	
 	/** Armors*/
 	public static final ItemBladerArmor AIGER_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_chestplate",
-			EntityEquipmentSlot.CHEST, new AigerModel());
+			EntityEquipmentSlot.CHEST);
 	public static final ItemBladerArmor AIGER_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_leggings",
-			EntityEquipmentSlot.LEGS, new AigerModel());
+			EntityEquipmentSlot.LEGS);
 	public static final ItemBladerArmor AIGER_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_boots",
-			EntityEquipmentSlot.FEET, new AigerModel());
+			EntityEquipmentSlot.FEET);
 	public static final ItemBladerArmor VALT_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "valt_chestplate",
-			EntityEquipmentSlot.CHEST, new AigerModel());
+			EntityEquipmentSlot.CHEST);
 	public static final ItemBladerArmor VALT_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "valt_leggings",
-			EntityEquipmentSlot.LEGS, new AigerModel());
+			EntityEquipmentSlot.LEGS);
 	public static final ItemBladerArmor VALT_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "valt_boots",
-			EntityEquipmentSlot.FEET, new AigerModel());
+			EntityEquipmentSlot.FEET);
 	public static final ItemBladerArmor TURBO_VALT_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL,
-			"turbo_valt_chestplate", EntityEquipmentSlot.CHEST, new AigerModel());
+			"turbo_valt_chestplate", EntityEquipmentSlot.CHEST);
 	public static final ItemBladerArmor TURBO_VALT_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL,
-			"turbo_valt_leggings", EntityEquipmentSlot.LEGS, new AigerModel());
+			"turbo_valt_leggings", EntityEquipmentSlot.LEGS);
 	public static final ItemBladerArmor TURBO_VALT_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "turbo_valt_boots",
-			EntityEquipmentSlot.FEET, new AigerModel());
+			EntityEquipmentSlot.FEET);
 
 	/* Blocks */
 	public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.ANVIL, "Expository");
@@ -182,6 +188,24 @@ public class BeyRegistry {
 		}
 	}
 
+	@SubscribeEvent
+	public static void playerJoined(PlayerLoggedInEvent event) {
+		EntityPlayer player = event.player;
+    	TextComponentString prefix = new TextComponentString("[BeyCraft] -> Join to my Discord server: ");
+    	TextComponentString url = new TextComponentString("https://discord.gg/2PpbtFr");
+    	Style sPrefix = new Style();
+    	sPrefix.setColor(TextFormatting.GOLD);
+    	Style sUrl = new Style();
+    	sUrl.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr")).setColor(TextFormatting.GOLD);
+    	prefix.setStyle(sPrefix);
+    	url.setStyle(sUrl);
+        player.sendMessage(prefix);
+        player.sendMessage(url);
+        BeyCraft.INSTANCE.sendTo(new BladerLevelMessage((int) event.player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel()),
+				(EntityPlayerMP) event.player);
+	}
+	
+	
 	@SubscribeEvent
 	public static void editHud(RenderGameOverlayEvent.Post event) {
 		if(!Minecraft.getMinecraft().gameSettings.showDebugInfo){
