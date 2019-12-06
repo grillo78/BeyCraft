@@ -12,7 +12,7 @@ public class ItemBeyDriver extends Item implements IHasModel{
 	
 	public float height;
 	public float friction;
-	public float radiusReducion;
+	public float radiusReduction;
 	
 	public ItemBeyDriver(String name, float height, float friction, float radiusReduction) {
 		setCreativeTab(BeyCraft.BEYCRAFTDRIVERS);
@@ -20,7 +20,7 @@ public class ItemBeyDriver extends Item implements IHasModel{
 		setUnlocalizedName(name);
 		setMaxStackSize(1);
 		this.height = height;
-		this.radiusReducion = radiusReduction;
+		this.radiusReduction = radiusReduction;
 		this.friction = friction;
 		BeyRegistry.ITEMSDRIVER.add(this);
 	}

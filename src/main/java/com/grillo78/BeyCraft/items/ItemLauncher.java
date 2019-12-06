@@ -74,14 +74,14 @@ public class ItemLauncher extends Item implements IHasModel {
 									.getBladerLevel(),
 							rotation, playerIn.getName());
 					beyEntity.setLocationAndAngles(playerIn.posX + playerIn.getLookVec().x, playerIn.posY + 1,
-							playerIn.posZ + playerIn.getLookVec().z, playerIn.rotationYaw+80, 0);
+							playerIn.posZ + playerIn.getLookVec().z, playerIn.rotationYaw-30*rotation, 0);
 					beyEntity.rotationYawHead = beyEntity.rotationYaw;
 					beyEntity.renderYawOffset = beyEntity.rotationYaw;
 					worldIn.spawnEntity(beyEntity);
 					((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP)).setBladerLevel(
 							((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
 									.getBladerLevel() + 0.1F);
-					BeyCraft.INSTANCE.sendTo(new BladerLevelMessage((EntityPlayerMP) playerIn),
+					BeyCraft.INSTANCE.sendTo(new BladerLevelMessage((int) playerIn.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel()),
 							(EntityPlayerMP) playerIn);
 					playerIn.getHeldItem(handIn)
 							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)

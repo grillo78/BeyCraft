@@ -56,9 +56,9 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	public EntityBey(World worldIn, ItemStack layerIn, ItemStack diskIn, ItemStack driverIn, float bladerLevel,
 			int rotationDirection, String playerName) {
 		super(worldIn);
-		this.setSize(0.10F, 0.10F);
+		this.setSize(0.253F, 0.253F);
 		this.height = 0.253F;
-		this.rotationSpeed = -5;
+		this.rotationSpeed = -10 * bladerLevel;
 		maxRotationSpeed = rotationSpeed;
 		this.rotationDirection = rotationDirection;
 		this.playerName = playerName;
@@ -79,33 +79,12 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	public void onUpdate() {
 		if (this.rotationSpeed < 0 && (world.getBlockState(this.getPosition().down()).getBlock() instanceof StadiumBlock
 				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR
+				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.STONE
 				|| (world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock && world
 						.getBlockState(
 								new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
 						.getBlock() instanceof StadiumBlock))) {
-			// TODO method
-			if (!world.isRemote && movementStarted) {
-				if (world.getBlockState(
-						new BlockPos(getPositionVector().x + 0.23, getPositionVector().y, getPositionVector().z))
-						.getBlock() != BeyRegistry.STADIUM) {
-					this.rotationYaw = 90;
-				}
-				if (world.getBlockState(
-						new BlockPos(getPositionVector().x - 0.23, getPositionVector().y, getPositionVector().z))
-						.getBlock() != BeyRegistry.STADIUM) {
-					this.rotationYaw = -90;
-				}
-				if (world.getBlockState(
-						new BlockPos(getPositionVector().x, getPositionVector().y, getPositionVector().z + 0.23))
-						.getBlock() != BeyRegistry.STADIUM) {
-					this.rotationYaw = 180;
-				}
-				if (world.getBlockState(
-						new BlockPos(getPositionVector().x, getPositionVector().y, getPositionVector().z - 0.23))
-						.getBlock() != BeyRegistry.STADIUM) {
-					this.rotationYaw = 0;
-				}
-			}
+
 			rotationSpeed += 0.005 * driver.friction;
 			rotationYaw -= rotationSpeed * rotationDirection / (-maxRotationSpeed * 0.1);
 			angle += rotationSpeed * 30 * rotationDirection;
@@ -137,7 +116,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		}
 
 		if (radius > 0) {
-			radius -= 0.001f * driver.radiusReducion * rotationSpeed / (maxRotationSpeed);
+			radius -= 0.001f * driver.radiusReduction * rotationSpeed / (maxRotationSpeed);
 		} else {
 			radius = 0;
 		}
@@ -162,7 +141,8 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.005);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(500);
 	}
 
 	@Override
@@ -192,35 +172,41 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	@Override
 	protected void collideWithEntity(Entity entityIn) {
 		super.collideWithEntity(entityIn);
-		if (entityIn instanceof EntityBey) {
-			EntityBey entity = (EntityBey) entityIn;
-			if (this.rotationSpeed != 0) {
-				if (((EntityBey) entityIn).rotationSpeed < 0) {
-					float damage = new Random().nextFloat();
-					int burstDamage = new Random().nextInt(5);
-					if (layer.canAbsorb(this)) {
-						this.rotationSpeed -= damage * ((EntityBey) entityIn).layer.getAttack()
-								/ getLayer().getDefense();
-					}
-					if (entity.layer.getDefense() != 0) {
+		if (onGround) {
+			if (entityIn instanceof EntityBey) {
+				EntityBey entity = (EntityBey) entityIn;
+				if (this.rotationSpeed != 0) {
+					if (((EntityBey) entityIn).rotationSpeed < 0) {
+						float damage = new Random().nextInt(5);
+						int burstDamage = new Random().nextInt(4);
+						if (layer.canAbsorb(this)) {
+							this.rotationSpeed -= damage * ((EntityBey) entityIn).layer.getAttack()
+									/ getLayer().getDefense();
+						}
+						if (entity.layer.getDefense() != 0) {
 
-						((EntityBey) entityIn).rotationSpeed += damage / ((EntityBey) entityIn).layer.getDefense();
-					} else {
+							((EntityBey) entityIn).rotationSpeed += damage * layer.getAttack()
+									/ ((EntityBey) entityIn).layer.getDefense();
+						} else {
 
-						((EntityBey) entityIn).rotationSpeed += damage * layer.getAttack();
+							((EntityBey) entityIn).rotationSpeed += damage * layer.getAttack();
+						}
+						if (layer.getDefense() != 0) {
+							damageEntity(DamageSource.GENERIC, (burstDamage + layer.getBurst())
+									* ((EntityBey) entityIn).layer.getAttack() / layer.getDefense());
+						} else {
+							damageEntity(DamageSource.GENERIC,
+									burstDamage * layer.getBurst() * ((EntityBey) entityIn).layer.getAttack());
+						}
 					}
-					if (layer.getDefense() != 0) {
-						damageEntity(DamageSource.GENERIC, (burstDamage + layer.getBurst())
-								* ((EntityBey) entityIn).layer.getAttack() / layer.getDefense());
-					} else {
-						damageEntity(DamageSource.GENERIC,
-								burstDamage * layer.getBurst() * ((EntityBey) entityIn).layer.getAttack());
-					}
+					this.radius = 0.1F;
+					((EntityBey) entityIn).radius = 0.1F;
 				}
+				this.rotationYaw += 90;
+				BeyCraft.logger.info("Collision");
 			}
-			this.move(MoverType.SELF, -this.getLookVec().x, this.getLookVec().y, -this.getLookVec().z);
-			BeyCraft.logger.info("Collision");
 		}
+
 	}
 
 	@Override

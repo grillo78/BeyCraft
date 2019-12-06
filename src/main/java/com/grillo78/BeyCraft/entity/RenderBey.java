@@ -30,7 +30,7 @@ public class RenderBey extends RenderLiving<EntityBey> {
 		GlStateManager.scale(0.5, 0.5, 0.5);
 		GlStateManager.translate(0, -0.02, 0);
 
-		if (entity.radius != 0F && entity.rotationSpeed < -2) {
+		if (entity.radius > 0F && entity.rotationSpeed < -2) {
 			GlStateManager.rotate(30, (float) entity.getLook(partialTicks).x * entity.getRotationDirection(), 0,
 					(float) entity.getLook(partialTicks).z * entity.getRotationDirection());
 		} else {
@@ -39,7 +39,7 @@ public class RenderBey extends RenderLiving<EntityBey> {
 			}
 		}
 		GlStateManager.rotate(entity.angle, 0, 1, 0);
-		if (entity.rotationSpeed <= 0 && entity.rotationSpeed > -2) {
+		if (entity.rotationSpeed > -2) {
 			GlStateManager.translate(0, (1-(-2 - entity.rotationSpeed)/-2)*0.04, 0);
 			GlStateManager.rotate(
 					40 * ((-2 - entity.rotationSpeed) / (-2)),
@@ -52,7 +52,7 @@ public class RenderBey extends RenderLiving<EntityBey> {
 		GlStateManager.translate(0, 0, entity.disk.height);
 		itemRenderer.renderItem(new ItemStack(entity.disk), ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.translate(0, 0, entity.layer.height);
-		GlStateManager.rotate(entity.getHealth() * entity.getRotationDirection() + 40, 0, 0, 1);
+		GlStateManager.rotate(entity.getHealth() + 130, 0, 0, entity.getRotationDirection());
 		itemRenderer.renderItem(new ItemStack(entity.layer), ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.disableOutlineMode();
 		GlStateManager.disableColorMaterial();
@@ -62,7 +62,11 @@ public class RenderBey extends RenderLiving<EntityBey> {
 			this.renderEntityName(entity, x, y + 0.9, z, new ItemStack(entity.layer).getDisplayName(), 10);
 			this.renderEntityName(entity, x, y + 0.6, z, new ItemStack(entity.disk).getDisplayName(), 10);
 			this.renderEntityName(entity, x, y + 0.3, z, new ItemStack(entity.driver).getDisplayName(), 10);
-			this.renderEntityName(entity, x, y, z, "Speed: "+(-entity.rotationSpeed), 10);
+			if(entity.isStoped()) {
+				this.renderEntityName(entity, x, y, z, "Speed: "+entity.rotationSpeed, 10);
+			}else {
+				this.renderEntityName(entity, x, y, z, "Speed: "+(-entity.rotationSpeed), 10);
+			}
 		}
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 	}

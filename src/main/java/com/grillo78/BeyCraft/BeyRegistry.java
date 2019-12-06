@@ -190,8 +190,9 @@ public class BeyRegistry {
 						.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/bladerlevel.png"));
 				drawTexturedModalRect(0, 0, 0, 0, 140, 140);
 				Minecraft.getMinecraft().fontRenderer.drawString("Blader level:"
-						+ Minecraft.getMinecraft().player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel(), 3,
-						10, 16777215);
+//						+ Minecraft.getMinecraft().player.getEntityData().getInteger("BladerLevel"), 3,
+						+Minecraft.getMinecraft().player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel(), 3,
+						30, 0);
 			}
 		}
 	}

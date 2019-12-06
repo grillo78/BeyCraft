@@ -8,7 +8,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.init.Items;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -54,6 +56,21 @@ public class RenderExpository extends TileEntitySpecialRenderer<ExpositoryTileEn
 		angle++;
 		GlStateManager.popAttrib();
 		GlStateManager.popMatrix();
-		super.render(te, x, y, z, partialTicks, destroyStage, alpha);
+
+		if (this.rendererDispatcher.cameraHitResult != null
+				&& te.getPos().equals(this.rendererDispatcher.cameraHitResult.getBlockPos())) {
+			this.setLightmapDisabled(true);
+			if(te.getStackInSlot(0).getItem() != Items.AIR) {
+
+				this.drawNameplate(te, te.getStackInSlot(0).getDisplayName(), x, y+0.3, z, 12);
+			}
+			if(te.getStackInSlot(1).getItem() != Items.AIR) {
+				this.drawNameplate(te, te.getStackInSlot(1).getDisplayName(), x, y, z, 12);
+			}
+			if(te.getStackInSlot(2).getItem() != Items.AIR) {
+				this.drawNameplate(te, te.getStackInSlot(2).getDisplayName(), x, y-0.3, z, 12);
+			}
+			this.setLightmapDisabled(false);
+		}
 	}
 }
