@@ -2,11 +2,13 @@ package com.grillo78.BeyCraft.items.armor;
 
 import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
-import com.grillo78.BeyCraft.entity.AigerModel;
+import com.grillo78.BeyCraft.Reference;
+import com.grillo78.BeyCraft.entity.ModelAiger;
 import com.grillo78.BeyCraft.util.IHasModel;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
@@ -17,12 +19,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBladerArmor extends ItemArmor implements IHasModel {
 
-	public ItemBladerArmor(ArmorMaterial materialIn, String name, EntityEquipmentSlot equipmentSlotIn) {
+	private String setName;
+
+	public ItemBladerArmor(ArmorMaterial materialIn, String name, EntityEquipmentSlot equipmentSlotIn, String setName) {
 		super(materialIn, 0, equipmentSlotIn);
 		this.setCreativeTab(BeyCraft.BEYCRAFTTAB);
 		this.setRegistryName(name);
 		this.setUnlocalizedName(name);
 		this.setMaxStackSize(1);
+		this.setName=setName;
 		BeyRegistry.ITEMS.add(this);
 	}
 
@@ -41,30 +46,26 @@ public class ItemBladerArmor extends ItemArmor implements IHasModel {
 		case "Aiger_chestplate":
 		case "Aiger_leggings":
 		case "Aiger_boots":
-			model = new AigerModel();
+			model = new ModelAiger(1,armorSlot);
 			break;
 		case "valt_chestplate":
 		case "valt_leggings":
 		case "valt_boots":
-			model = new AigerModel();
+			model = new ModelAiger(1,armorSlot);
 			break;
 		case "turbo_valt_chestplate":
 		case "turbo_valt_leggings":
 		case "turbo_valt_boots":
-			model = new AigerModel();
+			model = new ModelAiger(1,armorSlot);
 			break;
 		default:
-			model = new AigerModel();
+			model = new ModelAiger(1,armorSlot);
 		}
-		if (itemStack != ItemStack.EMPTY) {
-			if (itemStack.getItem() instanceof ItemArmor) {
-				model.bipedRightArm.showModel = armorSlot == EntityEquipmentSlot.CHEST;
-				model.isChild = _default.isChild;
-				model.isRiding = _default.isRiding;
-				model.isSneak = _default.isSneak;
-				return model;
-			}
-		}
-		return super.getArmorModel(entityLiving, itemStack, armorSlot, _default);
+		return model;
+	}
+	
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+		return Reference.MODID+":textures/entity/armor/"+setName+"_clothes.png";
 	}
 }

@@ -2,14 +2,14 @@
 {
   "modid": "beycraft",
   "name": "BeyCraft",
-  "description": "Example placeholder mod.",
+  "description": "A mod based on beyblade.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
-  "logoFile": "",
+  "authorList": ["grillo78","TimeKing14","Angel","Poulpinou"],
+  "credits": "Hasbro was who made the beyblade parts models",
+  "logoFile": "logo.png",
   "screenshots": [],
   "dependencies": []
 }

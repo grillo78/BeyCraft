@@ -1,5 +1,6 @@
 package com.grillo78.BeyCraft.entity;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -13,7 +14,8 @@ public class RenderBey extends RenderLiving<EntityBey> {
 	private final RenderItem itemRenderer;
 
 	public RenderBey(RenderManager rendermanagerIn, RenderItem itemRendererIn) {
-		super(rendermanagerIn, new ModelTest(), 0.1F);
+		super(rendermanagerIn, new ModelBase() {
+		}, 0.1F);
 		this.itemRenderer = itemRendererIn;
 	}
 
@@ -52,7 +54,7 @@ public class RenderBey extends RenderLiving<EntityBey> {
 		GlStateManager.translate(0, 0, entity.disk.height);
 		itemRenderer.renderItem(new ItemStack(entity.disk), ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.translate(0, 0, entity.layer.height);
-		GlStateManager.rotate(entity.getHealth() + 74, 0, 0, entity.getRotationDirection());
+		GlStateManager.rotate(-entity.getHealth()+40, 0, 0, entity.getRotationDirection());
 		itemRenderer.renderItem(new ItemStack(entity.layer), ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.disableOutlineMode();
 		GlStateManager.disableColorMaterial();

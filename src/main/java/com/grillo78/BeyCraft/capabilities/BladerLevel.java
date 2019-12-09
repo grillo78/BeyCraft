@@ -2,16 +2,32 @@ package com.grillo78.BeyCraft.capabilities;
 
 public class BladerLevel implements IBladerLevel{
 
-	private float bladerLevel=1;
+	private int bladerLevel=1;
+	private float experience=0;
 	
 	@Override
-	public void setBladerLevel(float level) {
+	public void setBladerLevel(int level) {
 		bladerLevel = level;
 	}
 
 	@Override
-	public float getBladerLevel() {
+	public int getBladerLevel() {
 		return bladerLevel;
+	}
+
+	@Override
+	public void setExperience(float experience) {
+		this.experience = experience;
+	}
+
+	@Override
+	public float getExperience() {
+		return experience;
+	}
+
+	@Override
+	public float getMaxExperience() {
+		return (float) Math.pow(10, bladerLevel);
 	}
 
 }

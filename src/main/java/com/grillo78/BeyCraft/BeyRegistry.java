@@ -101,23 +101,23 @@ public class BeyRegistry {
 	
 	/** Armors*/
 	public static final ItemBladerArmor AIGER_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_chestplate",
-			EntityEquipmentSlot.CHEST);
+			EntityEquipmentSlot.CHEST,"Aiger");
 	public static final ItemBladerArmor AIGER_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_leggings",
-			EntityEquipmentSlot.LEGS);
+			EntityEquipmentSlot.LEGS,"Aiger");
 	public static final ItemBladerArmor AIGER_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_boots",
-			EntityEquipmentSlot.FEET);
+			EntityEquipmentSlot.FEET,"Aiger");
 	public static final ItemBladerArmor VALT_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "valt_chestplate",
-			EntityEquipmentSlot.CHEST);
+			EntityEquipmentSlot.CHEST,"Aiger");
 	public static final ItemBladerArmor VALT_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "valt_leggings",
-			EntityEquipmentSlot.LEGS);
+			EntityEquipmentSlot.LEGS,"Aiger");
 	public static final ItemBladerArmor VALT_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "valt_boots",
-			EntityEquipmentSlot.FEET);
+			EntityEquipmentSlot.FEET,"Aiger");
 	public static final ItemBladerArmor TURBO_VALT_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL,
-			"turbo_valt_chestplate", EntityEquipmentSlot.CHEST);
+			"turbo_valt_chestplate", EntityEquipmentSlot.CHEST,"Aiger");
 	public static final ItemBladerArmor TURBO_VALT_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL,
-			"turbo_valt_leggings", EntityEquipmentSlot.LEGS);
+			"turbo_valt_leggings", EntityEquipmentSlot.LEGS,"Aiger");
 	public static final ItemBladerArmor TURBO_VALT_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "turbo_valt_boots",
-			EntityEquipmentSlot.FEET);
+			EntityEquipmentSlot.FEET,"Aiger");
 
 	/* Blocks */
 	public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.ANVIL, "Expository");

@@ -2,7 +2,13 @@ package com.grillo78.BeyCraft.capabilities;
 
 public interface IBladerLevel {
 
-	public void setBladerLevel(float level);
+	public void setBladerLevel(int level);
 	
-	public float getBladerLevel();
+	public int getBladerLevel();
+	
+	public void setExperience(float experience);
+	
+	public float getExperience();
+	
+	public float getMaxExperience();
 }

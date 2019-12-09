@@ -16,7 +16,7 @@ public class BladerLevelStorage implements IStorage<IBladerLevel> {
 
 	@Override
 	public void readNBT(Capability<IBladerLevel> capability, IBladerLevel instance, EnumFacing side, NBTBase nbt) {
-		instance.setBladerLevel(((NBTPrimitive) nbt).getFloat());
+		instance.setBladerLevel(((NBTPrimitive) nbt).getInt());
 	}
 
 }

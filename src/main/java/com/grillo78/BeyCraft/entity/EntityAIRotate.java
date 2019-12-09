@@ -58,7 +58,6 @@ public class EntityAIRotate extends EntityAIBase {
 							.getMetaFromState(bey.world.getBlockState(new BlockPos(bey.getPositionVector().x,
 									bey.getPositionVector().y - 0.1, bey.getPositionVector().z)))) {
 					case 0:
-
 						bey.move(MoverType.SELF, 0.1, 0, 0.1);
 						break;
 					case 1:

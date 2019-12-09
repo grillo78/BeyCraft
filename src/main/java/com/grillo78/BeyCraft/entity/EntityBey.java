@@ -13,7 +13,6 @@ import com.grillo78.BeyCraft.util.SoundHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
@@ -133,16 +132,10 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	}
 
 	@Override
-	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
-		this.setEquipmentBasedOnDifficulty(difficulty);
-		return super.onInitialSpawn(difficulty, livingdata);
-	}
-
-	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.005);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(500);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(90);
 	}
 
 	@Override
@@ -199,12 +192,12 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 									burstDamage * layer.getBurst() * ((EntityBey) entityIn).layer.getAttack());
 						}
 					}
-					this.radius = 0.1F;
-					((EntityBey) entityIn).radius = 0.1F;
+					this.radius = 0.15F;
+					((EntityBey) entityIn).radius = 0.15F;
 				}
-				this.rotationYaw += 90;
-				BeyCraft.logger.info("Collision");
 			}
+			this.rotationYaw += 90;
+			BeyCraft.logger.info("Collision");
 		}
 
 	}
