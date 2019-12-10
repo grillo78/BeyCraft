@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
+import com.grillo78.BeyCraft.Reference;
 import com.grillo78.BeyCraft.util.IHasModel;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -13,13 +14,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 
 public class ItemBeyPackage extends Item implements IHasModel{
 	public ItemBeyPackage(String name) {
 		this.setCreativeTab(BeyCraft.BEYCRAFTTAB);
-		this.setRegistryName(name);
+		setRegistryName(new ResourceLocation(Reference.MODID,name));
 		this.setUnlocalizedName(name);
 		BeyRegistry.ITEMS.add(this);
 	}

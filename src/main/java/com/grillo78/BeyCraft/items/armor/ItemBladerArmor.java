@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -24,7 +25,7 @@ public class ItemBladerArmor extends ItemArmor implements IHasModel {
 	public ItemBladerArmor(ArmorMaterial materialIn, String name, EntityEquipmentSlot equipmentSlotIn, String setName) {
 		super(materialIn, 0, equipmentSlotIn);
 		this.setCreativeTab(BeyCraft.BEYCRAFTTAB);
-		this.setRegistryName(name);
+		setRegistryName(new ResourceLocation(Reference.MODID,name));
 		this.setUnlocalizedName(name);
 		this.setMaxStackSize(1);
 		this.setName=setName;

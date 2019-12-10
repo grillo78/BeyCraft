@@ -2,6 +2,7 @@ package com.grillo78.BeyCraft.blocks;
 
 import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
+import com.grillo78.BeyCraft.Reference;
 import com.grillo78.BeyCraft.items.ItemBeyDisk;
 import com.grillo78.BeyCraft.items.ItemBeyDriver;
 import com.grillo78.BeyCraft.items.ItemBeyLayer;
@@ -23,6 +24,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -43,7 +45,7 @@ public class ExpositoryBlock extends BlockContainer implements IHasModel {
 	public ExpositoryBlock(Material materialIn, String name) {
 		super(materialIn);
 		setUnlocalizedName(name);
-		setRegistryName(name);
+		setRegistryName(new ResourceLocation(Reference.MODID,name));
 		setHardness(1);
 		setHarvestLevel("pickaxe", 0);
 		this.setCreativeTab(BeyCraft.BEYCRAFTTAB);

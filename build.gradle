@@ -24,7 +24,8 @@ compileJava {
 
 shadowJar {
 	dependencies{
-		exclude '/libs'
+		exclude(dependency('com.mrcrayfish:device-api:0.4.0-1.12.2'))
+		exclude(dependency('mezz.jei:jei_1.12.2:4.9.1.179'))
 	}
 	relocate 'org.apache.collections4', 'shadow.apache.collections4'
 	relocate 'org.slf4j', 'shadow.slf4j'

@@ -2,6 +2,7 @@ package com.grillo78.BeyCraft.items;
 
 import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
+import com.grillo78.BeyCraft.Reference;
 import com.grillo78.BeyCraft.capabilities.IBladerLevel;
 import com.grillo78.BeyCraft.capabilities.Provider;
 import com.grillo78.BeyCraft.entity.EntityBey;
@@ -18,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -29,7 +31,7 @@ public class ItemLauncher extends Item implements IHasModel {
 
 	public ItemLauncher(String name, int rotation) {
 		setCreativeTab(BeyCraft.BEYCRAFTTAB);
-		setRegistryName(name);
+		setRegistryName(new ResourceLocation(Reference.MODID,name));
 		setUnlocalizedName(name);
 		setMaxStackSize(1);
 		this.rotation = rotation;

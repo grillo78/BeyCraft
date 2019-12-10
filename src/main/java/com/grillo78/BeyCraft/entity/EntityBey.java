@@ -45,6 +45,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	private boolean stoped = false;
 	public float radius;
 	private int rotationDirection;
+	private int bladerLevel;
 	private String playerName;
 
 	public EntityBey(World worldIn) {
@@ -52,12 +53,13 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 				new ItemStack(BeyRegistry.XTENDDRIVER), 1, 1, "");
 	}
 
-	public EntityBey(World worldIn, ItemStack layerIn, ItemStack diskIn, ItemStack driverIn, float bladerLevel,
+	public EntityBey(World worldIn, ItemStack layerIn, ItemStack diskIn, ItemStack driverIn, int bladerLevel,
 			int rotationDirection, String playerName) {
 		super(worldIn);
 		this.setSize(0.253F, 0.253F);
 		this.height = 0.253F;
-		this.rotationSpeed = -10 * bladerLevel;
+		this.bladerLevel = bladerLevel;
+		this.rotationSpeed = -10 * this.bladerLevel;
 		maxRotationSpeed = rotationSpeed;
 		this.rotationDirection = rotationDirection;
 		this.playerName = playerName;
@@ -69,6 +71,10 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		BeyCraft.logger.info("Bey Launched");
 	}
 
+	public int getBladerLevel() {
+		return bladerLevel;
+	}
+	
 	@Override
 	public boolean canBreatheUnderwater() {
 		return true;
@@ -135,7 +141,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.005);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(90);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1024);
 	}
 
 	@Override
@@ -159,7 +165,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 	@Override
 	protected void initEntityAI() {
-		this.tasks.addTask(1, new EntityAIRotate(this));
+		this.tasks.addTask(0, new EntityAIRotate(this));
 	}
 
 	@Override
@@ -192,14 +198,13 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 									burstDamage * layer.getBurst() * ((EntityBey) entityIn).layer.getAttack());
 						}
 					}
-					this.radius = 0.15F;
+					this.radius = 0.15F*rotationSpeed/maxRotationSpeed;
 					((EntityBey) entityIn).radius = 0.15F;
 				}
 			}
-			this.rotationYaw += 90;
 			BeyCraft.logger.info("Collision");
+			this.rotationYaw += 90;
 		}
-
 	}
 
 	@Override

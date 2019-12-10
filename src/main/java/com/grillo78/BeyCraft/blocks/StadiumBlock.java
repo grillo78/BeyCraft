@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
+import com.grillo78.BeyCraft.Reference;
 import com.grillo78.BeyCraft.entity.EntityBey;
 import com.grillo78.BeyCraft.util.IHasModel;
 
@@ -22,6 +23,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -56,7 +58,7 @@ public class StadiumBlock extends Block implements IHasModel {
 	public StadiumBlock(Material materialIn, String name) {
 		super(materialIn);
 		setUnlocalizedName(name);
-		setRegistryName(name);
+		setRegistryName(new ResourceLocation(Reference.MODID,name));
 		setHardness(1);
 		setHarvestLevel("pickaxe", 0);
 		setCreativeTab(BeyCraft.BEYCRAFTTAB);
