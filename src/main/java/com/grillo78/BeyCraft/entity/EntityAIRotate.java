@@ -26,9 +26,7 @@ public class EntityAIRotate extends EntityAIBase {
 			if (bey.onGround) {
 				bey.move(MoverType.SELF, bey.getLookVec().x * bey.radius * 1.5, 0,
 						bey.getLookVec().z * bey.radius * 1.5);
-				if (!bey.isMovementStarted()) {
-					bey.setMovementStarted(true);
-				}if (!bey.world.isRemote) {
+				if (!bey.world.isRemote) {
 					if (bey.world.getBlockState(
 							new BlockPos(bey.getPositionVector().x + 0.23, bey.getPositionVector().y, bey.getPositionVector().z))
 							.getBlock() != BeyRegistry.STADIUM) {

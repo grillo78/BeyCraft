@@ -18,17 +18,17 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -39,9 +39,8 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	public ItemBeyDisk disk;
 	public ItemBeyDriver driver;
 	private final float maxRotationSpeed;
-	public float rotationSpeed;
+	private static final DataParameter<Float> ROTATIONSPEED = EntityDataManager.createKey(EntityBey.class, DataSerializers.FLOAT);
 	public float angle;
-	private boolean movementStarted = false;
 	private boolean stoped = false;
 	public float radius;
 	private int rotationDirection;
@@ -59,8 +58,8 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		this.setSize(0.253F, 0.253F);
 		this.height = 0.253F;
 		this.bladerLevel = bladerLevel;
-		this.rotationSpeed = -10 * this.bladerLevel;
-		maxRotationSpeed = rotationSpeed;
+		this.setRotationSpeed(-10 * this.bladerLevel);
+		maxRotationSpeed = getRotationSpeed();
 		this.rotationDirection = rotationDirection;
 		this.playerName = playerName;
 		radius = 0.2F;
@@ -71,6 +70,14 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		BeyCraft.logger.info("Bey Launched");
 	}
 
+	public float getRadius() {
+		return radius;
+	}
+	
+	public void setRadius(float radius) {
+		this.radius = radius;
+	}
+	
 	public int getBladerLevel() {
 		return bladerLevel;
 	}
@@ -80,9 +87,13 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		return true;
 	}
 
+	
+	public final float getRotationSpeed() {
+		return ((Float)this.dataManager.get(ROTATIONSPEED)).floatValue();
+	}
 	@Override
 	public void onUpdate() {
-		if (this.rotationSpeed < 0 && (world.getBlockState(this.getPosition().down()).getBlock() instanceof StadiumBlock
+		if (this.getRotationSpeed() < 0 && (world.getBlockState(this.getPosition().down()).getBlock() instanceof StadiumBlock
 				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR
 				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.STONE
 				|| (world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock && world
@@ -90,9 +101,9 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 								new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
 						.getBlock() instanceof StadiumBlock))) {
 
-			rotationSpeed += 0.005 * driver.friction;
-			rotationYaw -= rotationSpeed * rotationDirection / (-maxRotationSpeed * 0.1);
-			angle += rotationSpeed * 30 * rotationDirection;
+			setRotationSpeed(getRotationSpeed() + 0.005F * driver.friction);
+			rotationYaw -= getRotationSpeed() * rotationDirection / (-maxRotationSpeed * 0.1);
+			angle += getRotationSpeed() * 30 * rotationDirection;
 
 		} else {
 			if (world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock && !(world
@@ -115,13 +126,13 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 			if (!stoped) {
 				stoped = true;
 				BeyCraft.logger.info("Bey Stopped");
-				rotationSpeed = 0;
+				setRotationSpeed(0);
 			}
 
 		}
 
 		if (radius > 0) {
-			radius -= 0.001f * driver.radiusReduction * rotationSpeed / (maxRotationSpeed);
+			radius -= 0.001f * driver.radiusReduction * getRotationSpeed() / (maxRotationSpeed);
 		} else {
 			radius = 0;
 		}
@@ -130,6 +141,12 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 	}
 
+	@Override
+	protected void entityInit() {
+		this.dataManager.register(ROTATIONSPEED, Float.valueOf(1.0F));
+		super.entityInit();
+	}
+	
 	/**
 	 * @return the stoped
 	 */
@@ -174,32 +191,32 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		if (onGround) {
 			if (entityIn instanceof EntityBey) {
 				EntityBey entity = (EntityBey) entityIn;
-				if (this.rotationSpeed != 0) {
-					if (((EntityBey) entityIn).rotationSpeed < 0) {
+				if (this.getRotationSpeed() != 0) {
+					if (entity.getRotationSpeed() < 0) {
 						float damage = new Random().nextInt(5);
 						int burstDamage = new Random().nextInt(4);
 						if (layer.canAbsorb(this)) {
-							this.rotationSpeed -= damage * ((EntityBey) entityIn).layer.getAttack()
-									/ getLayer().getDefense();
+							setRotationSpeed(getRotationSpeed() - damage * entity.layer.getAttack()
+									/ getLayer().getDefense());
 						}
 						if (entity.layer.getDefense() != 0) {
 
-							((EntityBey) entityIn).rotationSpeed += damage * layer.getAttack()
-									/ ((EntityBey) entityIn).layer.getDefense();
+							entity.setRotationSpeed(entity.getRotationSpeed() + damage * layer.getAttack()
+									/ entity.layer.getDefense());
 						} else {
 
-							((EntityBey) entityIn).rotationSpeed += damage * layer.getAttack();
+							entity.setRotationSpeed( entity.getRotationSpeed()+ damage * layer.getAttack());
 						}
 						if (layer.getDefense() != 0) {
 							damageEntity(DamageSource.GENERIC, (burstDamage + layer.getBurst())
-									* ((EntityBey) entityIn).layer.getAttack() / layer.getDefense());
+									* entity.layer.getAttack() / layer.getDefense());
 						} else {
 							damageEntity(DamageSource.GENERIC,
-									burstDamage * layer.getBurst() * ((EntityBey) entityIn).layer.getAttack());
+									burstDamage * layer.getBurst() * entity.layer.getAttack());
 						}
 					}
-					this.radius = 0.15F*rotationSpeed/maxRotationSpeed;
-					((EntityBey) entityIn).radius = 0.15F;
+					this.radius = 0.15F*getRotationSpeed()/maxRotationSpeed;
+					entity.radius = 0.15F;
 				}
 			}
 			BeyCraft.logger.info("Collision");
@@ -246,17 +263,13 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		return SoundHandler.BEY_HIT;
 	}
 
-	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
-	}
-
 	@Override
 	public void readEntityFromNBT(NBTTagCompound compound) {
 		layer = (ItemBeyLayer) new ItemStack(compound.getCompoundTag("Layer")).getItem();
 		disk = (ItemBeyDisk) new ItemStack(compound.getCompoundTag("Disk")).getItem();
 		driver = (ItemBeyDriver) new ItemStack(compound.getCompoundTag("Driver")).getItem();
 		playerName = compound.getString("Player");
-		rotationSpeed = compound.getFloat("RotationSpeed");
+		setRotationSpeed(compound.getFloat("RotationSpeed"));
 		rotationDirection = compound.getInteger("RotationDirection");
 		radius = compound.getFloat("Radius");
 		angle = compound.getFloat("Angle");
@@ -270,7 +283,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		compound.setTag("Driver", new ItemStack(driver).writeToNBT(new NBTTagCompound()));
 		compound.setString("Player", playerName);
 		compound.setInteger("RotationDirection", rotationDirection);
-		compound.setFloat("RotationSpeed", rotationSpeed);
+		compound.setFloat("RotationSpeed", getRotationSpeed());
 		compound.setFloat("Radius", radius);
 		compound.setFloat("Angle", angle);
 		super.writeEntityToNBT(compound);
@@ -283,7 +296,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		compound.setTag("Disk", new ItemStack(disk).writeToNBT(new NBTTagCompound()));
 		compound.setTag("Driver", new ItemStack(driver).writeToNBT(new NBTTagCompound()));
 		compound.setString("Player", playerName);
-		compound.setFloat("RotationSpeed", rotationSpeed);
+		compound.setFloat("RotationSpeed", getRotationSpeed());
 		compound.setInteger("RotationDirection", rotationDirection);
 		compound.setFloat("Radius", radius);
 		compound.setFloat("Angle", angle);
@@ -299,7 +312,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 			disk = (ItemBeyDisk) new ItemStack(compound.getCompoundTag("Disk")).getItem();
 			driver = (ItemBeyDriver) new ItemStack(compound.getCompoundTag("Driver")).getItem();
 			playerName = compound.getString("Player");
-			rotationSpeed = compound.getFloat("RotationSpeed");
+			setRotationSpeed(compound.getFloat("RotationSpeed"));
 			rotationDirection = compound.getInteger("RotationDirection");
 			radius = compound.getFloat("Radius");
 			angle = compound.getFloat("Angle");
@@ -308,15 +321,12 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		}
 	}
 
+	private void setRotationSpeed(float rotationSpeed) {
+		
+		 this.dataManager.set(ROTATIONSPEED, Float.valueOf(rotationSpeed));
+	}
+
 	public int getRotationDirection() {
 		return rotationDirection;
-	}
-
-	public boolean isMovementStarted() {
-		return movementStarted;
-	}
-
-	public void setMovementStarted(boolean movementStarted) {
-		this.movementStarted = movementStarted;
 	}
 }
