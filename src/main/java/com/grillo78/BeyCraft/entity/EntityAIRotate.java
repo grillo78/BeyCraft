@@ -24,8 +24,8 @@ public class EntityAIRotate extends EntityAIBase {
 	public boolean shouldContinueExecuting() {
 		if (!bey.isStoped()) {
 			if (bey.onGround) {
-				bey.move(MoverType.SELF, bey.getLookVec().x * bey.radius * 1.5, 0,
-						bey.getLookVec().z * bey.radius * 1.5);
+				bey.move(MoverType.SELF, bey.getLookVec().x * bey.getRadius() * 1.5, 0,
+						bey.getLookVec().z * bey.getRadius() * 1.5);
 				if (!bey.world.isRemote) {
 					if (bey.world.getBlockState(
 							new BlockPos(bey.getPositionVector().x + 0.23, bey.getPositionVector().y, bey.getPositionVector().z))
@@ -48,7 +48,7 @@ public class EntityAIRotate extends EntityAIBase {
 						bey.rotationYaw = 0;
 					}
 				}
-				if (bey.radius == 0 && bey.world
+				if (bey.getRadius() == 0 && bey.world
 						.getBlockState(new BlockPos(bey.getPositionVector().x,
 								bey.getPositionVector().y + 1 - 0.0625 * 7, bey.getPositionVector().z))
 						.getBlock() instanceof StadiumBlock) {

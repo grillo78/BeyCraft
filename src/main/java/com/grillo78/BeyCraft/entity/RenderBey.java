@@ -38,7 +38,7 @@ public class RenderBey extends RenderLiving<EntityBey> {
 			GlStateManager.rotate(30, (float) entity.getLook(partialTicks).x * entity.getRotationDirection(), 0,
 					(float) entity.getLook(partialTicks).z * entity.getRotationDirection());
 		} else {
-			if (entity.radius == 0 && entity.getRotationSpeed() < -2) {
+			if (entity.getRadius() == 0 && entity.getRotationSpeed() < -2) {
 				GlStateManager.translate(0, 0.04, 0);
 			}
 		}
