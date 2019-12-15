@@ -76,7 +76,7 @@ public class ItemLauncher extends Item implements IHasModel {
 									.getBladerLevel(),
 							rotation, playerIn.getName());
 					beyEntity.setLocationAndAngles(playerIn.posX + playerIn.getLookVec().x, playerIn.posY + 1,
-							playerIn.posZ + playerIn.getLookVec().z, playerIn.rotationYaw - 30 * rotation, 0);
+							playerIn.posZ + playerIn.getLookVec().z, playerIn.rotationYaw, 0);
 					beyEntity.rotationYawHead = beyEntity.rotationYaw;
 					beyEntity.renderYawOffset = beyEntity.rotationYaw;
 					worldIn.spawnEntity(beyEntity);

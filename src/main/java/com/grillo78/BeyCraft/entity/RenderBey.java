@@ -50,13 +50,13 @@ public class RenderBey extends RenderLiving<EntityBey> {
 		}
 		GlStateManager.rotate(90, 1, 0, 0);
 		GlStateManager.translate(0, 0, 0.08);
-		GlStateManager.translate(0, 0, entity.driver.height + 0.01);
-		itemRenderer.renderItem(new ItemStack(entity.driver), ItemCameraTransforms.TransformType.FIXED);
+		GlStateManager.translate(0, 0, entity.driver.height + 0.16);
+		itemRenderer.renderItem(entity.driverStack, ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.translate(0, 0, entity.disk.height);
-		itemRenderer.renderItem(new ItemStack(entity.disk), ItemCameraTransforms.TransformType.FIXED);
+		itemRenderer.renderItem(entity.diskStack, ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.translate(0, 0, entity.layer.height);
 		GlStateManager.rotate(90 * entity.getHealth() / 1024 - 40, 0, 0, entity.getRotationDirection());
-		itemRenderer.renderItem(new ItemStack(entity.layer), ItemCameraTransforms.TransformType.FIXED);
+		itemRenderer.renderItem(entity.layerStack, ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.disableOutlineMode();
 		GlStateManager.disableColorMaterial();
 		GlStateManager.popAttrib();

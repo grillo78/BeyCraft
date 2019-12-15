@@ -5,6 +5,8 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import com.google.common.collect.Lists;
+import com.grillo78.BeyCraft.abilities.Absorb;
+import com.grillo78.BeyCraft.abilities.MultiType;
 import com.grillo78.BeyCraft.blocks.ExpositoryBlock;
 import com.grillo78.BeyCraft.blocks.StadiumBlock;
 import com.grillo78.BeyCraft.capabilities.Provider;
@@ -19,6 +21,7 @@ import com.grillo78.BeyCraft.items.ItemLauncher;
 import com.grillo78.BeyCraft.items.ItemLauncherHandle;
 import com.grillo78.BeyCraft.items.armor.ItemBladerArmor;
 import com.grillo78.BeyCraft.network.BladerLevelMessage;
+import com.grillo78.BeyCraft.util.BeyTypes;
 import com.grillo78.BeyCraft.util.IHasModel;
 
 import net.minecraft.block.Block;
@@ -50,6 +53,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
+import scala.actors.threadpool.Arrays;
 
 @EventBusSubscriber(modid = Reference.MODID)
 public class BeyRegistry {
@@ -70,59 +74,75 @@ public class BeyRegistry {
 
 	/* Items */
 	public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("Package");
-	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4", -0.08F, 1, false, 4, 1, 5, 3);
+	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4", -0.08F, 1, 4, 1, 5, 3, null, null,
+			BeyTypes.BALANCE);
 	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk", -0.15F);
-	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver", 0.15F, 1, 5);
-	public static final ItemBeyLayer FAFNIRF4 = new ItemBeyLayer("wizard_fafnir", -0.08F, -1, true, 1, 3, 5, 1);
+	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver", 0.15F, 1,2, new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE })), null,
+			BeyTypes.ATTACK);
+	public static final ItemBeyLayer FAFNIRF4 = new ItemBeyLayer("wizard_fafnir", -0.08F, -1, 1, 3, 5, 1, new Absorb(),
+			null, BeyTypes.STAMINA);
 	public static final ItemBeyDisk RATCHETDISK = new ItemBeyDisk("ratchet", -0.15F);
-	public static final ItemBeyDriver RISEDRIVER = new ItemBeyDriver("rise_driver", 0.15F, 1, 1);
-	public static final ItemBeyLayer VALTRYEKV4 = new ItemBeyLayer("ValtryekV4", -0.13F, 1, false, 5, 0, 5, 5);
+	public static final ItemBeyDriver RISEDRIVER = new ItemBeyDriver("rise_driver", 0.15F, 1, 3, null, null,
+			BeyTypes.STAMINA);
+	public static final ItemBeyLayer VALTRYEKV4 = new ItemBeyLayer("ValtryekV4", -0.13F, 1, 5, 0, 5, 5, null, null,
+			BeyTypes.ATTACK);
 	public static final ItemBeyDisk TWELVEDISK = new ItemBeyDisk("12disk", -0.15F);
-	public static final ItemBeyDriver VOLCANICDRIVER = new ItemBeyDriver("Volcanic_Driver", 0.15F, 1, 1);
-	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("ValtryekV2", -0.08F, 1, false, 4, 0, 1, 4);
+	public static final ItemBeyDriver VOLCANICDRIVER = new ItemBeyDriver("Volcanic_Driver", 0.15F, 1, 1, null, null,
+			BeyTypes.ATTACK);
+	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("ValtryekV2", -0.08F, 1, 4, 0, 1, 4, null, null,
+			BeyTypes.ATTACK);
 	public static final ItemBeyDisk BOOSTDISK = new ItemBeyDisk("boostdisk", -0.15F);
-	public static final ItemBeyDriver VARIABLEDRIVER = new ItemBeyDriver("Variable_Driver", 0.15F, 1, 1);
-	public static final ItemBeyLayer VALTRYEKV5 = new ItemBeyLayer("ValtryekV5", -0.15F, 1, false, 7, 0, 5, 5);
+	public static final ItemBeyDriver VARIABLEDRIVER = new ItemBeyDriver("Variable_Driver", 0.15F, 1, 1, null, null,
+			BeyTypes.ATTACK);
+	public static final ItemBeyLayer VALTRYEKV5 = new ItemBeyLayer("ValtryekV5", -0.15F, 1, 7, 0, 5, 5, null, null,
+			BeyTypes.ATTACK);
 	public static final ItemBeyDisk ZENITHDISK = new ItemBeyDisk("zenithdisk", -0.15F);
-	public static final ItemBeyDriver EVOLUTIONDRIVER = new ItemBeyDriver("evolution_driver", 0.15F, 1, 1);
-	public static final ItemBeyLayer REQUIEMSPRYZEN = new ItemBeyLayerDual("requiem_spryzen", -0.23F, true, 3, 3, 4, 1);
+	public static final ItemBeyDriver EVOLUTIONDRIVER = new ItemBeyDriver("evolution_driver", 0.15F, 1, 1, null, null,
+			BeyTypes.ATTACK);
+	public static final ItemBeyLayer REQUIEMSPRYZEN = new ItemBeyLayerDual("requiem_spryzen", -0.23F, 3, 3, 4, 1,
+			new Absorb(), null, BeyTypes.BALANCE);
 	public static final ItemBeyDisk ZERODISK = new ItemBeyDisk("0disk", -0.15F);
-	public static final ItemBeyLayer TURBOSPRYZEN = new ItemBeyLayerDual("TurboSpryzen", -0.12F, false, 5, 3, 5, 2);
+	public static final ItemBeyLayer TURBOSPRYZEN = new ItemBeyLayerDual("TurboSpryzen", -0.12F, 5, 3, 5, 2, null, null,
+			BeyTypes.BALANCE);
 	public static final ItemBeyDisk ZEROWDISK = new ItemBeyDisk("0wdisk", -0.15F);
-	public static final ItemBeyDriver ZETASDRIVER = new ItemBeyDriver("zetas_driver", 0.15F, 1, 1);
-	public static final ItemBeyLayer SALAMANDERS4 = new ItemBeyLayer("SalamanderS4", -0.08F, -1, false, 2, 3, 5, 2);
-	public static final ItemBeyDriver OPERATEDRIVER = new ItemBeyDriver("operate_driver", 0.15F, 1, 1);
-	public static final ItemBeyLayer VALTRYEKV3 = new ItemBeyLayer("ValtryekV3", -0.08F, 1, false, 4, 0, 1, 5);
+	public static final ItemBeyDriver ZETASDRIVER = new ItemBeyDriver("zetas_driver", 0.15F, 1, 1,
+			new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE, BeyTypes.STAMINA })), null,
+			BeyTypes.ATTACK);
+	public static final ItemBeyLayer SALAMANDERS4 = new ItemBeyLayer("SalamanderS4", -0.08F, -1, 2, 3, 5, 2,
+			new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE })), null, BeyTypes.ATTACK);
+	public static final ItemBeyDriver OPERATEDRIVER = new ItemBeyDriver("operate_driver", 0.15F, 1, 1,
+			new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE })), null, BeyTypes.ATTACK);
+	public static final ItemBeyLayer VALTRYEKV3 = new ItemBeyLayer("ValtryekV3", -0.08F, 1, 4, 0, 1, 5, null, null,
+			BeyTypes.ATTACK);
 	public static final ItemLauncher REDLAUNCHER = new ItemLauncher("Red_Launcher", 1);
 	public static final ItemLauncher LEFTLAUNCHER = new ItemLauncher("Left_Launcher", -1);
 	public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("LauncherHandle");
 	public static final ItemBeyLogger BEYLOGGER = new ItemBeyLogger("Beylogger");
 	public static final ItemBeyLogger BEYLOGGERPLUS = new ItemBeyLogger("Beylogger_Plus");
-	
-	/** Armors*/
+
+	/** Armors */
 	public static final ItemBladerArmor AIGER_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_chestplate",
-			EntityEquipmentSlot.CHEST,"Aiger");
+			EntityEquipmentSlot.CHEST, "Aiger");
 	public static final ItemBladerArmor AIGER_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_leggings",
-			EntityEquipmentSlot.LEGS,"Aiger");
+			EntityEquipmentSlot.LEGS, "Aiger");
 	public static final ItemBladerArmor AIGER_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_boots",
-			EntityEquipmentSlot.FEET,"Aiger");
+			EntityEquipmentSlot.FEET, "Aiger");
 	public static final ItemBladerArmor VALT_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "valt_chestplate",
-			EntityEquipmentSlot.CHEST,"Aiger");
+			EntityEquipmentSlot.CHEST, "Aiger");
 	public static final ItemBladerArmor VALT_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "valt_leggings",
-			EntityEquipmentSlot.LEGS,"Aiger");
+			EntityEquipmentSlot.LEGS, "Aiger");
 	public static final ItemBladerArmor VALT_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "valt_boots",
-			EntityEquipmentSlot.FEET,"Aiger");
+			EntityEquipmentSlot.FEET, "Aiger");
 	public static final ItemBladerArmor TURBO_VALT_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL,
-			"turbo_valt_chestplate", EntityEquipmentSlot.CHEST,"Aiger");
+			"turbo_valt_chestplate", EntityEquipmentSlot.CHEST, "Aiger");
 	public static final ItemBladerArmor TURBO_VALT_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL,
-			"turbo_valt_leggings", EntityEquipmentSlot.LEGS,"Aiger");
+			"turbo_valt_leggings", EntityEquipmentSlot.LEGS, "Aiger");
 	public static final ItemBladerArmor TURBO_VALT_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "turbo_valt_boots",
-			EntityEquipmentSlot.FEET,"Aiger");
+			EntityEquipmentSlot.FEET, "Aiger");
 
 	/* Blocks */
 	public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.ANVIL, "Expository");
 	public static final StadiumBlock STADIUM = new StadiumBlock(Material.IRON, "stadium");
-//	public static final StadiumBlock STADIUMAUX = new StadiumBlock(Material.IRON, "stadiumaux");
 
 	@SubscribeEvent
 	public static void registerBey(RegistryEvent.Register<EntityEntry> event) {
@@ -191,32 +211,35 @@ public class BeyRegistry {
 	@SubscribeEvent
 	public static void playerJoined(PlayerLoggedInEvent event) {
 		EntityPlayer player = event.player;
-    	TextComponentString prefix = new TextComponentString("[BeyCraft] -> Join to my Discord server: ");
-    	TextComponentString url = new TextComponentString("https://discord.gg/2PpbtFr");
-    	Style sPrefix = new Style();
-    	sPrefix.setColor(TextFormatting.GOLD);
-    	Style sUrl = new Style();
-    	sUrl.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr")).setColor(TextFormatting.GOLD);
-    	prefix.setStyle(sPrefix);
-    	url.setStyle(sUrl);
-        player.sendMessage(prefix);
-        player.sendMessage(url);
-        BeyCraft.INSTANCE.sendTo(new BladerLevelMessage((int) event.player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel()),
+		TextComponentString prefix = new TextComponentString("[BeyCraft] -> Join to my Discord server: ");
+		TextComponentString url = new TextComponentString("https://discord.gg/2PpbtFr");
+		Style sPrefix = new Style();
+		sPrefix.setColor(TextFormatting.GOLD);
+		Style sUrl = new Style();
+		sUrl.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr"))
+				.setColor(TextFormatting.GOLD);
+		prefix.setStyle(sPrefix);
+		url.setStyle(sUrl);
+		player.sendMessage(prefix);
+		player.sendMessage(url);
+		BeyCraft.INSTANCE.sendTo(
+				new BladerLevelMessage(
+						(int) event.player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel()),
 				(EntityPlayerMP) event.player);
 	}
-	
-	
+
 	@SubscribeEvent
 	public static void editHud(RenderGameOverlayEvent.Post event) {
-		if(!Minecraft.getMinecraft().gameSettings.showDebugInfo){
+		if (!Minecraft.getMinecraft().gameSettings.showDebugInfo) {
 			if (event.getType() == ElementType.ALL) {
 				Minecraft.getMinecraft().renderEngine
 						.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/bladerlevel.png"));
 				drawTexturedModalRect(0, 0, 0, 0, 140, 140);
 				Minecraft.getMinecraft().fontRenderer.drawString("Blader level:"
 //						+ Minecraft.getMinecraft().player.getEntityData().getInteger("BladerLevel"), 3,
-						+Minecraft.getMinecraft().player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel(), 3,
-						30, 0);
+						+ Minecraft.getMinecraft().player.getCapability(Provider.BLADERLEVEL_CAP, null)
+								.getBladerLevel(),
+						3, 30, 0);
 			}
 		}
 	}

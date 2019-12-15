@@ -8,6 +8,7 @@ import com.grillo78.BeyCraft.blocks.StadiumBlock;
 import com.grillo78.BeyCraft.items.ItemBeyDisk;
 import com.grillo78.BeyCraft.items.ItemBeyDriver;
 import com.grillo78.BeyCraft.items.ItemBeyLayer;
+import com.grillo78.BeyCraft.items.ItemLauncher;
 import com.grillo78.BeyCraft.util.SoundHandler;
 
 import io.netty.buffer.ByteBuf;
@@ -25,6 +26,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -32,18 +34,23 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnData {
 
 	public ItemBeyLayer layer;
 	public ItemBeyDisk disk;
 	public ItemBeyDriver driver;
+	public ItemStack layerStack;
+	public ItemStack diskStack;
+	public ItemStack driverStack;
 	private final float maxRotationSpeed;
 	private static final DataParameter<Float> ROTATIONSPEED = EntityDataManager.createKey(EntityBey.class,
 			DataSerializers.FLOAT);
 	private static final DataParameter<Float> RADIUS = EntityDataManager.createKey(EntityBey.class,
 			DataSerializers.FLOAT);
 	public float angle;
+	private boolean increaseRadius = false;
 	private boolean stoped = false;
 	private int rotationDirection;
 	private int bladerLevel;
@@ -57,21 +64,24 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	public EntityBey(World worldIn, ItemStack layerIn, ItemStack diskIn, ItemStack driverIn, int bladerLevel,
 			int rotationDirection, String playerName) {
 		super(worldIn);
-		this.setSize(0.253F, 0.253F);
-		this.height = 0.253F;
+        this.setSize(0.25F, 0.25F);
+		this.height = 0.25F;
 		this.bladerLevel = bladerLevel;
 		this.setRotationSpeed(-10 * this.bladerLevel);
 		maxRotationSpeed = getRotationSpeed();
 		this.rotationDirection = rotationDirection;
 		this.playerName = playerName;
-		setRadius(0.2F);
+		setRadius(1.5F);
 		angle = 10;
+		layerStack = layerIn.copy();
+		diskStack = diskIn.copy();
+		driverStack = driverIn.copy();
 		layer = (ItemBeyLayer) layerIn.getItem();
 		disk = (ItemBeyDisk) diskIn.getItem();
 		driver = (ItemBeyDriver) driverIn.getItem();
 		BeyCraft.logger.info("Bey Launched");
 	}
-
+	
 	public final float getRadius() {
 		return ((Float) this.dataManager.get(RADIUS)).floatValue();
 	}
@@ -93,19 +103,25 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		return ((Float) this.dataManager.get(ROTATIONSPEED)).floatValue();
 	}
 
+	/**
+	 * @return the maxRotationSpeed
+	 */
+	public float getMaxRotationSpeed() {
+		return maxRotationSpeed;
+	}
+
 	@Override
 	public void onUpdate() {
 		if (this.getRotationSpeed() < 0 && (world.getBlockState(this.getPosition().down())
 				.getBlock() instanceof StadiumBlock
 				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR
-				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.STONE
 				|| (world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock && world
 						.getBlockState(
 								new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
 						.getBlock() instanceof StadiumBlock))) {
 
 			setRotationSpeed(getRotationSpeed() + 0.005F * driver.friction);
-			rotationYaw -= getRotationSpeed() * rotationDirection / (-maxRotationSpeed * 0.1);
+			rotationYaw -= getRotationSpeed() * rotationDirection*2.5 / (-maxRotationSpeed * 0.1);
 			angle += getRotationSpeed() * 30 * rotationDirection;
 
 		} else {
@@ -134,10 +150,17 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 		}
 
-		if (getRadius() > 0) {
-			setRadius(getRadius() - 0.001f * driver.radiusReduction * getRotationSpeed() / (maxRotationSpeed));
+		if (getRadius() > 0 && !increaseRadius) {
+			setRadius(getRadius() - 0.005f * driver.radiusReduction * getRotationSpeed() / (maxRotationSpeed));
 		} else {
-			setRadius(0);;
+			if (increaseRadius) {
+				setRadius(getRadius() + 0.01f * driver.radiusReduction * getRotationSpeed() / (maxRotationSpeed));
+				if (getRadius() >= 1F) {
+					increaseRadius = false;
+				}
+			} else {
+				setRadius(0);
+			}
 		}
 
 		super.onUpdate();
@@ -166,20 +189,45 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	}
 
 	@Override
-	public void onDeath(DamageSource cause) {
-		world.removeEntity(this);
-	}
-
-	@Override
-	public void onRemovedFromWorld() {
-		dropItems();
-		super.onRemovedFromWorld();
-	}
-
-	@Override
 	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
 		if (!player.isSpectator()) {
-			world.removeEntity(this);
+			if (player.getHeldItem(hand).getItem() instanceof ItemLauncher
+					&& ((ItemLauncher) player.getHeldItem(hand).getItem()).getRotation() == rotationDirection) {
+				if (player.getHeldItem(hand).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+						.getStackInSlot(0).getCount() == 0) {
+					player.getHeldItem(hand).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+							.insertItem(0, layerStack, false);
+				} else {
+					if (!world.isRemote) {
+						EntityItem item = new EntityItem(world, posX, posY, posZ, layerStack);
+						world.spawnEntity(item);
+					}
+				}
+				if (player.getHeldItem(hand).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+						.getStackInSlot(1).getCount() == 0) {
+					player.getHeldItem(hand).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+							.insertItem(1, diskStack, false);
+				} else {
+					if (!world.isRemote) {
+						EntityItem item = new EntityItem(world, posX, posY, posZ, diskStack);
+						world.spawnEntity(item);
+					}
+				}
+				if (player.getHeldItem(hand).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+						.getStackInSlot(2).getCount() == 0) {
+					player.getHeldItem(hand).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+							.insertItem(2, driverStack, false);
+				} else {
+					if (!world.isRemote) {
+						EntityItem item = new EntityItem(world, posX, posY, posZ, driverStack);
+						world.spawnEntity(item);
+					}
+				}
+				world.removeEntity(this);
+			} else {
+				dropItems();
+				setDead();
+			}
 		}
 		return EnumActionResult.SUCCESS;
 	}
@@ -192,24 +240,26 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	@Override
 	protected void collideWithEntity(Entity entityIn) {
 		super.collideWithEntity(entityIn);
-		if (onGround) {
+		if (onGround && !world.isRemote) {
 			if (entityIn instanceof EntityBey) {
 				EntityBey entity = (EntityBey) entityIn;
 				if (this.getRotationSpeed() != 0) {
 					if (entity.getRotationSpeed() < 0) {
 						float damage = new Random().nextInt(5);
 						int burstDamage = new Random().nextInt(4);
-						if (layer.canAbsorb(this)) {
+						if (layer.canAbsorb(entity)) {
 							setRotationSpeed(
 									getRotationSpeed() - damage * entity.layer.getAttack() / getLayer().getDefense());
 						}
-						if (entity.layer.getDefense() != 0) {
+						if (entity.layer.canAbsorb(this)) {
+							if (entity.layer.getDefense() != 0) {
 
-							entity.setRotationSpeed(
-									entity.getRotationSpeed() + damage * layer.getAttack() / entity.layer.getDefense());
-						} else {
+								entity.setRotationSpeed(entity.getRotationSpeed()
+										+ damage * layer.getAttack() / entity.layer.getDefense());
+							} else {
 
-							entity.setRotationSpeed(entity.getRotationSpeed() + damage * layer.getAttack());
+								entity.setRotationSpeed(entity.getRotationSpeed() + damage * layer.getAttack());
+							}
 						}
 						if (layer.getDefense() != 0) {
 							damageEntity(DamageSource.GENERIC,
@@ -219,15 +269,18 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 									burstDamage * layer.getBurst() * entity.layer.getAttack());
 						}
 						playSound(getHurtSound(DamageSource.GENERIC), 1, 1);
-					}
-					if(getRadius()!=0) {
-						this.rotationYaw -= 90;
-					}
-					if(new Random().nextInt(10)==1) {
-						this.rotationYaw -= 90;
-						move(MoverType.SELF, getLookVec().x * getRadius() * 1.5, 0, getLookVec().z * getRadius() * 1.5);
-						setRadius(0.2F);
-						entity.setRadius(0.2F);
+						if (getRadius() != 0) {
+							this.rotationYaw += 90 * rotationDirection;
+						}
+						if (new Random().nextInt(10) == 1 && getRadius() == 0) {
+							this.rotationYaw += 90;
+							move(MoverType.SELF, getLookVec().x * getRadius() * 1.5, 0,
+									getLookVec().z * getRadius() * 1.5);
+							setRadius(0.001F);
+							entity.setRadius(0.001F);
+							increaseRadius = true;
+							entity.increaseRadius = true;
+						}
 					}
 				}
 			}
@@ -250,11 +303,11 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 	private void dropItems() {
 		if (!world.isRemote) {
-			EntityItem itemLayer = new EntityItem(world, posX, posY, posZ, new ItemStack(layer));
+			EntityItem itemLayer = new EntityItem(world, posX, posY, posZ, layerStack);
 			world.spawnEntity(itemLayer);
-			EntityItem itemDisk = new EntityItem(world, posX, posY, posZ, new ItemStack(disk));
+			EntityItem itemDisk = new EntityItem(world, posX, posY, posZ, diskStack);
 			world.spawnEntity(itemDisk);
-			EntityItem itemDriver = new EntityItem(world, posX, posY, posZ, new ItemStack(driver));
+			EntityItem itemDriver = new EntityItem(world, posX, posY, posZ, driverStack);
 			world.spawnEntity(itemDriver);
 		}
 	}
@@ -263,10 +316,10 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	protected boolean canDespawn() {
 		return false;
 	}
-
+	
 	@Override
-	protected SoundEvent getDeathSound() {
-		return SoundHandler.BEY_HIT;
+	public boolean isEntityInsideOpaqueBlock() {
+		return false;
 	}
 
 	@Override

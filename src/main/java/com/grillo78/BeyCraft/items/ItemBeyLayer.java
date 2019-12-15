@@ -2,35 +2,31 @@ package com.grillo78.BeyCraft.items;
 
 import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
-import com.grillo78.BeyCraft.Reference;
+import com.grillo78.BeyCraft.abilities.Absorb;
+import com.grillo78.BeyCraft.abilities.IAbility;
 import com.grillo78.BeyCraft.entity.EntityBey;
+import com.grillo78.BeyCraft.util.BeyTypes;
 import com.grillo78.BeyCraft.util.IHasModel;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 
-public class ItemBeyLayer extends Item implements IHasModel {
+public class ItemBeyLayer extends ItemBeyPart implements IHasModel {
 
 	public final float height;
 	protected final float rotationDirection;
-	private final boolean canAbsorb;
 	private final int attack;
 	private final int defense;
 	private final int weight;
 	private final int burst;
 
-	public ItemBeyLayer(String name, float height, int rotationDirection, boolean canAbsorb, int attack, int defense, int weight, int burst) {
-		setCreativeTab(BeyCraft.BEYCRAFTLAYERS);
-		setRegistryName(new ResourceLocation(Reference.MODID,name));
-		setUnlocalizedName(name);
-		setMaxStackSize(1);
+	public ItemBeyLayer(String name, float height, int rotationDirection, int attack, int defense, int weight,
+			int burst, IAbility primaryAbility, IAbility secundaryAbility, BeyTypes type) {
+		super(name, type, primaryAbility, secundaryAbility, BeyCraft.BEYCRAFTLAYERS);
 		this.attack = attack;
 		this.defense = defense;
 		this.weight = weight;
 		this.burst = burst;
-		this.canAbsorb = canAbsorb;
 		this.height = height;
 		this.rotationDirection = rotationDirection;
 		BeyRegistry.ITEMSLAYER.add(this);
@@ -38,10 +34,6 @@ public class ItemBeyLayer extends Item implements IHasModel {
 
 	public float getHeight() {
 		return height;
-	}
-
-	public boolean isCanAbsorb() {
-		return canAbsorb;
 	}
 
 	public int getAttack() {
@@ -65,7 +57,8 @@ public class ItemBeyLayer extends Item implements IHasModel {
 	}
 
 	public boolean canAbsorb(EntityBey entity) {
-		return canAbsorb && entity.getRotationDirection() != rotationDirection;
+		return (PRIMARYABILITY instanceof Absorb || SECUNDARYABILITY instanceof Absorb)
+				&& entity.getRotationDirection() != rotationDirection;
 	}
 
 	@Override
@@ -73,6 +66,5 @@ public class ItemBeyLayer extends Item implements IHasModel {
 		ModelLoader.setCustomModelResourceLocation(this, 0,
 				new ModelResourceLocation(this.getRegistryName(), "inventory"));
 	}
-	
-	
+
 }

@@ -10,6 +10,8 @@ import net.minecraft.util.math.BlockPos;
 public class EntityAIRotate extends EntityAIBase {
 
 	private final EntityBey bey;
+	private int count = 0;
+	private boolean movementStarted = false;
 
 	public EntityAIRotate(EntityBey bey) {
 		this.bey = bey;
@@ -24,27 +26,23 @@ public class EntityAIRotate extends EntityAIBase {
 	public boolean shouldContinueExecuting() {
 		if (!bey.isStoped()) {
 			if (bey.onGround) {
-				bey.move(MoverType.SELF, bey.getLookVec().x * bey.getRadius() * 1.5, 0,
-						bey.getLookVec().z * bey.getRadius() * 1.5);
+				bey.move(MoverType.SELF, bey.getLookVec().x * bey.getRadius() * 0.5, 0,
+						bey.getLookVec().z * bey.getRadius() * 0.5);
 				if (!bey.world.isRemote) {
-					if (bey.world.getBlockState(
-							new BlockPos(bey.getPositionVector().x + 0.23, bey.getPositionVector().y, bey.getPositionVector().z))
-							.getBlock() != BeyRegistry.STADIUM) {
+					if (bey.world.getBlockState(new BlockPos(bey.getPositionVector().x + 0.23,
+							bey.getPositionVector().y, bey.getPositionVector().z)).getBlock() != BeyRegistry.STADIUM) {
 						bey.rotationYaw = 90;
 					}
-					if (bey.world.getBlockState(
-							new BlockPos(bey.getPositionVector().x - 0.23, bey.getPositionVector().y, bey.getPositionVector().z))
-							.getBlock() != BeyRegistry.STADIUM) {
+					if (bey.world.getBlockState(new BlockPos(bey.getPositionVector().x - 0.23,
+							bey.getPositionVector().y, bey.getPositionVector().z)).getBlock() != BeyRegistry.STADIUM) {
 						bey.rotationYaw = -90;
 					}
-					if (bey.world.getBlockState(
-							new BlockPos(bey.getPositionVector().x, bey.getPositionVector().y, bey.getPositionVector().z + 0.23))
-							.getBlock() != BeyRegistry.STADIUM) {
+					if (bey.world.getBlockState(new BlockPos(bey.getPositionVector().x, bey.getPositionVector().y,
+							bey.getPositionVector().z + 0.23)).getBlock() != BeyRegistry.STADIUM) {
 						bey.rotationYaw = 180;
 					}
-					if (bey.world.getBlockState(
-							new BlockPos(bey.getPositionVector().x, bey.getPositionVector().y, bey.getPositionVector().z - 0.23))
-							.getBlock() != BeyRegistry.STADIUM) {
+					if (bey.world.getBlockState(new BlockPos(bey.getPositionVector().x, bey.getPositionVector().y,
+							bey.getPositionVector().z - 0.23)).getBlock() != BeyRegistry.STADIUM) {
 						bey.rotationYaw = 0;
 					}
 				}
