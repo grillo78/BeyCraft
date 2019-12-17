@@ -77,9 +77,16 @@ public class BeyRegistry {
 	public static final ItemBeyLayer ACHILLESA4 = new ItemBeyLayer("AchillesA4", -0.08F, 1, 4, 1, 5, 3, null, null,
 			BeyTypes.BALANCE);
 	public static final ItemBeyDisk ELEVENDISK = new ItemBeyDisk("11disk", -0.15F);
-	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver", 0.15F, 1,2, new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE })), null,
-			BeyTypes.ATTACK);
-	public static final ItemBeyLayer FAFNIRF4 = new ItemBeyLayer("wizard_fafnir", -0.08F, -1, 1, 3, 5, 1, new Absorb(),
+	public static final ItemBeyDriver XTENDDRIVER = new ItemBeyDriver("XtendDriver", 0.15F, 1, 2,
+			new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE })), null, BeyTypes.ATTACK);
+	public static final ItemBeyLayer FAFNIRF3 = new ItemBeyLayer("drain_fafnir", -0.08F, -1, 1, 3, 5, 1, new Absorb(),
+			null, BeyTypes.STAMINA);
+	public static final ItemBeyDisk EIGHTDISK = new ItemBeyDisk("8disk", -0.15F);
+	public static final ItemBeyDriver NOPTHINGDRIVER = new ItemBeyDriver("nothing_driver", 0.15F, 1, 3, null, null,
+			BeyTypes.STAMINA);
+	public static final ItemBeyLayer FAFNIRF4 = new ItemBeyLayer("geist_fafnir", -0.08F, -1, 1, 3, 5, 1, new Absorb(),
+			null, BeyTypes.STAMINA);
+	public static final ItemBeyLayer FAFNIRF5 = new ItemBeyLayer("wizard_fafnir", -0.08F, -1, 1, 3, 5, 1, new Absorb(),
 			null, BeyTypes.STAMINA);
 	public static final ItemBeyDisk RATCHETDISK = new ItemBeyDisk("ratchet", -0.15F);
 	public static final ItemBeyDriver RISEDRIVER = new ItemBeyDriver("rise_driver", 0.15F, 1, 3, null, null,
@@ -108,12 +115,29 @@ public class BeyRegistry {
 	public static final ItemBeyDriver ZETASDRIVER = new ItemBeyDriver("zetas_driver", 0.15F, 1, 1,
 			new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE, BeyTypes.STAMINA })), null,
 			BeyTypes.ATTACK);
+	public static final ItemBeyLayer SPRYZEN = new ItemBeyLayer("spryzen", -0.23F, 1, 5, 3, 5, 2, null, null,
+			BeyTypes.BALANCE);
+	public static final ItemBeyDisk SPREADDISK = new ItemBeyDisk("spreaddisk", -0.15F);
+	public static final ItemBeyDriver FUSIONDRIVER = new ItemBeyDriver("fusion_driver", 0.15F, 1, 1,
+			null, null,
+			BeyTypes.BALANCE);
+	public static final ItemBeyLayer STORMSPRYZEN = new ItemBeyLayer("storm_spryzen", -0.23F, 1, 5, 3, 5, 2, null, null,
+			BeyTypes.BALANCE);
+	public static final ItemBeyDisk KNUKLEDISK = new ItemBeyDisk("knukledisk", -0.15F);
+	public static final ItemBeyDriver UNITEDRIVER = new ItemBeyDriver("unite_driver", 0.15F, 1, 1,
+			null, null,
+			BeyTypes.BALANCE);
 	public static final ItemBeyLayer SALAMANDERS4 = new ItemBeyLayer("SalamanderS4", -0.08F, -1, 2, 3, 5, 2,
 			new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE })), null, BeyTypes.ATTACK);
 	public static final ItemBeyDriver OPERATEDRIVER = new ItemBeyDriver("operate_driver", 0.15F, 1, 1,
 			new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE })), null, BeyTypes.ATTACK);
 	public static final ItemBeyLayer VALTRYEKV3 = new ItemBeyLayer("ValtryekV3", -0.08F, 1, 4, 0, 1, 5, null, null,
 			BeyTypes.ATTACK);
+	public static final ItemBeyLayer STRIKEVALTRYEKV3 = new ItemBeyLayer("Strike_Valtryek", -0.08F, 1, 4, 0, 1, 5, null,
+			null, BeyTypes.ATTACK);
+	public static final ItemBeyDisk SIXVDISK = new ItemBeyDisk("6vdisk", -0.15F);
+	public static final ItemBeyDriver REBOOTDRIVER = new ItemBeyDriver("reboot_driver", 0.15F, 1, 1,
+			new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE })), null, BeyTypes.ATTACK);
 	public static final ItemLauncher REDLAUNCHER = new ItemLauncher("Red_Launcher", 1);
 	public static final ItemLauncher LEFTLAUNCHER = new ItemLauncher("Left_Launcher", -1);
 	public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("LauncherHandle");
@@ -235,11 +259,8 @@ public class BeyRegistry {
 				Minecraft.getMinecraft().renderEngine
 						.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/bladerlevel.png"));
 				drawTexturedModalRect(0, 0, 0, 0, 140, 140);
-				Minecraft.getMinecraft().fontRenderer.drawString("Blader level:"
-//						+ Minecraft.getMinecraft().player.getEntityData().getInteger("BladerLevel"), 3,
-						+ Minecraft.getMinecraft().player.getCapability(Provider.BLADERLEVEL_CAP, null)
-								.getBladerLevel(),
-						3, 30, 0);
+				Minecraft.getMinecraft().fontRenderer.drawString("Blader level:" + Minecraft.getMinecraft().player
+						.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel(), 3, 30, 0);
 			}
 		}
 	}

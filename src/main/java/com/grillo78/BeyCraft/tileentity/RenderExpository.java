@@ -18,6 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderExpository extends TileEntitySpecialRenderer<ExpositoryTileEntity> {
 	private int angle;
 	private final ExpositoryModel model;
+	private float partialTicks = 0;
 
 	public RenderExpository() {
 		this.model = new ExpositoryModel();
@@ -34,7 +35,7 @@ public class RenderExpository extends TileEntitySpecialRenderer<ExpositoryTileEn
 		Minecraft.getMinecraft().renderEngine
 				.bindTexture(new ResourceLocation("minecraft:textures/blocks/concrete_white.png"));
 		model.render(0.0625F);
-		GlStateManager.translate(0, 1.7, 0);
+		GlStateManager.translate(0, 1.55, 0);
 		GlStateManager.rotate(90, 1, 0, 0);
 		GlStateManager.rotate(angle, 0, 0, 1);
 		if (te.getStackInSlot(2).getCount() != 0) {
@@ -52,24 +53,31 @@ public class RenderExpository extends TileEntitySpecialRenderer<ExpositoryTileEn
 			Minecraft.getMinecraft().getRenderItem().renderItem(te.getStackInSlot(0),
 					ItemCameraTransforms.TransformType.FIXED);
 		}
-		angle++;
+
 		GlStateManager.popAttrib();
 		GlStateManager.popMatrix();
 
-		if (this.rendererDispatcher.cameraHitResult != null
-				&& te.getPos().equals(this.rendererDispatcher.cameraHitResult.getBlockPos())) {
-			this.setLightmapDisabled(true);
-			if(te.getStackInSlot(0).getItem() != Items.AIR) {
+		if(partialTicks!=this.partialTicks) {
+			angle++;
+			this.partialTicks = partialTicks;
+		}
 
-				this.drawNameplate(te, te.getStackInSlot(0).getDisplayName(), x, y+0.3, z, 12);
+		if (!Minecraft.getMinecraft().gameSettings.hideGUI) {
+			if (this.rendererDispatcher.cameraHitResult != null
+					&& te.getPos().equals(this.rendererDispatcher.cameraHitResult.getBlockPos())) {
+				this.setLightmapDisabled(true);
+				if (te.getStackInSlot(0).getItem() != Items.AIR) {
+
+					this.drawNameplate(te, te.getStackInSlot(0).getDisplayName(), x, y + 0.3, z, 12);
+				}
+				if (te.getStackInSlot(1).getItem() != Items.AIR) {
+					this.drawNameplate(te, te.getStackInSlot(1).getDisplayName(), x, y, z, 12);
+				}
+				if (te.getStackInSlot(2).getItem() != Items.AIR) {
+					this.drawNameplate(te, te.getStackInSlot(2).getDisplayName(), x, y - 0.3, z, 12);
+				}
+				this.setLightmapDisabled(false);
 			}
-			if(te.getStackInSlot(1).getItem() != Items.AIR) {
-				this.drawNameplate(te, te.getStackInSlot(1).getDisplayName(), x, y, z, 12);
-			}
-			if(te.getStackInSlot(2).getItem() != Items.AIR) {
-				this.drawNameplate(te, te.getStackInSlot(2).getDisplayName(), x, y-0.3, z, 12);
-			}
-			this.setLightmapDisabled(false);
 		}
 	}
 }

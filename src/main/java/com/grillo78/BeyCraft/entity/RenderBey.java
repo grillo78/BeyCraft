@@ -51,17 +51,17 @@ public class RenderBey extends RenderLiving<EntityBey> {
 		GlStateManager.rotate(90, 1, 0, 0);
 		GlStateManager.translate(0, 0, 0.08);
 		GlStateManager.translate(0, 0, entity.driver.height + 0.16);
-		itemRenderer.renderItem(entity.driverStack, ItemCameraTransforms.TransformType.FIXED);
+		itemRenderer.renderItem(new ItemStack(entity.driver), ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.translate(0, 0, entity.disk.height);
-		itemRenderer.renderItem(entity.diskStack, ItemCameraTransforms.TransformType.FIXED);
+		itemRenderer.renderItem(new ItemStack(entity.disk), ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.translate(0, 0, entity.layer.height);
 		GlStateManager.rotate(90 * entity.getHealth() / 1024 - 40, 0, 0, entity.getRotationDirection());
-		itemRenderer.renderItem(entity.layerStack, ItemCameraTransforms.TransformType.FIXED);
+		itemRenderer.renderItem(new ItemStack(entity.layer), ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.disableOutlineMode();
 		GlStateManager.disableColorMaterial();
 		GlStateManager.popAttrib();
 		GlStateManager.popMatrix();
-		if (this.renderManager.pointedEntity == entity && !Minecraft.getMinecraft().player.isSpectator()) {
+		if (this.renderManager.pointedEntity == entity && !Minecraft.getMinecraft().player.isSpectator() && !Minecraft.getMinecraft().gameSettings.hideGUI) {
 			this.renderEntityName(entity, x, y + 0.9, z, new ItemStack(entity.layer).getDisplayName(), 10);
 			this.renderEntityName(entity, x, y + 0.6, z, new ItemStack(entity.disk).getDisplayName(), 10);
 			this.renderEntityName(entity, x, y + 0.3, z, new ItemStack(entity.driver).getDisplayName(), 10);

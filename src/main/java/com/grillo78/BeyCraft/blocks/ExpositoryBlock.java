@@ -64,7 +64,18 @@ public class ExpositoryBlock extends BlockContainer implements IHasModel {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
 				new ModelResourceLocation(this.getRegistryName(), "inventory"));
 	}
-
+	
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		if(worldIn.getTileEntity(pos) instanceof ExpositoryTileEntity) {
+			ExpositoryTileEntity tileentity = (ExpositoryTileEntity)worldIn.getTileEntity(pos);
+			worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), tileentity.getStackInSlot(0)));
+			worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), tileentity.getStackInSlot(1)));
+			worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), tileentity.getStackInSlot(2)));
+		}
+		super.breakBlock(worldIn, pos, state);
+	}
+	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {

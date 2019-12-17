@@ -16,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -64,7 +65,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	public EntityBey(World worldIn, ItemStack layerIn, ItemStack diskIn, ItemStack driverIn, int bladerLevel,
 			int rotationDirection, String playerName) {
 		super(worldIn);
-        this.setSize(0.25F, 0.25F);
+		this.setSize(0.25F, 0.25F);
 		this.height = 0.25F;
 		this.bladerLevel = bladerLevel;
 		this.setRotationSpeed(-10 * this.bladerLevel);
@@ -81,7 +82,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 		driver = (ItemBeyDriver) driverIn.getItem();
 		BeyCraft.logger.info("Bey Launched");
 	}
-	
+
 	public final float getRadius() {
 		return ((Float) this.dataManager.get(RADIUS)).floatValue();
 	}
@@ -121,9 +122,10 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 						.getBlock() instanceof StadiumBlock))) {
 
 			setRotationSpeed(getRotationSpeed() + 0.005F * driver.friction);
-			rotationYaw -= getRotationSpeed() * rotationDirection*2.5 / (-maxRotationSpeed * 0.1);
+			if (!stoped) {
+				rotationYaw -= getRotationSpeed() * rotationDirection * 2 / (-maxRotationSpeed * 0.1);
+			}
 			angle += getRotationSpeed() * 30 * rotationDirection;
-
 		} else {
 			if (world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock && !(world
 					.getBlockState(
@@ -184,7 +186,6 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.005);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1024);
 	}
 
@@ -223,9 +224,8 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 						world.spawnEntity(item);
 					}
 				}
-				world.removeEntity(this);
+				super.setDead();
 			} else {
-				dropItems();
 				setDead();
 			}
 		}
@@ -233,8 +233,15 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	}
 
 	@Override
+	public void setDead() {
+		dropItems();
+		super.setDead();
+	}
+
+	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAIRotate(this));
+		this.tasks.addTask(1, new EntityAIWatchClosest(this, EntityBey.class, 1, 1));
 	}
 
 	@Override
@@ -246,7 +253,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 				if (this.getRotationSpeed() != 0) {
 					if (entity.getRotationSpeed() < 0) {
 						float damage = new Random().nextInt(5);
-						int burstDamage = new Random().nextInt(4);
+						int burstDamage = new Random().nextInt(3);
 						if (layer.canAbsorb(entity)) {
 							setRotationSpeed(
 									getRotationSpeed() - damage * entity.layer.getAttack() / getLayer().getDefense());
@@ -260,26 +267,30 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 								entity.setRotationSpeed(entity.getRotationSpeed() + damage * layer.getAttack());
 							}
-						}
-						if (layer.getDefense() != 0) {
-							damageEntity(DamageSource.GENERIC,
-									(burstDamage + layer.getBurst()) * entity.layer.getAttack() / layer.getDefense());
-						} else {
-							damageEntity(DamageSource.GENERIC,
-									burstDamage * layer.getBurst() * entity.layer.getAttack());
+							if (layer.getDefense() != 0) {
+								damageEntity(DamageSource.GENERIC, (burstDamage + layer.getBurst())
+										* entity.layer.getAttack() / layer.getDefense());
+							} else {
+								damageEntity(DamageSource.GENERIC,
+										burstDamage * layer.getBurst() * entity.layer.getAttack());
+							}
 						}
 						playSound(getHurtSound(DamageSource.GENERIC), 1, 1);
 						if (getRadius() != 0) {
-							this.rotationYaw += 90 * rotationDirection;
-						}
-						if (new Random().nextInt(10) == 1 && getRadius() == 0) {
-							this.rotationYaw += 90;
-							move(MoverType.SELF, getLookVec().x * getRadius() * 1.5, 0,
-									getLookVec().z * getRadius() * 1.5);
-							setRadius(0.001F);
-							entity.setRadius(0.001F);
-							increaseRadius = true;
-							entity.increaseRadius = true;
+							this.rotationYaw += 80 * rotationDirection;
+						} else {
+							int randomNumber = new Random().nextInt(10);
+							if (randomNumber == 1) {
+								this.rotationYaw += 90;
+								move(MoverType.SELF, getLookVec().x * getRadius() * 1.5, 0,
+										getLookVec().z * getRadius() * 1.5);
+								setRadius(0.001F);
+								increaseRadius = true;
+							} else {
+								setRadius(0.005F);
+								entity.setRadius(0.005F);
+								this.rotationYaw += 90;
+							}
 						}
 					}
 				}
@@ -303,11 +314,20 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 
 	private void dropItems() {
 		if (!world.isRemote) {
-			EntityItem itemLayer = new EntityItem(world, posX, posY, posZ, layerStack);
+			if (layerStack.getItem() != layer) {
+				layerStack = new ItemStack(layer);
+			}
+			EntityItem itemLayer = new EntityItem(world, posX, posY, posZ, layerStack.copy());
 			world.spawnEntity(itemLayer);
-			EntityItem itemDisk = new EntityItem(world, posX, posY, posZ, diskStack);
+			if (diskStack.getItem() != disk) {
+				diskStack = new ItemStack(disk);
+			}
+			EntityItem itemDisk = new EntityItem(world, posX, posY, posZ, diskStack.copy());
 			world.spawnEntity(itemDisk);
-			EntityItem itemDriver = new EntityItem(world, posX, posY, posZ, driverStack);
+			if (driverStack.getItem() != driver) {
+				driverStack = new ItemStack(driver);
+			}
+			EntityItem itemDriver = new EntityItem(world, posX, posY, posZ, driverStack.copy());
 			world.spawnEntity(itemDriver);
 		}
 	}
@@ -316,7 +336,7 @@ public class EntityBey extends EntityCreature implements IEntityAdditionalSpawnD
 	protected boolean canDespawn() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isEntityInsideOpaqueBlock() {
 		return false;
