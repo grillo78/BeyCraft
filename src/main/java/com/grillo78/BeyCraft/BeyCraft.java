@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.grillo78.BeyCraft.entity.BeyEntityRenderFactory;
 import com.grillo78.BeyCraft.entity.EntityBey;
+import com.grillo78.BeyCraft.gui.LauncherGUI;
+import com.grillo78.BeyCraft.inventory.LauncherContainer;
 import com.grillo78.BeyCraft.tab.BeyCraftDisksTab;
 import com.grillo78.BeyCraft.tab.BeyCraftDriversTab;
 import com.grillo78.BeyCraft.tab.BeyCraftLayersTab;
@@ -13,13 +15,16 @@ import com.mojang.brigadier.Message;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -29,6 +34,7 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -43,6 +49,7 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ObjectHolder;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Reference.MODID)
@@ -55,7 +62,8 @@ public class BeyCraft {
 			Reference.MODID);
 	public static final RegistryObject<EntityType<EntityBey>> BEY_ENTITY_TYPE = ENTITY.register("bey",
 			() -> EntityType.Builder.<EntityBey>create(EntityBey::new, EntityClassification.MISC).build(Reference.MODID + ":bey"));
-
+	@ObjectHolder("beycraft:launcher")
+    public static ContainerType<LauncherContainer> LAUNCHER_CONTAINER;
 	public static final ItemGroup BEYCRAFTLAYERS = new BeyCraftLayersTab("Layers");
 	public static final ItemGroup BEYCRAFTDISKS = new BeyCraftDisksTab("Disks");
 	public static final ItemGroup BEYCRAFTDRIVERS = new BeyCraftDriversTab("Drivers");
@@ -93,6 +101,7 @@ public class BeyCraft {
 
 	private void doClientStuff(final FMLClientSetupEvent event) {
 		RenderTypeLookup.setRenderLayer(BeyRegistry.STADIUM, RenderType.func_228641_d_());
+		ScreenManager.registerFactory(LAUNCHER_CONTAINER, LauncherGUI::new);
 	}
 
 	private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -100,7 +109,6 @@ public class BeyCraft {
 	}
 
 	private void processIMC(final InterModProcessEvent event) {
-		// some example code to receive and process InterModComms from other mods
 	}
 
 	// You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -112,6 +120,13 @@ public class BeyCraft {
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 	public static class RegistryEvents {
 
+		@SubscribeEvent
+        public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
+            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+                return new LauncherContainer(LAUNCHER_CONTAINER, windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player,1);
+            }).setRegistryName("launcher"));
+        }
+		
 		@SubscribeEvent
 		public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
 			// register a new block here

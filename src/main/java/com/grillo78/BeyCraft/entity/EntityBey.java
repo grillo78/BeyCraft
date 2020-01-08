@@ -9,6 +9,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -18,6 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemStackHandler;
 
 /**
@@ -54,8 +56,14 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	}
 	
 	@Override
+	public IPacket<?> createSpawnPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
+	}
+	
+	@Override
 	protected void registerData() {
 		this.dataManager.register(ROTATIONSPEED, 100F);
+		this.dataManager.register(RADIUS, 1.5F);
 		super.registerData();
 	}
 
@@ -84,6 +92,11 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		return compound;
 	}
 
+	@Override
+	public boolean canBreatheUnderwater() {
+		return true;
+	}
+	
 	@Override
 	public void writeSpawnData(PacketBuffer buffer) {
 		for (int i = 0; i < 3; i++) {
@@ -133,7 +146,9 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
 	@Override
 	public void tick() {
-		setRotationSpeed(getRotationSpeed() - 0.1f);
+		if(getRotationSpeed()>0) {
+			setRotationSpeed(getRotationSpeed() - 0.1f);
+		}
 		super.tick();
 	}
 

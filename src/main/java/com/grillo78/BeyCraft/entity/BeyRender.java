@@ -25,7 +25,7 @@ public class BeyRender extends EntityRenderer<EntityBey>{
 	@Override
 	public void func_225623_a_(EntityBey entity, float p_225623_2_, float p_225623_3_, MatrixStack matrixStack,
 			IRenderTypeBuffer p_225623_5_, int p_225623_6_) {
-		if(this.renderManager.pointedEntity == entity && !Minecraft.getInstance().player.isSpectator()) {
+		if(this.renderManager.pointedEntity == entity && !Minecraft.getInstance().player.isSpectator() && Minecraft.getInstance().isGuiEnabled()) {
 			matrixStack.func_227860_a_();
 			matrixStack.func_227861_a_(0, 0.5F, 0);
 			func_225629_a_(entity, entity.getLayer().getItem().getName().getFormattedText(), matrixStack, p_225623_5_, p_225623_6_);

@@ -15,13 +15,12 @@ public class ItemLauncherProvider implements ICapabilityProvider, ICapabilitySer
 
 	private final LazyOptional<IItemHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(5));
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if( cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ) {
-			return (LazyOptional<T>) inventory; 
+			return inventory.cast(); 
 		}
-		return null;
+		return LazyOptional.empty();
 	}
 
 	@Override

@@ -7,18 +7,23 @@ import com.grillo78.BeyCraft.BeyRegistry;
 import com.grillo78.BeyCraft.Reference;
 import com.grillo78.BeyCraft.entity.EntityBey;
 import com.grillo78.BeyCraft.inventory.ItemLauncherProvider;
+import com.grillo78.BeyCraft.inventory.LauncherContainer;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class ItemLauncher extends Item {
 
@@ -31,97 +36,111 @@ public class ItemLauncher extends Item {
 		BeyRegistry.ITEMS.add(this);
 	}
 
-	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-		if (stack.getItem() != this) {
-			return null;
-		}
 		return new ItemLauncherProvider();
 	}
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
 		if (!player.isCrouching()) {
 			if (!world.isRemote && BeyCraft.BEY_ENTITY_TYPE.get() != null) {
-				EntityBey entity = new EntityBey(BeyCraft.BEY_ENTITY_TYPE.get(), world,
-						new ItemStack(BeyRegistry.VALTRYEKV2), new ItemStack(BeyRegistry.BOOSTDISK), new ItemStack(BeyRegistry.EVOLUTIONDRIVER));
-				entity.setPositionAndRotation(player.getPosition().getX() + player.getLookVec().x, player.getPosition().getY() + 1,
-						player.getPosition().getZ() + player.getLookVec().z,0,0);
-				BeyCraft.logger.info(entity.getPosition().toString());
-				world.addEntity(entity);
-				BeyCraft.logger.info("succes");
+				ItemStack launcher = player.getHeldItem(handIn);
+				launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+					if (h.getStackInSlot(0).getItem() instanceof ItemBeyLayer
+							&& h.getStackInSlot(1).getItem() instanceof ItemBeyDisk
+							&& h.getStackInSlot(2).getItem() instanceof ItemBeyDriver) {
+						EntityBey entity = new EntityBey(BeyCraft.BEY_ENTITY_TYPE.get(), world,
+								h.getStackInSlot(0).copy(), h.getStackInSlot(1).copy(),
+								h.getStackInSlot(2).copy());
+						entity.setPositionAndRotation(player.getPosition().getX() + player.getLookVec().x,
+								player.getPosition().getY() + 1, player.getPosition().getZ() + player.getLookVec().z, 0,
+								0);
+						BeyCraft.logger.info(entity.getPosition().toString());
+						world.addEntity(entity);
+						h.getStackInSlot(0).shrink(1);
+						h.getStackInSlot(1).shrink(1);
+						h.getStackInSlot(2).shrink(1);
+						BeyCraft.logger.info("succes");
+					}
+				});
 			}
-		}else {
-			
+		} else {
+			if (!world.isRemote) {
+				NetworkHooks.openGui((ServerPlayerEntity) player,
+						new SimpleNamedContainerProvider(
+								(id, playerventory, playerEntity) -> new LauncherContainer(BeyCraft.LAUNCHER_CONTAINER,
+										id, player.getHeldItem(handIn), playerventory, playerEntity, rotation),
+								new StringTextComponent(getRegistryName().getPath())));
+			}
 		}
 		return super.onItemRightClick(world, player, handIn);
 	}
 
 //	@Override
-//	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+//	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand handIn) {
 //		if (!worldIn.isRemote) {
-//			if (playerIn.isSneaking()) {
-//				playerIn.openGui(BeyCraft.instance, 0, worldIn, 0, 0, 0);
+//			if (player.isSneaking()) {
+//				player.openGui(BeyCraft.instance, 0, worldIn, 0, 0, 0);
 //			} else {
-//				if (playerIn.getHeldItem(handIn)
-//						.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP).getStackInSlot(0)
+//				if (player.getHeldItem(handIn)
+//						.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).getStackInSlot(0)
 //						.getItem() instanceof ItemBeyLayer
-//						&& playerIn.getHeldItem(handIn)
-//								.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+//						&& player.getHeldItem(handIn)
+//								.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 //								.getStackInSlot(1).getItem() instanceof ItemBeyDisk
-//						&& playerIn.getHeldItem(handIn)
-//								.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+//						&& player.getHeldItem(handIn)
+//								.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 //								.getStackInSlot(2).getItem() instanceof ItemBeyDriver
 //						&& !worldIn.isRemote) {
 //					EntityBey beyEntity = new EntityBey(worldIn,
-//							playerIn.getHeldItem(handIn)
-//									.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+//							player.getHeldItem(handIn)
+//									.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 //									.getStackInSlot(0),
-//							playerIn.getHeldItem(handIn)
-//									.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+//							player.getHeldItem(handIn)
+//									.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 //									.getStackInSlot(1),
-//							playerIn.getHeldItem(handIn)
-//									.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+//							player.getHeldItem(handIn)
+//									.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 //									.getStackInSlot(2),
-//							((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
+//							((IBladerLevel) player.getCapability(Provider.BLADERLEVEL_CAP))
 //									.getBladerLevel(),
-//							rotation, playerIn.getName());
-//					beyEntity.setLocationAndAngles(playerIn.posX + playerIn.getLookVec().x, playerIn.posY + 1,
-//							playerIn.posZ + playerIn.getLookVec().z, playerIn.rotationYaw, 0);
+//							rotation, player.getName());
+//					beyEntity.setLocationAndAngles(player.posX + player.getLookVec().x, player.posY + 1,
+//							player.posZ + player.getLookVec().z, player.rotationYaw, 0);
 //					beyEntity.rotationYawHead = beyEntity.rotationYaw;
 //					beyEntity.renderYawOffset = beyEntity.rotationYaw;
 //					worldIn.spawnEntity(beyEntity);
-//					if (((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
-//							.getExperience() != ((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP,
+//					if (((IBladerLevel) player.getCapability(Provider.BLADERLEVEL_CAP))
+//							.getExperience() != ((IBladerLevel) player.getCapability(Provider.BLADERLEVEL_CAP,
 //									EnumFacing.UP)).getMaxExperience()) {
-//						((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP)).setExperience(
-//								((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
+//						((IBladerLevel) player.getCapability(Provider.BLADERLEVEL_CAP)).setExperience(
+//								((IBladerLevel) player.getCapability(Provider.BLADERLEVEL_CAP))
 //										.getExperience() + 0.1F);
 //					} else {
-//						((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP)).setBladerLevel(
-//								((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
+//						((IBladerLevel) player.getCapability(Provider.BLADERLEVEL_CAP)).setBladerLevel(
+//								((IBladerLevel) player.getCapability(Provider.BLADERLEVEL_CAP))
 //										.getBladerLevel() + 1);
-//						((IBladerLevel) playerIn.getCapability(Provider.BLADERLEVEL_CAP, EnumFacing.UP))
+//						((IBladerLevel) player.getCapability(Provider.BLADERLEVEL_CAP))
 //								.setExperience(0);
 //					}
 //					BeyCraft.INSTANCE.sendTo(
 //							new BladerLevelMessage(
-//									(int) playerIn.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel()),
-//							(EntityPlayerMP) playerIn);
-//					playerIn.getHeldItem(handIn)
-//							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+//									(int) player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel()),
+//							(EntityPlayerMP) player);
+//					player.getHeldItem(handIn)
+//							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 //							.getStackInSlot(0).shrink(1);
-//					playerIn.getHeldItem(handIn)
-//							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+//					player.getHeldItem(handIn)
+//							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 //							.getStackInSlot(1).shrink(1);
-//					playerIn.getHeldItem(handIn)
-//							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)
+//					player.getHeldItem(handIn)
+//							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 //							.getStackInSlot(2).shrink(1);
 //				}
 //			}
 //		}
-//		return super.onItemRightClick(worldIn, playerIn, handIn);
+//		return super.onItemRightClick(worldIn, player, handIn);
 //	}
 
 	public int getRotation() {
