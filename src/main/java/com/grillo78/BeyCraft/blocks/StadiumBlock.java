@@ -1,449 +1,287 @@
 package com.grillo78.BeyCraft.blocks;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
 import com.grillo78.BeyCraft.Reference;
-import com.grillo78.BeyCraft.entity.EntityBey;
-import com.grillo78.BeyCraft.util.IHasModel;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class StadiumBlock extends Block implements IHasModel {
+public class StadiumBlock extends Block implements IWaterLoggable {
 
-	public static final PropertyEnum<StadiumBlock.EnumPartType> PART = PropertyEnum.<StadiumBlock.EnumPartType>create(
+	public static final EnumProperty<StadiumBlock.EnumPartType> PART = EnumProperty.<StadiumBlock.EnumPartType>create(
 			"part", StadiumBlock.EnumPartType.class);
-	protected static final AxisAlignedBB MIDDLECENTER_BOX = new AxisAlignedBB(-1.0D + 0.0625, 0.0D, -1.0D + 0.0625,
-			2.0D - 0.0625D, 0.0625 * 6D, 2.0D - 0.0625D);
-	protected static final AxisAlignedBB MIDDLELEFT_BOX = new AxisAlignedBB(2 - 0.0625, 0.0D, 3 - 0.0625, -1 + 0.0625D,
-			0.375D, 0.0625D);
-	protected static final AxisAlignedBB MIDDLERIGHT_BOX = new AxisAlignedBB(2 - 0.0625, 0.0D, 1 - 0.0625, -1 + 0.0625D,
-			0.375D, -2 + 0.0625D);
-	protected static final AxisAlignedBB TOPLEFT_BOX = new AxisAlignedBB(-2 + 0.0625, 0.0D, 0.0625, 1 - 0.0625D,
-			0.0625 * 6D, 3 - 0.0625D);
-	protected static final AxisAlignedBB TOPCENTER_BOX = new AxisAlignedBB(-2 + 0.0625, 0.0D, -1.0625, 1 - 0.0625D,
-			0.375D, 2 - 0.0625D);
-	protected static final AxisAlignedBB TOPRIGHT_BOX = new AxisAlignedBB(-2 + 0.0625, 0.0D, -2.0625, 1 - 0.0625D,
-			0.375D, 1 - 0.0625D);
-	protected static final AxisAlignedBB BOTTOMLEFT_BOX = new AxisAlignedBB(3 - 0.0625, 0.0D, 3 - 0.0625, 0.0625D,
-			0.375D, 0.0625D);
-	protected static final AxisAlignedBB BOTTOMCENTER_BOX = new AxisAlignedBB(0.0625, 0.0D, -1.0D + 0.0625,
-			3.0D - 0.0625D, 0.0625 * 6D, 2.0D - 0.0625D);
-	protected static final AxisAlignedBB BOTTOMRIGHT_BOX = new AxisAlignedBB(0.0625, 0.0D, 1 - 0.0625, 3 - 0.0625D,
-			0.375D, -2 + 0.0625D);
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	private VoxelShape voxelShape1;
+	private VoxelShape voxelShape2;
+	private VoxelShape voxelShape3;
+	private VoxelShape voxelShape4;
+	private VoxelShape voxelShape5;
+	private VoxelShape voxelShape6;
+	private VoxelShape voxelShape7;
+	private VoxelShape voxelShape8;
+	private VoxelShape voxelShape9;
 
 	public StadiumBlock(Material materialIn, String name) {
-		super(materialIn);
-		setUnlocalizedName(name);
-		setRegistryName(new ResourceLocation(Reference.MODID,name));
-		setHardness(1);
-		setHarvestLevel("pickaxe", 0);
-		setCreativeTab(BeyCraft.BEYCRAFTTAB);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(PART, EnumPartType.MIDDLECENTER));
-
+		super(Block.Properties.create(Material.IRON));
+		setRegistryName(new ResourceLocation(Reference.MODID, name));
+		setVoxelShapes();
 		BeyRegistry.BLOCKS.add(this);
-		BeyRegistry.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
+		BeyRegistry.ITEMS.add(new BlockItem(this, new Item.Properties().group(BeyCraft.BEYCRAFTTAB))
+				.setRegistryName(getRegistryName()));
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		EnumPartType part = (EnumPartType) state.getValue(PART);
-		return part.getID();
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(PART, EnumPartType.values()[meta]);
-	}
-
-	@Override
-	public void registerModels() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
-				new ModelResourceLocation(this.getRegistryName(), "inventory"));
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		switch (getMetaFromState(state)) {
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		switch (state.get(PART).ID) {
 		case 0:
-			return TOPLEFT_BOX;
+			return voxelShape1;
 		case 1:
-			return TOPCENTER_BOX;
+			return voxelShape2;
 		case 2:
-			return TOPRIGHT_BOX;
+			return voxelShape3;
 		case 3:
-			return MIDDLELEFT_BOX;
+			return voxelShape4;
 		case 4:
-			return MIDDLECENTER_BOX;
+			return voxelShape5;
 		case 5:
-			return MIDDLERIGHT_BOX;
+			return voxelShape6;
 		case 6:
-			return BOTTOMLEFT_BOX;
+			return voxelShape7;
 		case 7:
-			return BOTTOMCENTER_BOX;
+			return voxelShape8;
 		case 8:
-			return BOTTOMRIGHT_BOX;
+			return voxelShape9;
 		default:
-			return new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1);
+			return VoxelShapes.fullCube();
 		}
+
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-		if (entityIn instanceof EntityBey) {
-
-		}
-		super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
+	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		return canReplace(worldIn, pos.north().west()) && canReplace(worldIn, pos.north())
+				&& canReplace(worldIn, pos.north().east()) && canReplace(worldIn, pos.west())
+				&& canReplace(worldIn, pos) && canReplace(worldIn, pos.east())
+				&& canReplace(worldIn, pos.south().west()) && canReplace(worldIn, pos.south())
+				&& canReplace(worldIn, pos.south().east());
 	}
 
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
-			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) {
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		worldIn.setBlockState(pos.east().north(),
+				getDefaultState().with(PART, EnumPartType.values()[0]).with(WATERLOGGED, Boolean.valueOf(false)));
+		worldIn.setBlockState(pos.east(),
+				getDefaultState().with(PART, EnumPartType.values()[1]).with(WATERLOGGED, Boolean.valueOf(false)));
+		worldIn.setBlockState(pos.east().south(),
+				getDefaultState().with(PART, EnumPartType.values()[2]).with(WATERLOGGED, Boolean.valueOf(false)));
+		worldIn.setBlockState(pos.north(),
+				getDefaultState().with(PART, EnumPartType.values()[3]).with(WATERLOGGED, Boolean.valueOf(false)));
+		worldIn.setBlockState(pos,
+				getDefaultState().with(PART, EnumPartType.values()[4]).with(WATERLOGGED, Boolean.valueOf(false)));
+		worldIn.setBlockState(pos.south(),
+				getDefaultState().with(PART, EnumPartType.values()[5]).with(WATERLOGGED, Boolean.valueOf(false)));
+		worldIn.setBlockState(pos.west().north(),
+				getDefaultState().with(PART, EnumPartType.values()[6]).with(WATERLOGGED, Boolean.valueOf(false)));
+		worldIn.setBlockState(pos.west(),
+				getDefaultState().with(PART, EnumPartType.values()[7]).with(WATERLOGGED, Boolean.valueOf(false)));
+		worldIn.setBlockState(pos.west().south(),
+				getDefaultState().with(PART, EnumPartType.values()[8]).with(WATERLOGGED, Boolean.valueOf(false)));
+	}
 
-		if (getMetaFromState(state) == 0) {
-			// floor
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 2, 0, 1, 0, 0.0625 * 6, 0.0625));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625, 0.0625 * 6, 0.0625 * 2));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 4, 0, 1, 0.0625 * 2, 0.0625 * 6, 0.0625 * 3));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 5, 0, 1 - 0.0625 * 4, 0.0625 * 3, 0.0625 * 6, 0.0625 * 4));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 5, 0.0625 * 6, 0.0625 * 5));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 6, 0.0625 * 6, 0.0625 * 6));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 7, 0.0625 * 6, 0.0625 * 7));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 9, 0.0625 * 6, 0.0625 * 9));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 10, 0.0625 * 6, 0.0625 * 10));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 11, 0.0625 * 6, 0.0625 * 11));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 12, 0.0625 * 6, 0.0625 * 12));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 13, 0.0625 * 6, 0.0625 * 13));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 14, 0.0625 * 6, 0.0625 * 14));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 15, 0.0625 * 6, 0.0625 * 15));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 16, 0.0625 * 6, 0.0625 * 16));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 17, 0.0625 * 6, 0.0625 * 17));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 18, 0.0625 * 6, 0.0625 * 18));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625 * 19, 0.0625 * 6, 0.0625 * 19));
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(PART);
+		builder.add(WATERLOGGED);
+	}
 
-			if (!(entityIn instanceof EntityPlayer)) {
-				// walls
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 2, 0, 0.0625, 1 - 0.0625 * 16, 1, 0.0625 * 2));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 4, 0, 0.0625 * 3, 1 - 0.0625 * 14, 1, 0.0625 * 3));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 5, 0, 0.0625 * 4, 1 - 0.0625 * 14, 1, 0.0625 * 4));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 14, 0, 0.0625 * 15, 1 - 0.0625, 1, 0.0625 * 13));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 13, 0, 0.0625 * 14, 1 - 0.0625 * 2, 1, 0.0625 * 12));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 12, 0, 0.0625 * 13, 1 - 0.0625 * 3, 1, 0.0625 * 11));
+	@Override
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+	}
+
+	@Override
+	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (newState.getBlock() != this) {
+			if (worldIn.getBlockState(pos.north()).getBlock() instanceof StadiumBlock) {
+				worldIn.setBlockState(pos.north(), Blocks.AIR.getDefaultState());
 			}
-		}
-		if (getMetaFromState(state) == 1) {
-
-			if (!(entityIn instanceof EntityPlayer)) {
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(1 - 0.0625, 0, 1, 1 - 0.0625 * 3, 1, 0));
+			if (worldIn.getBlockState(pos.south()).getBlock() instanceof StadiumBlock) {
+				worldIn.setBlockState(pos.south(), Blocks.AIR.getDefaultState());
 			}
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
-		}
-		if (getMetaFromState(state) == 2) {
-			// floor
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625, 0.0625 * 6, 0.0625 * 2));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 2, 0.0625 * 6, 0.0625 * 3));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 3, 0.0625 * 6, 0.0625 * 4));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 4, 0.0625 * 6, 0.0625 * 5));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 5, 0.0625 * 6, 0.0625 * 6));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 6, 0.0625 * 6, 0.0625 * 7));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 7, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 1, 0.0625 * 6, 0.0625 * 9));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 9, 0.0625 * 6, 0.0625 * 10));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 10, 0.0625 * 6, 0.0625 * 11));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 11, 0.0625 * 6, 0.0625 * 12));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 12, 0.0625 * 6, 0.0625 * 13));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 13, 0.0625 * 6, 0.0625 * 14));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 14, 0.0625 * 6, 0.0625 * 15));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 15, 0.0625 * 6, 0.0625 * 16));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 16, 0.0625 * 6, 0.0625 * 17));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 17, 0.0625 * 6, 0.0625 * 18));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 18, 0.0625 * 6, 0.0625 * 19));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0, 0, 0, 1 - 0.0625 * 19, 0.0625 * 6, 0.0625 * 20));
-
-			if (!(entityIn instanceof EntityPlayer)) {
-				// walls
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 13, 0, 0.0625, 1 - 0.0625, 1, 0.0625 * 2));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 12, 0, 0.0625, 1 - 0.0625 * 2, 1, 0.0625 * 3));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 11, 0, 0.0625, 1 - 0.0625 * 3, 1, 0.0625 * 4));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625, 0, 0.0625 * 15, 1 - 0.0625 * 14, 1, 0.0625 * 13));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 2, 0, 0.0625 * 14, 1 - 0.0625 * 13, 1, 0.0625 * 12));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 3, 0, 0.0625 * 13, 1 - 0.0625 * 12, 1, 0.0625 * 11));
+			if (worldIn.getBlockState(pos.west()).getBlock() instanceof StadiumBlock) {
+				worldIn.setBlockState(pos.west(), Blocks.AIR.getDefaultState());
 			}
-		}
-		if (getMetaFromState(state) == 3) {
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
-
-			if (!(entityIn instanceof EntityPlayer)) {
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(1, 0, 0.0625 * 3, 0, 1, 0.0625));
-			}
-		}
-		if (getMetaFromState(state) == 4) {
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
-		}
-		if (getMetaFromState(state) == 5) {
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
-
-			if (!(entityIn instanceof EntityPlayer)) {
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(1, 0, 1 - 0.0625, 0, 1, 1 - 0.0625 * 3));
-			}
-		}
-		if (getMetaFromState(state) == 6) {
-			// floor
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 14, 0, 0.0625, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 13, 0, 0.0625 * 2, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 12, 0, 0.0625 * 3, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 11, 0, 0.0625 * 4, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 10, 0, 0.0625 * 5, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 9, 0, 0.0625 * 6, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(1, 0, 0.0625 * 7, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 7, 0, 1, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 6, 0, 0.0625 * 9, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 5, 0, 0.0625 * 10, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 4, 0, 0.0625 * 11, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 0.0625 * 12, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 2, 0, 0.0625 * 13, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 1, 0, 0.0625 * 14, 1, 0.0625 * 6, 1));
-
-			if (!(entityIn instanceof EntityPlayer)) {
-				// walls
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 13, 0, 0.0625, 1 - 0.0625, 1, 0.0625 * 2));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 12, 0, 0.0625, 1 - 0.0625 * 2, 1, 0.0625 * 3));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 11, 0, 0.0625, 1 - 0.0625 * 3, 1, 0.0625 * 4));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625, 0, 0.0625 * 15, 1 - 0.0625 * 14, 1, 0.0625 * 13));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 2, 0, 0.0625 * 14, 1 - 0.0625 * 13, 1, 0.0625 * 12));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 3, 0, 0.0625 * 13, 1 - 0.0625 * 12, 1, 0.0625 * 11));
-			}
-		}
-		if (getMetaFromState(state) == 7) {
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 0, 1, 0.0625 * 6, 1));
-
-			if (!(entityIn instanceof EntityPlayer)) {
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 3, 0, 1, 0.0625, 1, 0));
-			}
-		}
-		if (getMetaFromState(state) == 8) {
-			// floor
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625, 0, 0, 1, 0.0625 * 6, 0.0625 * 2));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 2, 0, 0, 1, 0.0625 * 6, 0.0625 * 3));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 3, 0, 0, 1, 0.0625 * 6, 0.0625 * 4));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 4, 0, 0, 1, 0.0625 * 6, 0.0625 * 5));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 5, 0, 0, 1, 0.0625 * 6, 0.0625 * 6));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 6, 0, 0, 1, 0.0625 * 6, 0.0625 * 7));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 7, 0, 0, 1, 0.0625 * 6, 1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(1, 0, 0, 1, 0.0625 * 6, 0.0625 * 9));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 9, 0, 0, 1, 0.0625 * 6, 0.0625 * 10));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 10, 0, 0, 1, 0.0625 * 6, 0.0625 * 11));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 11, 0, 0, 1, 0.0625 * 6, 0.0625 * 12));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 12, 0, 0, 1, 0.0625 * 6, 0.0625 * 13));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 13, 0, 0, 1, 0.0625 * 6, 0.0625 * 14));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 14, 0, 0, 1, 0.0625 * 6, 0.0625 * 15));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 15, 0, 0, 1, 0.0625 * 6, 0.0625 * 16));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 16, 0, 0, 1, 0.0625 * 6, 0.0625 * 17));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 17, 0, 0, 1, 0.0625 * 6, 0.0625 * 18));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 18, 0, 0, 1, 0.0625 * 6, 0.0625 * 19));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes,
-					new AxisAlignedBB(0.0625 * 19, 0, 0, 1, 0.0625 * 6, 0.0625 * 20));
-
-			if (!(entityIn instanceof EntityPlayer)) {
-				// walls
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 2, 0, 0.0625, 1 - 0.0625 * 16, 1, 0.0625 * 2));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 4, 0, 0.0625 * 3, 1 - 0.0625 * 14, 1, 0.0625 * 3));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 5, 0, 0.0625 * 4, 1 - 0.0625 * 14, 1, 0.0625 * 4));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 14, 0, 0.0625 * 15, 1 - 0.0625, 1, 0.0625 * 13));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 13, 0, 0.0625 * 14, 1 - 0.0625 * 2, 1, 0.0625 * 12));
-				addCollisionBoxToList(pos, entityBox, collidingBoxes,
-						new AxisAlignedBB(0.0625 * 12, 0, 0.0625 * 13, 1 - 0.0625 * 3, 1, 0.0625 * 11));
+			if (worldIn.getBlockState(pos.east()).getBlock() instanceof StadiumBlock) {
+				worldIn.setBlockState(pos.east(), Blocks.AIR.getDefaultState());
 			}
 		}
 	}
 
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
+	private void setVoxelShapes() {
+		voxelShape1 = Stream
+				.of(Block.makeCuboidShape(1, 0, 14, 15, 6, 15), Block.makeCuboidShape(1, 0, 13, 14, 6, 14),
+						Block.makeCuboidShape(1, 0, 12, 13, 6, 13), Block.makeCuboidShape(1, 0, 11, 12, 6, 12),
+						Block.makeCuboidShape(1, 0, 10, 11, 6, 11), Block.makeCuboidShape(1, 0, 8, 9, 6, 9),
+						Block.makeCuboidShape(1, 0, 7, 8, 6, 8), Block.makeCuboidShape(1, 0, 6, 7, 6, 7),
+						Block.makeCuboidShape(1, 0, 5, 6, 6, 6), Block.makeCuboidShape(1, 0, 4, 5, 6, 5),
+						Block.makeCuboidShape(1, 0, 3, 4, 6, 4), Block.makeCuboidShape(1, 0, 2, 3, 6, 3),
+						Block.makeCuboidShape(1, 0, 1, 2, 6, 2), Block.makeCuboidShape(1, 6, 1, 2, 8, 2),
+						Block.makeCuboidShape(11, 6, 11, 12, 8, 12), Block.makeCuboidShape(2, 6, 2, 3, 8, 3),
+						Block.makeCuboidShape(12, 6, 12, 13, 8, 13), Block.makeCuboidShape(3, 6, 3, 4, 8, 4),
+						Block.makeCuboidShape(13, 6, 13, 14, 8, 14), Block.makeCuboidShape(4, 6, 4, 5, 8, 5),
+						Block.makeCuboidShape(14, 6, 14, 15, 8, 15), Block.makeCuboidShape(1, 0, 9, 10, 6, 10))
+				.reduce((v1, v2) -> {
+					return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
+				}).get();
+		voxelShape2 = VoxelShapes.combineAndSimplify(
+				Block.makeCuboidShape(-2.5500000000000007, 0, -1.5, 14.936, 6, 17.5),
+				Block.makeCuboidShape(13.4357, 6.01, -1.29369, 14.4357, 8.01, 17.29231), IBooleanFunction.OR);
+		voxelShape3 = Stream
+				.of(Block.makeCuboidShape(1, 0, 1, 2, 6, 15), Block.makeCuboidShape(2, 0, 1, 3, 6, 14),
+						Block.makeCuboidShape(3, 0, 1, 4, 6, 13), Block.makeCuboidShape(4, 0, 1, 5, 6, 12),
+						Block.makeCuboidShape(5, 0, 1, 6, 6, 11), Block.makeCuboidShape(7, 0, 1, 8, 6, 9),
+						Block.makeCuboidShape(8, 0, 1, 9, 6, 8), Block.makeCuboidShape(9, 0, 1, 10, 6, 7),
+						Block.makeCuboidShape(10, 0, 1, 11, 6, 6), Block.makeCuboidShape(11, 0, 1, 12, 6, 5),
+						Block.makeCuboidShape(12, 0, 1, 13, 6, 4), Block.makeCuboidShape(13, 0, 1, 14, 6, 3),
+						Block.makeCuboidShape(14, 0, 1, 15, 6, 2), Block.makeCuboidShape(14, 6, 1, 15, 8, 2),
+						Block.makeCuboidShape(4, 6, 11, 5, 8, 12), Block.makeCuboidShape(13, 6, 2, 14, 8, 3),
+						Block.makeCuboidShape(3, 6, 12, 4, 8, 13), Block.makeCuboidShape(12, 6, 3, 13, 8, 4),
+						Block.makeCuboidShape(2, 6, 13, 3, 8, 14), Block.makeCuboidShape(11, 6, 4, 12, 8, 5),
+						Block.makeCuboidShape(1, 6, 14, 2, 8, 15), Block.makeCuboidShape(6, 0, 1, 7, 6, 10))
+				.reduce((v1, v2) -> {
+					return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
+				}).get();
+		voxelShape4 = VoxelShapes.combineAndSimplify(Block.makeCuboidShape(-1.5, 0, 1.064, 17.5, 6, 18.55),
+				Block.makeCuboidShape(-1.29369, 6.01, 1.5642999999999994, 17.29231, 8.01, 2.5642999999999994),
+				IBooleanFunction.OR);
+		voxelShape5 = Block.makeCuboidShape(1.5, 0.01, 1.5, 14.5, 5.99, 14.5);
+		voxelShape6 = VoxelShapes.combineAndSimplify(
+				Block.makeCuboidShape(-1.5, 0, -2.5500000000000007, 17.5, 6, 14.936),
+				Block.makeCuboidShape(-1.29231, 6.01, 13.4357, 17.29369, 8.01, 14.4357), IBooleanFunction.OR);
+		voxelShape7 = Stream
+				.of(Block.makeCuboidShape(14, 0, 1, 15, 6, 15), Block.makeCuboidShape(13, 0, 2, 14, 6, 15),
+						Block.makeCuboidShape(12, 0, 3, 13, 6, 15), Block.makeCuboidShape(11, 0, 4, 12, 6, 15),
+						Block.makeCuboidShape(10, 0, 5, 11, 6, 15), Block.makeCuboidShape(8, 0, 7, 9, 6, 15),
+						Block.makeCuboidShape(7, 0, 8, 8, 6, 15), Block.makeCuboidShape(6, 0, 9, 7, 6, 15),
+						Block.makeCuboidShape(5, 0, 10, 6, 6, 15), Block.makeCuboidShape(4, 0, 11, 5, 6, 15),
+						Block.makeCuboidShape(3, 0, 12, 4, 6, 15), Block.makeCuboidShape(2, 0, 13, 3, 6, 15),
+						Block.makeCuboidShape(1, 0, 14, 2, 6, 15), Block.makeCuboidShape(1, 6, 14, 2, 8, 15),
+						Block.makeCuboidShape(11, 6, 4, 12, 8, 5), Block.makeCuboidShape(2, 6, 13, 3, 8, 14),
+						Block.makeCuboidShape(12, 6, 3, 13, 8, 4), Block.makeCuboidShape(3, 6, 12, 4, 8, 13),
+						Block.makeCuboidShape(13, 6, 2, 14, 8, 3), Block.makeCuboidShape(4, 6, 11, 5, 8, 12),
+						Block.makeCuboidShape(14, 6, 1, 15, 8, 2), Block.makeCuboidShape(9, 0, 6, 10, 6, 15))
+				.reduce((v1, v2) -> {
+					return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
+				}).get();
+		voxelShape8 = VoxelShapes.combineAndSimplify(Block.makeCuboidShape(1.064, 0, -1.5, 18.55, 6, 17.5),
+				Block.makeCuboidShape(1.5642999999999994, 6.01, -1.29231, 2.5642999999999994, 8.01, 17.29369),
+				IBooleanFunction.OR);
+		voxelShape9 = Stream
+				.of(Block.makeCuboidShape(1, 0, 1, 15, 6, 2), Block.makeCuboidShape(2, 0, 2, 15, 6, 3),
+						Block.makeCuboidShape(3, 0, 3, 15, 6, 4), Block.makeCuboidShape(4, 0, 4, 15, 6, 5),
+						Block.makeCuboidShape(5, 0, 5, 15, 6, 6), Block.makeCuboidShape(7, 0, 7, 15, 6, 8),
+						Block.makeCuboidShape(8, 0, 8, 15, 6, 9), Block.makeCuboidShape(9, 0, 9, 15, 6, 10),
+						Block.makeCuboidShape(10, 0, 10, 15, 6, 11), Block.makeCuboidShape(11, 0, 11, 15, 6, 12),
+						Block.makeCuboidShape(12, 0, 12, 15, 6, 13), Block.makeCuboidShape(13, 0, 13, 15, 6, 14),
+						Block.makeCuboidShape(14, 0, 14, 15, 6, 15), Block.makeCuboidShape(14, 6, 14, 15, 8, 15),
+						Block.makeCuboidShape(4, 6, 4, 5, 8, 5), Block.makeCuboidShape(13, 6, 13, 14, 8, 14),
+						Block.makeCuboidShape(3, 6, 3, 4, 8, 4), Block.makeCuboidShape(12, 6, 12, 13, 8, 13),
+						Block.makeCuboidShape(2, 6, 2, 3, 8, 3), Block.makeCuboidShape(11, 6, 11, 12, 8, 12),
+						Block.makeCuboidShape(1, 6, 1, 2, 8, 2), Block.makeCuboidShape(6, 0, 6, 15, 6, 7))
+				.reduce((v1, v2) -> {
+					return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
+				}).get();
 	}
 
-	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-		return isReplaceable(worldIn, pos.north().west()) && isReplaceable(worldIn, pos.north())
-				&& isReplaceable(worldIn, pos.north().east()) && isReplaceable(worldIn, pos.west())
-				&& isReplaceable(worldIn, pos) && isReplaceable(worldIn, pos.east())
-				&& isReplaceable(worldIn, pos.south().west()) && isReplaceable(worldIn, pos.south())
-				&& isReplaceable(worldIn, pos.south().east());
-	}
+//	@Override
+//	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+//		if (entityIn instanceof EntityBey) {
+//
+//		}
+//		super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
+//	}
+//
 
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
-		worldIn.setBlockState(pos.east().north(), BeyRegistry.STADIUM.getStateFromMeta(0));
-		worldIn.setBlockState(pos.east(), BeyRegistry.STADIUM.getStateFromMeta(1));
-		worldIn.setBlockState(pos.east().south(), BeyRegistry.STADIUM.getStateFromMeta(2));
-		worldIn.setBlockState(pos.north(), BeyRegistry.STADIUM.getStateFromMeta(3));
-		worldIn.setBlockState(pos, BeyRegistry.STADIUM.getStateFromMeta(4));
-		worldIn.setBlockState(pos.south(), BeyRegistry.STADIUM.getStateFromMeta(5));
-		worldIn.setBlockState(pos.west().north(), BeyRegistry.STADIUM.getStateFromMeta(6));
-		worldIn.setBlockState(pos.west(), BeyRegistry.STADIUM.getStateFromMeta(7));
-		worldIn.setBlockState(pos.west().south(), BeyRegistry.STADIUM.getStateFromMeta(8));
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-	}
+//	@Override
+//	public boolean isFullCube(IBlockState state) {
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+//		return canReplace(worldIn, pos.north().west()) && canReplace(worldIn, pos.north())
+//				&& canReplace(worldIn, pos.north().east()) && canReplace(worldIn, pos.west())
+//				&& canReplace(worldIn, pos) && canReplace(worldIn, pos.east())
+//				&& canReplace(worldIn, pos.south().west()) && canReplace(worldIn, pos.south())
+//				&& canReplace(worldIn, pos.south().east());
+//	}
 
-	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		if (worldIn.getBlockState(pos.north()).getBlock() instanceof StadiumBlock) {
-			worldIn.setBlockToAir(pos.north());
-		}
-		if (worldIn.getBlockState(pos.south()).getBlock() instanceof StadiumBlock) {
-			worldIn.setBlockToAir(pos.south());
-		}
-		if (worldIn.getBlockState(pos.west()).getBlock() instanceof StadiumBlock) {
-			worldIn.setBlockToAir(pos.west());
-		}
-		if (worldIn.getBlockState(pos.east()).getBlock() instanceof StadiumBlock) {
-			worldIn.setBlockToAir(pos.east());
-		}
-		super.breakBlock(worldIn, pos, state);
+	private boolean canReplace(IWorldReader world, BlockPos pos) {
+		return world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getBlock() == Blocks.WATER;
 	}
+//
+//	@Override
+//	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+//		if (worldIn.getBlockState(pos.north()).getBlock() instanceof StadiumBlock) {
+//			worldIn.setBlockToAir(pos.north());
+//		}
+//		if (worldIn.getBlockState(pos.south()).getBlock() instanceof StadiumBlock) {
+//			worldIn.setBlockToAir(pos.south());
+//		}
+//		if (worldIn.getBlockState(pos.west()).getBlock() instanceof StadiumBlock) {
+//			worldIn.setBlockToAir(pos.west());
+//		}
+//		if (worldIn.getBlockState(pos.east()).getBlock() instanceof StadiumBlock) {
+//			worldIn.setBlockToAir(pos.east());
+//		}
+//		super.breakBlock(worldIn, pos, state);
+//	}
 
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isTranslucent(IBlockState state) {
-		return true;
-	}
-
-	@Override
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
-
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { PART });
-	}
-
+//	@Override
+//	public boolean isOpaqueCube(IBlockState state) {
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean isTranslucent(IBlockState state) {
+//		return true;
+//	}
+//
+//	@Override
+//	public BlockRenderLayer getBlockLayer() {
+//		return BlockRenderLayer.CUTOUT;
+//	}
+//
+//	protected BlockStateContainer createBlockState() {
+//		return new BlockStateContainer(this, new IProperty[] { PART });
+//	}
+//
 	public static enum EnumPartType implements IStringSerializable {
 		TOPLEFT("topleft", 0), TOPCENTER("topcenter", 1), TOPRIGHT("topright", 2), MIDDLELEFT("middleleft", 3),
 		MIDDLECENTER("middlecenter", 4), MIDDLERIGHT("middleright", 5), BOTTOMLEFT("bottomleft", 6),

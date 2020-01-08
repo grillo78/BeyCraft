@@ -1,7 +1,5 @@
 package com.grillo78.BeyCraft.abilities;
 
-import com.grillo78.BeyCraft.entity.EntityBey;
-
 import net.minecraft.item.ItemStack;
 
 /**
@@ -11,7 +9,7 @@ import net.minecraft.item.ItemStack;
 public interface IAbility {
 
 	
-	public void executeAbility(EntityBey entity);
+//	public void executeAbility(EntityBey entity);
 
 	public void executeAbility(ItemStack driver);
 }

@@ -2,10 +2,10 @@ package com.grillo78.BeyCraft.tab;
 
 import com.grillo78.BeyCraft.BeyRegistry;
 
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
-public class BeyCraftTab extends CreativeTabs{
+public class BeyCraftTab extends ItemGroup{
 
 	
 	public BeyCraftTab(String label) {
@@ -13,7 +13,7 @@ public class BeyCraftTab extends CreativeTabs{
 	}
 
 	@Override
-	public ItemStack getTabIconItem() {
+	public ItemStack createIcon() {
 		return new ItemStack(BeyRegistry.REDLAUNCHER);
 	}
 }

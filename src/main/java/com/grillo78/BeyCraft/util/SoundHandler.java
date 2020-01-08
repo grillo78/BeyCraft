@@ -5,7 +5,7 @@ import com.grillo78.BeyCraft.Reference;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class SoundHandler {
 

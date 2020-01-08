@@ -4,39 +4,32 @@ goto init
 :init
 CLS
 ECHO Select a task
-ECHO A: setupdecompworkspace
-ECHO B: eclipse
-ECHO C: build
-ECHO D: runClient
-ECHO E: Exit
-CHOICE /C:ABCDE /N
-if %ERRORLEVEL% == 1 goto setupdecompworkspace
-if %ERRORLEVEL% == 2 goto eclipse
-if %ERRORLEVEL% == 3 goto build
-if %ERRORLEVEL% == 4 goto runClient
-if %ERRORLEVEL% == 5 goto exittask
+ECHO A: eclipse
+ECHO B: build
+ECHO C: runClient
+ECHO D: Exit
+CHOICE /C:ABCD /N
+if %ERRORLEVEL% == 1 goto eclipse
+if %ERRORLEVEL% == 2 goto build
+if %ERRORLEVEL% == 3 goto runClient
+if %ERRORLEVEL% == 4 goto exittask
 
-:setupdecompworkspace
-CLS
-cmd.exe /c "gradlew.bat setupdecompworkspace"
-PAUSE
-goto init
 
 :eclipse
 CLS
-cmd.exe /c "gradlew.bat eclipse"
+call gradlew eclipse genEclipseRuns
 PAUSE
 goto init
 
 :build
 CLS
-cmd.exe /c "gradlew.bat build"
+call gradlew build
 PAUSE
 goto init
 
 :runClient
 CLS
-cmd.exe /c "gradlew.bat runClient"
+call gradlew runClient
 PAUSE
 goto init
 

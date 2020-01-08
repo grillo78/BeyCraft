@@ -5,46 +5,33 @@ import java.util.Random;
 import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
 import com.grillo78.BeyCraft.Reference;
-import com.grillo78.BeyCraft.util.IHasModel;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 
-public class ItemBeyPackage extends Item implements IHasModel{
+public class ItemBeyPackage extends Item{
 	public ItemBeyPackage(String name) {
-		this.setCreativeTab(BeyCraft.BEYCRAFTTAB);
-		setRegistryName(new ResourceLocation(Reference.MODID,name));
-		this.setUnlocalizedName(name);
+		super(new Item.Properties().group(BeyCraft.BEYCRAFTTAB).maxStackSize(1));
+		this.setRegistryName(new ResourceLocation(Reference.MODID, name));
 		BeyRegistry.ITEMS.add(this);
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		if (!worldIn.isRemote)
-		{
-
-			EntityItem itemLayer = new EntityItem(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, new ItemStack(BeyRegistry.ITEMSLAYER.get(new Random().nextInt(BeyRegistry.ITEMSLAYER.size()-1)), 1));
-			worldIn.spawnEntity(itemLayer);
-			EntityItem itemDisk = new EntityItem(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, new ItemStack(BeyRegistry.ITEMSDISK.get(new Random().nextInt(BeyRegistry.ITEMSDISK.size()-1)), 1));
-			worldIn.spawnEntity(itemDisk);
-			EntityItem itemDriver = new EntityItem(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, new ItemStack(BeyRegistry.ITEMSDRIVER.get(new Random().nextInt(BeyRegistry.ITEMSDRIVER.size()-1)), 1));
-			worldIn.spawnEntity(itemDriver);
-			playerIn.getHeldItem(handIn).shrink(1);
-
+	public ActionResultType onItemUse(ItemUseContext context) {
+		if(!context.getWorld().isRemote) {
+			ItemEntity itemLayer = new ItemEntity(context.getWorld(), context.getPlayer().serverPosX, context.getPlayer().serverPosY, context.getPlayer().serverPosZ, new ItemStack(BeyRegistry.ITEMSLAYER.get(new Random().nextInt(BeyRegistry.ITEMSLAYER.size()-1)), 1));
+			context.getWorld().addEntity(itemLayer);
+			ItemEntity itemDisk = new ItemEntity(context.getWorld(), context.getPlayer().serverPosX, context.getPlayer().serverPosY, context.getPlayer().serverPosZ, new ItemStack(BeyRegistry.ITEMSDISK.get(new Random().nextInt(BeyRegistry.ITEMSDISK.size()-1)), 1));
+			context.getWorld().addEntity(itemDisk);
+			ItemEntity itemDriver = new ItemEntity(context.getWorld(), context.getPlayer().serverPosX, context.getPlayer().serverPosY, context.getPlayer().serverPosZ, new ItemStack(BeyRegistry.ITEMSDRIVER.get(new Random().nextInt(BeyRegistry.ITEMSDRIVER.size()-1)), 1));
+			itemDriver.setDefaultPickupDelay();
+			context.getWorld().addEntity(itemDriver);
+			context.getPlayer().getHeldItem(context.getHand()).shrink(1);
 		}
-		return super.onItemRightClick(worldIn, playerIn, handIn);
-	}
-	
-	@Override
-	public void registerModels() {
-		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(this.getRegistryName(),"inventory"));
+		return super.onItemUse(context);
 	}
 }

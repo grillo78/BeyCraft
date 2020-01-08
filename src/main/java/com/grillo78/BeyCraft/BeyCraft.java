@@ -1,187 +1,183 @@
 package com.grillo78.BeyCraft;
 
-import java.util.Random;
-
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.grillo78.BeyCraft.network.BladerLevelMessage;
-import com.grillo78.BeyCraft.programs.BeyRanking;
-import com.grillo78.BeyCraft.proxy.CommonProxy;
+import com.grillo78.BeyCraft.entity.BeyEntityRenderFactory;
+import com.grillo78.BeyCraft.entity.EntityBey;
 import com.grillo78.BeyCraft.tab.BeyCraftDisksTab;
 import com.grillo78.BeyCraft.tab.BeyCraftDriversTab;
 import com.grillo78.BeyCraft.tab.BeyCraftLayersTab;
 import com.grillo78.BeyCraft.tab.BeyCraftTab;
-import com.grillo78.BeyCraft.tileentity.ExpositoryTileEntity;
-import com.grillo78.BeyCraft.util.DatabaseConnection;
-import com.grillo78.BeyCraft.util.SoundHandler;
-import com.mrcrayfish.device.api.ApplicationManager;
+import com.mojang.brigadier.Message;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.IMerchant;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.passive.EntityVillager.ITradeList;
-import net.minecraft.entity.passive.EntityVillager.PriceInfo;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.village.MerchantRecipe;
-import net.minecraft.village.MerchantRecipeList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentUtils;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
-import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
-import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-@Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION)
+// The value here should match an entry in the META-INF/mods.toml file
+@Mod(Reference.MODID)
 public class BeyCraft {
 
-	public static VillagerProfession BEYBLADE_SELLER;
-	public static VillagerCareer BEY_SELLER;
+	// Directly reference a log4j logger.
+	public static final Logger logger = LogManager.getLogger();
 
-	public static Logger logger;
-	public static DatabaseConnection dbConn;
-	public static final CreativeTabs BEYCRAFTTAB = new BeyCraftTab("BeyCraft");
-	public static final CreativeTabs BEYCRAFTLAYERS = new BeyCraftLayersTab("BeyLayers");
-	public static final CreativeTabs BEYCRAFTDISKS = new BeyCraftDisksTab("BeyDisks");
-	public static final CreativeTabs BEYCRAFTDRIVERS = new BeyCraftDriversTab("BeyDrivers");
-	public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MODID);
+	public static final DeferredRegister<EntityType<?>> ENTITY = new DeferredRegister<>(ForgeRegistries.ENTITIES,
+			Reference.MODID);
+	public static final RegistryObject<EntityType<EntityBey>> BEY_ENTITY_TYPE = ENTITY.register("bey",
+			() -> EntityType.Builder.<EntityBey>create(EntityBey::new, EntityClassification.MISC).build(Reference.MODID + ":bey"));
 
-	@Instance(Reference.MODID)
-	public static BeyCraft instance;
+	public static final ItemGroup BEYCRAFTLAYERS = new BeyCraftLayersTab("Layers");
+	public static final ItemGroup BEYCRAFTDISKS = new BeyCraftDisksTab("Disks");
+	public static final ItemGroup BEYCRAFTDRIVERS = new BeyCraftDriversTab("Drivers");
+	public static final ItemGroup BEYCRAFTTAB = new BeyCraftTab("Beycraft");
 
-	@SidedProxy(clientSide = "com.grillo78.BeyCraft.proxy.ClientProxy", serverSide = "com.grillo78.BeyCraft.proxy.CommonProxy")
-	public static CommonProxy proxy;
+	public BeyCraft() {
+		// Register the setup method for modloading
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+		FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(EntityType.class, this::registerEntityType);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerEntityRender);
+		// Register the enqueueIMC method for modloading
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
+		// Register the processIMC method for modloading
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+		// Register the doClientStuff method for modloading
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
-		logger = event.getModLog();
-		dbConn = new DatabaseConnection();
-		GameRegistry.registerTileEntity(ExpositoryTileEntity.class,
-				new ResourceLocation(Reference.MODID, "tileEntity3DPrinter"));
-		proxy.onPreInit();
-		proxy.registerRenders();
+		// Register ourselves for server and other game events we are interested in
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	@EventHandler
-	public void init(FMLInitializationEvent event) {
-
-		BEYBLADE_SELLER = new VillagerRegistry.VillagerProfession(Reference.MODID + ":bey_seller",
-				Reference.MODID + ":textures/entity/villager/bey_seller.png",
-				Reference.MODID + ":textures/entity/villager/bey_seller.png");
-		IForgeRegistry<VillagerRegistry.VillagerProfession> villagerProfessions = ForgeRegistries.VILLAGER_PROFESSIONS;
-		villagerProfessions.register(BEYBLADE_SELLER);
-		BEY_SELLER = (new VillagerRegistry.VillagerCareer(BEYBLADE_SELLER, "cloud_enchanter"));
-		BEY_SELLER.addTrade(1, new TradeEmeraldsForPackage());
-		BEY_SELLER.addTrade(1, new TradeEmeraldsForHandle());
-		BEY_SELLER.addTrade(1, new TradeEmeraldsForRedLauncher());
-		SoundHandler.init();
-		logger.info(isDeviceModInstalled());
-		if (isDeviceModInstalled()) {
-			registerApplication();
-		}
-		INSTANCE.registerMessage(BladerLevelMessage.class, BladerLevelMessage.class, 0, Side.CLIENT);
+	private void registerEntityRender(FMLClientSetupEvent event) {
+		RenderingRegistry.registerEntityRenderingHandler(BEY_ENTITY_TYPE.get(), new BeyEntityRenderFactory());
 	}
 
-	public boolean isDeviceModInstalled() {
-		try {
-			Class.forName("com.mrcrayfish.device.MrCrayfishDeviceMod");
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+	private void registerEntityType(RegistryEvent.Register<EntityType<?>> event) {
+		EntityType<?> type = EntityType.Builder.<EntityBey>create(EntityBey::new, EntityClassification.MISC).size(0.25F, 0.25F)
+				.build(Reference.MODID + ":bey").setRegistryName(Reference.MODID, "bey");
+		event.getRegistry().register(type);
 	}
 
-	public void registerApplication() {
-		ApplicationManager.registerApplication(new ResourceLocation(Reference.MODID, "beyranking"), BeyRanking.class);
+	private void setup(final FMLCommonSetupEvent event) {
+		// some preinit code
 	}
 
-	public static class TradeEmeraldsForPackage implements ITradeList {
+	private void doClientStuff(final FMLClientSetupEvent event) {
+		RenderTypeLookup.setRenderLayer(BeyRegistry.STADIUM, RenderType.func_228641_d_());
+	}
 
-		public ItemStack stack;
-		public EntityVillager.PriceInfo priceInfo;
+	private void enqueueIMC(final InterModEnqueueEvent event) {
+		// some example code to dispatch IMC to another mod
+	}
 
-		public TradeEmeraldsForPackage() {
-			stack = new ItemStack(BeyRegistry.BEYPACKAGE);
-			priceInfo = new PriceInfo(10, 30);
-		}
+	private void processIMC(final InterModProcessEvent event) {
+		// some example code to receive and process InterModComms from other mods
+	}
 
-		@Override
-		public void addMerchantRecipe(IMerchant merchant, MerchantRecipeList recipeList, Random random) {
-			int actualPrice = 1;
+	// You can use SubscribeEvent and let the Event Bus discover methods to call
+	@SubscribeEvent
+	public void onServerStarting(FMLServerStartingEvent event) {
+		// do something when the server starts
+	}
 
-			if (priceInfo != null) {
-				actualPrice = priceInfo.getPrice(random);
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+	public static class RegistryEvents {
+
+		@SubscribeEvent
+		public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
+			// register a new block here
+			for (Block block : BeyRegistry.BLOCKS) {
+				event.getRegistry().register(block);
 			}
-
-			ItemStack stackToPay = new ItemStack(Items.EMERALD, actualPrice, 0);
-			recipeList.add(new MerchantRecipe(stackToPay, stack));
-
-			// DEBUG
-			System.out.println("Merchant recipe list = " + recipeList.getRecipiesAsTags());
 		}
 
-	}
-
-	public static class TradeEmeraldsForHandle implements ITradeList {
-
-		public ItemStack stack;
-		public EntityVillager.PriceInfo priceInfo;
-
-		public TradeEmeraldsForHandle() {
-			stack = new ItemStack(BeyRegistry.LAUNCHERHANDLE);
-			priceInfo = new PriceInfo(10, 30);
-		}
-
-		@Override
-		public void addMerchantRecipe(IMerchant merchant, MerchantRecipeList recipeList, Random random) {
-			int actualPrice = 1;
-
-			if (priceInfo != null) {
-				actualPrice = priceInfo.getPrice(random);
+		@SubscribeEvent
+		public static void registerItem(final RegistryEvent.Register<Item> event) {
+			for (Item item : BeyRegistry.ITEMS) {
+				event.getRegistry().register(item);
 			}
-
-			ItemStack stackToPay = new ItemStack(Items.EMERALD, actualPrice, 0);
-			recipeList.add(new MerchantRecipe(stackToPay, stack));
-
-			// DEBUG
-			System.out.println("Merchant recipe list = " + recipeList.getRecipiesAsTags());
-		}
-
-	}
-
-	public static class TradeEmeraldsForRedLauncher implements ITradeList {
-
-		public ItemStack stack;
-		public EntityVillager.PriceInfo priceInfo;
-
-		public TradeEmeraldsForRedLauncher() {
-			stack = new ItemStack(BeyRegistry.REDLAUNCHER);
-			priceInfo = new PriceInfo(10, 30);
-		}
-
-		@Override
-		public void addMerchantRecipe(IMerchant merchant, MerchantRecipeList recipeList, Random random) {
-			int actualPrice = 1;
-
-			if (priceInfo != null) {
-				actualPrice = priceInfo.getPrice(random);
+			for (Item item : BeyRegistry.ITEMSLAYER) {
+				event.getRegistry().register(item);
 			}
+			for (Item item : BeyRegistry.ITEMSDISK) {
+				event.getRegistry().register(item);
+			}
+			for (Item item : BeyRegistry.ITEMSDRIVER) {
+				event.getRegistry().register(item);
+			}
+		}
 
-			ItemStack stackToPay = new ItemStack(Items.EMERALD, actualPrice, 0);
-			recipeList.add(new MerchantRecipe(stackToPay, stack));
+		@SubscribeEvent
+		public static void playerJoined(PlayerLoggedInEvent event) {
+			PlayerEntity player = event.getPlayer();
+			ITextComponent prefix = TextComponentUtils.toTextComponent(new Message() {
 
-			// DEBUG
-			System.out.println("Merchant recipe list = " + recipeList.getRecipiesAsTags());
+				@Override
+				public String getString() {
+					// TODO Auto-generated method stub
+					return "[BeyCraft] -> Join to my Discord server: ";
+				}
+			});
+			ITextComponent url = TextComponentUtils.toTextComponent(new Message() {
+
+				@Override
+				public String getString() {
+					// TODO Auto-generated method stub
+					return "https://discord.gg/2PpbtFr";
+				}
+			});
+			Style sPrefix = new Style();
+			sPrefix.setColor(TextFormatting.GOLD);
+			Style sUrl = new Style();
+			sUrl.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr"))
+					.setColor(TextFormatting.GOLD);
+			prefix.setStyle(sPrefix);
+			url.setStyle(sUrl);
+			player.sendMessage(prefix);
+			player.sendMessage(url);
+//			BeyCraft.INSTANCE.sendTo(
+//					new BladerLevelMessage(
+//							(int) event.player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel()),
+//					(PlayerEntityMP) event.player);
+		}
+
+		@SubscribeEvent
+		public static void editHud(RenderGameOverlayEvent.Post event) {
+			if (!Minecraft.getInstance().gameSettings.showDebugInfo) {
+				if (event.getType() == ElementType.ALL) {
+					Minecraft.getInstance().getRenderManager().textureManager
+							.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/bladerlevel.png"));
+				}
+			}
 		}
 
 	}
