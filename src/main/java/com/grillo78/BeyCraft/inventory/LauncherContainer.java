@@ -8,10 +8,8 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-/**
- * @author a19guillermong
- *
- */
+
+
 public class LauncherContainer extends Container {
 
 
@@ -29,9 +27,9 @@ public class LauncherContainer extends Container {
 		launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 				.ifPresent(h -> this.addSlot(new SlotBeyDriver(h, 2, 10, 50)));
 		launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.ifPresent(h -> this.addSlot(new SlotHandle(h, 3, 10, 50)));
+				.ifPresent(h -> this.addSlot(new SlotHandle(h, 3, 62, 10)));
 		launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.ifPresent(h -> this.addSlot(new SlotBeyLogger(h, 4, 10, 50)));
+				.ifPresent(h -> this.addSlot(new SlotBeyLogger(h, 4, 62, 30)));
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
 				this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));

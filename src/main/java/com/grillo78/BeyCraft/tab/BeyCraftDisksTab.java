@@ -14,6 +14,6 @@ public class BeyCraftDisksTab extends ItemGroup{
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(BeyRegistry.ELEVENDISK);
+		return new ItemStack(BeyRegistry.DISKICON);
 	}
 }

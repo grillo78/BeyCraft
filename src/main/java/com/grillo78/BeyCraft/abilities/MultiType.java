@@ -12,7 +12,7 @@ import net.minecraft.nbt.CompoundNBT;
  * @author a19guillermong
  *
  */
-public class MultiType implements IAbility {
+public class MultiType extends Ability {
 
 	private final List<BeyTypes> types;
 
@@ -27,10 +27,6 @@ public class MultiType implements IAbility {
 	public List<BeyTypes> getTypes() {
 		return types;
 	}
-
-//	@Override
-//	public void executeAbility(EntityBey entity) {
-//	}
 
 	@Override
 	public void executeAbility(ItemStack stack) {

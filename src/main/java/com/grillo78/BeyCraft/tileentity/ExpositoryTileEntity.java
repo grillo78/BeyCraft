@@ -1,25 +1,37 @@
 package com.grillo78.BeyCraft.tileentity;
 
-import com.grillo78.BeyCraft.inventory.ExpositoryInventory;
+import com.grillo78.BeyCraft.BeyRegistry;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ISidedInventoryProvider;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
-public class ExpositoryTileEntity extends TileEntity implements ISidedInventoryProvider {
+public class ExpositoryTileEntity extends TileEntity  {
 
-	public ExpositoryTileEntity(TileEntityType<?> tileEntityTypeIn) {
-		super(tileEntityTypeIn);
+	private LazyOptional<IItemHandler> inventory =  LazyOptional.of(() -> new ItemStackHandler(3));
+	
+	public ExpositoryTileEntity() {
+		super(BeyRegistry.EXPOSITORY_TILE_ENTITY_TYPE.get());
 	}
 
+	/**
+	 * @return the inventory
+	 */
+	public LazyOptional<IItemHandler> getInventory() {
+		return inventory;
+	}
+	
 	@Override
-	public ISidedInventory createInventory(BlockState p_219966_1_, IWorld p_219966_2_, BlockPos p_219966_3_) {
-		// TODO Auto-generated method stub
-		return new ExpositoryInventory();
+	public void read(CompoundNBT compound) {
+		
+		super.read(compound);
 	}
-
+	
+	@Override
+	public CompoundNBT write(CompoundNBT compound) {
+		
+		return compound;
+	}
 }

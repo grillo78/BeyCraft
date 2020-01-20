@@ -34,4 +34,18 @@ public enum BeyTypes {
 			return "Balance";
 		}
 	}
+	
+	public static BeyTypes getByName(String name) {
+		switch (name) {
+		default:
+		case "attack":
+			return ATTACK;
+		case "defense":
+			return DEFENSE;
+		case "stamina":
+			return STAMINA;
+		case "balance":
+			return BALANCE;
+		}
+	}
 }

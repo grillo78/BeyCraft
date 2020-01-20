@@ -1,10 +1,17 @@
 package com.grillo78.BeyCraft.entity;
 
+import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
+import com.grillo78.BeyCraft.blocks.StadiumBlock;
+import com.grillo78.BeyCraft.items.ItemBeyDriver;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -15,7 +22,9 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -29,7 +38,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnData {
 
 	private ItemStackHandler inventory = new ItemStackHandler(3);
-	private int rotationDirection = 1;
+	private int rotationDirection;
 	private static final DataParameter<Float> ROTATIONSPEED = EntityDataManager.createKey(EntityBey.class,
 			DataSerializers.FLOAT);
 	private static final DataParameter<Float> RADIUS = EntityDataManager.createKey(EntityBey.class,
@@ -44,33 +53,52 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	 * @param world
 	 */
 	public EntityBey(EntityType<? extends EntityBey> type, World world) {
-		this(type, world,new ItemStack(BeyRegistry.STRIKEVALTRYEKV3),new ItemStack(BeyRegistry.SIXVDISK),new ItemStack(BeyRegistry.REBOOTDRIVER));
+		this(type, world, new ItemStack(BeyRegistry.LAYERICON), new ItemStack(BeyRegistry.DISKICON),
+				new ItemStack(BeyRegistry.DRIVERICON),1);
 	}
 
-	public EntityBey(EntityType<? extends EntityBey> type, World world,ItemStack layer,ItemStack disk,ItemStack driver) {
-		super(type,world);
+	public EntityBey(EntityType<? extends EntityBey> type, World world, ItemStack layer, ItemStack disk,
+			ItemStack driver, int rotationDirection) {
+		super(type, world);
+		this.rotationDirection = rotationDirection;
 		this.inventory = new ItemStackHandler(3);
 		this.inventory.setStackInSlot(0, layer);
 		this.inventory.setStackInSlot(1, disk);
 		this.inventory.setStackInSlot(2, driver);
+		stepHeight = 0;
 	}
-	
+
+	private void dropItems() {
+		world.addEntity(new ItemEntity(world, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
+				inventory.getStackInSlot(0)));
+		world.addEntity(new ItemEntity(world, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
+				inventory.getStackInSlot(1)));
+		world.addEntity(new ItemEntity(world, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
+				inventory.getStackInSlot(2)));
+	}
+
 	@Override
 	public IPacket<?> createSpawnPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
-	
+
 	@Override
 	protected void registerData() {
-		this.dataManager.register(ROTATIONSPEED, 100F);
-		this.dataManager.register(RADIUS, 1.5F);
+		this.dataManager.register(ROTATIONSPEED, 10F);
+		this.dataManager.register(RADIUS, 1.6F);
 		super.registerData();
 	}
 
 	@Override
 	protected void registerAttributes() {
 		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(16.0D);
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(74.0D);
+	}
+
+	@Override
+	public void onDeath(DamageSource cause) {
+		dropItems();
+		super.onDeath(cause);
 	}
 
 	@Override
@@ -96,12 +124,13 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	public boolean canBreatheUnderwater() {
 		return true;
 	}
-	
+
 	@Override
 	public void writeSpawnData(PacketBuffer buffer) {
 		for (int i = 0; i < 3; i++) {
 			buffer.writeItemStack(inventory.getStackInSlot(i));
 		}
+		buffer.writeInt(rotationDirection);
 	}
 
 	@Override
@@ -109,6 +138,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		for (int i = 0; i < 3; i++) {
 			this.inventory.setStackInSlot(i, additionalData.readItemStack());
 		}
+		rotationDirection=additionalData.readInt();
 	}
 
 	@Override
@@ -117,6 +147,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		compound.putInt("RotationDirection", rotationDirection);
 		compound.putFloat("MaxRotationSpeed", maxRotationSpeed);
 		compound.putFloat("RotationSpeed", getRotationSpeed());
+		compound.putFloat("Radius", getRadius());
 		super.writeAdditional(compound);
 	}
 
@@ -124,6 +155,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	public void readAdditional(CompoundNBT compound) {
 		rotationDirection = compound.getInt("RotationDirection");
 		setRotationSpeed(compound.getFloat("RotationSpeed"));
+		setRadius(compound.getFloat("Radius"));
 		maxRotationSpeed = compound.getFloat("MaxRotationSpeed");
 		inventory.deserializeNBT(compound.getCompound("inventory"));
 		super.readAdditional(compound);
@@ -131,27 +163,81 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
 	@Override
 	public ActionResultType applyPlayerInteraction(PlayerEntity player, Vec3d vec, Hand hand) {
-		if (!world.isRemote && hand == Hand.MAIN_HAND) {
-			world.addEntity(new ItemEntity(world, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
-					inventory.getStackInSlot(0)));
-			world.addEntity(new ItemEntity(world, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
-					inventory.getStackInSlot(1)));
-			world.addEntity(new ItemEntity(world, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
-					inventory.getStackInSlot(2)));
-			this.remove();
-			return ActionResultType.SUCCESS;
+		if (!world.isRemote) {
+			if (hand == Hand.MAIN_HAND) {
+				dropItems();
+				this.remove();
+				return ActionResultType.SUCCESS;
+			}
 		}
 		return super.applyPlayerInteraction(player, vec, hand);
 	}
 
 	@Override
+	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new EntityGoalRotate(this));
+		super.registerGoals();
+	}
+
+	@Override
 	public void tick() {
-		if(getRotationSpeed()>0) {
-			setRotationSpeed(getRotationSpeed() - 0.1f);
+		if (this.getRotationSpeed() > 0 && (world.getBlockState(this.getPosition().down())
+				.getBlock() instanceof StadiumBlock
+				|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR
+				|| (world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock && world
+						.getBlockState(
+								new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
+						.getBlock() instanceof StadiumBlock))) {
+			setRotationSpeed(getRotationSpeed() - 0.005F * ((ItemBeyDriver) inventory.getStackInSlot(2).getItem()).friction);
+			
+			angle += getRotationSpeed() * 30 * rotationDirection;
+		} else {
+			if (!stoped) {
+				stoped = true;
+				BeyCraft.logger.info("Bey Stopped");
+				setRotationSpeed(0);
+			}
+
 		}
 		super.tick();
 	}
-
+	
+	/**
+	 * @return the increaseRadius
+	 */
+	public boolean isIncreaseRadius() {
+		return increaseRadius;
+	}
+	
+	/**
+	 * @param increaseRadius the increaseRadius to set
+	 */
+	public void setIncreaseRadius(boolean increaseRadius) {
+		this.increaseRadius = increaseRadius;
+	}
+	
+	/**
+	 * @return the maxRotationSpeed
+	 */
+	public float getMaxRotationSpeed() {
+		return maxRotationSpeed;
+	}
+	
+	/**
+	 * @return the inventory
+	 */
+	public ItemStackHandler getInventory() {
+		return inventory;
+	}
+	
+	@Override
+	protected void func_213385_F() {
+	      boolean flag = !(this.getControllingPassenger() instanceof MobEntity);
+	      boolean flag1 = !(this.getRidingEntity() instanceof BoatEntity);
+	      this.goalSelector.setFlag(Goal.Flag.JUMP, flag && flag1);
+	      this.goalSelector.setFlag(Goal.Flag.LOOK, flag);
+//		super.func_213385_F();
+	}
 	public ItemStack getLayer() {
 		return inventory.getStackInSlot(0);
 	}
@@ -200,4 +286,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		return ((Float) this.dataManager.get(ROTATIONSPEED)).floatValue();
 	}
 
+	public boolean isStoped() {
+		return stoped;
+	}
 }

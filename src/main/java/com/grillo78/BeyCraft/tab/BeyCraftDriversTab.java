@@ -13,6 +13,6 @@ public class BeyCraftDriversTab extends ItemGroup{
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(BeyRegistry.XTENDDRIVER);
+		return new ItemStack(BeyRegistry.DRIVERICON);
 	}
 }

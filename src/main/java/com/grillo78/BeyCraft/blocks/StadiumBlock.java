@@ -180,7 +180,7 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 		voxelShape4 = VoxelShapes.combineAndSimplify(Block.makeCuboidShape(-1.5, 0, 1.064, 17.5, 6, 18.55),
 				Block.makeCuboidShape(-1.29369, 6.01, 1.5642999999999994, 17.29231, 8.01, 2.5642999999999994),
 				IBooleanFunction.OR);
-		voxelShape5 = Block.makeCuboidShape(1.5, 0.01, 1.5, 14.5, 5.99, 14.5);
+		voxelShape5 = Block.makeCuboidShape(1.5, 0.01, 1.5, 14.5, 6, 14.5);
 		voxelShape6 = VoxelShapes.combineAndSimplify(
 				Block.makeCuboidShape(-1.5, 0, -2.5500000000000007, 17.5, 6, 14.936),
 				Block.makeCuboidShape(-1.29231, 6.01, 13.4357, 17.29369, 8.01, 14.4357), IBooleanFunction.OR);
@@ -219,69 +219,10 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 				}).get();
 	}
 
-//	@Override
-//	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-//		if (entityIn instanceof EntityBey) {
-//
-//		}
-//		super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
-//	}
-//
-
-//	@Override
-//	public boolean isFullCube(IBlockState state) {
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-//		return canReplace(worldIn, pos.north().west()) && canReplace(worldIn, pos.north())
-//				&& canReplace(worldIn, pos.north().east()) && canReplace(worldIn, pos.west())
-//				&& canReplace(worldIn, pos) && canReplace(worldIn, pos.east())
-//				&& canReplace(worldIn, pos.south().west()) && canReplace(worldIn, pos.south())
-//				&& canReplace(worldIn, pos.south().east());
-//	}
-
 	private boolean canReplace(IWorldReader world, BlockPos pos) {
 		return world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getBlock() == Blocks.WATER;
 	}
-//
-//	@Override
-//	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-//		if (worldIn.getBlockState(pos.north()).getBlock() instanceof StadiumBlock) {
-//			worldIn.setBlockToAir(pos.north());
-//		}
-//		if (worldIn.getBlockState(pos.south()).getBlock() instanceof StadiumBlock) {
-//			worldIn.setBlockToAir(pos.south());
-//		}
-//		if (worldIn.getBlockState(pos.west()).getBlock() instanceof StadiumBlock) {
-//			worldIn.setBlockToAir(pos.west());
-//		}
-//		if (worldIn.getBlockState(pos.east()).getBlock() instanceof StadiumBlock) {
-//			worldIn.setBlockToAir(pos.east());
-//		}
-//		super.breakBlock(worldIn, pos, state);
-//	}
 
-//	@Override
-//	public boolean isOpaqueCube(IBlockState state) {
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean isTranslucent(IBlockState state) {
-//		return true;
-//	}
-//
-//	@Override
-//	public BlockRenderLayer getBlockLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
-//
-//	protected BlockStateContainer createBlockState() {
-//		return new BlockStateContainer(this, new IProperty[] { PART });
-//	}
-//
 	public static enum EnumPartType implements IStringSerializable {
 		TOPLEFT("topleft", 0), TOPCENTER("topcenter", 1), TOPRIGHT("topright", 2), MIDDLELEFT("middleleft", 3),
 		MIDDLECENTER("middlecenter", 4), MIDDLERIGHT("middleright", 5), BOTTOMLEFT("bottomleft", 6),

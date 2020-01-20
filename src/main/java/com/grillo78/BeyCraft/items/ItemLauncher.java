@@ -18,12 +18,12 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 public class ItemLauncher extends Item {
 
@@ -44,20 +44,27 @@ public class ItemLauncher extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
 		if (!player.isCrouching()) {
-			if (!world.isRemote && BeyCraft.BEY_ENTITY_TYPE.get() != null) {
+			if (!world.isRemote && BeyRegistry.BEY_ENTITY_TYPE != null) {
 				ItemStack launcher = player.getHeldItem(handIn);
 				launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
 					if (h.getStackInSlot(0).getItem() instanceof ItemBeyLayer
 							&& h.getStackInSlot(1).getItem() instanceof ItemBeyDisk
 							&& h.getStackInSlot(2).getItem() instanceof ItemBeyDriver) {
-						EntityBey entity = new EntityBey(BeyCraft.BEY_ENTITY_TYPE.get(), world,
-								h.getStackInSlot(0).copy(), h.getStackInSlot(1).copy(),
-								h.getStackInSlot(2).copy());
-						entity.setPositionAndRotation(player.getPosition().getX() + player.getLookVec().x,
-								player.getPosition().getY() + 1, player.getPosition().getZ() + player.getLookVec().z, 0,
-								0);
-						BeyCraft.logger.info(entity.getPosition().toString());
+						EntityBey entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE.get(), world,
+								h.getStackInSlot(0).copy(), h.getStackInSlot(1).copy(), h.getStackInSlot(2).copy(),
+								rotation);
+						entity.setLocationAndAngles(player.getPositionVec().x + player.getLookVec().x,
+								player.getPositionVec().y + 1 + player.getLookVec().y,
+								player.getPositionVec().z + player.getLookVec().z, player.rotationYaw, 0);
+						entity.rotationYawHead = entity.rotationYaw;
+						entity.renderYawOffset = entity.rotationYaw;
 						world.addEntity(entity);
+						BeyCraft.logger.info(new Vec3d((player.getPositionVec().x - player.prevPosX) * 2,
+								(player.getPositionVec().y - player.prevPosY) * 2,
+								(player.getPositionVec().z - player.prevPosZ) * 2).toString());
+						entity.addVelocity((player.getPositionVec().x - player.prevPosX) * 2,
+								(player.getPositionVec().y - player.prevPosY) * 2,
+								(player.getPositionVec().z - player.prevPosZ) * 2);
 						h.getStackInSlot(0).shrink(1);
 						h.getStackInSlot(1).shrink(1);
 						h.getStackInSlot(2).shrink(1);
@@ -69,7 +76,7 @@ public class ItemLauncher extends Item {
 			if (!world.isRemote) {
 				NetworkHooks.openGui((ServerPlayerEntity) player,
 						new SimpleNamedContainerProvider(
-								(id, playerventory, playerEntity) -> new LauncherContainer(BeyCraft.LAUNCHER_CONTAINER,
+								(id, playerventory, playerEntity) -> new LauncherContainer(BeyRegistry.LAUNCHER_CONTAINER,
 										id, player.getHeldItem(handIn), playerventory, playerEntity, rotation),
 								new StringTextComponent(getRegistryName().getPath())));
 			}
@@ -93,7 +100,7 @@ public class ItemLauncher extends Item {
 //								.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 //								.getStackInSlot(2).getItem() instanceof ItemBeyDriver
 //						&& !worldIn.isRemote) {
-//					EntityBey beyEntity = new EntityBey(worldIn,
+//					EntityBey entity = new EntityBey(worldIn,
 //							player.getHeldItem(handIn)
 //									.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 //									.getStackInSlot(0),
@@ -106,11 +113,11 @@ public class ItemLauncher extends Item {
 //							((IBladerLevel) player.getCapability(Provider.BLADERLEVEL_CAP))
 //									.getBladerLevel(),
 //							rotation, player.getName());
-//					beyEntity.setLocationAndAngles(player.posX + player.getLookVec().x, player.posY + 1,
+//					entity.setLocationAndAngles(player.posX + player.getLookVec().x, player.posY + 1,
 //							player.posZ + player.getLookVec().z, player.rotationYaw, 0);
-//					beyEntity.rotationYawHead = beyEntity.rotationYaw;
-//					beyEntity.renderYawOffset = beyEntity.rotationYaw;
-//					worldIn.spawnEntity(beyEntity);
+//					entity.rotationYawHead = entity.rotationYaw;
+//					entity.renderYawOffset = entity.rotationYaw;
+//					worldIn.spawnEntity(entity);
 //					if (((IBladerLevel) player.getCapability(Provider.BLADERLEVEL_CAP))
 //							.getExperience() != ((IBladerLevel) player.getCapability(Provider.BLADERLEVEL_CAP,
 //									EnumFacing.UP)).getMaxExperience()) {

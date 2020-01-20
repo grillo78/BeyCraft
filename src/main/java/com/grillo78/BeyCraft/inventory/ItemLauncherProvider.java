@@ -11,21 +11,22 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class ItemLauncherProvider implements ICapabilityProvider, ICapabilitySerializable{
+public class ItemLauncherProvider implements ICapabilityProvider, ICapabilitySerializable {
 
 	private final LazyOptional<IItemHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(5));
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if( cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ) {
-			return inventory.cast(); 
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return inventory.cast();
 		}
 		return LazyOptional.empty();
 	}
 
 	@Override
 	public INBT serializeNBT() {
-		return inventory.map(items -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(items, null)).orElseGet(CompoundNBT::new);
+		return inventory.map(items -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(items, null))
+				.orElseGet(CompoundNBT::new);
 	}
 
 	@Override

@@ -13,6 +13,6 @@ public class BeyCraftLayersTab extends ItemGroup{
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(BeyRegistry.ACHILLESA4);
+		return new ItemStack(BeyRegistry.LAYERICON);
 	}
 }
