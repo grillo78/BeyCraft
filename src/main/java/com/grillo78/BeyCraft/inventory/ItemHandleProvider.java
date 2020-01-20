@@ -11,7 +11,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class ItemLauncherProvider implements ICapabilityProvider, ICapabilitySerializable {
+public class ItemHandleProvider implements ICapabilityProvider, ICapabilitySerializable {
 
 	private final LazyOptional<IItemHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(3));
 

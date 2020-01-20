@@ -11,9 +11,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class ItemLauncherProvider implements ICapabilityProvider, ICapabilitySerializable {
+public class ItemBeyProvider implements ICapabilityProvider, ICapabilitySerializable {
 
-	private final LazyOptional<IItemHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(3));
+	private final LazyOptional<IItemHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(2));
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {

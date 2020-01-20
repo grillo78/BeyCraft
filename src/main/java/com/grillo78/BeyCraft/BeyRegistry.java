@@ -7,7 +7,9 @@ import com.google.common.collect.Lists;
 import com.grillo78.BeyCraft.blocks.ExpositoryBlock;
 import com.grillo78.BeyCraft.blocks.StadiumBlock;
 import com.grillo78.BeyCraft.entity.EntityBey;
+import com.grillo78.BeyCraft.inventory.BeyContainer;
 import com.grillo78.BeyCraft.inventory.BeyDiskFrameContainer;
+import com.grillo78.BeyCraft.inventory.HandleContainer;
 import com.grillo78.BeyCraft.inventory.LauncherContainer;
 import com.grillo78.BeyCraft.items.ItemBeyDisk;
 import com.grillo78.BeyCraft.items.ItemBeyDiskFrame;
@@ -58,6 +60,10 @@ public class BeyRegistry {
 	/* Container */
 	@ObjectHolder("beycraft:launcher")
 	public static final ContainerType<LauncherContainer> LAUNCHER_CONTAINER=null;
+	@ObjectHolder("beycraft:bey")
+	public static final ContainerType<BeyContainer> BEY_CONTAINER=null;
+	@ObjectHolder("beycraft:handle")
+	public static final ContainerType<HandleContainer> HANDLE_CONTAINER=null;
 	@ObjectHolder("beycraft:diskframe")
 	public static final ContainerType<BeyDiskFrameContainer> DISK_FRAME_CONTAINER=null;
 

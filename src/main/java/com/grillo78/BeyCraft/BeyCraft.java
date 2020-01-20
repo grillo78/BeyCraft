@@ -5,9 +5,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.grillo78.BeyCraft.entity.BeyEntityRenderFactory;
 import com.grillo78.BeyCraft.entity.EntityBey;
+import com.grillo78.BeyCraft.gui.BeyGUI;
 import com.grillo78.BeyCraft.gui.DiskFrameGUI;
+import com.grillo78.BeyCraft.gui.HandleGUI;
 import com.grillo78.BeyCraft.gui.LauncherGUI;
+import com.grillo78.BeyCraft.inventory.BeyContainer;
 import com.grillo78.BeyCraft.inventory.BeyDiskFrameContainer;
+import com.grillo78.BeyCraft.inventory.HandleContainer;
 import com.grillo78.BeyCraft.inventory.LauncherContainer;
 import com.grillo78.BeyCraft.tab.BeyCraftDisksTab;
 import com.grillo78.BeyCraft.tab.BeyCraftDriversTab;
@@ -100,6 +104,8 @@ public class BeyCraft {
 		RenderTypeLookup.setRenderLayer(BeyRegistry.STADIUM, RenderType.func_228641_d_());
 		ScreenManager.registerFactory(BeyRegistry.LAUNCHER_CONTAINER, LauncherGUI::new);
 		ScreenManager.registerFactory(BeyRegistry.DISK_FRAME_CONTAINER, DiskFrameGUI::new);
+		ScreenManager.registerFactory(BeyRegistry.BEY_CONTAINER, BeyGUI::new);
+		ScreenManager.registerFactory(BeyRegistry.HANDLE_CONTAINER, HandleGUI::new);
 	}
 
 	private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -121,13 +127,18 @@ public class BeyCraft {
 		@SubscribeEvent
 		public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
 			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-				return new BeyDiskFrameContainer(windowId,
-						new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player);
+				return new BeyDiskFrameContainer(windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player);
 			}).setRegistryName("diskframe"));
 			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-				return new LauncherContainer(BeyRegistry.LAUNCHER_CONTAINER, windowId,
-						new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player, 1);
+				return new LauncherContainer(BeyRegistry.LAUNCHER_CONTAINER, windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player,
+						1);
 			}).setRegistryName("launcher"));
+			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+				return new BeyContainer(BeyRegistry.BEY_CONTAINER, windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player);
+			}).setRegistryName("bey"));
+			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+				return new HandleContainer(BeyRegistry.HANDLE_CONTAINER, windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player);
+			}).setRegistryName("handle"));
 		}
 
 		@SubscribeEvent

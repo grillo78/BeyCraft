@@ -10,22 +10,22 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 
 
-public class LauncherContainer extends Container {
+public class HandleContainer extends Container {
 
 
 	/**
 	 * @param type
 	 * @param id
 	 */
-	public LauncherContainer(ContainerType<?> type, int id, ItemStack launcher, PlayerInventory playerInventory,
-			PlayerEntity player, int rotation) {
+	public HandleContainer(ContainerType<?> type, int id, ItemStack launcher, PlayerInventory playerInventory,
+			PlayerEntity player) {
 		super(type, id);
 		launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.ifPresent(h -> this.addSlot(new SlotBeyLayer(h, 0, 10, 10, rotation)));
+				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 0, 10, 10)));
 		launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.ifPresent(h -> this.addSlot(new SlotHandle(h, 1, 62, 10)));
+				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 1, 10, 30)));
 		launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.ifPresent(h -> this.addSlot(new SlotBeyLogger(h, 2, 62, 30)));
+				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 2, 10, 50)));
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
 				this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));

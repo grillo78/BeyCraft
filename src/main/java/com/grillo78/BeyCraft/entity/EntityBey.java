@@ -29,6 +29,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 /**
@@ -53,28 +54,40 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	 * @param world
 	 */
 	public EntityBey(EntityType<? extends EntityBey> type, World world) {
-		this(type, world, new ItemStack(BeyRegistry.LAYERICON), new ItemStack(BeyRegistry.DISKICON),
-				new ItemStack(BeyRegistry.DRIVERICON),1);
+		this(type, world, new ItemStack(BeyRegistry.LAYERICON), 1);
 	}
 
-	public EntityBey(EntityType<? extends EntityBey> type, World world, ItemStack layer, ItemStack disk,
-			ItemStack driver, int rotationDirection) {
+	public EntityBey(EntityType<? extends EntityBey> type, World world, ItemStack layer, int rotationDirection) {
 		super(type, world);
 		this.rotationDirection = rotationDirection;
 		this.inventory = new ItemStackHandler(3);
 		this.inventory.setStackInSlot(0, layer);
-		this.inventory.setStackInSlot(1, disk);
-		this.inventory.setStackInSlot(2, driver);
+		layer.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+
+			this.inventory.setStackInSlot(1, h.getStackInSlot(0).copy());
+			this.inventory.setStackInSlot(2, h.getStackInSlot(1).copy());
+		});
 		stepHeight = 0;
 	}
 
 	private void dropItems() {
+		inventory.getStackInSlot(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+			h.getStackInSlot(0).shrink(1);
+			;
+			h.getStackInSlot(1).shrink(1);
+			;
+		});
 		world.addEntity(new ItemEntity(world, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
 				inventory.getStackInSlot(0)));
 		world.addEntity(new ItemEntity(world, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
 				inventory.getStackInSlot(1)));
 		world.addEntity(new ItemEntity(world, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
 				inventory.getStackInSlot(2)));
+	}
+
+	private void dropItem() {
+		world.addEntity(new ItemEntity(world, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
+				inventory.getStackInSlot(0)));
 	}
 
 	@Override
@@ -138,7 +151,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		for (int i = 0; i < 3; i++) {
 			this.inventory.setStackInSlot(i, additionalData.readItemStack());
 		}
-		rotationDirection=additionalData.readInt();
+		rotationDirection = additionalData.readInt();
 	}
 
 	@Override
@@ -165,7 +178,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	public ActionResultType applyPlayerInteraction(PlayerEntity player, Vec3d vec, Hand hand) {
 		if (!world.isRemote) {
 			if (hand == Hand.MAIN_HAND) {
-				dropItems();
+				dropItem();
 				this.remove();
 				return ActionResultType.SUCCESS;
 			}
@@ -188,8 +201,9 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 						.getBlockState(
 								new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
 						.getBlock() instanceof StadiumBlock))) {
-			setRotationSpeed(getRotationSpeed() - 0.005F * ((ItemBeyDriver) inventory.getStackInSlot(2).getItem()).friction);
-			
+			setRotationSpeed(
+					getRotationSpeed() - 0.005F * ((ItemBeyDriver) inventory.getStackInSlot(2).getItem()).friction);
+
 			angle += getRotationSpeed() * 30 * rotationDirection;
 		} else {
 			if (!stoped) {
@@ -201,43 +215,44 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		}
 		super.tick();
 	}
-	
+
 	/**
 	 * @return the increaseRadius
 	 */
 	public boolean isIncreaseRadius() {
 		return increaseRadius;
 	}
-	
+
 	/**
 	 * @param increaseRadius the increaseRadius to set
 	 */
 	public void setIncreaseRadius(boolean increaseRadius) {
 		this.increaseRadius = increaseRadius;
 	}
-	
+
 	/**
 	 * @return the maxRotationSpeed
 	 */
 	public float getMaxRotationSpeed() {
 		return maxRotationSpeed;
 	}
-	
+
 	/**
 	 * @return the inventory
 	 */
 	public ItemStackHandler getInventory() {
 		return inventory;
 	}
-	
+
 	@Override
 	protected void func_213385_F() {
-	      boolean flag = !(this.getControllingPassenger() instanceof MobEntity);
-	      boolean flag1 = !(this.getRidingEntity() instanceof BoatEntity);
-	      this.goalSelector.setFlag(Goal.Flag.JUMP, flag && flag1);
-	      this.goalSelector.setFlag(Goal.Flag.LOOK, flag);
+		boolean flag = !(this.getControllingPassenger() instanceof MobEntity);
+		boolean flag1 = !(this.getRidingEntity() instanceof BoatEntity);
+		this.goalSelector.setFlag(Goal.Flag.JUMP, flag && flag1);
+		this.goalSelector.setFlag(Goal.Flag.LOOK, flag);
 //		super.func_213385_F();
 	}
+
 	public ItemStack getLayer() {
 		return inventory.getStackInSlot(0);
 	}
