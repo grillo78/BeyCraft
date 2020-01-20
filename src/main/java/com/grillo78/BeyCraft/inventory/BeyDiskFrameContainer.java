@@ -1,5 +1,7 @@
 package com.grillo78.BeyCraft.inventory;
 
+import com.grillo78.BeyCraft.BeyRegistry;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -12,14 +14,10 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 public class BeyDiskFrameContainer extends Container {
 
-
-	/**
-	 * @param type
-	 * @param id
-	 */
-	public BeyDiskFrameContainer(ContainerType<?> type, int id, ItemStack disk, PlayerInventory playerInventory,
+	
+	public BeyDiskFrameContainer(int id, ItemStack disk, PlayerInventory playerInventory,
 			PlayerEntity player) {
-		super(type, id);
+		super(BeyRegistry.DISK_FRAME_CONTAINER, id);
 		if(disk!=null) {
 			disk.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			.ifPresent(h -> this.addSlot(new SlotBeyFrame(h, 0, 10, 10)));
@@ -34,7 +32,7 @@ public class BeyDiskFrameContainer extends Container {
             this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 142));
         }
 	}
-
+	
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
 		return true;

@@ -57,9 +57,9 @@ public class BeyRegistry {
 
 	/* Container */
 	@ObjectHolder("beycraft:launcher")
-	public static ContainerType<LauncherContainer> LAUNCHER_CONTAINER;
+	public static final ContainerType<LauncherContainer> LAUNCHER_CONTAINER=null;
 	@ObjectHolder("beycraft:beydiskframe")
-	public static ContainerType<BeyDiskFrameContainer> DISK_FRAME_CONTAINER;
+	public static final ContainerType<BeyDiskFrameContainer> DISK_FRAME_CONTAINER=null;
 
 	/* ArmorMaterials */
 //	public static final ArmorMaterial BLADER_MATERIAL = EnumHelper.addArmorMaterial("blader_model",

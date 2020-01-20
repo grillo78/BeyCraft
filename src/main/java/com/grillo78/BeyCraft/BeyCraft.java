@@ -120,20 +120,20 @@ public class BeyCraft {
 
 		@SubscribeEvent
 		public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
-			event.getRegistry().registerAll(IForgeContainerType.create((windowId, inv, data) -> {
-				return new LauncherContainer(BeyRegistry.LAUNCHER_CONTAINER, windowId,
-						new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player, 1);
-			}).setRegistryName("launcher"), IForgeContainerType.create((windowId, inv, data) -> {
-				return new BeyDiskFrameContainer(BeyRegistry.DISK_FRAME_CONTAINER, windowId,
+			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+				return new BeyDiskFrameContainer(windowId,
 						new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player);
 			}).setRegistryName("diskframe"));
+			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+				return new LauncherContainer(BeyRegistry.LAUNCHER_CONTAINER, windowId,
+						new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player, 1);
+			}).setRegistryName("launcher"));
 		}
 
 		@SubscribeEvent
 		public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
 			// register a new block here
 			for (Block block : BeyRegistry.BLOCKS) {
-				logger.info(block.getNameTextComponent().getString());
 				event.getRegistry().register(block);
 			}
 		}

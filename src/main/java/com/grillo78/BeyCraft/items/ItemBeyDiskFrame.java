@@ -35,14 +35,14 @@ public class ItemBeyDiskFrame extends ItemBeyDisk {
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
 		return new ItemBeyDiskFrameProvider();
 	}
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
 		if (!world.isRemote) {
 			NetworkHooks.openGui((ServerPlayerEntity) player,
 					new SimpleNamedContainerProvider(
-							(id, playerInventory, playerEntity) -> new BeyDiskFrameContainer(BeyRegistry.DISK_FRAME_CONTAINER,
-									id, player.getHeldItem(handIn), playerInventory, playerEntity),
+							(id, playerInventory, playerEntity) -> new BeyDiskFrameContainer(id,
+									player.getHeldItem(handIn), playerInventory, playerEntity),
 							new StringTextComponent(getRegistryName().getPath())));
 		}
 		return super.onItemRightClick(world, player, handIn);
