@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.grillo78.BeyCraft.Reference;
 import com.grillo78.BeyCraft.abilities.Ability;
-import com.grillo78.BeyCraft.items.render.DiskFrameItemStackRendererTileEntity;
 import com.grillo78.BeyCraft.util.BeyTypes;
 
 import net.minecraft.client.util.ITooltipFlag;

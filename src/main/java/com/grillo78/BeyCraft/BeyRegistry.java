@@ -58,7 +58,7 @@ public class BeyRegistry {
 	/* Container */
 	@ObjectHolder("beycraft:launcher")
 	public static final ContainerType<LauncherContainer> LAUNCHER_CONTAINER=null;
-	@ObjectHolder("beycraft:beydiskframe")
+	@ObjectHolder("beycraft:diskframe")
 	public static final ContainerType<BeyDiskFrameContainer> DISK_FRAME_CONTAINER=null;
 
 	/* ArmorMaterials */

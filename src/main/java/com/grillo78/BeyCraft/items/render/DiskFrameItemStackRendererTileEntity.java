@@ -16,7 +16,7 @@ public class DiskFrameItemStackRendererTileEntity extends ItemStackTileEntityRen
 	public void func_228364_a_(ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int p_228364_4_,
 			int p_228364_5_) {
 		Minecraft.getInstance().getItemRenderer().func_229110_a_(new ItemStack(((ItemBeyDiskFrame) stack.getItem())),
-				TransformType.FIXED, 0, OverlayTexture.field_229196_a_, matrix, buffer);
+				TransformType.FIRST_PERSON_LEFT_HAND, 0, OverlayTexture.field_229196_a_, matrix, buffer);
 		super.func_228364_a_(stack, matrix, buffer, p_228364_4_, p_228364_5_);
 	}
 }
