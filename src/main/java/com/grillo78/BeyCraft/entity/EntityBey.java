@@ -244,13 +244,13 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		return inventory;
 	}
 
+
 	@Override
-	protected void func_213385_F() {
+	protected void updateMovementGoalFlags() {
 		boolean flag = !(this.getControllingPassenger() instanceof MobEntity);
 		boolean flag1 = !(this.getRidingEntity() instanceof BoatEntity);
 		this.goalSelector.setFlag(Goal.Flag.JUMP, flag && flag1);
 		this.goalSelector.setFlag(Goal.Flag.LOOK, flag);
-//		super.func_213385_F();
 	}
 
 	public ItemStack getLayer() {

@@ -69,7 +69,7 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
 	}
 
 	@Override
-	public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
 			Hand hand, BlockRayTraceResult p_225533_6_) {
 
 		TileEntity tileentity = worldIn.getTileEntity(pos);

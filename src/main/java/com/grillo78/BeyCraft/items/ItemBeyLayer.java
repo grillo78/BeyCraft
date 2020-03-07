@@ -31,7 +31,7 @@ public class ItemBeyLayer extends ItemBeyPart {
 
 	public ItemBeyLayer(String name, int rotationDirection, int attack, int defense, int weight,
 			int burst, Ability primaryAbility, Ability secundaryAbility, BeyTypes type) {
-		super(name, type, primaryAbility, secundaryAbility, BeyCraft.BEYCRAFTLAYERS,new Item.Properties().setTEISR(()->()-> new BeyItemStackRendererTileEntity()));
+		super(name, type, primaryAbility, secundaryAbility, BeyCraft.BEYCRAFTLAYERS,new Item.Properties().setISTER(()->BeyItemStackRendererTileEntity::new));
 		this.attack = attack;
 		this.defense = defense;
 		this.weight = weight;

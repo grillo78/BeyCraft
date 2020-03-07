@@ -101,7 +101,7 @@ public class BeyCraft {
 	}
 
 	private void doClientStuff(final FMLClientSetupEvent event) {
-		RenderTypeLookup.setRenderLayer(BeyRegistry.STADIUM, RenderType.func_228641_d_());
+		RenderTypeLookup.setRenderLayer(BeyRegistry.STADIUM, RenderType.getCutoutMipped());
 		ScreenManager.registerFactory(BeyRegistry.LAUNCHER_CONTAINER, LauncherGUI::new);
 		ScreenManager.registerFactory(BeyRegistry.DISK_FRAME_CONTAINER, DiskFrameGUI::new);
 		ScreenManager.registerFactory(BeyRegistry.BEY_CONTAINER, BeyGUI::new);

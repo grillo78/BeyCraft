@@ -27,7 +27,7 @@ public class ItemBeyDiskFrame extends ItemBeyDisk {
 	public ItemBeyDiskFrame(String name, int attack, int defense, int weight, int burst, Ability primaryAbility,
 			Ability secundaryAbility, BeyTypes type) {
 		super(name, attack, defense, weight, burst, primaryAbility, secundaryAbility, type,
-				new Item.Properties().setTEISR(() -> () -> new DiskFrameItemStackRendererTileEntity()));
+				new Item.Properties().setISTER(() -> DiskFrameItemStackRendererTileEntity::new));
 		BeyRegistry.ITEMSDISKFRAME.add(this);
 	}
 

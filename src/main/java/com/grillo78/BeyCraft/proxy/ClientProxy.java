@@ -1,21 +1,19 @@
 package com.grillo78.BeyCraft.proxy;
 
-public class ClientProxy extends CommonProxy{
+import com.grillo78.BeyCraft.BeyRegistry;
+import com.grillo78.BeyCraft.tileentity.ExpositoryTileEntity;
+import com.grillo78.BeyCraft.tileentity.RenderExpository;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 
-	@Override
-	public void onPreInit() {
-		super.onPreInit();
-	}
-	
-	@Override
-	public void registerRenders() {
-//		RenderingRegistry.registerEntityRenderingHandler(EntityBey.class, new IRenderFactory<EntityBey>() {
-//
-//			@Override
-//			public Render<? super EntityBey> createRenderFor(RenderManager manager) {
-//				return new RenderBey(manager,Minecraft.getMinecraft().getRenderItem());
-//			}
-//		});
-//		ClientRegistry.bindTileEntitySpecialRenderer(ExpositoryTileEntity.class, new RenderExpository());
-	}
+public class ClientProxy extends CommonProxy {
+
+    @Override
+    public void onPreInit() {
+        super.onPreInit();
+    }
+
+    @Override
+    public void registerRenders() {
+//		ClientRegistry.bindTileEntityRenderer(BeyRegistry.EXPOSITORY_TILE_ENTITY_TYPE.get(), RenderExpository::new);
+    }
 }
