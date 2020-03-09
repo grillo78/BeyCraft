@@ -1,4 +1,4 @@
-package com.grillo78.BeyCraft.inventory;
+package com.grillo78.BeyCraft.inventory.slots;
 
 import com.grillo78.BeyCraft.items.ItemBeyLayer;
 

@@ -22,11 +22,15 @@ import com.grillo78.BeyCraft.tileentity.ExpositoryTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -186,6 +190,13 @@ public class BeyRegistry {
 //		for (Block block : BLOCKS) {
 //		}
 //	}
+
+	@SubscribeEvent
+	public static void playerCapabilitiesInjection(AttachCapabilitiesEvent<Entity> event){
+		if(event.getObject() instanceof PlayerEntity){
+
+		}
+	}
 
 //	@SubscribeEvent
 //	public static void playerCapabilitiesInjection(AttachCapabilitiesEvent<Entity> event) {

@@ -1,5 +1,8 @@
 package com.grillo78.BeyCraft.inventory;
 
+import com.grillo78.BeyCraft.inventory.slots.SlotBeyLayer;
+import com.grillo78.BeyCraft.inventory.slots.SlotBeyLogger;
+import com.grillo78.BeyCraft.inventory.slots.SlotHandle;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

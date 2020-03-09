@@ -2,6 +2,7 @@ package com.grillo78.BeyCraft.inventory;
 
 import com.grillo78.BeyCraft.BeyRegistry;
 
+import com.grillo78.BeyCraft.inventory.slots.SlotBeyFrame;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

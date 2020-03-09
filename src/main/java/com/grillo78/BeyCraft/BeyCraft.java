@@ -1,5 +1,6 @@
 package com.grillo78.BeyCraft;
 
+import net.minecraftforge.client.model.ModelLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -106,6 +107,10 @@ public class BeyCraft {
 		ScreenManager.registerFactory(BeyRegistry.DISK_FRAME_CONTAINER, DiskFrameGUI::new);
 		ScreenManager.registerFactory(BeyRegistry.BEY_CONTAINER, BeyGUI::new);
 		ScreenManager.registerFactory(BeyRegistry.HANDLE_CONTAINER, HandleGUI::new);
+		for (Item item: BeyRegistry.ITEMSLAYER) {
+			ModelLoader.addSpecialModel(new ResourceLocation("beycraft","layers/"+item.getTranslationKey().replace("item.beycraft.","")));
+		}
+
 	}
 
 	private void enqueueIMC(final InterModEnqueueEvent event) {

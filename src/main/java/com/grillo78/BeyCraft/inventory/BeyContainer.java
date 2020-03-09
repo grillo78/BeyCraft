@@ -1,5 +1,7 @@
 package com.grillo78.BeyCraft.inventory;
 
+import com.grillo78.BeyCraft.inventory.slots.SlotBeyDisk;
+import com.grillo78.BeyCraft.inventory.slots.SlotBeyDriver;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
