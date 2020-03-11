@@ -4,13 +4,13 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EntityType.IFactory;
 import net.minecraft.world.World;
 
-public class EntityFactory implements IFactory<EntityBey> {
+public class EntityBeyFactory implements IFactory<EntityBey> {
 	
-	public static EntityFactory INSTANCE;
+	public static EntityBeyFactory INSTANCE;
 	/** Returns the main Entity Factory instance or creates it and returns it. **/
-	public static EntityFactory getInstance() {
+	public static EntityBeyFactory getInstance() {
 		if(INSTANCE == null) {
-			INSTANCE = new EntityFactory();
+			INSTANCE = new EntityBeyFactory();
 		}
 		return INSTANCE;
 	}

@@ -1,6 +1,14 @@
 package com.grillo78.BeyCraft;
 
+import com.grillo78.BeyCraft.particles.SparkleParticle;
+import net.minecraft.client.particle.IParticleFactory;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.particles.BasicParticleType;
+import net.minecraft.particles.ParticleType;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.registries.ObjectHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,6 +56,8 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+import javax.annotation.Nullable;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Reference.MODID)
@@ -129,6 +139,18 @@ public class BeyCraft {
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 	public static class RegistryEvents {
 
+		@ObjectHolder(Reference.MODID + ":sparkle")
+		public static BasicParticleType SPARKLE;
+
+		@SubscribeEvent
+		public static void onParticleTypeRegistry(final RegistryEvent.Register<ParticleType<?>> event) {
+			event.getRegistry().register(new BasicParticleType(false).setRegistryName("sparkle"));
+		}
+		@SubscribeEvent
+		public static void onParticleFactorieRegistry(final ParticleFactoryRegisterEvent event) {
+			Minecraft.getInstance().particles.registerFactory(SPARKLE, SparkleParticle.Factory::new);
+		}
+
 		@SubscribeEvent
 		public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
 			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
@@ -188,7 +210,6 @@ public class BeyCraft {
 //
 //				@Override
 //				public String getString() {
-//					// TODO Auto-generated method stub
 //					return "https://discord.gg/2PpbtFr";
 //				}
 //			});

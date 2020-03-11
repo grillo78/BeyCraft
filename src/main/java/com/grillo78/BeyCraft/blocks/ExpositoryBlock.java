@@ -29,73 +29,70 @@ import net.minecraft.world.World;
 
 /**
  * @author a19guillermong
- *
  */
 public class ExpositoryBlock extends Block implements IWaterLoggable {
 
-	protected static final AxisAlignedBB COLLISION_BOX = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
+    protected static final AxisAlignedBB COLLISION_BOX = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
 
-	public ExpositoryBlock(Material materialIn, String name) {
-		super(Block.Properties.create(Material.CLAY));
-		setRegistryName(new ResourceLocation(Reference.MODID, name));
+    public ExpositoryBlock(Material materialIn, String name) {
+        super(Block.Properties.create(Material.CLAY));
+        setRegistryName(new ResourceLocation(Reference.MODID, name));
 
-		BeyRegistry.BLOCKS.add(this);
-		BeyRegistry.ITEMS.add(new BlockItem(this, new Item.Properties().group(BeyCraft.BEYCRAFTTAB))
-				.setRegistryName(this.getRegistryName()));
-	}
+        BeyRegistry.BLOCKS.add(this);
+        BeyRegistry.ITEMS.add(new BlockItem(this, new Item.Properties().group(BeyCraft.BEYCRAFTTAB))
+                .setRegistryName(this.getRegistryName()));
+    }
 
-	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
 
-	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new ExpositoryTileEntity();
-	}
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return new ExpositoryTileEntity();
+    }
 
-	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		if (worldIn.getTileEntity(pos) instanceof ExpositoryTileEntity) {
-			ExpositoryTileEntity tileEntity = (ExpositoryTileEntity) worldIn.getTileEntity(pos);
-			tileEntity.getInventory().ifPresent(h -> {
-				worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0)));
-				worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(1)));
-				worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(2)));
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (worldIn.getTileEntity(pos) instanceof ExpositoryTileEntity) {
+            ExpositoryTileEntity tileEntity = (ExpositoryTileEntity) worldIn.getTileEntity(pos);
+            tileEntity.getInventory().ifPresent(h -> {
+                worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0)));
+                worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(1)));
+                worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(2)));
 
-			});
-		}
-		super.onBlockHarvested(worldIn, pos, state, player);
-	}
+            });
+        }
+        super.onBlockHarvested(worldIn, pos, state, player);
+    }
 
-	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
-			Hand hand, BlockRayTraceResult p_225533_6_) {
+    @Override
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
+                                             Hand hand, BlockRayTraceResult p_225533_6_) {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        if (tileentity instanceof ExpositoryTileEntity) {
+            if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyLayer) {
+                setItemStack((ExpositoryTileEntity) tileentity, 0, playerIn.getHeldItem(hand));
+            } else {
+                ((ExpositoryTileEntity) tileentity).getInventory().ifPresent(h -> {
+                    worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0)));
+                });
+                setItemStack((ExpositoryTileEntity) tileentity, 0, ItemStack.EMPTY);
+            }
+        }
+        return ActionResultType.SUCCESS;
+    }
 
-		TileEntity tileentity = worldIn.getTileEntity(pos);
-		if (tileentity instanceof ExpositoryTileEntity) {
-			if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyLayer) {
-				setItemStack((ExpositoryTileEntity) tileentity, 0, playerIn.getHeldItem(hand));
-			} else if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDisk) {
-				setItemStack((ExpositoryTileEntity) tileentity, 1, playerIn.getHeldItem(hand));
-			} else if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDriver) {
-				setItemStack((ExpositoryTileEntity) tileentity, 2, playerIn.getHeldItem(hand));
-			} else {
-
-			}
-		}
-		return ActionResultType.SUCCESS;
-	}
-
-	/**
-	 * 
-	 */
-	private void setItemStack(ExpositoryTileEntity tileEntity, int index, ItemStack stack) {
-		tileEntity.getInventory().ifPresent(h -> {
-			h.insertItem(index, stack.copy(), false);
-			stack.shrink(1);
-		});
-	}
+    /**
+     *
+     */
+    private void setItemStack(ExpositoryTileEntity tileEntity, int index, ItemStack stack) {
+        tileEntity.getInventory().ifPresent(h -> {
+            h.insertItem(index, stack.copy(), false);
+            stack.shrink(1);
+        });
+    }
 
 //	@Override
 //	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {

@@ -31,8 +31,8 @@ public class EntityGoalRotate extends Goal {
 						bey.rotationYaw += bey.getRotationSpeed() * bey.getRotationDirection() * 2
 								/ (-bey.getMaxRotationSpeed() * 0.1);
 					}
-					bey.move(MoverType.SELF, new Vec3d(bey.getLookVec().x * bey.getRadius() / 3, 0,
-							bey.getLookVec().z * bey.getRadius() / 3));
+					bey.move(MoverType.SELF, new Vec3d(bey.getLookVec().x * bey.getRadius() / 2.1, 0,
+							bey.getLookVec().z * bey.getRadius() / 2.1));
 				}
 				if (!bey.world.isRemote) {
 					if (bey.world.getBlockState(new BlockPos(bey.getPositionVector().x + 0.23,
@@ -106,7 +106,7 @@ public class EntityGoalRotate extends Goal {
 				}
 			}
 		}
-		return super.shouldContinueExecuting();
+		return !bey.isStoped();
 	}
 
 }

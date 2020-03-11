@@ -25,8 +25,9 @@ public class ItemBeyProvider implements ICapabilityProvider, ICapabilitySerializ
 
 	@Override
 	public INBT serializeNBT() {
-		return inventory.map(items -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(items, null))
+		INBT nbt = inventory.map(items -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(items, null))
 				.orElseGet(CompoundNBT::new);
+		return nbt;
 	}
 
 	@Override
