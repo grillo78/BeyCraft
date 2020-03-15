@@ -1,6 +1,7 @@
 package com.grillo78.BeyCraft.entity;
 
 import com.grillo78.BeyCraft.BeyCraft;
+import com.grillo78.BeyCraft.util.CustomRenderType;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -41,27 +42,25 @@ public class BeyRender extends EntityRenderer<EntityBey> {
     @Override
     public void render(EntityBey entity, float entityYaw, float partialTicks, MatrixStack matrixStack,
                        IRenderTypeBuffer bufferIn, int packedLightIn) {
-
         if (this.renderManager.pointedEntity == entity && !Minecraft.getInstance().player.isSpectator()
                 && Minecraft.isGuiEnabled()) {
-            matrixStack.push();
-            matrixStack.translate(0, 0.5F, 0);
-            renderName(entity, entity.getLayer().getItem().getName().getFormattedText(), matrixStack, bufferIn,
-                    packedLightIn);
-            matrixStack.translate(0, -0.25F, 0);
-            renderName(entity, entity.getDisk().getItem().getName().getFormattedText(), matrixStack, bufferIn,
-                    packedLightIn);
-            matrixStack.translate(0, -0.25F, 0);
-            renderName(entity, entity.getDriver().getItem().getName().getFormattedText(), matrixStack, bufferIn,
-                    packedLightIn);
-            matrixStack.translate(0, -0.25F, 0);
-            renderName(entity, "Speed:" + entity.getRotationSpeed(), matrixStack, bufferIn, packedLightIn);
-            matrixStack.pop();
+//            matrixStack.push();
+//            matrixStack.translate(0, 0.5F, 0);
+//            renderName(entity, entity.getLayer().getItem().getName().getFormattedText(), matrixStack, bufferIn,
+//                    packedLightIn);
+//            matrixStack.translate(0, -0.25F, 0);
+//            renderName(entity, entity.getDisk().getItem().getName().getFormattedText(), matrixStack, bufferIn,
+//                    packedLightIn);
+//            matrixStack.translate(0, -0.25F, 0);
+//            renderName(entity, entity.getDriver().getItem().getName().getFormattedText(), matrixStack, bufferIn,
+//                    packedLightIn);
+//            matrixStack.translate(0, -0.25F, 0);
+//            renderName(entity, "Radius:" + entity.getRadius(), matrixStack, bufferIn, packedLightIn);
+//            matrixStack.pop();
         }
         matrixStack.push();
-        if (!entity.isStoped()) {
+        if (entity.onGround && !entity.isStoped()) {
             Vec3d[] points = entity.getPoints();
-            IVertexBuilder wr = bufferIn.getBuffer(RenderType.getLines());
             Matrix4f matrix4f1 = matrixStack.getLast().getMatrix();
             for (int i = 0; i < entity.getPoints().length; i++) {
                 if (entity.getPoints()[i] != null) {
@@ -72,14 +71,22 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                         float x1 = (float) (entity.getPoints()[i + 1].x - entity.getPositionVec().x);
                         float y1 = (float) (entity.getPoints()[i + 1].y - entity.getPositionVec().y);
                         float z1 = (float) (entity.getPoints()[i + 1].z - entity.getPositionVec().z);
-                        wr.pos(matrix4f1, x, y, z).color(255, 255, 0, 255).endVertex();
-                        wr.pos(matrix4f1, x1, y1, z1).color(255, 255, 0, 255).endVertex();
+                        IVertexBuilder wr2 = bufferIn.getBuffer(CustomRenderType.THINLINE);
+                        wr2.pos(matrix4f1, x, y, z).color(255, 255, 0, 255).endVertex();
+                        wr2.pos(matrix4f1, x1, y1, z1).color(255, 255, 0, 255).endVertex();
+                        IVertexBuilder wr = bufferIn.getBuffer(CustomRenderType.THICKLINE);
+                        wr.pos(matrix4f1, x, y, z).color(255, 255, 0, 80).endVertex();
+                        wr.pos(matrix4f1, x1, y1, z1).color(255, 255, 0, 80).endVertex();
                     } else {
                         float x = (float) (entity.getPoints()[i].x - entity.getPositionVec().x);
                         float y = (float) (entity.getPoints()[i].y - entity.getPositionVec().y);
                         float z = (float) (entity.getPoints()[i].z - entity.getPositionVec().z);
-                        wr.pos(matrix4f1, x, y, z).color(255, 255, 0, 255).endVertex();
-                        wr.pos(matrix4f1, 0, 0, 0).color(255, 255, 0, 255).endVertex();
+                        IVertexBuilder wr2 = bufferIn.getBuffer(CustomRenderType.THINLINE);
+                        wr2.pos(matrix4f1, x, y, z).color(255, 255, 0, 255).endVertex();
+                        wr2.pos(matrix4f1, 0, 0, 0).color(255, 255, 0, 255).endVertex();
+                        IVertexBuilder wr = bufferIn.getBuffer(CustomRenderType.THICKLINE);
+                        wr.pos(matrix4f1, x, y, z).color(255, 255, 0, 80).endVertex();
+                        wr.pos(matrix4f1, 0, 0, 0).color(255, 255, 0, 80).endVertex();
                     }
                 }
             }
@@ -94,7 +101,7 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                     new Quaternion(new Vector3f((float) entity.getLookVec().x * entity.getRotationDirection(), 0,
                             (float) entity.getLookVec().z * entity.getRotationDirection()), -30, true));
         }
-        matrixStack.rotate(new Quaternion(0, 0, entity.angle * 2, true));
+        matrixStack.rotate(new Quaternion(0, 0, entity.angle, true));
         if (entity.getRotationSpeed() < 2) {
             matrixStack.rotate(
                     new Quaternion(new Vector3f((float) entity.getLookVec().x, (float) entity.getLookVec().z, 0),

@@ -1,7 +1,7 @@
 {
   "variants": {
-    "normal": {
-        "model": "beycraft:expository"
+    "": {
+      "model": "beycraft:block/expository"
     }
   }
 }

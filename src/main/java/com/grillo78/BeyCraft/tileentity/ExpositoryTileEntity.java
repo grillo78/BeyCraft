@@ -1,5 +1,6 @@
 package com.grillo78.BeyCraft.tileentity;
 
+import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -13,7 +14,7 @@ public class ExpositoryTileEntity extends TileEntity  {
 	private LazyOptional<IItemHandler> inventory =  LazyOptional.of(() -> new ItemStackHandler(3));
 	
 	public ExpositoryTileEntity() {
-		super(BeyRegistry.EXPOSITORY_TILE_ENTITY_TYPE.get());
+		super(BeyCraft.EXPOSITORYTILEENTITYTYPE);
 	}
 
 	/**

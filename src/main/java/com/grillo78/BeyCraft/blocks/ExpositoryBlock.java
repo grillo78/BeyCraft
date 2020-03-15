@@ -24,6 +24,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
@@ -32,7 +35,7 @@ import net.minecraft.world.World;
  */
 public class ExpositoryBlock extends Block implements IWaterLoggable {
 
-    protected static final AxisAlignedBB COLLISION_BOX = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
+    private VoxelShape collisionBox = VoxelShapes.create(0,0,0,1,0.5,1);
 
     public ExpositoryBlock(Material materialIn, String name) {
         super(Block.Properties.create(Material.CLAY));
@@ -59,8 +62,6 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
             ExpositoryTileEntity tileEntity = (ExpositoryTileEntity) worldIn.getTileEntity(pos);
             tileEntity.getInventory().ifPresent(h -> {
                 worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0)));
-                worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(1)));
-                worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(2)));
 
             });
         }
@@ -94,7 +95,12 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
         });
     }
 
-//	@Override
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return collisionBox;
+    }
+
+    //	@Override
 //	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 //		if(worldIn.getTileEntity(pos) instanceof ExpositoryTileEntity) {
 //			ExpositoryTileEntity tileentity = (ExpositoryTileEntity)worldIn.getTileEntity(pos);

@@ -1,13 +1,12 @@
 package com.grillo78.BeyCraft;
 
 import com.grillo78.BeyCraft.particles.SparkleParticle;
-import net.minecraft.client.particle.IParticleFactory;
-import net.minecraft.client.particle.Particle;
+import com.grillo78.BeyCraft.tileentity.RenderExpository;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleType;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,8 +56,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import javax.annotation.Nullable;
-
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Reference.MODID)
 public class BeyCraft {
@@ -71,13 +68,16 @@ public class BeyCraft {
 	public static final ItemGroup BEYCRAFTDRIVERS = new BeyCraftDriversTab("Drivers");
 	public static final ItemGroup BEYCRAFTTAB = new BeyCraftTab("Beycraft");
 
+	@ObjectHolder(Reference.MODID+":expositorytileentity")
+	public static TileEntityType<ExpositoryTileEntity> EXPOSITORYTILEENTITYTYPE = (TileEntityType<ExpositoryTileEntity>) TileEntityType.Builder.create(ExpositoryTileEntity::new).build(null)
+			.setRegistryName(new ResourceLocation(Reference.MODID, "expositorytileentity"));
+
 	public BeyCraft() {
 		// Register the setup method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(EntityType.class, this::registerEntityType);
 		FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(TileEntityType.class,
 				this::registerTileEntityType);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerEntityRender);
 		// Register the enqueueIMC method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
 		// Register the processIMC method for modloading
@@ -89,30 +89,23 @@ public class BeyCraft {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	private void registerEntityRender(FMLClientSetupEvent event) {
-		RenderingRegistry.registerEntityRenderingHandler(BeyRegistry.BEY_ENTITY_TYPE.get(),
-				new BeyEntityRenderFactory());
-	}
-
 	private void registerEntityType(RegistryEvent.Register<EntityType<?>> event) {
 		EntityType<?> type = EntityType.Builder.<EntityBey>create(EntityBey::new, EntityClassification.MISC)
-				.size(0.25F, 0.25F).build(Reference.MODID + ":bey");
+				.size(0.19F, 0.25F).build(Reference.MODID + ":bey");
 		type.setRegistryName(Reference.MODID, "bey");
 		event.getRegistry().register(type);
 	}
 
 	private void registerTileEntityType(RegistryEvent.Register<TileEntityType<?>> event) {
-		TileEntityType<?> type = TileEntityType.Builder.create(ExpositoryTileEntity::new).build(null)
-				.setRegistryName(new ResourceLocation(Reference.MODID, "expositorytileentity"));
-		event.getRegistry().register(type);
+		event.getRegistry().register(EXPOSITORYTILEENTITYTYPE);
 	}
 
 	private void setup(final FMLCommonSetupEvent event) {
-		// some preinit code
 	}
 
 	private void doClientStuff(final FMLClientSetupEvent event) {
 		RenderTypeLookup.setRenderLayer(BeyRegistry.STADIUM, RenderType.getCutoutMipped());
+		RenderTypeLookup.setRenderLayer(BeyRegistry.EXPOSITORY, RenderType.getCutoutMipped());
 		ScreenManager.registerFactory(BeyRegistry.LAUNCHER_CONTAINER, LauncherGUI::new);
 		ScreenManager.registerFactory(BeyRegistry.DISK_FRAME_CONTAINER, DiskFrameGUI::new);
 		ScreenManager.registerFactory(BeyRegistry.BEY_CONTAINER, BeyGUI::new);
@@ -120,7 +113,9 @@ public class BeyCraft {
 		for (Item item: BeyRegistry.ITEMSLAYER) {
 			ModelLoader.addSpecialModel(new ResourceLocation("beycraft","layers/"+item.getTranslationKey().replace("item.beycraft.","")));
 		}
-
+		RenderingRegistry.registerEntityRenderingHandler(BeyRegistry.BEY_ENTITY_TYPE.get(),
+				new BeyEntityRenderFactory());
+		ClientRegistry.bindTileEntityRenderer(EXPOSITORYTILEENTITYTYPE, RenderExpository::new);
 	}
 
 	private void enqueueIMC(final InterModEnqueueEvent event) {

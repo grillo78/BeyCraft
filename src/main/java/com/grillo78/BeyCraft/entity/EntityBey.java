@@ -4,11 +4,7 @@ import com.grillo78.BeyCraft.BeyCraft;
 import com.grillo78.BeyCraft.BeyRegistry;
 import com.grillo78.BeyCraft.blocks.StadiumBlock;
 import com.grillo78.BeyCraft.items.ItemBeyDriver;
-
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.renderer.Vector3d;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.BoatEntity;
@@ -21,14 +17,13 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -46,6 +41,8 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
             DataSerializers.FLOAT);
     private static final DataParameter<Float> RADIUS = EntityDataManager.createKey(EntityBey.class,
             DataSerializers.FLOAT);
+    private static final DataParameter<Boolean> HORIZONTALCOLLISION = EntityDataManager.createKey(EntityBey.class,
+            DataSerializers.BOOLEAN);
     public float angle = 0;
     private boolean increaseRadius = false;
     private boolean stoped = false;
@@ -77,6 +74,10 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         stepHeight = 0;
     }
 
+    public float getMaxRadius() {
+        return maxRadius;
+    }
+
     private void dropItems() {
         inventory.getStackInSlot(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             h.getStackInSlot(0).shrink(1);
@@ -105,6 +106,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     @Override
     protected void registerData() {
         this.dataManager.register(ROTATIONSPEED, maxRotationSpeed);
+        this.dataManager.register(HORIZONTALCOLLISION, false);
         this.dataManager.register(RADIUS, 1.6F);
         super.registerData();
     }
@@ -203,7 +205,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         super.registerGoals();
     }
 
-    private void updatePoints(EntityBey entity) {
+    public void updatePoints(EntityBey entity) {
         for (int i = 0; i < points.length; i++) {
             if (points[i] != null) {
                 if (i != points.length - 1) {
@@ -223,7 +225,6 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
     @Override
     public void tick() {
-        updatePoints(this);
         if (this.getRotationSpeed() > 0 && (world.getBlockState(this.getPosition().down())
                 .getBlock() instanceof StadiumBlock
                 || world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR
@@ -232,7 +233,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                         new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
                 .getBlock() instanceof StadiumBlock))) {
             setRotationSpeed(
-                    getRotationSpeed() - 0.005F * ((ItemBeyDriver) inventory.getStackInSlot(2).getItem()).friction);
+                    getRotationSpeed() - 0.005F * ((ItemBeyDriver) inventory.getStackInSlot(2).getItem()).getFriction());
 
             angle += getRotationSpeed() * 30 * rotationDirection;
         } else {
@@ -241,9 +242,50 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                 BeyCraft.logger.info("Bey Stopped");
                 setRotationSpeed(0);
             }
-
+        }
+        if (isHorizontalCollision() && !isStoped()) {
+            for (int i = 0; i < 10; i++) {
+                world.addParticle(BeyCraft.RegistryEvents.SPARKLE, getPosX(), getPosY() + 0.5, getPosZ(), rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
+            }
         }
         super.tick();
+    }
+
+    @Override
+    public void travel(Vec3d p_213352_1_) {
+        super.travel(p_213352_1_);
+        if (collidedHorizontally) {
+            rotationYaw += 90 * rotationDirection;
+            BeyCraft.logger.info("rotation changed by collision");
+        }
+        updatePoints(this);
+        setHorizontalCollision(collidedHorizontally);
+    }
+
+    @Override
+    protected boolean isMovementBlocked() {
+//        if(super.isMovementBlocked()){
+//            rotationYaw +=90;
+//        }
+        return super.isMovementBlocked();
+    }
+
+    @Override
+    protected void collideWithEntity(Entity entityIn) {
+        BeyCraft.logger.info(entityIn.getType().getRegistryName());
+        if (!stoped && entityIn instanceof EntityBey) {
+            double x = (getPosX() - entityIn.getPosX()) / 2;
+            double y = (getPosY() - entityIn.getPosY()) / 2;
+            double z =  (getPosZ() - entityIn.getPosZ()) / 2;
+            ((ServerWorld) world).spawnParticle(BeyCraft.RegistryEvents.SPARKLE, getPosX(), getPosY(), getPosZ(), 10, x, y, z, 10);
+        }
+        super.collideWithEntity(entityIn);
+    }
+
+    @Override
+    public void applyEntityCollision(Entity entityIn) {
+
+        super.applyEntityCollision(entityIn);
     }
 
     @Override
@@ -318,6 +360,14 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
     public void setRotationDirection(int rotationDirection) {
         this.rotationDirection = rotationDirection;
+    }
+
+    public final boolean isHorizontalCollision() {
+        return ((Boolean) this.dataManager.get(HORIZONTALCOLLISION)).booleanValue();
+    }
+
+    public void setHorizontalCollision(boolean horizontalCollision) {
+        this.dataManager.set(HORIZONTALCOLLISION, Boolean.valueOf(horizontalCollision));
     }
 
     public final float getRadius() {

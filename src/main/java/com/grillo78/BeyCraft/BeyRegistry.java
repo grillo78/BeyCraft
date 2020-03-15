@@ -54,13 +54,6 @@ public class BeyRegistry {
 			() -> EntityType.Builder.<EntityBey>create(EntityBey::new, EntityClassification.MISC)
 					.build(Reference.MODID + ":bey"));
 
-	/* TileEntity */
-	public static final DeferredRegister<TileEntityType<?>> EXPOSITORY_TILE_ENTITY = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES,
-			Reference.MODID);
-	public static RegistryObject<TileEntityType<ExpositoryTileEntity>> EXPOSITORY_TILE_ENTITY_TYPE = EXPOSITORY_TILE_ENTITY
-			.register("expositorytileentity",
-			() -> TileEntityType.Builder.<ExpositoryTileEntity>create(ExpositoryTileEntity::new, BeyRegistry.EXPOSITORY).build(null));
-
 	/* Container */
 	@ObjectHolder("beycraft:launcher")
 	public static final ContainerType<LauncherContainer> LAUNCHER_CONTAINER=null;
