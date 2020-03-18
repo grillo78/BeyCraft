@@ -1,0 +1,6 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:obj",
+  "flip-v": true,
+  "model": "beycraft:models/item/handle.obj"
+}

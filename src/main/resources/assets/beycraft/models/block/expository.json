@@ -1,6 +1,6 @@
 {
     "parent": "builtin/entity",
     "textures": {
-        "particles": "block/white_concrete"
+        "particle": "block/white_concrete"
     }
 }
