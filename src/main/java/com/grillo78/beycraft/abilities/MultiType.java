@@ -2,6 +2,7 @@ package com.grillo78.beycraft.abilities;
 
 import java.util.List;
 
+import com.grillo78.beycraft.entity.EntityBey;
 import com.grillo78.beycraft.items.ItemBeyPart;
 import com.grillo78.beycraft.util.BeyTypes;
 
@@ -26,6 +27,11 @@ public class MultiType extends Ability {
 
 	public List<BeyTypes> getTypes() {
 		return types;
+	}
+
+	@Override
+	public void executeAbility(EntityBey entity) {
+
 	}
 
 	@Override

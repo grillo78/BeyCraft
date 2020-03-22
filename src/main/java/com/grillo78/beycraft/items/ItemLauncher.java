@@ -33,7 +33,7 @@ public class ItemLauncher extends Item {
 		super(new Item.Properties().group(BeyCraft.BEYCRAFTTAB).maxStackSize(1));
 		setRegistryName(new ResourceLocation(Reference.MODID, name));
 		this.rotation = rotation;
-		BeyRegistry.ITEMS.add(this);
+		BeyRegistry.ITEMS.put(name,this);
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public class ItemBladerArmor extends ArmorItem {
 		super(materialIn, equipmentSlotIn, new Item.Properties().group(BeyCraft.BEYCRAFTTAB));
 		setRegistryName(new ResourceLocation(Reference.MODID,name));
 		this.setName=setName;
-		BeyRegistry.ITEMS.add(this);
+		BeyRegistry.ITEMS.put(name,this);
 	}
 
 //	@SideOnly(Side.CLIENT)

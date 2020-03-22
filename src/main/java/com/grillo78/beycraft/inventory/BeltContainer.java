@@ -1,11 +1,7 @@
 package com.grillo78.beycraft.inventory;
 
-import com.grillo78.beycraft.inventory.slots.LockedSlot;
-import com.grillo78.beycraft.inventory.slots.SlotBeyLayer;
-import com.grillo78.beycraft.inventory.slots.SlotBeyLogger;
-import com.grillo78.beycraft.inventory.slots.SlotHandle;
+import com.grillo78.beycraft.inventory.slots.*;
 import com.grillo78.beycraft.network.PacketHandler;
-import com.grillo78.beycraft.network.message.MessageUpdateLauncherItemStack;
 import com.grillo78.beycraft.network.message.MessageUpdateLayerItemStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -19,30 +15,21 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
+public class BeltContainer extends Container {
 
-public class LauncherContainer extends Container {
-
-    private ItemStack stack;
-    private Hand hand;
 
     /**
      * @param type
      * @param id
      */
-    public LauncherContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory,
-                             PlayerEntity player, int rotation, Hand hand) {
+    public BeltContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory) {
         super(type, id);
-        this.stack = stack;
-        this.hand = hand;
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                .ifPresent(h -> this.addSlot(new SlotBeyLayer(h, 0, 10, 10, rotation)));
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                .ifPresent(h -> {
-                    this.addSlot(new SlotHandle(h, 1, 62, 10));
-                        });
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                .ifPresent(h -> this.addSlot(new SlotBeyLogger(h, 2, 62, 30)));
-        addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);
+                .ifPresent(h -> this.addSlot(new SlotBeyBothLayer(h, 0, 10, 10)));
+        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            this.addSlot(new SlotBeyLauncher(h, 1, 10, 30));
+        });
+        addPlayerSlots(new InvWrapper(playerInventory), playerInventory.getSlotFor(stack));
     }
 
     protected void addPlayerSlots(InvWrapper playerinventory, int locked) {
@@ -62,19 +49,6 @@ public class LauncherContainer extends Container {
                 this.addSlot(new SlotItemHandler(playerinventory, row, x, y));
             else
                 this.addSlot(new LockedSlot(playerinventory, row, x, y));
-        }
-    }
-
-    @Override
-    public void onContainerClosed(PlayerEntity player) {
-        if (player instanceof ServerPlayerEntity) {
-            stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                PacketHandler.instance.sendToServer(new MessageUpdateLauncherItemStack(stack,
-                        h.getStackInSlot(0),
-                        h.getStackInSlot(1),
-                        h.getStackInSlot(2),
-                        hand));
-            });
         }
     }
 

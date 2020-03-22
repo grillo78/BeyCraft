@@ -12,6 +12,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItem;
@@ -55,9 +57,9 @@ public class StadiumBlock extends Block implements IWaterLoggable {
         setRegistryName(new ResourceLocation(Reference.MODID, name));
         setVoxelShapes();
         BeyRegistry.BLOCKS.add(this);
-        BeyRegistry.ITEMS.add(new BlockItem(this, new Item.Properties().group(BeyCraft.BEYCRAFTTAB))
+        BeyRegistry.ITEMS.put(name,new BlockItem(this, new Item.Properties().group(BeyCraft.BEYCRAFTTAB))
                 .setRegistryName(getRegistryName()));
-        setDefaultState(this.stateContainer.getBaseState().with(PART,EnumPartType.MIDDLECENTER));
+        setDefaultState(this.stateContainer.getBaseState().with(PART, EnumPartType.MIDDLECENTER));
     }
 
     @Override
@@ -94,6 +96,12 @@ public class StadiumBlock extends Block implements IWaterLoggable {
                 && canReplace(worldIn, pos) && canReplace(worldIn, pos.east())
                 && canReplace(worldIn, pos.south().west()) && canReplace(worldIn, pos.south())
                 && canReplace(worldIn, pos.south().east());
+    }
+
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        super.onBlockHarvested(worldIn, pos, state, player);
+        worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this)));
     }
 
     @Override

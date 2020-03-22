@@ -24,6 +24,7 @@ public class PacketHandler {
         register(MessageUpdateDiskFrameItemStack.class, new MessageUpdateDiskFrameItemStack());
         register(MessageUpdateLauncherItemStack.class, new MessageUpdateLauncherItemStack());
         register(MessageUpdateHandleItemStack.class, new MessageUpdateHandleItemStack());
+        register(MessageOpenBelt.class, new MessageOpenBelt());
     }
 
     private static <T> void register(Class<T> clazz, IMessage<T> message)

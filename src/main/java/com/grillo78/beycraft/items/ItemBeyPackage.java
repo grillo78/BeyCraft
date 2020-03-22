@@ -17,7 +17,7 @@ public class ItemBeyPackage extends Item {
 	public ItemBeyPackage(String name) {
 		super(new Item.Properties().group(BeyCraft.BEYCRAFTTAB).maxStackSize(1));
 		this.setRegistryName(new ResourceLocation(Reference.MODID, name));
-		BeyRegistry.ITEMS.add(this);
+		BeyRegistry.ITEMS.put(name,this);
 	}
 
 	@Override

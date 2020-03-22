@@ -12,6 +12,6 @@ public class ItemBeyLogger extends Item{
 	public ItemBeyLogger(String name) {
 		super(new Item.Properties().group(BeyCraft.BEYCRAFTTAB).maxStackSize(1));
 		setRegistryName(new ResourceLocation(Reference.MODID,name));
-		BeyRegistry.ITEMS.add(this);
+		BeyRegistry.ITEMS.put(name,this);
 	}
 }

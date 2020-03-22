@@ -8,10 +8,10 @@ import net.minecraft.item.ItemStack;
  * @author a19guillermong
  *
  */
-public class Ability {
+public abstract class Ability {
 
 	
-	public void executeAbility(EntityBey entity) {};
+	public abstract void executeAbility(EntityBey entity);
 
-	public void executeAbility(ItemStack piece) {};
+	public abstract void executeAbility(ItemStack piece);
 }

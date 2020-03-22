@@ -112,8 +112,8 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                 inventory.getStackInSlot(2)));
     }
 
-    private void dropItem() {
-        world.addEntity(new ItemEntity(world, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
+    private void dropItem(PlayerEntity player) {
+        world.addEntity(new ItemEntity(world, player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(),
                 inventory.getStackInSlot(0)));
     }
 
@@ -210,7 +210,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     public ActionResultType applyPlayerInteraction(PlayerEntity player, Vec3d vec, Hand hand) {
         if (!world.isRemote && !player.isSpectator()) {
             if (hand == Hand.MAIN_HAND) {
-                dropItem();
+                dropItem(player);
                 this.remove();
                 return ActionResultType.SUCCESS;
             }

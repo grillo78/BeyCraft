@@ -100,6 +100,9 @@ repositories {
     maven {
         url 'https://jitpack.io'
     }
+    flatDir {
+        dirs 'lib'
+    }
 }
 
 
@@ -109,7 +112,8 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.15.2-31.1.25'
     compile fg.deobf("vazkii.patchouli:Patchouli:1.15.2-1.2-29.147")
-    compile fg.deobf('com.github.lazyMods:Baubles:1.7.1')
+    compile name: 'baubles-1.7.1-1.15.2-deobf'
+//    compile fg.deobf('com.github.lazyMods:Baubles:1.7.1')
 //    compile fg.deobf("curse.maven:mrcrayfish-furniture-mod:2853267")
 //    compile fg.deobf("curse.maven:mrcrayfish-vehicle-mod:2899889")
 //    compile fg.deobf("curse.maven:performant:2875938")

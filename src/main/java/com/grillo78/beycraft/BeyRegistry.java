@@ -6,11 +6,9 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.grillo78.beycraft.blocks.ExpositoryBlock;
 import com.grillo78.beycraft.blocks.StadiumBlock;
+import com.grillo78.beycraft.capabilities.BladerLevelProvider;
 import com.grillo78.beycraft.entity.EntityBey;
-import com.grillo78.beycraft.inventory.BeyContainer;
-import com.grillo78.beycraft.inventory.BeyDiskFrameContainer;
-import com.grillo78.beycraft.inventory.HandleContainer;
-import com.grillo78.beycraft.inventory.LauncherContainer;
+import com.grillo78.beycraft.inventory.*;
 import com.grillo78.beycraft.items.ItemBeyDisk;
 import com.grillo78.beycraft.items.ItemBeyDiskFrame;
 import com.grillo78.beycraft.items.ItemBeyFrame;
@@ -21,9 +19,12 @@ import com.grillo78.beycraft.items.ItemLauncherHandle;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
@@ -37,9 +38,11 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ObjectHolder;
 
+import javax.annotation.Nullable;
+
 public class BeyRegistry {
     public static List<Block> BLOCKS = Lists.newArrayList();
-    public static List<Item> ITEMS = Lists.newArrayList();
+    public static HashMap<String,Item> ITEMS = new HashMap();
     public static List<Item> ITEMSLAYER = Lists.newArrayList();
     public static List<Item> ITEMSFRAMELIST = Lists.newArrayList();
     public static List<ItemBeyDiskFrame> ITEMSDISKFRAME = Lists.newArrayList();
@@ -60,10 +63,15 @@ public class BeyRegistry {
     public static final ContainerType<LauncherContainer> LAUNCHER_CONTAINER = null;
     @ObjectHolder("beycraft:bey")
     public static final ContainerType<BeyContainer> BEY_CONTAINER = null;
+    @ObjectHolder("beycraft:belt")
+    public static final ContainerType<BeltContainer> BELT_CONTAINER = null;
     @ObjectHolder("beycraft:handle")
     public static final ContainerType<HandleContainer> HANDLE_CONTAINER = null;
     @ObjectHolder("beycraft:diskframe")
     public static final ContainerType<BeyDiskFrameContainer> DISK_FRAME_CONTAINER = null;
+
+    /* Keybinds */
+    public static final KeyBinding beltKey = new KeyBinding("key.beycraft.belt",66,"key.beycraft.category");
 
     /* ArmorMaterials */
 //	public static final ArmorMaterial BLADER_MATERIAL = EnumHelper.addArmorMaterial("blader_model",
@@ -80,63 +88,6 @@ public class BeyRegistry {
     public static final Item DISKICON = new Item(new Item.Properties()).setRegistryName(Reference.MODID, "diskicon");
     public static final Item DRIVERICON = new Item(new Item.Properties()).setRegistryName(Reference.MODID, "drivericon");
 
-//	public static final ItemBeyLayer FAFNIRF3 = new ItemBeyLayer("drain_fafnir", -0.08F, -1, 1, 3, 5, 1, new Absorb(),
-//			null, BeyTypes.STAMINA);
-//	public static final ItemBeyDisk EIGHTDISK = new ItemBeyDisk("8disk", -0.15F);
-//	public static final ItemBeyDriver NOPTHINGDRIVER = new ItemBeyDriver("nothing_driver", 0.15F, 1, 3, null, null,
-//			BeyTypes.STAMINA);
-//	public static final ItemBeyLayer FAFNIRF4 = new ItemBeyLayer("geist_fafnir", -0.08F, -1, 1, 3, 5, 1, new Absorb(),
-//			null, BeyTypes.STAMINA);
-//	public static final ItemBeyLayer FAFNIRF5 = new ItemBeyLayer("wizard_fafnir", -0.08F, -1, 1, 3, 5, 1, new Absorb(),
-//			null, BeyTypes.STAMINA);
-//	public static final ItemBeyDisk RATCHETDISK = new ItemBeyDisk("ratchet", -0.15F);
-//	public static final ItemBeyDriver RISEDRIVER = new ItemBeyDriver("rise_driver", 0.15F, 1, 3, null, null,
-//			BeyTypes.STAMINA);
-//	public static final ItemBeyLayer VALTRYEKV4 = new ItemBeyLayer("valtryekv4", -0.13F, 1, 5, 0, 5, 5, null, null,
-//			BeyTypes.ATTACK);
-//	public static final ItemBeyDisk TWELVEDISK = new ItemBeyDisk("12disk", -0.15F);
-//	public static final ItemBeyDriver VOLCANICDRIVER = new ItemBeyDriver("volcanic_driver", 0.15F, 1, 1, null, null,
-//			BeyTypes.ATTACK);
-//	public static final ItemBeyLayer VALTRYEKV2 = new ItemBeyLayer("valtryekv2", -0.08F, 1, 4, 0, 1, 4, null, null,
-//			BeyTypes.ATTACK);
-//	public static final ItemBeyDisk BOOSTDISK = new ItemBeyDisk("boostdisk", -0.15F);
-//	public static final ItemBeyDriver VARIABLEDRIVER = new ItemBeyDriver("variable_driver", 0.15F, 1, 1, null, null,
-//			BeyTypes.ATTACK);
-//	public static final ItemBeyLayer VALTRYEKV5 = new ItemBeyLayer("valtryekv5", -0.15F, 1, 7, 0, 5, 5, null, null,
-//			BeyTypes.ATTACK);
-//	public static final ItemBeyDisk ZENITHDISK = new ItemBeyDisk("zenithdisk", -0.15F);
-//	public static final ItemBeyDriver EVOLUTIONDRIVER = new ItemBeyDriver("evolution_driver", 0.15F, 1, 1, null, null,
-//			BeyTypes.ATTACK);
-//	public static final ItemBeyLayer REQUIEMSPRYZEN = new ItemBeyLayerDual("requiem_spryzen", -0.23F, 3, 3, 4, 1,
-//			new Absorb(), null, BeyTypes.BALANCE);
-//	public static final ItemBeyDisk ZERODISK = new ItemBeyDisk("0disk", -0.15F);
-//	public static final ItemBeyLayer TURBOSPRYZEN = new ItemBeyLayerDual("turbospryzen", -0.12F, 5, 3, 5, 2, null, null,
-//			BeyTypes.BALANCE);
-//	public static final ItemBeyDisk ZEROWDISK = new ItemBeyDisk("0wdisk", -0.15F);
-//	public static final ItemBeyDriver ZETASDRIVER = new ItemBeyDriver("zetas_driver", 0.15F, 1, 1,
-//			new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE, BeyTypes.STAMINA })), null,
-//			BeyTypes.ATTACK);
-//	public static final ItemBeyLayer SPRYZEN = new ItemBeyLayer("spryzen", -0.23F, 1, 5, 3, 5, 2, null, null,
-//			BeyTypes.BALANCE);
-//	public static final ItemBeyDisk SPREADDISK = new ItemBeyDisk("spreaddisk", -0.15F);
-//	public static final ItemBeyDriver FUSIONDRIVER = new ItemBeyDriver("fusion_driver", 0.15F, 1, 1, null, null,
-//			BeyTypes.BALANCE);
-//	public static final ItemBeyLayer STORMSPRYZEN = new ItemBeyLayer("storm_spryzen", -0.23F, 1, 5, 3, 5, 2, null, null,
-//			BeyTypes.BALANCE);
-//	public static final ItemBeyDisk KNUKLEDISK = new ItemBeyDisk("knukledisk", -0.15F);
-//	public static final ItemBeyDriver UNITEDRIVER = new ItemBeyDriver("unite_driver", 0.15F, 1, 1, null, null,
-//			BeyTypes.BALANCE);
-//	public static final ItemBeyLayer SALAMANDERS4 = new ItemBeyLayer("salamanders4", -0.08F, -1, 2, 3, 5, 2,
-//			new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE })), null, BeyTypes.ATTACK);
-//	public static final ItemBeyDriver OPERATEDRIVER = new ItemBeyDriver("operate_driver", 0.15F, 1, 1,
-//			new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE })), null, BeyTypes.ATTACK);
-//	public static final ItemBeyLayer VALTRYEKV3 = new ItemBeyLayer("valtryekv3", -0.08F, 1, 4, 0, 1, 5, null, null,
-//			BeyTypes.ATTACK);
-//	public static final ItemBeyLayer STRIKEVALTRYEKV3 = new ItemBeyLayer("strike_valtryek", -0.08F, 1, 4, 0, 1, 5, null,
-//			null, BeyTypes.ATTACK);
-//	public static final ItemBeyDisk SIXVDISK = new ItemBeyDisk("6vdisk", -0.15F);
-//	public static final ItemBeyDriver REBOOTDRIVER = new ItemBeyDriver("reboot_driver", 0.15F, 1, 1,
-//			new MultiType(Arrays.asList(new BeyTypes[] { BeyTypes.ATTACK, BeyTypes.DEFENSE })), null, BeyTypes.ATTACK);
 
     public static final ItemLauncher REDLAUNCHER = new ItemLauncher("red_launcher", 1);
     public static final ItemLauncher LEFTLAUNCHER = new ItemLauncher("left_launcher", -1);
@@ -170,29 +121,16 @@ public class BeyRegistry {
     public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.ANVIL, "expository");
     public static final StadiumBlock STADIUM = new StadiumBlock(Material.IRON, "stadium");
 
-//	@SubscribeEvent
-//	public static void registerBey(RegistryEvent.Register<EntityEntry> event) {
-//		event.getRegistry().register(BEYENTITY);
-//	}
+    /* Profession */
+//    @Nullable
+//    public static VillagerProfession VILLAGERBEYTRADER = new VillagerProfession();
 
-//	@SubscribeEvent
-//	public static void onModelRegister(final ModelRegistryEvent event) {
-//		for (Item item : ITEMS) {
-//		}
-//		for (Item item : ITEMSLAYER) {
-//		}
-//		for (Item item : ITEMSDISK) {
-//		}
-//		for (Item item : ITEMSDRIVER) {
-//		}
-//		for (Block block : BLOCKS) {
-//		}
-//	}
+
 
     @SubscribeEvent
     public static void playerCapabilitiesInjection(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof PlayerEntity) {
-
+            event.addCapability(new ResourceLocation(Reference.MODID, "BladerLevel"), new BladerLevelProvider());
         }
     }
 
