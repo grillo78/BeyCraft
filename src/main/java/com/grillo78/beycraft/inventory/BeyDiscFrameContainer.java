@@ -1,6 +1,6 @@
 package com.grillo78.beycraft.inventory;
 
-import com.grillo78.beycraft.events.BeyRegistry;
+import com.grillo78.beycraft.BeyRegistry;
 
 import com.grillo78.beycraft.inventory.slots.LockedSlot;
 import com.grillo78.beycraft.inventory.slots.SlotBeyFrame;
@@ -13,6 +13,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -39,7 +40,7 @@ public class BeyDiscFrameContainer extends Container {
     public void onContainerClosed(PlayerEntity player) {
         if(player instanceof ServerPlayerEntity){
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h->{
-                PacketHandler.instance.sendToServer(new MessageUpdateDiskFrameItemStack(stack,h.getStackInSlot(0), hand));
+                PacketHandler.instance.sendTo(new MessageUpdateDiskFrameItemStack(stack,h.getStackInSlot(0), hand,player.getUniqueID()),((ServerPlayerEntity)player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             });
         }
     }

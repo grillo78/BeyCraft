@@ -2,7 +2,7 @@ package com.grillo78.beycraft.items;
 
 import javax.annotation.Nullable;
 
-import com.grillo78.beycraft.events.BeyRegistry;
+import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.abilities.Ability;
 import com.grillo78.beycraft.inventory.BeyDiscFrameContainer;
 import com.grillo78.beycraft.inventory.ItemBeyDiscFrameProvider;

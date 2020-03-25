@@ -1,7 +1,7 @@
 package com.grillo78.beycraft.items;
 
 import com.grillo78.beycraft.BeyCraft;
-import com.grillo78.beycraft.events.BeyRegistry;
+import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.inventory.BeltContainer;
 import com.grillo78.beycraft.inventory.ItemBeltProvider;

@@ -15,6 +15,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -69,11 +70,11 @@ public class LauncherContainer extends Container {
     public void onContainerClosed(PlayerEntity player) {
         if (player instanceof ServerPlayerEntity) {
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                PacketHandler.instance.sendToServer(new MessageUpdateLauncherItemStack(stack,
+                PacketHandler.instance.sendTo(new MessageUpdateLauncherItemStack(stack,
                         h.getStackInSlot(0),
                         h.getStackInSlot(1),
                         h.getStackInSlot(2),
-                        hand));
+                        hand,player.getUniqueID()),((ServerPlayerEntity)player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             });
         }
     }

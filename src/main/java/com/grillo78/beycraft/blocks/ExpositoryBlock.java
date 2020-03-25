@@ -1,7 +1,7 @@
 package com.grillo78.beycraft.blocks;
 
 import com.grillo78.beycraft.BeyCraft;
-import com.grillo78.beycraft.events.BeyRegistry;
+import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.items.ItemBeyLayer;
 import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;

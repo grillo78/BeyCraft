@@ -3,7 +3,7 @@ package com.grillo78.beycraft.items;
 import javax.annotation.Nullable;
 
 import com.grillo78.beycraft.BeyCraft;
-import com.grillo78.beycraft.events.BeyRegistry;
+import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.entity.EntityBey;
 import com.grillo78.beycraft.inventory.ItemLauncherProvider;
@@ -48,7 +48,7 @@ public class ItemLauncher extends Item {
 				ItemStack launcher = player.getHeldItem(handIn);
 				launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
 					if (h.getStackInSlot(0).getItem() instanceof ItemBeyLayer) {
-						EntityBey entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE.get(), world,
+						EntityBey entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, world,
 								h.getStackInSlot(0).copy(),
 								rotation);
 						entity.setLocationAndAngles(player.getPositionVec().x + player.getLookVec().x,

@@ -1,6 +1,6 @@
 package com.grillo78.beycraft.tab;
 
-import com.grillo78.beycraft.events.BeyRegistry;
+import com.grillo78.beycraft.BeyRegistry;
 
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

@@ -1,6 +1,6 @@
 package com.grillo78.beycraft.network.message;
 
-import com.grillo78.beycraft.events.BeyRegistry;
+import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.inventory.BeltContainer;
 import com.grillo78.beycraft.items.ItemBladerBelt;
 import com.lazy.baubles.api.BaubleType;
