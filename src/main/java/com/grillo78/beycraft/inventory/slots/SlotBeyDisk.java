@@ -1,6 +1,6 @@
 package com.grillo78.beycraft.inventory.slots;
 
-import com.grillo78.beycraft.items.ItemBeyDisk;
+import com.grillo78.beycraft.items.ItemBeyDisc;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -14,6 +14,6 @@ public class SlotBeyDisk extends SlotItemHandler{
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		return stack.getItem() instanceof ItemBeyDisk;
+		return stack.getItem() instanceof ItemBeyDisc;
 	}
 }

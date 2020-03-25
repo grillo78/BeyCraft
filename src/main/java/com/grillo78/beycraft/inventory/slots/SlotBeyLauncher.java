@@ -1,8 +1,6 @@
 package com.grillo78.beycraft.inventory.slots;
 
 import com.grillo78.beycraft.BeyCraft;
-import com.grillo78.beycraft.items.ItemBeyDisk;
-import com.grillo78.beycraft.items.ItemBeyDriver;
 import com.grillo78.beycraft.items.ItemBeyLayer;
 import com.grillo78.beycraft.items.ItemLauncher;
 import net.minecraft.item.ItemStack;

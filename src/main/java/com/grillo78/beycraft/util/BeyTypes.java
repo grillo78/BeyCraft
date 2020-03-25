@@ -38,6 +38,7 @@ public enum BeyTypes {
 	public static BeyTypes getByName(String name) {
 		switch (name) {
 		default:
+			return null;
 		case "attack":
 			return ATTACK;
 		case "defense":

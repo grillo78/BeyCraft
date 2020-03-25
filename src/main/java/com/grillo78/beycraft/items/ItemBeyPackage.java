@@ -7,11 +7,13 @@ import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
 
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 public class ItemBeyPackage extends Item {
 	public ItemBeyPackage(String name) {
@@ -21,48 +23,50 @@ public class ItemBeyPackage extends Item {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		if (!context.getWorld().isRemote) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		if (!worldIn.isRemote) {
 			BeyCraft.logger.info(BeyRegistry.ITEMSLAYER.size());
 			Random random = new Random();
 			int randomNumber = random.nextInt(BeyRegistry.ITEMSLAYER.size());
 			if (randomNumber != 0) {
-				ItemEntity itemLayer = new ItemEntity(context.getWorld(), context.getPlayer().getPosition().getX(),
-						context.getPlayer().getPosition().getY(), context.getPlayer().getPosition().getZ(),
+				ItemEntity itemLayer = new ItemEntity(worldIn, playerIn.getPosition().getX(),
+						playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
 						new ItemStack(BeyRegistry.ITEMSLAYER.get(randomNumber - 1), 1));
-				context.getWorld().addEntity(itemLayer);
+				worldIn.addEntity(itemLayer);
 			} else {
-				ItemEntity itemLayer = new ItemEntity(context.getWorld(), context.getPlayer().getPosition().getX(),
-						context.getPlayer().getPosition().getY(), context.getPlayer().getPosition().getZ(),
+				ItemEntity itemLayer = new ItemEntity(worldIn, playerIn.getPosition().getX(),
+						playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
 						new ItemStack(BeyRegistry.ITEMSLAYER.get(randomNumber), 1));
-				context.getWorld().addEntity(itemLayer);
+				worldIn.addEntity(itemLayer);
 			}
 			randomNumber = random.nextInt(BeyRegistry.ITEMSLAYER.size());
 			if (randomNumber != 0) {
-				ItemEntity itemDisk = new ItemEntity(context.getWorld(), context.getPlayer().getPosition().getX(),
-						context.getPlayer().getPosition().getY(), context.getPlayer().getPosition().getZ(),
-						new ItemStack(BeyRegistry.ITEMSDISKLIST.get(randomNumber - 1), 1));
-				context.getWorld().addEntity(itemDisk);
+				ItemEntity itemDisk = new ItemEntity(worldIn, playerIn.getPosition().getX(),
+						playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+						new ItemStack(BeyRegistry.ITEMSDISCLIST.get(randomNumber - 1), 1));
+				worldIn.addEntity(itemDisk);
 			} else {
-				ItemEntity itemDisk = new ItemEntity(context.getWorld(), context.getPlayer().getPosition().getX(),
-						context.getPlayer().getPosition().getY(), context.getPlayer().getPosition().getZ(),
-						new ItemStack(BeyRegistry.ITEMSDISKLIST.get(randomNumber), 1));
-				context.getWorld().addEntity(itemDisk);
+				ItemEntity itemDisk = new ItemEntity(worldIn, playerIn.getPosition().getX(),
+						playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+						new ItemStack(BeyRegistry.ITEMSDISCLIST.get(randomNumber), 1));
+				worldIn.addEntity(itemDisk);
 			}
 			randomNumber = random.nextInt(BeyRegistry.ITEMSLAYER.size());
 			if (randomNumber != 0) {
-				ItemEntity itemDriver = new ItemEntity(context.getWorld(), context.getPlayer().getPosition().getX(),
-						context.getPlayer().getPosition().getY(), context.getPlayer().getPosition().getZ(),
+				ItemEntity itemDriver = new ItemEntity(worldIn, playerIn.getPosition().getX(),
+						playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
 						new ItemStack(BeyRegistry.ITEMSDRIVER.get(randomNumber - 1), 1));
-				context.getWorld().addEntity(itemDriver);
+				worldIn.addEntity(itemDriver);
 			} else {
-				ItemEntity itemDriver = new ItemEntity(context.getWorld(), context.getPlayer().getPosition().getX(),
-						context.getPlayer().getPosition().getY(), context.getPlayer().getPosition().getZ(),
+				ItemEntity itemDriver = new ItemEntity(worldIn, playerIn.getPosition().getX(),
+						playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
 						new ItemStack(BeyRegistry.ITEMSDRIVER.get(randomNumber), 1));
-				context.getWorld().addEntity(itemDriver);
+				worldIn.addEntity(itemDriver);
 			}
-			context.getPlayer().getHeldItem(context.getHand()).shrink(1);
+			playerIn.getHeldItem(handIn).shrink(1);
 		}
-		return super.onItemUse(context);
+		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
+
+
 }

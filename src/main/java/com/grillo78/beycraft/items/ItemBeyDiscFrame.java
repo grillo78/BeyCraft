@@ -4,8 +4,8 @@ import javax.annotation.Nullable;
 
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.abilities.Ability;
-import com.grillo78.beycraft.inventory.BeyDiskFrameContainer;
-import com.grillo78.beycraft.inventory.ItemBeyDiskFrameProvider;
+import com.grillo78.beycraft.inventory.BeyDiscFrameContainer;
+import com.grillo78.beycraft.inventory.ItemBeyDiscFrameProvider;
 import com.grillo78.beycraft.items.render.DiskFrameItemStackRendererTileEntity;
 import com.grillo78.beycraft.util.BeyTypes;
 
@@ -22,18 +22,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class ItemBeyDiskFrame extends ItemBeyDisk {
+public class ItemBeyDiscFrame extends ItemBeyDisc {
 
-	public ItemBeyDiskFrame(String name, int attack, int defense, int weight, int burst, Ability primaryAbility,
-			Ability secundaryAbility, BeyTypes type) {
-		super(name, attack, defense, weight, burst, primaryAbility, secundaryAbility, type,
+	public ItemBeyDiscFrame(String name, float attack, float defense, float weight, float burst, Ability primaryAbility,
+							Ability secundaryAbility) {
+		super(name, attack, defense, weight, burst, primaryAbility, secundaryAbility,
 				new Item.Properties().setISTER(() -> DiskFrameItemStackRendererTileEntity::new));
-		BeyRegistry.ITEMSDISKFRAME.add(this);
+		BeyRegistry.ITEMSDISCFRAME.add(this);
 	}
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-		return new ItemBeyDiskFrameProvider();
+		return new ItemBeyDiscFrameProvider();
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class ItemBeyDiskFrame extends ItemBeyDisk {
 		if (!world.isRemote) {
 			NetworkHooks.openGui((ServerPlayerEntity) player,
 					new SimpleNamedContainerProvider(
-							(id, playerInventory, playerEntity) -> new BeyDiskFrameContainer(id,
+							(id, playerInventory, playerEntity) -> new BeyDiscFrameContainer(id,
 									player.getHeldItem(handIn), playerInventory, playerEntity, handIn),
 							new StringTextComponent(getRegistryName().getPath())));
 		}

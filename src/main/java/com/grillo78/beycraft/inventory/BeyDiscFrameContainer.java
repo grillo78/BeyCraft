@@ -19,13 +19,13 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 
-public class BeyDiskFrameContainer extends Container {
+public class BeyDiscFrameContainer extends Container {
 
     private ItemStack stack;
     private Hand hand;
 	
-	public BeyDiskFrameContainer(int id, ItemStack stack, PlayerInventory playerInventory,
-			PlayerEntity player, Hand hand) {
+	public BeyDiscFrameContainer(int id, ItemStack stack, PlayerInventory playerInventory,
+                                 PlayerEntity player, Hand hand) {
 		super(BeyRegistry.DISK_FRAME_CONTAINER, id);
         this.stack = stack;
         this.hand = hand;

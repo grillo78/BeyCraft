@@ -3,6 +3,7 @@ package com.grillo78.beycraft.entity;
 import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.blocks.StadiumBlock;
+import com.grillo78.beycraft.items.ItemBeyDisc;
 import com.grillo78.beycraft.items.ItemBeyDriver;
 import com.grillo78.beycraft.items.ItemBeyLayer;
 import net.minecraft.block.BlockState;
@@ -33,6 +34,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 /**
  * @author grillo78
@@ -78,6 +80,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         this.setRadius(maxRadius);
         stepHeight = 0;
     }
+
 
     @Nullable
     @Override
@@ -139,7 +142,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     @Override
     public void onDeath(DamageSource cause) {
         dropItems();
-        super.onDeath(cause);
+        remove();
     }
 
     @Override
@@ -244,29 +247,31 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
     @Override
     public void tick() {
-        if (this.getRotationSpeed() > 0 && (world.getBlockState(this.getPosition().down())
-                .getBlock() instanceof StadiumBlock
-                || world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR
-                || (world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock && world
-                .getBlockState(
-                        new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
-                .getBlock() instanceof StadiumBlock))) {
-            setRotationSpeed(
-                    getRotationSpeed() - 0.005F * ((ItemBeyDriver) inventory.getStackInSlot(2).getItem()).getFriction());
+       if(inventory.getStackInSlot(0).getItem() instanceof  ItemBeyLayer && inventory.getStackInSlot(1).getItem() instanceof ItemBeyDisc && inventory.getStackInSlot(2).getItem() instanceof  ItemBeyDriver){
+           if (this.getRotationSpeed() > 0 && (world.getBlockState(this.getPosition().down())
+                   .getBlock() instanceof StadiumBlock
+                   || world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR
+                   || (world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock && world
+                   .getBlockState(
+                           new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
+                   .getBlock() instanceof StadiumBlock))) {
+               setRotationSpeed(
+                       getRotationSpeed() - 0.005F * ((ItemBeyDriver) inventory.getStackInSlot(2).getItem()).getFriction());
 
-            angle += getRotationSpeed() * 30 * rotationDirection;
-        } else {
-            if (!stoped) {
-                stoped = true;
-                BeyCraft.logger.info("Bey Stopped");
-                setRotationSpeed(0);
-            }
-        }
-        if (isHorizontalCollision() && !isStoped()) {
-            for (int i = 0; i < 10; i++) {
-                world.addParticle(BeyCraft.RegistryEvents.SPARKLE, getPosX(), getPosY() + 0.5, getPosZ(), rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
-            }
-        }
+               angle += getRotationSpeed() * 30 * rotationDirection;
+           } else {
+               if (!stoped) {
+                   stoped = true;
+                   BeyCraft.logger.info("Bey Stopped");
+                   setRotationSpeed(0);
+               }
+           }
+           if (isHorizontalCollision() && !isStoped()) {
+               for (int i = 0; i < 10; i++) {
+                   world.addParticle(BeyRegistry.SPARKLE, getPosX(), getPosY() + 0.5, getPosZ(), rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
+               }
+           }
+       }
         updatePoints(this);
         super.tick();
     }
@@ -292,7 +297,11 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
             double x = (getPosX() - entityIn.getPosX()) / 2;
             double y = (getPosY() - entityIn.getPosY()) / 2;
             double z =  (getPosZ() - entityIn.getPosZ()) / 2;
-            ((ServerWorld) world).spawnParticle(BeyCraft.RegistryEvents.SPARKLE, getPosX(), getPosY(), getPosZ(), 10, x, y, z, 10);
+            ((ServerWorld) world).spawnParticle(BeyRegistry.SPARKLE, getPosX(), getPosY(), getPosZ(), 10, x, y, z, 10);
+            if(new Random().nextInt(10) == 1){
+                this.move(MoverType.SELF, new Vec3d(this.getPositionVec().inverse().x,this.getPositionVec().y+0.1,this.getPositionVec().inverse().z));
+                increaseRadius = true;
+            }
         }
         super.collideWithEntity(entityIn);
     }

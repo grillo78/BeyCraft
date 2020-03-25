@@ -1,6 +1,6 @@
 package com.grillo78.beycraft.items.render;
 
-import com.grillo78.beycraft.items.ItemBeyDiskFrame;
+import com.grillo78.beycraft.items.ItemBeyDiscFrame;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.minecraft.client.Minecraft;
@@ -17,7 +17,7 @@ public class DiskFrameItemStackRendererTileEntity extends ItemStackTileEntityRen
 			int combinedOverlayIn) {
 		matrixStack.push();
 		matrixStack.translate(0.5F, 0.5F, 0.5F);
-		Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(((ItemBeyDiskFrame) stack.getItem())),
+		Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(((ItemBeyDiscFrame) stack.getItem())),
 				TransformType.FIRST_PERSON_LEFT_HAND, 0, OverlayTexture.NO_OVERLAY, matrixStack, buffer);
 		matrixStack.pop();
 		super.render(stack, matrixStack, buffer, combinedLightIn, combinedOverlayIn);

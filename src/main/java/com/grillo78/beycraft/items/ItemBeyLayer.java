@@ -3,6 +3,7 @@ package com.grillo78.beycraft.items;
 import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.abilities.Ability;
+import com.grillo78.beycraft.abilities.MultiType;
 import com.grillo78.beycraft.inventory.BeyContainer;
 import com.grillo78.beycraft.inventory.ItemBeyProvider;
 import com.grillo78.beycraft.items.render.BeyItemStackRendererTileEntity;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -27,13 +29,13 @@ import net.minecraftforge.items.CapabilityItemHandler;
 public class ItemBeyLayer extends ItemBeyPart {
 
     protected final float rotationDirection;
-    private final int attack;
-    private final int defense;
-    private final int weight;
-    private final int burst;
+    private final float attack;
+    private final float defense;
+    private final float weight;
+    private final float burst;
 
-    public ItemBeyLayer(String name, int rotationDirection, int attack, int defense, int weight,
-                        int burst, Ability primaryAbility, Ability secundaryAbility, BeyTypes type) {
+    public ItemBeyLayer(String name, float rotationDirection, float attack, float defense, float weight,
+                        float burst, Ability primaryAbility, Ability secundaryAbility, BeyTypes type) {
         super(name, type, primaryAbility, secundaryAbility, BeyCraft.BEYCRAFTLAYERS, new Item.Properties().setISTER(() -> BeyItemStackRendererTileEntity::new));
         this.attack = attack;
         this.defense = defense;
@@ -45,19 +47,22 @@ public class ItemBeyLayer extends ItemBeyPart {
 
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
-        return new ItemBeyProvider();
+        return new ItemBeyProvider(stack);
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
-        if (!world.isRemote) {
-            NetworkHooks.openGui((ServerPlayerEntity) player,
-                    new SimpleNamedContainerProvider(
-                            (id, playerInventory, playerEntity) -> new BeyContainer(BeyRegistry.BEY_CONTAINER, id,
-                                    player.getHeldItem(handIn), playerInventory, playerEntity, handIn),
-                            new StringTextComponent(getRegistryName().getPath())));
+        ActionResult<ItemStack> result = super.onItemRightClick(world, player, handIn);
+        if(result.getType() == ActionResultType.FAIL){
+            if (!world.isRemote) {
+                NetworkHooks.openGui((ServerPlayerEntity) player,
+                        new SimpleNamedContainerProvider(
+                                (id, playerInventory, playerEntity) -> new BeyContainer(BeyRegistry.BEY_CONTAINER, id,
+                                        player.getHeldItem(handIn), playerInventory, playerEntity, handIn),
+                                new StringTextComponent(getRegistryName().getPath())));
+            }
         }
-        return super.onItemRightClick(world, player, handIn);
+        return result;
     }
 
     @Override
@@ -73,19 +78,19 @@ public class ItemBeyLayer extends ItemBeyPart {
         return textComponent;
     }
 
-    public int getAttack() {
+    public float getAttack() {
         return attack;
     }
 
-    public int getDefense() {
+    public float getDefense() {
         return defense;
     }
 
-    public int getWeight() {
+    public float getWeight() {
         return weight;
     }
 
-    public int getBurst() {
+    public float getBurst() {
         return burst;
     }
 
