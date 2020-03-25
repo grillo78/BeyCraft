@@ -1,8 +1,6 @@
 package com.grillo78.beycraft.tileentity;
 
-import com.grillo78.beycraft.BeyCraft;
-
-import com.grillo78.beycraft.BeyRegistry;
+import com.grillo78.beycraft.events.BeyRegistry;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;

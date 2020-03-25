@@ -1,12 +1,11 @@
 package com.grillo78.beycraft.inventory;
 
-import com.grillo78.beycraft.BeyRegistry;
+import com.grillo78.beycraft.events.BeyRegistry;
 
 import com.grillo78.beycraft.inventory.slots.LockedSlot;
 import com.grillo78.beycraft.inventory.slots.SlotBeyFrame;
 import com.grillo78.beycraft.network.PacketHandler;
 import com.grillo78.beycraft.network.message.MessageUpdateDiskFrameItemStack;
-import com.grillo78.beycraft.network.message.MessageUpdateLayerItemStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;

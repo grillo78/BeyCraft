@@ -1,9 +1,10 @@
-package com.grillo78.beycraft;
+package com.grillo78.beycraft.events;
 
 import java.util.HashMap;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.blocks.ExpositoryBlock;
 import com.grillo78.beycraft.blocks.StadiumBlock;
 import com.grillo78.beycraft.capabilities.BladerLevelProvider;
@@ -12,13 +13,11 @@ import com.grillo78.beycraft.inventory.*;
 import com.grillo78.beycraft.items.*;
 
 import com.grillo78.beycraft.particles.SparkleParticle;
-import com.grillo78.beycraft.proxy.ClientProxy;
 import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;
 import com.grillo78.beycraft.util.ItemCreator;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -33,7 +32,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.extensions.IForgeContainerType;

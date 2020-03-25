@@ -1,14 +1,11 @@
-package com.grillo78.beycraft.proxy;
+package com.grillo78.beycraft.events;
 
-import com.grillo78.beycraft.BeyCraft;
-import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.entity.BeyEntityRenderFactory;
 import com.grillo78.beycraft.gui.*;
 import com.grillo78.beycraft.network.PacketHandler;
 import com.grillo78.beycraft.network.message.MessageOpenBelt;
 import com.grillo78.beycraft.tileentity.RenderExpository;
-import com.grillo78.beycraft.util.ItemCreator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
@@ -23,20 +20,18 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(value= {Dist.CLIENT}, modid = Reference.MODID, bus= Mod.EventBusSubscriber.Bus.MOD)
-public class ClientProxy extends CommonProxy {
+public class ClientProxy {
 
     public static final KeyBinding beltKey = new KeyBinding("key.beycraft.belt",66,"key.beycraft.category");
 
@@ -137,15 +132,5 @@ public class ClientProxy extends CommonProxy {
 
             }
         }
-    }
-
-    @Override
-    public void onPreInit() {
-        super.onPreInit();
-    }
-
-    @Override
-    public void registerRenders() {
-//		ClientRegistry.bindTileEntityRenderer(BeyRegistry.EXPOSITORY_TILE_ENTITY_TYPE.get(), RenderExpository::new);
     }
 }

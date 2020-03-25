@@ -7,7 +7,7 @@ import java.util.zip.ZipFile;
 
 import com.google.common.collect.Lists;
 import com.grillo78.beycraft.BeyCraft;
-import com.grillo78.beycraft.BeyRegistry;
+import com.grillo78.beycraft.events.BeyRegistry;
 import com.grillo78.beycraft.abilities.Ability;
 import com.grillo78.beycraft.abilities.Absorb;
 import com.grillo78.beycraft.abilities.MultiType;

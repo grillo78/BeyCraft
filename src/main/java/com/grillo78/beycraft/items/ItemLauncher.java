@@ -3,7 +3,7 @@ package com.grillo78.beycraft.items;
 import javax.annotation.Nullable;
 
 import com.grillo78.beycraft.BeyCraft;
-import com.grillo78.beycraft.BeyRegistry;
+import com.grillo78.beycraft.events.BeyRegistry;
 import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.entity.EntityBey;
 import com.grillo78.beycraft.inventory.ItemLauncherProvider;

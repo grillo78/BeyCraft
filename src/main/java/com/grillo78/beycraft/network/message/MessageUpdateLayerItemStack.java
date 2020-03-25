@@ -1,6 +1,5 @@
 package com.grillo78.beycraft.network.message;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
@@ -45,7 +44,7 @@ public class MessageUpdateLayerItemStack implements IMessage<MessageUpdateLayerI
                 h.insertItem(0,message.disk,false);
                 h.insertItem(1,message.driver,false);
             });
-            Minecraft.getInstance().player.setHeldItem(message.hand,message.stack);
+            supplier.get().getSender().setHeldItem(message.hand,message.stack);
         });
         supplier.get().setPacketHandled(true);
     }

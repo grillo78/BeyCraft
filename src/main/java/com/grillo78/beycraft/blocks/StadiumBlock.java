@@ -3,7 +3,7 @@ package com.grillo78.beycraft.blocks;
 import java.util.stream.Stream;
 
 import com.grillo78.beycraft.BeyCraft;
-import com.grillo78.beycraft.BeyRegistry;
+import com.grillo78.beycraft.events.BeyRegistry;
 import com.grillo78.beycraft.Reference;
 
 import net.minecraft.block.Block;
