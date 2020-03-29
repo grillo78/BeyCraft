@@ -16,14 +16,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.item.*;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -80,6 +79,9 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
                                              Hand hand, BlockRayTraceResult p_225533_6_) {
+        if(playerIn.getHeldItem(hand).getItem() == Items.WATER_BUCKET||playerIn.getHeldItem(hand).getItem() == Items.BUCKET){
+            return super.onBlockActivated(state,worldIn,pos,playerIn,hand,p_225533_6_);
+        }
         TileEntity tileentity = worldIn.getTileEntity(pos);
         if (tileentity instanceof ExpositoryTileEntity) {
             ((ExpositoryTileEntity) tileentity).getInventory().ifPresent(h -> {
@@ -105,6 +107,11 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);
+    }
+
+    @Override
+    public IFluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 
     @Override

@@ -134,8 +134,6 @@ public class StadiumBlock extends Block implements IWaterLoggable {
             worldIn.setBlockState(pos.north(),
                     getDefaultState().with(PART, EnumPartType.values()[3]).with(WATERLOGGED, Boolean.valueOf(false)));
         }
-//        worldIn.setBlockState(pos,
-//                worldIn.getBlockState(pos).with(PART, EnumPartType.values()[4]));
         if (worldIn.getBlockState(pos.south()).getBlock() == Blocks.WATER && worldIn.getBlockState(pos.south()).getFluidState().isSource()) {
             worldIn.setBlockState(pos.south(),
                     getDefaultState().with(PART, EnumPartType.values()[5]).with(WATERLOGGED, Boolean.valueOf(true)));

@@ -2,13 +2,16 @@ package com.grillo78.beycraft.tileentity;
 
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
+import com.grillo78.beycraft.blocks.BeyCreatorBlock;
 import com.grillo78.beycraft.items.ItemBeyDriver;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -36,6 +39,8 @@ public class RenderBeyCreator extends TileEntityRenderer<BeyCreatorTileEntity> {
 
         matrixStack.translate(0.5, 0.5, 0.5);
         matrixStack.scale(2,2,2);
+        matrixStack.rotate(new Quaternion(0,180,0,true));
+        matrixStack.rotate(Vector3f.YP.rotationDegrees(-tileEntity.getBlockState().get(BeyCreatorBlock.FACING).getHorizontalAngle()));
         Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(BeyRegistry.BEYCREATORBLOCK.asItem()), ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
 
         matrixStack.scale(0.5f, 0.5f, 0.5f);

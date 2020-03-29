@@ -20,10 +20,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.ChestType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -39,36 +44,20 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import javax.annotation.Nullable;
 import java.util.stream.Stream;
 
 
 public class BeyCreatorBlock extends Block {
 
-    private final VoxelShape shape;
+    //    private final VoxelShape shape;
+    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
     public BeyCreatorBlock(Material materialIn, String name) {
         super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).harvestTool(ToolType.PICKAXE));
         setRegistryName(new ResourceLocation(Reference.MODID, name));
-        shape = Stream.of(
-                Block.makeCuboidShape(0, 0, 0, 15.75, 0.5, 0.25),
-                Block.makeCuboidShape(0.25, 0, 15.75, 15.75, 0.5, 16),
-                Block.makeCuboidShape(0, 0, 0.25, 0.25, 0.5, 16),
-                Block.makeCuboidShape(15.75, 0, 0, 16, 0.5, 16),
-                Block.makeCuboidShape(0, 15.75, 0, 15.75, 16.25, 0.25),
-                Block.makeCuboidShape(0.25, 15.75, 15.75, 15.75, 16.25, 16),
-                Block.makeCuboidShape(15.75, 15.75, 0, 16, 16.25, 16),
-                Block.makeCuboidShape(0, 15.75, 0.25, 0.25, 16.25, 16),
-                Block.makeCuboidShape(0.25, 0.5, 15.75, 15.75, 15.75, 16),
-                Block.makeCuboidShape(15.75, 0.5, 8, 16, 15.75, 16),
-                Block.makeCuboidShape(0, 0.5, 8.25, 0.25, 15.75, 16),
-                Block.makeCuboidShape(0, 10.5, 0.25, 0.25, 15.75, 8.25),
-                Block.makeCuboidShape(15.75, 10.5, 0, 16, 15.75, 8),
-                Block.makeCuboidShape(0, 13.25, 0, 15.75, 15.75, 0.25),
-                Block.makeCuboidShape(0.25, 16, 0.25, 15.75, 16.25, 15.75),
-                Block.makeCuboidShape(0.25, 0, 0.25, 15.75, 0.25, 15.75)
-        ).reduce((v1, v2) -> {
-            return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
-        }).get();
+
+
         BeyRegistry.BLOCKS.add(this);
         BeyRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().group(BeyCraft.BEYCRAFTTAB))
                 .setRegistryName(this.getRegistryName()));
@@ -88,10 +77,133 @@ public class BeyCreatorBlock extends Block {
         }
     }
 
+    @Nullable
     @Override
-    public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_) {
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        Direction direction = context.getPlacementHorizontalFacing().getOpposite();
+        return this.getDefaultState().with(FACING, direction);
+    }
+
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        VoxelShape shape;
+        switch (state.get(FACING)) {
+
+            case NORTH:
+                shape = Stream.of(
+                        Block.makeCuboidShape(0, 0, 0, 15.75, 0.5, 0.25),
+                        Block.makeCuboidShape(0.25, 0, 15.75, 15.75, 0.5, 16),
+                        Block.makeCuboidShape(0, 0, 0.25, 0.25, 0.5, 16),
+                        Block.makeCuboidShape(15.75, 0, 0, 16, 0.5, 16),
+                        Block.makeCuboidShape(0, 15.75, 0, 15.75, 16.25, 0.25),
+                        Block.makeCuboidShape(0.25, 15.75, 15.75, 15.75, 16.25, 16),
+                        Block.makeCuboidShape(15.75, 15.75, 0, 16, 16.25, 16),
+                        Block.makeCuboidShape(0, 15.75, 0.25, 0.25, 16.25, 16),
+                        Block.makeCuboidShape(0.25, 0.5, 15.75, 15.75, 15.75, 16),
+                        Block.makeCuboidShape(15.75, 0.5, 8, 16, 15.75, 16),
+                        Block.makeCuboidShape(0, 0.5, 8.25, 0.25, 15.75, 16),
+                        Block.makeCuboidShape(0, 10.5, 0.25, 0.25, 15.75, 8.25),
+                        Block.makeCuboidShape(15.75, 10.5, 0, 16, 15.75, 8),
+                        Block.makeCuboidShape(0, 13.25, 0, 15.75, 15.75, 0.25),
+                        Block.makeCuboidShape(0.25, 16, 0.25, 15.75, 16.25, 15.75),
+                        Block.makeCuboidShape(0.25, 0, 0.25, 15.75, 0.25, 15.75)
+                ).reduce((v1, v2) -> {
+                    return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
+                }).get();
+                break;
+            case SOUTH:
+                shape = Stream.of(
+                        Block.makeCuboidShape(0.25, 0, 15.75, 16, 0.5, 16),
+                        Block.makeCuboidShape(0.25, 0, 0, 15.75, 0.5, 0.25),
+                        Block.makeCuboidShape(15.75, 0, 0, 16, 0.5, 15.75),
+                        Block.makeCuboidShape(0, 0, 0, 0.25, 0.5, 16),
+                        Block.makeCuboidShape(0.25, 15.75, 15.75, 16, 16.25, 16),
+                        Block.makeCuboidShape(0.25, 15.75, 0, 15.75, 16.25, 0.25),
+                        Block.makeCuboidShape(0, 15.75, 0, 0.25, 16.25, 16),
+                        Block.makeCuboidShape(15.75, 15.75, 0, 16, 16.25, 15.75),
+                        Block.makeCuboidShape(0.25, 0.5, 0, 15.75, 15.75, 0.25),
+                        Block.makeCuboidShape(0, 0.5, 0, 0.25, 15.75, 8),
+                        Block.makeCuboidShape(15.75, 0.5, 0, 16, 15.75, 7.75),
+                        Block.makeCuboidShape(15.75, 10.5, 7.75, 16, 15.75, 15.75),
+                        Block.makeCuboidShape(0, 10.5, 8, 0.25, 15.75, 16),
+                        Block.makeCuboidShape(0.25, 13.25, 15.75, 16, 15.75, 16),
+                        Block.makeCuboidShape(0.25, 16, 0.25, 15.75, 16.25, 15.75),
+                        Block.makeCuboidShape(0.25, 0, 0.25, 15.75, 0.25, 15.75)
+                ).reduce((v1, v2) -> {
+                    return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
+                }).get();
+                break;
+
+            case EAST:
+                shape = Stream.of(
+                        Block.makeCuboidShape(15.75, 0, 0, 16, 0.5, 15.75),
+                        Block.makeCuboidShape(0, 0, 0.25, 0.25, 0.5, 15.75),
+                        Block.makeCuboidShape(0, 0, 0, 15.75, 0.5, 0.25),
+                        Block.makeCuboidShape(0, 0, 15.75, 16, 0.5, 16),
+                        Block.makeCuboidShape(15.75, 15.75, 0, 16, 16.25, 15.75),
+                        Block.makeCuboidShape(0, 15.75, 0.25, 0.25, 16.25, 15.75),
+                        Block.makeCuboidShape(0, 15.75, 15.75, 16, 16.25, 16),
+                        Block.makeCuboidShape(0, 15.75, 0, 15.75, 16.25, 0.25),
+                        Block.makeCuboidShape(0, 0.5, 0.25, 0.25, 15.75, 15.75),
+                        Block.makeCuboidShape(0, 0.5, 15.75, 8, 15.75, 16),
+                        Block.makeCuboidShape(0, 0.5, 0, 7.75, 15.75, 0.25),
+                        Block.makeCuboidShape(7.75, 10.5, 0, 15.75, 15.75, 0.25),
+                        Block.makeCuboidShape(8, 10.5, 15.75, 16, 15.75, 16),
+                        Block.makeCuboidShape(15.75, 13.25, 0, 16, 15.75, 15.75),
+                        Block.makeCuboidShape(0.25, 16, 0.25, 15.75, 16.25, 15.75),
+                        Block.makeCuboidShape(0.25, 0, 0.25, 15.75, 0.25, 15.75)
+                ).reduce((v1, v2) -> {return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);}).get();
+                break;
+
+            case WEST:
+                shape = Stream.of(
+                        Block.makeCuboidShape(0, 0, 0.25, 0.25, 0.5, 16),
+                        Block.makeCuboidShape(15.75, 0, 0.25, 16, 0.5, 15.75),
+                        Block.makeCuboidShape(0.25, 0, 15.75, 16, 0.5, 16),
+                        Block.makeCuboidShape(0, 0, 0, 16, 0.5, 0.25),
+                        Block.makeCuboidShape(0, 15.75, 0.25, 0.25, 16.25, 16),
+                        Block.makeCuboidShape(15.75, 15.75, 0.25, 16, 16.25, 15.75),
+                        Block.makeCuboidShape(0, 15.75, 0, 16, 16.25, 0.25),
+                        Block.makeCuboidShape(0.25, 15.75, 15.75, 16, 16.25, 16),
+                        Block.makeCuboidShape(15.75, 0.5, 0.25, 16, 15.75, 15.75),
+                        Block.makeCuboidShape(8, 0.5, 0, 16, 15.75, 0.25),
+                        Block.makeCuboidShape(8.25, 0.5, 15.75, 16, 15.75, 16),
+                        Block.makeCuboidShape(0.25, 10.5, 15.75, 8.25, 15.75, 16),
+                        Block.makeCuboidShape(0, 10.5, 0, 8, 15.75, 0.25),
+                        Block.makeCuboidShape(0, 13.25, 0.25, 0.25, 15.75, 16),
+                        Block.makeCuboidShape(0.25, 16, 0.25, 15.75, 16.25, 15.75),
+                        Block.makeCuboidShape(0.25, 0, 0.25, 15.75, 0.25, 15.75)
+                ).reduce((v1, v2) -> {return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);}).get();
+                break;
+
+            default:
+                shape = Stream.of(
+                        Block.makeCuboidShape(0, 0, 0, 15.75, 0.5, 0.25),
+                        Block.makeCuboidShape(0.25, 0, 15.75, 15.75, 0.5, 16),
+                        Block.makeCuboidShape(0, 0, 0.25, 0.25, 0.5, 16),
+                        Block.makeCuboidShape(15.75, 0, 0, 16, 0.5, 16),
+                        Block.makeCuboidShape(0, 15.75, 0, 15.75, 16.25, 0.25),
+                        Block.makeCuboidShape(0.25, 15.75, 15.75, 15.75, 16.25, 16),
+                        Block.makeCuboidShape(15.75, 15.75, 0, 16, 16.25, 16),
+                        Block.makeCuboidShape(0, 15.75, 0.25, 0.25, 16.25, 16),
+                        Block.makeCuboidShape(0.25, 0.5, 15.75, 15.75, 15.75, 16),
+                        Block.makeCuboidShape(15.75, 0.5, 8, 16, 15.75, 16),
+                        Block.makeCuboidShape(0, 0.5, 8.25, 0.25, 15.75, 16),
+                        Block.makeCuboidShape(0, 10.5, 0.25, 0.25, 15.75, 8.25),
+                        Block.makeCuboidShape(15.75, 10.5, 0, 16, 15.75, 8),
+                        Block.makeCuboidShape(0, 13.25, 0, 15.75, 15.75, 0.25),
+                        Block.makeCuboidShape(0.25, 16, 0.25, 15.75, 16.25, 15.75),
+                        Block.makeCuboidShape(0.25, 0, 0.25, 15.75, 0.25, 15.75)
+                ).reduce((v1, v2) -> {
+                    return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
+                }).get();
+        }
+
         return shape;
-//        return super.getShape(p_220053_1_,p_220053_2_,p_220053_3_,p_220053_4_);
     }
 
 
@@ -114,7 +226,7 @@ public class BeyCreatorBlock extends Block {
                                              Hand hand, BlockRayTraceResult p_225533_6_) {
         TileEntity tileentity = worldIn.getTileEntity(pos);
         if (tileentity instanceof BeyCreatorTileEntity) {
-            if(!playerIn.isCrouching()) {
+            if (!playerIn.isCrouching()) {
                 ((BeyCreatorTileEntity) tileentity).getInventory().ifPresent(h -> {
                     if (h.getStackInSlot(0) != ItemStack.EMPTY) {
                         worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
@@ -139,7 +251,7 @@ public class BeyCreatorBlock extends Block {
                     ItemStack stack = playerIn.getHeldItem(hand);
                     NetworkHooks.openGui((ServerPlayerEntity) playerIn,
                             new SimpleNamedContainerProvider(
-                                    (id, playerInventory, playerEntity) -> new BeyCreatorContainer(BeyRegistry.BEY_CREATOR_CONTAINER,id,(BeyCreatorTileEntity) tileentity),
+                                    (id, playerInventory, playerEntity) -> new BeyCreatorContainer(BeyRegistry.BEY_CREATOR_CONTAINER, id, (BeyCreatorTileEntity) tileentity),
                                     new StringTextComponent(getTranslationKey())));
                 }
             }

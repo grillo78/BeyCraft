@@ -130,7 +130,7 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
                     break;
             }
         });
-        nextPartType = new Button(relX + 15, relY, 45, 20, "layer", (Button) -> {
+        nextPartType = new Button(relX + 15, relY, 45, 20, "Layer", (Button) -> {
             partType++;
             partCount = 0;
             if (partType == 4) {
