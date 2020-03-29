@@ -13,6 +13,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -69,7 +70,14 @@ public class BeyContainer extends Container {
         super.onContainerClosed(player);
         if (player instanceof ServerPlayerEntity) {
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                PacketHandler.instance.sendTo(new MessageUpdateLayerItemStack(stack, h.getStackInSlot(0), h.getStackInSlot(1), hand, player.getUniqueID()),((ServerPlayerEntity)player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                if(!stack.hasTag()){
+                    CompoundNBT nbt = new CompoundNBT();
+                    stack.setTag(nbt);
+                }
+                CompoundNBT nbt = stack.getTag();
+                nbt.putBoolean("isEntity", false);
+                nbt.put("disc", h.getStackInSlot(0).write(new CompoundNBT()));
+                nbt.put("driver", h.getStackInSlot(1).write(new CompoundNBT()));
             });
         }
     }

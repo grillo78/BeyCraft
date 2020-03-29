@@ -116,6 +116,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     }
 
     private void dropItem(PlayerEntity player) {
+        inventory.getStackInSlot(0).getTag().putBoolean("isEntity", false);
         world.addEntity(new ItemEntity(world, player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(),
                 inventory.getStackInSlot(0)));
     }

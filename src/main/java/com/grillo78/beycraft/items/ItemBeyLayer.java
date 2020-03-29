@@ -6,6 +6,8 @@ import com.grillo78.beycraft.abilities.Ability;
 import com.grillo78.beycraft.inventory.BeyContainer;
 import com.grillo78.beycraft.inventory.ItemBeyProvider;
 import com.grillo78.beycraft.items.render.BeyItemStackRendererTileEntity;
+import com.grillo78.beycraft.network.PacketHandler;
+import com.grillo78.beycraft.network.message.MessageUpdateLayerItemStack;
 import com.grillo78.beycraft.util.BeyTypes;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,8 +24,11 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
+
+import javax.annotation.Nullable;
 
 public class ItemBeyLayer extends ItemBeyPart {
 
@@ -49,16 +54,19 @@ public class ItemBeyLayer extends ItemBeyPart {
         return new ItemBeyProvider(stack);
     }
 
+
+
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
         ActionResult<ItemStack> result = super.onItemRightClick(world, player, handIn);
-        if(result.getType() == ActionResultType.FAIL){
+        if (result.getType() == ActionResultType.FAIL) {
             if (!world.isRemote) {
+                ItemStack stack = player.getHeldItem(handIn);
                 NetworkHooks.openGui((ServerPlayerEntity) player,
                         new SimpleNamedContainerProvider(
                                 (id, playerInventory, playerEntity) -> new BeyContainer(BeyRegistry.BEY_CONTAINER, id,
-                                        player.getHeldItem(handIn), playerInventory, playerEntity, handIn),
-                                new StringTextComponent(getRegistryName().getPath())));
+                                        stack, playerInventory, playerEntity, handIn),
+                                new StringTextComponent(getTranslationKey())));
             }
         }
         return result;

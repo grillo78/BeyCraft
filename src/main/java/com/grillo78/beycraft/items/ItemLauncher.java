@@ -48,6 +48,7 @@ public class ItemLauncher extends Item {
 				ItemStack launcher = player.getHeldItem(handIn);
 				launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
 					if (h.getStackInSlot(0).getItem() instanceof ItemBeyLayer) {
+						h.getStackInSlot(0).getTag().putBoolean("isEntity", true);
 						EntityBey entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, world,
 								h.getStackInSlot(0).copy(),
 								rotation);
@@ -64,7 +65,6 @@ public class ItemLauncher extends Item {
 								(player.getPositionVec().y - player.prevPosY) * 2,
 								(player.getPositionVec().z - player.prevPosZ) * 2);
 						h.getStackInSlot(0).shrink(1);
-						BeyCraft.logger.info("succes");
 					}
 				});
 			}

@@ -31,6 +31,7 @@ public class MessageUpdateHandleItemStack implements IMessage<MessageUpdateHandl
         this.slot2 = slot2;
         this.slot3 = slot3;
         this.hand = hand;
+        this.uuid = uuid;
     }
 
     @Override

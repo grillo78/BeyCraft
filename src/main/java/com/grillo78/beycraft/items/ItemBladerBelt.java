@@ -42,7 +42,7 @@ public class ItemBladerBelt extends Item {
             NetworkHooks.openGui((ServerPlayerEntity) player,
                     new SimpleNamedContainerProvider(
                             (id, playerInventory, playerEntity) -> new BeltContainer(BeyRegistry.BELT_CONTAINER, id,
-                                    player.getHeldItem(handIn), playerInventory),
+                                    player.getHeldItem(handIn), playerInventory, true),
                             new StringTextComponent(getRegistryName().getPath())));
         }
         return super.onItemRightClick(world, player, handIn);

@@ -14,6 +14,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -70,11 +71,14 @@ public class LauncherContainer extends Container {
     public void onContainerClosed(PlayerEntity player) {
         if (player instanceof ServerPlayerEntity) {
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                PacketHandler.instance.sendTo(new MessageUpdateLauncherItemStack(stack,
-                        h.getStackInSlot(0),
-                        h.getStackInSlot(1),
-                        h.getStackInSlot(2),
-                        hand,player.getUniqueID()),((ServerPlayerEntity)player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                if(!stack.hasTag()){
+                    CompoundNBT nbt = new CompoundNBT();
+                    stack.setTag(nbt);
+                }
+                CompoundNBT nbt = stack.getTag();
+                nbt.put("bey", h.getStackInSlot(0).write(new CompoundNBT()));
+                nbt.put("handle", h.getStackInSlot(1).write(new CompoundNBT()));
+                nbt.put("beylogger", h.getStackInSlot(2).write(new CompoundNBT()));
             });
         }
     }

@@ -31,6 +31,7 @@ public class MessageUpdateLauncherItemStack implements IMessage<MessageUpdateLau
         this.handle = handle;
         this.beylogger = beylogger;
         this.hand = hand;
+        this.uuid = uuid;
     }
 
     @Override

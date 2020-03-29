@@ -36,7 +36,7 @@ public class MessageOpenBelt implements IMessage<MessageOpenBelt> {
                     NetworkHooks.openGui( player,
                             new SimpleNamedContainerProvider(
                                     (id, playerInventory, playerEntity) -> new BeltContainer(BeyRegistry.BELT_CONTAINER, id,
-                                            stack, playerInventory),
+                                            stack, playerInventory, false),
                                     new StringTextComponent(stack.getItem().getRegistryName().getPath())));
                 }
             });

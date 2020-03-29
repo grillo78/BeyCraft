@@ -22,14 +22,18 @@ public class BeltContainer extends Container {
      * @param type
      * @param id
      */
-    public BeltContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory) {
+    public BeltContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory, boolean locked) {
         super(type, id);
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .ifPresent(h -> this.addSlot(new SlotBeyBothLayer(h, 0, 10, 10)));
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             this.addSlot(new SlotBeyLauncher(h, 1, 10, 30));
         });
-        addPlayerSlots(new InvWrapper(playerInventory), playerInventory.getSlotFor(stack));
+        if(locked){
+            addPlayerSlots(new InvWrapper(playerInventory), playerInventory.getSlotFor(stack));
+        } else {
+            addPlayerSlots(new InvWrapper(playerInventory), playerInventory.getSizeInventory());
+        }
     }
 
     protected void addPlayerSlots(InvWrapper playerinventory, int locked) {

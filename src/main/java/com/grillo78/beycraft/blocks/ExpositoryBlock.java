@@ -3,7 +3,10 @@ package com.grillo78.beycraft.blocks;
 import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
+import com.grillo78.beycraft.items.ItemBeyDisc;
+import com.grillo78.beycraft.items.ItemBeyDriver;
 import com.grillo78.beycraft.items.ItemBeyLayer;
+import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;
 
 import net.minecraft.block.Block;
@@ -12,9 +15,14 @@ import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -28,15 +36,18 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
+import javax.annotation.Nullable;
+
 /**
  * @author grillo78
  */
 public class ExpositoryBlock extends Block implements IWaterLoggable {
 
     private VoxelShape collisionBox = VoxelShapes.create(0,0,0,1,0.5,1);
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public ExpositoryBlock(Material materialIn, String name) {
-        super(Block.Properties.create(Material.CLAY).hardnessAndResistance(0.6F).harvestTool(ToolType.PICKAXE));
+        super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).harvestTool(ToolType.PICKAXE));
         setRegistryName(new ResourceLocation(Reference.MODID, name));
 
         BeyRegistry.BLOCKS.add(this);
@@ -71,32 +82,29 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
                                              Hand hand, BlockRayTraceResult p_225533_6_) {
         TileEntity tileentity = worldIn.getTileEntity(pos);
         if (tileentity instanceof ExpositoryTileEntity) {
-            if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyLayer) {
-                setItemStack((ExpositoryTileEntity) tileentity, 0, playerIn.getHeldItem(hand));
-            } else {
-                ((ExpositoryTileEntity) tileentity).getInventory().ifPresent(h -> {
-                    if(h.getStackInSlot(0)!=ItemStack.EMPTY){
-                        worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
-                    }
-                });
-                setItemStack((ExpositoryTileEntity) tileentity, 0, ItemStack.EMPTY);
-            }
+            ((ExpositoryTileEntity) tileentity).getInventory().ifPresent(h -> {
+                if(h.getStackInSlot(0)!=ItemStack.EMPTY){
+                    worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
+                    h.extractItem(0,1,false);
+                }
+                if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyLayer || playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDisc || playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDriver) {
+                    h.insertItem(0,playerIn.getHeldItem(hand).copy(),false);
+                    playerIn.getHeldItem(hand).shrink(1);
+                }
+            });
         }
         return ActionResultType.SUCCESS;
     }
 
-    /**
-     *
-     */
-    private void setItemStack(ExpositoryTileEntity tileEntity, int index, ItemStack stack) {
-        tileEntity.getInventory().ifPresent(h -> {
-            if(stack!=ItemStack.EMPTY) {
-                h.insertItem(index, stack.copy(), false);
-                stack.shrink(1);
-            } else {
-                h.extractItem(0,1,false);
-            }
-        });
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return getDefaultState().with(WATERLOGGED, Boolean.valueOf(context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER));
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(WATERLOGGED);
     }
 
     @Override

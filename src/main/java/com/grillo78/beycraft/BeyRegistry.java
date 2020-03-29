@@ -1,11 +1,13 @@
 package com.grillo78.beycraft;
 
 import com.google.common.collect.Lists;
+import com.grillo78.beycraft.blocks.BeyCreatorBlock;
 import com.grillo78.beycraft.blocks.ExpositoryBlock;
 import com.grillo78.beycraft.blocks.StadiumBlock;
 import com.grillo78.beycraft.entity.EntityBey;
 import com.grillo78.beycraft.inventory.*;
 import com.grillo78.beycraft.items.*;
+import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -40,13 +42,15 @@ public class BeyRegistry {
     public static BasicParticleType SPARKLE;
 
     /* Entity */
-    public static final EntityType<EntityBey> BEY_ENTITY_TYPE = EntityType.Builder.<EntityBey>create(EntityBey::new, EntityClassification.MISC)
-            .build(Reference.MODID + ":bey");
+    @ObjectHolder(Reference.MODID + ":bey")
+    public static final EntityType<EntityBey> BEY_ENTITY_TYPE = null;
 
 
     /* TileEntity */
     @ObjectHolder(Reference.MODID + ":expositorytileentity")
-    public static TileEntityType<ExpositoryTileEntity> EXPOSITORYTILEENTITYTYPE = null;
+    public static final TileEntityType<ExpositoryTileEntity> EXPOSITORYTILEENTITYTYPE = null;
+    @ObjectHolder(Reference.MODID + ":beycreatortileentity")
+    public static final TileEntityType<BeyCreatorTileEntity> BEYCREATORTILEENTITYTYPE = null;
 
     /* Container */
     @ObjectHolder("beycraft:launcher")
@@ -59,6 +63,8 @@ public class BeyRegistry {
     public static final ContainerType<HandleContainer> HANDLE_CONTAINER = null;
     @ObjectHolder("beycraft:diskframe")
     public static final ContainerType<BeyDiscFrameContainer> DISK_FRAME_CONTAINER = null;
+    @ObjectHolder("beycraft:beycreator")
+    public static final ContainerType<BeyCreatorContainer> BEY_CREATOR_CONTAINER = null;
 
 
     /* ArmorMaterials */
@@ -106,6 +112,7 @@ public class BeyRegistry {
 //			EntityEquipmentSlot.FEET, "Aiger");
 
     /* Blocks */
+    public static final BeyCreatorBlock BEYCREATORBLOCK = new BeyCreatorBlock(Material.ANVIL, "beycreator");
     public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.ANVIL, "expository");
     public static final StadiumBlock STADIUM = new StadiumBlock(Material.IRON, "stadium");
 

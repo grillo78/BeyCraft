@@ -14,10 +14,13 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.items.CapabilityItemHandler;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer {
@@ -26,22 +29,25 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
     public void render(ItemStack stack, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
         super.render(stack, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
         matrixStack.push();
-        IBakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft", "layers/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "")));
+
+        IBakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft", "layers/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "") + ""));
         IVertexBuilder vertexBuilder = buffer.getBuffer(RenderType.getEntityTranslucent(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
         for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
             vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, 1, 1, combinedOverlayIn, true);
         }
-		matrixStack.scale(2F,2F,2F);
-        matrixStack.rotate(new Quaternion(new Vector3f(0, 1, 0), -15, true));
-        matrixStack.translate(0F, -0.04F, 0.25F);
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            Minecraft.getInstance().getItemRenderer().renderItem(h.getStackInSlot(0),
+
+        if (stack.hasTag() && stack.getTag().contains("isEntity") && !stack.getTag().getBoolean("isEntity")) {
+            matrixStack.scale(2F, 2F, 2F);
+            matrixStack.rotate(new Quaternion(new Vector3f(0, 1, 0), -15, true));
+            matrixStack.translate(0F, -0.04F, 0.25F);
+            Minecraft.getInstance().getItemRenderer().renderItem(ItemStack.read((CompoundNBT) stack.getTag().get("disc")),
                     TransformType.FIRST_PERSON_LEFT_HAND, 0, OverlayTexture.NO_OVERLAY, matrixStack, buffer);
             matrixStack.rotate(new Quaternion(new Vector3f(0, 1, 0), 90, true));
             matrixStack.translate(0.25, -0.07, 0.25);
-            Minecraft.getInstance().getItemRenderer().renderItem(h.getStackInSlot(1),
+            Minecraft.getInstance().getItemRenderer().renderItem(ItemStack.read((CompoundNBT) stack.getTag().get("driver")),
                     TransformType.FIRST_PERSON_LEFT_HAND, 0, OverlayTexture.NO_OVERLAY, matrixStack, buffer);
-        });
+        }
+
         matrixStack.pop();
     }
 

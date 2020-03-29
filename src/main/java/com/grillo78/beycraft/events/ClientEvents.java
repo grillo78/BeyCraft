@@ -5,20 +5,19 @@ import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.entity.BeyEntityRenderFactory;
 import com.grillo78.beycraft.gui.*;
 import com.grillo78.beycraft.network.PacketHandler;
-import com.grillo78.beycraft.network.message.IMessage;
 import com.grillo78.beycraft.network.message.MessageOpenBelt;
 import com.grillo78.beycraft.particles.SparkleParticle;
+import com.grillo78.beycraft.tileentity.RenderBeyCreator;
 import com.grillo78.beycraft.tileentity.RenderExpository;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.resources.ClientResourcePackInfo;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.resources.*;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -36,9 +35,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.UUID;
 
-@Mod.EventBusSubscriber(value = {Dist.CLIENT}, modid = Reference.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientEvents {
 
     public static final KeyBinding beltKey = new KeyBinding("key.beycraft.belt", 66, "key.beycraft.category");
@@ -109,21 +107,11 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void editHud(RenderGameOverlayEvent.Post event) {
-        if (!Minecraft.getInstance().gameSettings.showDebugInfo) {
-            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-                Minecraft.getInstance().getRenderManager().textureManager
-                        .bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/bladerlevel.png"));
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void doClientStuff(final FMLClientSetupEvent event) {
         RenderTypeLookup.setRenderLayer(BeyRegistry.STADIUM, RenderType.getCutoutMipped());
         RenderTypeLookup.setRenderLayer(BeyRegistry.EXPOSITORY, RenderType.getCutoutMipped());
-        for (Item item : BeyRegistry.ITEMSLAYER) {
-        }
+        RenderTypeLookup.setRenderLayer(BeyRegistry.BEYCREATORBLOCK, RenderType.getCutoutMipped());
+        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "block/beycreatorcustom"));
         ClientRegistry.registerKeyBinding(ClientEvents.beltKey);
         ScreenManager.registerFactory(BeyRegistry.LAUNCHER_CONTAINER, LauncherGUI::new);
         ScreenManager.registerFactory(BeyRegistry.DISK_FRAME_CONTAINER, DiskFrameGUI::new);
@@ -132,6 +120,7 @@ public class ClientEvents {
             ScreenManager.registerFactory(BeyRegistry.BELT_CONTAINER, BeltGUI::new);
         } catch (Exception e) {
         }
+        ScreenManager.registerFactory(BeyRegistry.BEY_CREATOR_CONTAINER, BeyCreatorGUI::new);
         ScreenManager.registerFactory(BeyRegistry.BEY_CONTAINER, BeyGUI::new);
         ScreenManager.registerFactory(BeyRegistry.HANDLE_CONTAINER, HandleGUI::new);
         for (Item item : BeyRegistry.ITEMSLAYER) {
@@ -140,18 +129,34 @@ public class ClientEvents {
         RenderingRegistry.registerEntityRenderingHandler(BeyRegistry.BEY_ENTITY_TYPE,
                 new BeyEntityRenderFactory());
         ClientRegistry.bindTileEntityRenderer(BeyRegistry.EXPOSITORYTILEENTITYTYPE, RenderExpository::new);
+        ClientRegistry.bindTileEntityRenderer(BeyRegistry.BEYCREATORTILEENTITYTYPE, RenderBeyCreator::new);
     }
 
-    @SubscribeEvent
-    public static void onKeyPressed(final InputEvent.KeyInputEvent event) {
-        if (Minecraft.getInstance().player == null)
-            return;
-        if (ClientEvents.beltKey.isPressed()) {
-            try {
-                Class.forName("com.lazy.baubles.Baubles");
-                PacketHandler.instance.sendToServer(new MessageOpenBelt());
-            } catch (Exception e) {
+    @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class SpecialClientEvents {
 
+        @SubscribeEvent
+        public static void editHud(RenderGameOverlayEvent.Post event) {
+            if (!Minecraft.getInstance().gameSettings.showDebugInfo) {
+                if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+                    Minecraft.getInstance().getRenderManager().textureManager
+                            .bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/bladerlevel.png"));
+                    AbstractGui.blit(0,0,0,0,75,80,256,256);
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onKeyPressed(final InputEvent.KeyInputEvent event) {
+            if (Minecraft.getInstance().player == null)
+                return;
+            if (ClientEvents.beltKey.isPressed()) {
+                try {
+                    Class.forName("com.lazy.baubles.Baubles");
+                    PacketHandler.instance.sendToServer(new MessageOpenBelt());
+                } catch (Exception e) {
+
+                }
             }
         }
     }

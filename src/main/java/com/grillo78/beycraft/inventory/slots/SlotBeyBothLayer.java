@@ -4,6 +4,7 @@ import com.grillo78.beycraft.items.ItemBeyDisc;
 import com.grillo78.beycraft.items.ItemBeyDriver;
 import com.grillo78.beycraft.items.ItemBeyLayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -20,8 +21,14 @@ public class SlotBeyBothLayer extends SlotItemHandler {
 
 		if(stack.getItem() instanceof ItemBeyLayer){
 			stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h->{
-				if(h.getStackInSlot(0).getItem() instanceof ItemBeyDisc && h.getStackInSlot(1).getItem() instanceof ItemBeyDriver){
-					isValid[0] = true;
+				if (h.getSlots() == 2) {
+					if (ItemStack.read((CompoundNBT) stack.getTag().get("disc")).getItem() instanceof ItemBeyDisc && ItemStack.read((CompoundNBT) stack.getTag().get("driver")).getItem() instanceof ItemBeyDriver) {
+						isValid[0] = true;
+					}
+				} else {
+					if (ItemStack.read((CompoundNBT) stack.getTag().get("disc")).getItem() instanceof ItemBeyDisc && ItemStack.read((CompoundNBT) stack.getTag().get("driver")).getItem() instanceof ItemBeyDriver) {
+						isValid[0] = true;
+					}
 				}
 			});
 		}
