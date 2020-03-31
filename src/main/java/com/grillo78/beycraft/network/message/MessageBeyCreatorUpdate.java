@@ -44,5 +44,6 @@ public class MessageBeyCreatorUpdate implements IMessage<MessageBeyCreatorUpdate
                });
            }
         });
+        supplier.get().setPacketHandled(true);
     }
 }
