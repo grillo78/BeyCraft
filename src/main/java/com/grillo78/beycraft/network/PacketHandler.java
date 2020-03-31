@@ -20,11 +20,8 @@ public class PacketHandler {
                 .clientAcceptedVersions(PROTOCOL_VERSION::equals)
                 .serverAcceptedVersions(PROTOCOL_VERSION::equals)
                 .simpleChannel();
-        register(MessageUpdateLayerItemStack.class, new MessageUpdateLayerItemStack());
-        register(MessageUpdateDiskFrameItemStack.class, new MessageUpdateDiskFrameItemStack());
-        register(MessageUpdateLauncherItemStack.class, new MessageUpdateLauncherItemStack());
-        register(MessageUpdateHandleItemStack.class, new MessageUpdateHandleItemStack());
         register(MessageOpenBelt.class, new MessageOpenBelt());
+        register(MessageBeyCreatorUpdate.class, new MessageBeyCreatorUpdate());
     }
 
     private static <T> void register(Class<T> clazz, IMessage<T> message)

@@ -17,9 +17,7 @@ import java.util.function.Supplier;
 
 public class MessageOpenBelt implements IMessage<MessageOpenBelt> {
     @Override
-    public void encode(MessageOpenBelt message, PacketBuffer buffer) {
-
-    }
+    public void encode(MessageOpenBelt message, PacketBuffer buffer) {}
 
     @Override
     public MessageOpenBelt decode(PacketBuffer buffer) {

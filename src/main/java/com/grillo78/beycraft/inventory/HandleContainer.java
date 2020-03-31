@@ -3,8 +3,6 @@ package com.grillo78.beycraft.inventory;
 import com.grillo78.beycraft.inventory.slots.LockedSlot;
 import com.grillo78.beycraft.inventory.slots.SlotHandleAccesory;
 import com.grillo78.beycraft.network.PacketHandler;
-import com.grillo78.beycraft.network.message.MessageUpdateHandleItemStack;
-import com.grillo78.beycraft.network.message.MessageUpdateLayerItemStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -12,6 +10,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -65,9 +64,18 @@ public class HandleContainer extends Container {
 	@Override
 	public void onContainerClosed(PlayerEntity player) {
 		if(player instanceof ServerPlayerEntity){
-			stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h->{
-				PacketHandler.instance.sendTo(new MessageUpdateHandleItemStack(stack,h.getStackInSlot(0),h.getStackInSlot(1),h.getStackInSlot(2), hand,player.getUniqueID()),((ServerPlayerEntity)player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
-			});
+			if (player instanceof ServerPlayerEntity) {
+				stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+					if(!stack.hasTag()){
+						CompoundNBT nbt = new CompoundNBT();
+						stack.setTag(nbt);
+					}
+					CompoundNBT nbt = stack.getTag();
+					nbt.put("accesory1", h.getStackInSlot(0).write(new CompoundNBT()));
+					nbt.put("accesory2", h.getStackInSlot(1).write(new CompoundNBT()));
+					nbt.put("accesory3", h.getStackInSlot(2).write(new CompoundNBT()));
+				});
+			}
 		}
 	}
 

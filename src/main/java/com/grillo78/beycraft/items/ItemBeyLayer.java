@@ -6,8 +6,6 @@ import com.grillo78.beycraft.abilities.Ability;
 import com.grillo78.beycraft.inventory.BeyContainer;
 import com.grillo78.beycraft.inventory.ItemBeyProvider;
 import com.grillo78.beycraft.items.render.BeyItemStackRendererTileEntity;
-import com.grillo78.beycraft.network.PacketHandler;
-import com.grillo78.beycraft.network.message.MessageUpdateLayerItemStack;
 import com.grillo78.beycraft.util.BeyTypes;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,11 +22,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
-
-import javax.annotation.Nullable;
 
 public class ItemBeyLayer extends ItemBeyPart {
 

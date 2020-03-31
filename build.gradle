@@ -114,10 +114,10 @@ dependencies {
     compile fg.deobf("vazkii.patchouli:Patchouli:1.15.2-1.2-29.147")
     compile name: 'baubles-1.7.1-1.15.2-deobf'
 //    compile fg.deobf('com.github.lazyMods:Baubles:1.7.1')
-//    compile fg.deobf("curse.maven:mrcrayfish-furniture-mod:2853267")
-//    compile fg.deobf("curse.maven:mrcrayfish-vehicle-mod:2899889")
+    compile fg.deobf("curse.maven:mrcrayfish-furniture-mod:2853267")
+    compile fg.deobf("curse.maven:mrcrayfish-vehicle-mod:2899889")
 //    compile fg.deobf("curse.maven:performant:2875938")
-//    compile fg.deobf("curse.maven:obfuscate:2866341")
+    compile fg.deobf("curse.maven:obfuscate:2866341")
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
     // compile "some.group:artifact:version"

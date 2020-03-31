@@ -28,7 +28,7 @@ public class EntityGoalRotate extends Goal {
             if (bey.onGround) {
                 if (bey.getRadius() != 0) {
                     if (!bey.isStoped() && bey.onGround) {
-                        bey.rotationYaw += bey.getRotationSpeed() * bey.getRotationDirection() * 2
+                        bey.rotationYaw += bey.getRotationSpeed() * -bey.getRotationDirection() * 2
                                 / (-bey.getMaxRotationSpeed() * 0.1);
                     }
                     bey.move(MoverType.SELF, new Vec3d(bey.getLookVec().x * bey.getRadius() / 2.1, 0,

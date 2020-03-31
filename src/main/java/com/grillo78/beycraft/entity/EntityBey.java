@@ -41,7 +41,6 @@ import java.util.Random;
  */
 public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnData {
 
-    private int updatePointCount = 0;
     private ItemStackHandler inventory = new ItemStackHandler(3);
     private int rotationDirection;
     private static final DataParameter<Float> ROTATIONSPEED = EntityDataManager.createKey(EntityBey.class,
@@ -259,7 +258,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                setRotationSpeed(
                        getRotationSpeed() - 0.005F * ((ItemBeyDriver) inventory.getStackInSlot(2).getItem()).getFriction());
 
-               angle += getRotationSpeed() * 30 * rotationDirection;
+               angle += getRotationSpeed() * 30 * -rotationDirection;
            } else {
                if (!stoped) {
                    stoped = true;

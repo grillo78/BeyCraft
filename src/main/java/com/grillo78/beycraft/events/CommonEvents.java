@@ -97,7 +97,7 @@ public class CommonEvents {
         } catch (Exception e) {
         }
         event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-            return new BeyCreatorContainer(BeyRegistry.BEY_CREATOR_CONTAINER, windowId, null);
+            return new BeyCreatorContainer(BeyRegistry.BEY_CREATOR_CONTAINER, windowId, new BeyCreatorTileEntity());
         }).setRegistryName("beycreator"));
         event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
             return new HandleContainer(BeyRegistry.HANDLE_CONTAINER, windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player, Hand.MAIN_HAND);

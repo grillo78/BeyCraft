@@ -46,7 +46,7 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public ExpositoryBlock(Material materialIn, String name) {
-        super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).harvestTool(ToolType.PICKAXE));
+        super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).harvestTool(ToolType.PICKAXE).notSolid());
         setRegistryName(new ResourceLocation(Reference.MODID, name));
 
         BeyRegistry.BLOCKS.add(this);

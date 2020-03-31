@@ -1,16 +1,12 @@
 package com.grillo78.beycraft.inventory;
 
 import com.grillo78.beycraft.inventory.slots.*;
-import com.grillo78.beycraft.network.PacketHandler;
-import com.grillo78.beycraft.network.message.MessageUpdateLayerItemStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
