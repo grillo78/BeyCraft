@@ -2,6 +2,8 @@ package com.grillo78.beycraft.network.message;
 
 import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
+import jdk.nashorn.internal.ir.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
@@ -39,7 +41,14 @@ public class MessageBeyCreatorUpdate implements IMessage<MessageBeyCreatorUpdate
                BeyCraft.logger.info(message.pos);
                BeyCreatorTileEntity tileEntity = (BeyCreatorTileEntity) supplier.get().getSender().world.getTileEntity(message.pos);
                tileEntity.getInventory().ifPresent(h->{
+                   if(!h.getStackInSlot(1).isEmpty()){
+                       h.getStackInSlot(1).shrink(1);
+                   }
                    h.insertItem(1,message.stack,false);
+                   supplier.get()
+                           .getSender()
+                           .world
+                           .notifyBlockUpdate(message.pos,supplier.get().getSender().world.getBlockState(message.pos),supplier.get().getSender().world.getBlockState(message.pos),0);
                    BeyCraft.logger.info(h.getStackInSlot(1).getItem().getTranslationKey());
                });
            }

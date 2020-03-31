@@ -92,7 +92,7 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
     public void tick() {
         if (!world.isRemote) {
             inventory.ifPresent(h -> {
-                if (!h.getStackInSlot(1).isEmpty()) {
+                if (!h.getStackInSlot(1).isEmpty() && !h.getStackInSlot(0).isEmpty()) {
                     if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver) && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
                         updateProcess(h);
                     } else {
@@ -104,20 +104,31 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
                     actualProgress = 0;
                 }
             });
+        } else {
+            inventory.ifPresent(h -> {
+                if (!h.getStackInSlot(1).isEmpty() && !h.getStackInSlot(0).isEmpty()) {
+                    if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver) && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
+
+                        world.addParticle(BeyRegistry.SPARKLE, pos.getX() + 0.5, pos.getY() + 0.25, pos.getZ() + 0.5, rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
+                    } else {
+                        if (h.getStackInSlot(1).getItem() instanceof ItemBeyDisc && h.getStackInSlot(0).getItem() == Items.IRON_INGOT) {
+                            world.addParticle(BeyRegistry.SPARKLE, pos.getX() + 0.5, pos.getY() + 0.15, pos.getZ() + 0.5, rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
+                        }
+                    }
+                }
+            });
         }
     }
 
     private void updateProcess(IItemHandler h) {
         actualProgress++;
-        BeyCraft.logger.info(actualProgress);
-        world.addParticle(BeyRegistry.SPARKLE, pos.getX(), pos.getY(), pos.getZ(), rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
         if (actualProgress >= MAXPROGRESS) {
             actualProgress = 0;
             h.getStackInSlot(0).shrink(1);
             h.insertItem(0, h.getStackInSlot(1).copy(), false);
             h.getStackInSlot(1).shrink(1);
+            world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 0);
         }
-        this.markDirty();
     }
 
     public int getActualProgress() {
