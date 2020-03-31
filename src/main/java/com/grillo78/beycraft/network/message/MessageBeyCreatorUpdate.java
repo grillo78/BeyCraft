@@ -1,14 +1,11 @@
 package com.grillo78.beycraft.network.message;
 
 import com.grillo78.beycraft.BeyCraft;
-import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
@@ -42,7 +39,7 @@ public class MessageBeyCreatorUpdate implements IMessage<MessageBeyCreatorUpdate
                BeyCraft.logger.info(message.pos);
                BeyCreatorTileEntity tileEntity = (BeyCreatorTileEntity) supplier.get().getSender().world.getTileEntity(message.pos);
                tileEntity.getInventory().ifPresent(h->{
-                   h.insertItem(1,new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(Reference.MODID,"boostdisc"))),false);
+                   h.insertItem(1,message.stack,false);
                    BeyCraft.logger.info(h.getStackInSlot(1).getItem().getTranslationKey());
                });
            }
