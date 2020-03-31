@@ -1,5 +1,6 @@
 package com.grillo78.beycraft.tileentity;
 
+import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.items.ItemBeyDisc;
@@ -22,11 +23,14 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 
+import java.util.Random;
+
 public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEntity {
 
-    private static int MAXPROGRESS = 10000;
+    private static int MAXPROGRESS = 1000;
     private int actualProgress = 0;
     private LazyOptional<IItemHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(2));
+    private Random rand = new Random();
 
     public BeyCreatorTileEntity() {
         super(BeyRegistry.BEYCREATORTILEENTITYTYPE);
@@ -86,43 +90,34 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
 
     @Override
     public void tick() {
-        inventory.ifPresent(h -> {
-            if (h.getStackInSlot(1).isEmpty()) {
-                if (h.getStackInSlot(1).getItem() instanceof ItemBeyLayer && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
-					actualProgress++;
-					if (actualProgress == MAXPROGRESS) {
-						actualProgress = 0;
-						h.insertItem(0, h.getStackInSlot(1).copy(), false);
-					}
-                } else {
-                    if (h.getStackInSlot(1).getItem() instanceof ItemBeyDriver && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
-						actualProgress++;
-						if (actualProgress == MAXPROGRESS) {
-							actualProgress = 0;
-							h.insertItem(0, h.getStackInSlot(1).copy(), false);
-						}
+        if (!world.isRemote) {
+            inventory.ifPresent(h -> {
+                if (!h.getStackInSlot(1).isEmpty()) {
+                    if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver) && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
+                        updateProcess(h);
                     } else {
-                        if (h.getStackInSlot(1).getItem() instanceof ItemBeyFrame && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
-							actualProgress++;
-							if (actualProgress == MAXPROGRESS) {
-								actualProgress = 0;
-								h.insertItem(0, h.getStackInSlot(1).copy(), false);
-							}
-                        } else {
-                            if (h.getStackInSlot(1).getItem() instanceof ItemBeyDisc && h.getStackInSlot(0).getItem() == Items.IRON_INGOT) {
-                                actualProgress++;
-                                if (actualProgress == MAXPROGRESS) {
-                                    actualProgress = 0;
-                                    h.insertItem(0, h.getStackInSlot(1).copy(), false);
-                                }
-                            }
+                        if (h.getStackInSlot(1).getItem() instanceof ItemBeyDisc && h.getStackInSlot(0).getItem() == Items.IRON_INGOT) {
+                            updateProcess(h);
                         }
                     }
+                } else {
+                    actualProgress = 0;
                 }
-            } else {
-                actualProgress = 0;
-            }
-        });
+            });
+        }
+    }
+
+    private void updateProcess(IItemHandler h) {
+        actualProgress++;
+        BeyCraft.logger.info(actualProgress);
+        world.addParticle(BeyRegistry.SPARKLE, pos.getX(), pos.getY(), pos.getZ(), rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
+        if (actualProgress >= MAXPROGRESS) {
+            actualProgress = 0;
+            h.getStackInSlot(0).shrink(1);
+            h.insertItem(0, h.getStackInSlot(1).copy(), false);
+            h.getStackInSlot(1).shrink(1);
+        }
+        this.markDirty();
     }
 
     public int getActualProgress() {

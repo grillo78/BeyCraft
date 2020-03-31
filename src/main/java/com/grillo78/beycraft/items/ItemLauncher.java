@@ -46,6 +46,7 @@ public class ItemLauncher extends Item {
 		if (!player.isCrouching()) {
 			if (!world.isRemote && BeyRegistry.BEY_ENTITY_TYPE != null) {
 				ItemStack launcher = player.getHeldItem(handIn);
+				launcher.getTag().put("bey", ItemStack.EMPTY.write(new CompoundNBT()));
 				launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
 					if (h.getStackInSlot(0).getItem() instanceof ItemBeyLayer) {
 						h.getStackInSlot(0).getTag().putBoolean("isEntity", true);

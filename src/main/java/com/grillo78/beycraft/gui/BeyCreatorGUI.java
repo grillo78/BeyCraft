@@ -50,6 +50,8 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
     private Button prevPart;
     private Button nextPart;
     private Button nextPartType;
+    private RayTraceResult rayTraceBlock = Minecraft.getInstance().player.pick(20.0D, 0.0F, false);
+    private BlockPos pos = ((BlockRayTraceResult)rayTraceBlock).getPos();
 
     /**
      * @param screenContainer
@@ -185,8 +187,6 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
                     }
                     break;
             }
-            RayTraceResult rayTraceBlock = Minecraft.getInstance().player.pick(20.0D, 0.0F, false);
-            BlockPos pos = ((BlockRayTraceResult)rayTraceBlock).getPos();
             PacketHandler.instance.sendToServer(new MessageBeyCreatorUpdate(stack,pos));
         }));
         this.addButton(nextPartType);

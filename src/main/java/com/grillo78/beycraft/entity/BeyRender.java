@@ -85,8 +85,8 @@ public class BeyRender extends EntityRenderer<EntityBey> {
         matrixStack.translate(0, 0, -0.25);
         if (entity.getRadius() != 0 && entity.getRotationSpeed() > 2) {
             matrixStack.rotate(
-                    new Quaternion(new Vector3f((float) entity.getLookVec().x * entity.getRotationDirection(), 0,
-                            (float) entity.getLookVec().z * entity.getRotationDirection()), -30, true));
+                    new Quaternion(new Vector3f((float) -entity.getLookVec().x * entity.getRotationDirection(), 0,
+                            (float) -entity.getLookVec().z * entity.getRotationDirection()), -30, true));
         }
         matrixStack.rotate(new Quaternion(0, 0, entity.angle, true));
         if (entity.getRotationSpeed() < 2) {
