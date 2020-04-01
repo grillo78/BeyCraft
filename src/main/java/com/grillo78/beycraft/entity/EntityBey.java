@@ -103,9 +103,9 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     private void dropItems() {
         inventory.getStackInSlot(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             h.getStackInSlot(0).shrink(1);
-            ;
+
             h.getStackInSlot(1).shrink(1);
-            ;
+
         });
         world.addEntity(new ItemEntity(world, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
                 inventory.getStackInSlot(0)));
@@ -143,7 +143,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     @Override
     public void onDeath(DamageSource cause) {
         dropItems();
-        remove();
+//        remove();
     }
 
     @Override
@@ -282,29 +282,25 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         super.travel(p_213352_1_);
         if (collidedHorizontally) {
             rotationYaw += 90 * rotationDirection;
-            BeyCraft.logger.info("rotation changed by collision");
         }
         setHorizontalCollision(collidedHorizontally);
     }
 
     @Override
     protected void collideWithEntity(Entity entityIn) {
-        if (!world.isRemote) {
-//            if (!stoped && entityIn instanceof EntityBey) {
-//                playHurtSound(DamageSource.GENERIC);
-//                getLayer().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-//                    damageEntity(DamageSource.GENERIC, ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack() + ((ItemBeyLayer) getLayer().getItem()).getBurst() - ((ItemBeyLayer) getLayer().getItem()).getDefense());
-//                });
-//                double x = (getPosX() - entityIn.getPosX()) / 2;
-//                double y = (getPosY() - entityIn.getPosY()) / 2;
-//                double z = (getPosZ() - entityIn.getPosZ()) / 2;
-//                ((ServerWorld) world).spawnParticle(BeyRegistry.SPARKLE, getPosX(), getPosY(), getPosZ(), 10, x, y, z, 10);
-//                if (new Random().nextInt(10) == 1) {
-//                    this.move(MoverType.SELF, new Vec3d(this.getPositionVec().inverse().x, this.getPositionVec().y + 0.1, this.getPositionVec().inverse().z));
-//                    increaseRadius = true;
-//                }
-//            }
-        }
+            if (!stoped && entityIn instanceof EntityBey) {
+                playHurtSound(DamageSource.GENERIC);
+                double x = (getPosX() - entityIn.getPosX()) / 2;
+                double y = (getPosY() - entityIn.getPosY()) / 2;
+                double z = (getPosZ() - entityIn.getPosZ()) / 2;
+                ((ServerWorld) world).spawnParticle(BeyRegistry.SPARKLE, getPosX(), getPosY(), getPosZ(), 10, x, y, z, 10);
+                if (new Random().nextInt(10) == 1) {
+                    increaseRadius = true;
+                }
+                getLayer().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                    damageEntity(DamageSource.causeMobDamage((LivingEntity) entityIn), ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack() + ((ItemBeyLayer) getLayer().getItem()).getBurst() - ((ItemBeyLayer) getLayer().getItem()).getDefense());
+                });
+            }
         super.collideWithEntity(entityIn);
     }
 
