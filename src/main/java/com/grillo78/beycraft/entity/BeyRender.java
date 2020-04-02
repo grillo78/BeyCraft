@@ -31,19 +31,19 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                        IRenderTypeBuffer bufferIn, int packedLightIn) {
         if (this.renderManager.pointedEntity == entity && !Minecraft.getInstance().player.isSpectator()
                 && Minecraft.isGuiEnabled()) {
-//            matrixStack.push();
-//            matrixStack.translate(0, 0.5F, 0);
-//            renderName(entity, entity.getLayer().getItem().getName().getFormattedText(), matrixStack, bufferIn,
-//                    packedLightIn);
-//            matrixStack.translate(0, -0.25F, 0);
-//            renderName(entity, entity.getDisk().getItem().getName().getFormattedText(), matrixStack, bufferIn,
-//                    packedLightIn);
+            matrixStack.push();
+            matrixStack.translate(0, 0.1F, 0);
+            renderName(entity, entity.getPlayerName(), matrixStack, bufferIn,
+                    packedLightIn);
+            matrixStack.translate(0, -0.25F, 0);
+            renderName(entity, "Health: "+entity.getHealth()*100/entity.getMaxHealth()+"%", matrixStack, bufferIn,
+                    packedLightIn);
 //            matrixStack.translate(0, -0.25F, 0);
 //            renderName(entity, entity.getDriver().getItem().getName().getFormattedText(), matrixStack, bufferIn,
 //                    packedLightIn);
 //            matrixStack.translate(0, -0.25F, 0);
 //            renderName(entity, "Radius:" + entity.getRadius(), matrixStack, bufferIn, packedLightIn);
-//            matrixStack.pop();
+            matrixStack.pop();
         }
         matrixStack.push();
         if (entity.onGround && !entity.isStoped()) {

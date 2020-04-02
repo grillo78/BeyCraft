@@ -77,6 +77,7 @@ public class BeyRegistry {
 
     /* Items */
     public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("package");
+    public static final ItemBeyRubber BEYRUBBER = new ItemBeyRubber("rubber");
     public static final ItemPlastic PLASTIC = new ItemPlastic("plastic");
 
     public static final Item LAYERICON = new Item(new Item.Properties()).setRegistryName(Reference.MODID, "layericon");

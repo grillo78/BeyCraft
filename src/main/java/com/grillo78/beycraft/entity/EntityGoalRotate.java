@@ -34,35 +34,19 @@ public class EntityGoalRotate extends Goal {
                     bey.move(MoverType.SELF, new Vec3d(bey.getLookVec().x * bey.getRadius() / 2.1, 0,
                             bey.getLookVec().z * bey.getRadius() / 2.1));
                 }
-                if (bey.world.getBlockState(new BlockPos(bey.getPositionVector().x + 0.23,
-                        bey.getPositionVector().y, bey.getPositionVector().z)).getBlock() != BeyRegistry.STADIUM) {
-                    bey.rotationYaw = 90;
-                }
-                if (bey.world.getBlockState(new BlockPos(bey.getPositionVector().x - 0.23,
-                        bey.getPositionVector().y, bey.getPositionVector().z)).getBlock() != BeyRegistry.STADIUM) {
-                    bey.rotationYaw = -90;
-                }
-                if (bey.world.getBlockState(new BlockPos(bey.getPositionVector().x, bey.getPositionVector().y,
-                        bey.getPositionVector().z + 0.23)).getBlock() != BeyRegistry.STADIUM) {
-                    bey.rotationYaw = 180;
-                }
-                if (bey.world.getBlockState(new BlockPos(bey.getPositionVector().x, bey.getPositionVector().y,
-                        bey.getPositionVector().z - 0.23)).getBlock() != BeyRegistry.STADIUM) {
-                    bey.rotationYaw = 0;
-                }
-                if (!bey.isStoped() && bey.getRadius() == 0 && bey.world
+                if (bey.world
                         .getBlockState(new BlockPos(bey.getPositionVector().x,
                                 bey.getPositionVector().y + 1 - 0.0625 * 7, bey.getPositionVector().z))
                         .getBlock() instanceof StadiumBlock) {
                     switch (bey.world.getBlockState(bey.getPosition()).get(StadiumBlock.PART).getID()) {
                         case 0:
-                            bey.move(MoverType.SELF, new Vec3d(0.1, 0, 0.1));
+                            if (bey.getRadius() == 0) bey.move(MoverType.SELF, new Vec3d(0.1, 0, 0.1));
                             break;
                         case 1:
                             bey.move(MoverType.SELF, new Vec3d(-0.1, 0, 0));
                             break;
                         case 2:
-                            bey.move(MoverType.SELF, new Vec3d(0.1, 0, -0.1));
+                            if (bey.getRadius() == 0) bey.move(MoverType.SELF, new Vec3d(0.1, 0, -0.1));
                             break;
                         case 3:
                             bey.move(MoverType.SELF, new Vec3d(0, 0, 0.1));
@@ -76,13 +60,13 @@ public class EntityGoalRotate extends Goal {
                             bey.move(MoverType.SELF, new Vec3d(0, 0, -0.1));
                             break;
                         case 6:
-                            bey.move(MoverType.SELF, new Vec3d(-0.1, 0, 0.1));
+                            if (bey.getRadius() == 0) bey.move(MoverType.SELF, new Vec3d(-0.1, 0, 0.1));
                             break;
                         case 7:
                             bey.move(MoverType.SELF, new Vec3d(0.1, 0, 0));
                             break;
                         case 8:
-                            bey.move(MoverType.SELF, new Vec3d(-0.1, 0, -0.1));
+                            if (bey.getRadius() == 0) bey.move(MoverType.SELF, new Vec3d(-0.1, 0, -0.1));
                             break;
                     }
                 }
@@ -92,10 +76,10 @@ public class EntityGoalRotate extends Goal {
                             * bey.getRotationSpeed() / (bey.getMaxRotationSpeed()));
                 } else {
                     if (bey.isIncreaseRadius()) {
-                        bey.setRadius(bey.getRadius() + 0.01f
+                        bey.setRadius(bey.getRadius() + 0.001f
                                 * ((ItemBeyDriver) bey.getInventory().getStackInSlot(2).getItem()).getRadiusReduction()
                                 * bey.getRotationSpeed() / (bey.getMaxRotationSpeed()));
-                        if (bey.getRadius() >= 1.6F * bey.getRotationSpeed() / 10) {
+                        if (bey.getRadius() >= 1.6F * bey.getRotationSpeed() / 15) {
                             bey.setIncreaseRadius(false);
                         }
                     } else {
@@ -103,6 +87,7 @@ public class EntityGoalRotate extends Goal {
                     }
                 }
             }
+
         }
         return !bey.isStoped();
     }
