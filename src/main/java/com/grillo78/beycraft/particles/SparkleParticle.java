@@ -28,6 +28,7 @@ public class SparkleParticle extends SpriteTexturedParticle {
     @Override
     public void tick() {
         super.tick();
+        if(particleScale>0)particleScale = particleScale - 0.001F;
     }
 
     @Override

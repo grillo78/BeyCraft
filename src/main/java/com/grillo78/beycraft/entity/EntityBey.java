@@ -51,8 +51,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
             DataSerializers.FLOAT);
     private static final DataParameter<Boolean> HORIZONTALCOLLISION = EntityDataManager.createKey(EntityBey.class,
             DataSerializers.BOOLEAN);
-    private static final DataParameter<String> PLAYERNAME = EntityDataManager.createKey(EntityBey.class,
-            DataSerializers.STRING);
+    private String playerName;
     public float angle = 0;
     private boolean increaseRadius = false;
     private boolean stoped = false;
@@ -77,8 +76,8 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
             this.inventory.setStackInSlot(1, h.getStackInSlot(0).copy());
             this.inventory.setStackInSlot(2, h.getStackInSlot(1).copy());
         });
+        this.playerName = playerName;
         if (!world.isRemote) {
-            this.setPlayerName(playerName);
             this.setMaxRotationSpeed(7);
             this.setRotationSpeed(getMaxRotationSpeed());
         }
@@ -137,7 +136,6 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         this.dataManager.register(ROTATIONSPEED, 1f);
         this.dataManager.register(MAXROTATIONSPEED, 1f);
         this.dataManager.register(HORIZONTALCOLLISION, false);
-        this.dataManager.register(PLAYERNAME, "");
         this.dataManager.register(RADIUS, 1.6F);
         super.registerData();
     }
@@ -161,7 +159,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         setMaxRotationSpeed(nbt.getFloat("MaxRotationSpeed"));
         inventory.deserializeNBT(nbt.getCompound("inventory"));
         maxRadius = nbt.getFloat("MaxRadius");
-        setPlayerName(nbt.getString("PlayerName"));
+        playerName = nbt.getString("PlayerName");
         super.deserializeNBT(nbt);
     }
 
@@ -173,7 +171,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         compound.putFloat("MaxRotationSpeed", getMaxRotationSpeed());
         compound.putFloat("RotationSpeed", getRotationSpeed());
         compound.putFloat("MaxRadius", maxRadius);
-        compound.putString("PlayerName", getPlayerName());
+        compound.putString("PlayerName", playerName);
         return compound;
     }
 
@@ -188,6 +186,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
             buffer.writeItemStack(inventory.getStackInSlot(i));
         }
         buffer.writeInt(rotationDirection);
+        buffer.writeString(playerName);
     }
 
     @Override
@@ -196,6 +195,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
             this.inventory.setStackInSlot(i, additionalData.readItemStack());
         }
         rotationDirection = additionalData.readInt();
+        playerName = additionalData.readString();
     }
 
     @Override
@@ -206,6 +206,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         compound.putFloat("RotationSpeed", getRotationSpeed());
         compound.putFloat("Radius", getRadius());
         compound.putFloat("MaxRadius", maxRadius);
+        compound.putString("PlayerName", playerName);
         super.writeAdditional(compound);
     }
 
@@ -217,6 +218,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         inventory.deserializeNBT(compound.getCompound("inventory"));
         setRadius(compound.getFloat("Radius"));
         maxRadius = compound.getFloat("MaxRadius");
+        playerName = compound.getString("PlayerName");
         super.readAdditional(compound);
     }
 
@@ -348,6 +350,9 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         return inventory;
     }
 
+    public String getPlayerName() {
+        return playerName;
+    }
 
     @Override
     protected void updateMovementGoalFlags() {
@@ -403,14 +408,6 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
     public void setRadius(float radius) {
         this.dataManager.set(RADIUS, Float.valueOf(radius));
-    }
-
-    public final String getPlayerName() {
-        return (String) this.dataManager.get(PLAYERNAME);
-    }
-
-    public void setPlayerName(String playerName) {
-        this.dataManager.set(PLAYERNAME, playerName);
     }
 
     public void setRotationSpeed(float speed) {

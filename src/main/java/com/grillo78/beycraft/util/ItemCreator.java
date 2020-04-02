@@ -18,11 +18,11 @@ import java.util.zip.ZipFile;
 
 public class ItemCreator {
 
-    public static void removeFolder(File folder){
-        String[]entries = folder.list();
-        for(String s: entries){
-            File currentFile = new File(folder.getPath(),s);
-            if(currentFile.isDirectory()){
+    public static void removeFolder(File folder) {
+        String[] entries = folder.list();
+        for (String s : entries) {
+            File currentFile = new File(folder.getPath(), s);
+            if (currentFile.isDirectory()) {
                 removeFolder(currentFile);
             }
             currentFile.delete();
@@ -44,6 +44,32 @@ public class ItemCreator {
         });
         BeyCraft.logger.info(zipFiles.length + " items was found in the folder");
         FileReader fileReader;
+
+        if (isPatchuoliInstalled()) {
+            try {
+                File bookFolder = new File("patchouli_books/beycraft");
+                if (bookFolder.exists()) {
+                    removeFolder(bookFolder);
+                }
+
+                bookFolder.mkdir();
+                File jsonFile = new File(bookFolder.getPath() + "/book.json");
+                jsonFile.createNewFile();
+                FileWriter fileWriter = new FileWriter(jsonFile);
+                fileWriter.write("{\n" +
+                        "  \"name\": \"Beycraft\",\n" +
+                        "  \"landing_text\": \"Welcome to Beycraft\",\n" +
+                        "  \"version\": 1\n" +
+                        "}");
+                fileWriter.flush();
+                fileWriter.close();
+                new File(bookFolder.getPath() + "/en_us").mkdir();
+                new File(bookFolder.getPath() + "/en_us/categories").mkdir();
+                new File(bookFolder.getPath() + "/en_us/entries").mkdir();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         try {
             for (File file : zipFiles) {
@@ -82,7 +108,7 @@ public class ItemCreator {
                                     BeyTypes.getByName(properties.getProperty("type")));
                         }
                         if (isPatchuoliInstalled()) {
-                            File entryBookFolder = new File( "patchouli_books/beycraft/en_us/entries/" + entry.getName().replace(".properties", ""));
+                            File entryBookFolder = new File("patchouli_books/beycraft/en_us/entries/" + entry.getName().replace(".properties", ""));
                             entryBookFolder.mkdir();
                             File jsonFile = new File(entryBookFolder.getPath() + "/" + entry.getName().replace(".properties", ".json"));
                             FileWriter fileWriter = new FileWriter(jsonFile);
@@ -100,7 +126,7 @@ public class ItemCreator {
                                         "      \"type\": \"entity\",\n" +
                                         "      \"entity\": \"minecraft:item{Item:{id:\'beycraft:" + entry.getName().replace(".properties", "") + "',Damage:1,Count:1b}}\",\n" +
                                         "      \"scale\": 5," +
-                                        "      \"offset\": -0.25,"+
+                                        "      \"offset\": -0.25," +
                                         "      \"text\": \"" + description + "\"\n" +
                                         "    }\n" +
                                         "  ]\n" +
@@ -109,13 +135,13 @@ public class ItemCreator {
                                 fileWriter.write("{\n" +
                                         "  \"name\": \"" + properties.get("name") + "\",\n" +
                                         "  \"icon\": \"beycraft:" + entry.getName().replace(".properties", "") + "\",\n" +
-                                        "  \"category\": \"disks_category\",\n" +
+                                        "  \"category\": \"discs_category\",\n" +
                                         "  \"pages\": [\n" +
                                         "    {\n" +
                                         "      \"type\": \"entity\",\n" +
                                         "      \"entity\": \"minecraft:item{Item:{id:\'beycraft:" + entry.getName().replace(".properties", "") + "',Damage:1,Count:1b}}\",\n" +
                                         "      \"scale\": 5," +
-                                        "      \"offset\": -0.25,"+
+                                        "      \"offset\": -0.25," +
                                         "      \"text\": \"" + description + "\"\n" +
                                         "    }\n" +
                                         "  ]\n" +
@@ -135,58 +161,43 @@ public class ItemCreator {
         if (isPatchuoliInstalled()) {
             try {
                 File bookFolder = new File("patchouli_books/beycraft");
-                if (bookFolder.exists()) {
-                    removeFolder(bookFolder);
-                }
-                bookFolder.mkdir();
-                File jsonFile = new File(bookFolder.getPath() + "/book.json");
-                jsonFile.createNewFile();
-                FileWriter fileWriter = new FileWriter(jsonFile);
-                fileWriter.write("{\n" +
-                        "  \"name\": \"Beycraft\",\n" +
-                        "  \"landing_text\": \"Welcome to Beycraft\",\n" +
-                        "  \"version\": 1\n" +
-                        "}");
-                fileWriter.flush();
-                fileWriter.close();
-                new File(bookFolder.getPath() + "/en_us").mkdir();
-                new File(bookFolder.getPath() + "/en_us/categories").mkdir();
-                new File(bookFolder.getPath() + "/en_us/entries").mkdir();
+
+                FileWriter fileWriter;
                 File categoryFile;
-                if(!BeyRegistry.ITEMSLAYER.isEmpty()){
+                if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
                     categoryFile = new File(bookFolder.getPath() + "/en_us/categories/layers_category.json");
                     fileWriter = new FileWriter(categoryFile);
                     fileWriter.write("{\n" +
                             "  \"name\": \"Layers\",\n" +
                             "  \"description\": \"This is the category for all the info about layers\",\n" +
-                            "  \"icon\": \""+ BeyRegistry.ITEMSLAYER.get(0) +"\"\n" +
+                            "  \"icon\": \"" + BeyRegistry.ITEMSLAYER.get(0) + "\"\n" +
                             "}");
                     fileWriter.flush();
                     fileWriter.close();
                 }
-                if(!BeyRegistry.ITEMSDISCLIST.isEmpty()){
-                    categoryFile = new File(bookFolder.getPath() + "/en_us/categories/disks_category.json");
+                if (!BeyRegistry.ITEMSDISCLIST.isEmpty()) {
+                    categoryFile = new File(bookFolder.getPath() + "/en_us/categories/discs_category.json");
                     fileWriter = new FileWriter(categoryFile);
                     fileWriter.write("{\n" +
                             "  \"name\": \"Discs\",\n" +
                             "  \"description\": \"This is the category for all the info about disks\",\n" +
-                            "  \"icon\": \""+ BeyRegistry.ITEMSDISCLIST.get(0) +"\"\n" +
+                            "  \"icon\": \"" + BeyRegistry.ITEMSDISCLIST.get(0) + "\"\n" +
                             "}");
                     fileWriter.flush();
                     fileWriter.close();
                 }
-                if(!BeyRegistry.ITEMSDRIVER.isEmpty()){
+                if (!BeyRegistry.ITEMSDRIVER.isEmpty()) {
                     categoryFile = new File(bookFolder.getPath() + "/en_us/categories/drivers_category.json");
                     fileWriter = new FileWriter(categoryFile);
                     fileWriter.write("{\n" +
                             "  \"name\": \"Drivers\",\n" +
                             "  \"description\": \"This is the category for all the info about drivers\",\n" +
-                            "  \"icon\": \""+ BeyRegistry.ITEMSDRIVER.get(0) +"\"\n" +
+                            "  \"icon\": \"" + BeyRegistry.ITEMSDRIVER.get(0) + "\"\n" +
                             "}");
                     fileWriter.flush();
                     fileWriter.close();
                 }
-                if(!BeyRegistry.ITEMSFRAMELIST.isEmpty()){
+                if (!BeyRegistry.ITEMSFRAMELIST.isEmpty()) {
                     categoryFile = new File(bookFolder.getPath() + "/en_us/categories/frames_category.json");
                     fileWriter = new FileWriter(categoryFile);
                     fileWriter.write("{\n" +
