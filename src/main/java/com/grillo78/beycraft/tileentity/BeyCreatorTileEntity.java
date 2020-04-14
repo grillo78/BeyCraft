@@ -1,27 +1,17 @@
 package com.grillo78.beycraft.tileentity;
 
-import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
-import com.grillo78.beycraft.Reference;
-import com.grillo78.beycraft.items.ItemBeyDisc;
-import com.grillo78.beycraft.items.ItemBeyDriver;
-import com.grillo78.beycraft.items.ItemBeyFrame;
-import com.grillo78.beycraft.items.ItemBeyLayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import com.grillo78.beycraft.items.*;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
 
 import java.util.Random;
 
@@ -93,10 +83,10 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
         if (!world.isRemote) {
             inventory.ifPresent(h -> {
                 if (!h.getStackInSlot(1).isEmpty() && !h.getStackInSlot(0).isEmpty()) {
-                    if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver) && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
+                    if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver || h.getStackInSlot(1).getItem() instanceof ItemBeyGTChip) && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
                         updateProcess(h);
                     } else {
-                        if (h.getStackInSlot(1).getItem() instanceof ItemBeyDisc && h.getStackInSlot(0).getItem() == Items.IRON_INGOT) {
+                        if ((h.getStackInSlot(1).getItem() instanceof ItemBeyDisc || h.getStackInSlot(1).getItem() instanceof ItemBeyGTWeight) && h.getStackInSlot(0).getItem() == Items.IRON_INGOT) {
                             updateProcess(h);
                         }
                     }
@@ -107,11 +97,11 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
         } else {
             inventory.ifPresent(h -> {
                 if (!h.getStackInSlot(1).isEmpty() && !h.getStackInSlot(0).isEmpty()) {
-                    if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver) && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
+                    if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver || h.getStackInSlot(1).getItem() instanceof ItemBeyGTChip) && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
 
                         world.addParticle(BeyRegistry.SPARKLE, pos.getX() + 0.5, pos.getY() + 0.25, pos.getZ() + 0.5, rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
                     } else {
-                        if (h.getStackInSlot(1).getItem() instanceof ItemBeyDisc && h.getStackInSlot(0).getItem() == Items.IRON_INGOT) {
+                        if ((h.getStackInSlot(1).getItem() instanceof ItemBeyDisc || h.getStackInSlot(1).getItem() instanceof ItemBeyGTWeight) && h.getStackInSlot(0).getItem() == Items.IRON_INGOT) {
                             world.addParticle(BeyRegistry.SPARKLE, pos.getX() + 0.5, pos.getY() + 0.15, pos.getZ() + 0.5, rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
                         }
                     }

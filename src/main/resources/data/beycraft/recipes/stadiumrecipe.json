@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BRB",
+    "#B#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "beycraft:plastic"
+    },
+    "B": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "R": {
+      "item": "minecraft:red_dye"
+    }
+  },
+  "result": {
+    "item": "beycraft:stadium",
+    "count": 1
+  }
+}

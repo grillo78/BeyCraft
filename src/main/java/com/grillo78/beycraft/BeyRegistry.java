@@ -11,7 +11,6 @@ import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
@@ -19,9 +18,6 @@ import net.minecraft.particles.BasicParticleType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.HashMap;
@@ -31,12 +27,13 @@ public class BeyRegistry {
     public static List<Block> BLOCKS = Lists.newArrayList();
     public static HashMap<String,Item> ITEMS = new HashMap();
     public static List<Item> ITEMSLAYER = Lists.newArrayList();
-    public static List<Item> ITEMSFRAMELIST = Lists.newArrayList();
-    public static List<ItemBeyDiscFrame> ITEMSDISCFRAME = Lists.newArrayList();
-    public static HashMap<String, ItemBeyFrame> ITEMSFRAME = new HashMap<String, ItemBeyFrame>();
-    public static HashMap<String, ItemBeyDisc> ITEMSDISC = new HashMap<String, ItemBeyDisc>();
+    public static List<Item> ITEMSLAYERGT = Lists.newArrayList();
+    public static List<Item> ITEMSFRAME = Lists.newArrayList();
+    public static List<Item> ITEMSGTWEIGHT = Lists.newArrayList();
+    public static List<Item> ITEMSDISCFRAME = Lists.newArrayList();
     public static final List<Item> ITEMSDISCLIST = Lists.newArrayList();
     public static List<Item> ITEMSDRIVER = Lists.newArrayList();
+    public static List<Item> ITEMSGTCHIP = Lists.newArrayList();
 
     @ObjectHolder(Reference.MODID + ":sparkle")
     public static BasicParticleType SPARKLE;
@@ -53,16 +50,22 @@ public class BeyRegistry {
     public static final TileEntityType<BeyCreatorTileEntity> BEYCREATORTILEENTITYTYPE = null;
 
     /* Container */
-    @ObjectHolder("beycraft:launcher")
-    public static final ContainerType<LauncherContainer> LAUNCHER_CONTAINER = null;
+    @ObjectHolder("beycraft:right_launcher")
+    public static final ContainerType<LauncherContainer> LAUNCHER_RIGHT_CONTAINER = null;
+    @ObjectHolder("beycraft:left_launcher")
+    public static final ContainerType<LauncherContainer> LAUNCHER_LEFT_CONTAINER = null;
+    @ObjectHolder("beycraft:dual_launcher")
+    public static final ContainerType<LauncherContainer> LAUNCHER_DUAL_CONTAINER = null;
     @ObjectHolder("beycraft:bey")
     public static final ContainerType<BeyContainer> BEY_CONTAINER = null;
+    @ObjectHolder("beycraft:beygt")
+    public static final ContainerType<BeyGTContainer> BEY_GT_CONTAINER = null;
     @ObjectHolder("beycraft:belt")
     public static final ContainerType<BeltContainer> BELT_CONTAINER = null;
     @ObjectHolder("beycraft:handle")
     public static final ContainerType<HandleContainer> HANDLE_CONTAINER = null;
-    @ObjectHolder("beycraft:diskframe")
-    public static final ContainerType<BeyDiscFrameContainer> DISK_FRAME_CONTAINER = null;
+    @ObjectHolder("beycraft:discframe")
+    public static final ContainerType<BeyDiscFrameContainer> DISC_FRAME_CONTAINER = null;
     @ObjectHolder("beycraft:beycreator")
     public static final ContainerType<BeyCreatorContainer> BEY_CREATOR_CONTAINER = null;
 
@@ -81,12 +84,13 @@ public class BeyRegistry {
     public static final ItemPlastic PLASTIC = new ItemPlastic("plastic");
 
     public static final Item LAYERICON = new Item(new Item.Properties()).setRegistryName(Reference.MODID, "layericon");
-    public static final Item DISKICON = new Item(new Item.Properties()).setRegistryName(Reference.MODID, "diskicon");
+    public static final Item DISCICON = new Item(new Item.Properties()).setRegistryName(Reference.MODID, "discicon");
     public static final Item DRIVERICON = new Item(new Item.Properties()).setRegistryName(Reference.MODID, "drivericon");
 
 
     public static final ItemLauncher REDLAUNCHER = new ItemLauncher("red_launcher", 1);
     public static final ItemLauncher LEFTLAUNCHER = new ItemLauncher("left_launcher", -1);
+    public static final ItemDualLauncher DUALLAUNCHER = new ItemDualLauncher("dual_launcher");
     public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("launcherhandle");
     public static final ItemBeyLogger BEYLOGGER = new ItemBeyLogger("beylogger");
     public static final ItemBeyLogger BEYLOGGERPLUS = new ItemBeyLogger("beylogger_plus");

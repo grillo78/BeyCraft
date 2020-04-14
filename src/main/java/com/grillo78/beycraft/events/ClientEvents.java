@@ -9,6 +9,7 @@ import com.grillo78.beycraft.network.message.MessageOpenBelt;
 import com.grillo78.beycraft.particles.SparkleParticle;
 import com.grillo78.beycraft.tileentity.RenderBeyCreator;
 import com.grillo78.beycraft.tileentity.RenderExpository;
+import com.mojang.text2speech.Narrator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.ScreenManager;
@@ -21,6 +22,7 @@ import net.minecraft.resources.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
@@ -39,7 +41,8 @@ import java.util.Map;
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientEvents {
 
-    public static final KeyBinding beltKey = new KeyBinding("key.beycraft.belt", 66, "key.beycraft.category");
+    public static final KeyBinding BELTKEY = new KeyBinding("key.beycraft.belt", 66, "key.beycraft.category");
+    public static final KeyBinding COUNTDOWNKEY = new KeyBinding("key.beycraft.countdown", 67, "key.beycraft.category");
 
     public static void injectResources() {
         Minecraft mc = Minecraft.getInstance();
@@ -111,10 +114,12 @@ public class ClientEvents {
         RenderTypeLookup.setRenderLayer(BeyRegistry.STADIUM, RenderType.getCutoutMipped());
         RenderTypeLookup.setRenderLayer(BeyRegistry.EXPOSITORY, RenderType.getCutoutMipped());
         RenderTypeLookup.setRenderLayer(BeyRegistry.BEYCREATORBLOCK, RenderType.getCutoutMipped());
-        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "block/beycreatorcustom"));
-        ClientRegistry.registerKeyBinding(ClientEvents.beltKey);
-        ScreenManager.registerFactory(BeyRegistry.LAUNCHER_CONTAINER, LauncherGUI::new);
-        ScreenManager.registerFactory(BeyRegistry.DISK_FRAME_CONTAINER, DiskFrameGUI::new);
+        ClientRegistry.registerKeyBinding(ClientEvents.BELTKEY);
+        ClientRegistry.registerKeyBinding(ClientEvents.COUNTDOWNKEY);
+        ScreenManager.registerFactory(BeyRegistry.LAUNCHER_RIGHT_CONTAINER, LauncherGUI::new);
+        ScreenManager.registerFactory(BeyRegistry.LAUNCHER_LEFT_CONTAINER, LauncherGUI::new);
+        ScreenManager.registerFactory(BeyRegistry.LAUNCHER_DUAL_CONTAINER, LauncherDualGUI::new);
+        ScreenManager.registerFactory(BeyRegistry.DISC_FRAME_CONTAINER, DiskFrameGUI::new);
         try {
             Class.forName("com.lazy.baubles.Baubles");
             ScreenManager.registerFactory(BeyRegistry.BELT_CONTAINER, BeltGUI::new);
@@ -122,10 +127,17 @@ public class ClientEvents {
         }
         ScreenManager.registerFactory(BeyRegistry.BEY_CREATOR_CONTAINER, BeyCreatorGUI::new);
         ScreenManager.registerFactory(BeyRegistry.BEY_CONTAINER, BeyGUI::new);
+        ScreenManager.registerFactory(BeyRegistry.BEY_GT_CONTAINER, BeyGTGUI::new);
         ScreenManager.registerFactory(BeyRegistry.HANDLE_CONTAINER, HandleGUI::new);
         for (Item item : BeyRegistry.ITEMSLAYER) {
             ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "layers/" + item.getTranslationKey().replace("item.beycraft.", "")));
         }
+        for (Item item : BeyRegistry.ITEMSDISCFRAME) {
+            ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "discsframe/" + item.getTranslationKey().replace("item.beycraft.", "")));
+        }
+        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "")+"/launcher_body"));
+        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "")+"/grab_part"));
+        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "")+"/launcher_lever"));
         RenderingRegistry.registerEntityRenderingHandler(BeyRegistry.BEY_ENTITY_TYPE,
                 new BeyEntityRenderFactory());
         ClientRegistry.bindTileEntityRenderer(BeyRegistry.EXPOSITORYTILEENTITYTYPE, RenderExpository::new);
@@ -141,7 +153,7 @@ public class ClientEvents {
                 if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
                     Minecraft.getInstance().getRenderManager().textureManager
                             .bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/bladerlevel.png"));
-                    AbstractGui.blit(0,0,0,0,75,80,256,256);
+                    AbstractGui.blit(0, 0, 0, 0, 75, 80, 256, 256);
                 }
             }
         }
@@ -150,13 +162,8 @@ public class ClientEvents {
         public static void onKeyPressed(final InputEvent.KeyInputEvent event) {
             if (Minecraft.getInstance().player == null)
                 return;
-            if (ClientEvents.beltKey.isPressed()) {
-                try {
-                    Class.forName("com.lazy.baubles.Baubles");
-                    PacketHandler.instance.sendToServer(new MessageOpenBelt());
-                } catch (Exception e) {
-
-                }
+            if (ClientEvents.BELTKEY.isPressed()) {
+                Narrator.getNarrator().say(new TranslationTextComponent("text.countdown").getString(), false);
             }
         }
     }

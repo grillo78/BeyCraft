@@ -2,7 +2,6 @@ package com.grillo78.beycraft.events;
 
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
-import com.grillo78.beycraft.blocks.BeyCreatorBlock;
 import com.grillo78.beycraft.capabilities.BladerLevelProvider;
 import com.grillo78.beycraft.entity.EntityBey;
 import com.grillo78.beycraft.inventory.*;
@@ -79,16 +78,30 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
+        if(!BeyRegistry.ITEMSDISCFRAME.isEmpty()) {
+            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+                return new BeyDiscFrameContainer(windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player, Hand.MAIN_HAND);
+            }).setRegistryName("discframe"));
+        }
         event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-            return new BeyDiscFrameContainer(windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player, Hand.MAIN_HAND);
-        }).setRegistryName("diskframe"));
+            return new LauncherContainer(BeyRegistry.LAUNCHER_RIGHT_CONTAINER, windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, Hand.MAIN_HAND);
+        }).setRegistryName("right_launcher"));
         event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-            return new LauncherContainer(BeyRegistry.LAUNCHER_CONTAINER, windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player,
-                    1, Hand.MAIN_HAND);
-        }).setRegistryName("launcher"));
+            return new LauncherContainer(BeyRegistry.LAUNCHER_RIGHT_CONTAINER, windowId, new ItemStack(BeyRegistry.LEFTLAUNCHER), inv, Hand.MAIN_HAND);
+        }).setRegistryName("left_launcher"));
         event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-            return new BeyContainer(BeyRegistry.BEY_CONTAINER, windowId, new ItemStack(BeyRegistry.ITEMSLAYER.get(0)), inv, inv.player, Hand.MAIN_HAND);
-        }).setRegistryName("bey"));
+            return new LauncherContainer(BeyRegistry.LAUNCHER_DUAL_CONTAINER, windowId, new ItemStack(BeyRegistry.DUALLAUNCHER), inv, Hand.MAIN_HAND);
+        }).setRegistryName("dual_launcher"));
+        if(!BeyRegistry.ITEMSLAYER.isEmpty() && BeyRegistry.ITEMSLAYERGT.size() != BeyRegistry.ITEMSLAYER.size()) {
+            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+                return new BeyContainer(BeyRegistry.BEY_CONTAINER, windowId, new ItemStack(BeyRegistry.ITEMSLAYER.get(0)), inv, inv.player, Hand.MAIN_HAND);
+            }).setRegistryName("bey"));
+        }
+        if(!BeyRegistry.ITEMSLAYERGT.isEmpty()){
+            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+                return new BeyGTContainer(BeyRegistry.BEY_GT_CONTAINER, windowId, new ItemStack(BeyRegistry.ITEMSLAYERGT.get(0)), inv, inv.player, Hand.MAIN_HAND);
+            }).setRegistryName("beygt"));
+        }
         try {
             Class.forName("com.lazy.baubles.Baubles");
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
@@ -118,6 +131,10 @@ public class CommonEvents {
             ClientEvents.injectResources();
         });
 
+        event.getRegistry().register(BeyRegistry.LAYERICON);
+        event.getRegistry().register(BeyRegistry.DISCICON);
+        event.getRegistry().register(BeyRegistry.DRIVERICON);
+
         ItemCreator.getItemsFromFolder();
         BeyRegistry.ITEMS.forEach((name, item) -> {
             event.getRegistry().register(item);
@@ -127,17 +144,35 @@ public class CommonEvents {
             event.getRegistry().register(new ItemBladerBelt("belt"));
         } catch (Exception e) {
         }
-        for (Item item : BeyRegistry.ITEMSLAYER) {
-            event.getRegistry().register(item);
+        if(!BeyRegistry.ITEMSLAYER.isEmpty()){
+            for (Item item : BeyRegistry.ITEMSLAYER) {
+                event.getRegistry().register(item);
+            }
         }
-        for (Item item : BeyRegistry.ITEMSFRAMELIST) {
-            event.getRegistry().register(item);
+        if(!BeyRegistry.ITEMSFRAME.isEmpty()){
+            for (Item item : BeyRegistry.ITEMSFRAME) {
+                event.getRegistry().register(item);
+            }
         }
-        for (Item item : BeyRegistry.ITEMSDISCLIST) {
-            event.getRegistry().register(item);
+        if(!BeyRegistry.ITEMSDISCLIST.isEmpty()){
+            for (Item item : BeyRegistry.ITEMSDISCLIST) {
+                event.getRegistry().register(item);
+            }
         }
-        for (Item item : BeyRegistry.ITEMSDRIVER) {
-            event.getRegistry().register(item);
+        if(!BeyRegistry.ITEMSDRIVER.isEmpty()){
+            for (Item item : BeyRegistry.ITEMSDRIVER) {
+                event.getRegistry().register(item);
+            }
+        }
+        if(!BeyRegistry.ITEMSGTCHIP.isEmpty()){
+            for (Item item : BeyRegistry.ITEMSGTCHIP) {
+                event.getRegistry().register(item);
+            }
+        }
+        if(!BeyRegistry.ITEMSGTWEIGHT.isEmpty()){
+            for (Item item : BeyRegistry.ITEMSGTWEIGHT) {
+                event.getRegistry().register(item);
+            }
         }
     }
 

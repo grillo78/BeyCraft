@@ -4,7 +4,6 @@ import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nullable;
 

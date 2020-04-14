@@ -1,12 +1,9 @@
 package com.grillo78.beycraft.inventory.slots;
 
-import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.items.ItemBeyLayer;
 import com.grillo78.beycraft.items.ItemLauncher;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 

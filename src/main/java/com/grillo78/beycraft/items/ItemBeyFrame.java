@@ -10,6 +10,6 @@ public class ItemBeyFrame extends ItemBeyPart{
 	
 	public ItemBeyFrame(String name) {
 		super(name, null, null, null, BeyCraft.BEYCRAFTDISKS,new Item.Properties());
-		BeyRegistry.ITEMSFRAMELIST.add(this);
+		BeyRegistry.ITEMSFRAME.add(this);
 	}
 }

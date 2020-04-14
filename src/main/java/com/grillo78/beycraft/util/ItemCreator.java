@@ -47,6 +47,10 @@ public class ItemCreator {
 
         if (isPatchuoliInstalled()) {
             try {
+                File patchouli_booksFolder = new File("patchouli_books");
+                if (!patchouli_booksFolder.exists()){
+                    patchouli_booksFolder.mkdir();
+                }
                 File bookFolder = new File("patchouli_books/beycraft");
                 if (bookFolder.exists()) {
                     removeFolder(bookFolder);
@@ -82,30 +86,73 @@ public class ItemCreator {
                         InputStreamReader reader = new InputStreamReader(zipFile.getInputStream(entry));
                         Properties properties = new Properties();
                         properties.load(reader);
-                        if (properties.get("part").equals("layer")) {
-                            new ItemBeyLayer(entry.getName().replace(".properties", ""),
-                                    new Float(properties.getProperty("rotationDirection")),
-                                    new Float(properties.getProperty("attack")),
-                                    new Float(properties.getProperty("defense")),
-                                    new Float(properties.getProperty("weight")), new Float(properties.getProperty("burst")),
-                                    getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties), getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties), BeyTypes.getByName(properties.getProperty("type")));
-                        } else if (properties.get("part").equals("disc")) {
-                            new ItemBeyDisc(entry.getName().replace(".properties", ""), new Float(properties.getProperty("attack")),
-                                    new Float(properties.getProperty("defense")),
-                                    new Float(properties.getProperty("weight")), new Float(properties.getProperty("speed")),
-                                    getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties), getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties), new Item.Properties());
-                        } else if (properties.get("part").equals("frame")) {
-                            new ItemBeyFrame(entry.getName()
-                                    .replace(".properties", ""));
-                        } else if (properties.get("part").equals("framedisc")) {
-                            new ItemBeyDiscFrame(entry.getName().replace(".properties", ""), new Float(properties.getProperty("attack")),
-                                    new Float(properties.getProperty("defense")),
-                                    new Float(properties.getProperty("weight")), new Float(properties.getProperty("speed")),
-                                    getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties), getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties));
-                        } else if (properties.get("part").equals("driver")) {
-                            new ItemBeyDriver(entry.getName().replace(".properties", ""), new Float(properties.getProperty("friction")),
-                                    new Float(properties.getProperty("radiusReduction")), getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties), getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
-                                    BeyTypes.getByName(properties.getProperty("type")));
+                        switch ((String) properties.get("part")){
+                            case "layer":
+                                new ItemBeyLayer(entry.getName().replace(".properties", ""),
+                                        new Float(properties.getProperty("rotationDirection")),
+                                        new Float(properties.getProperty("attack")),
+                                        new Float(properties.getProperty("defense")),
+                                        new Float(properties.getProperty("weight")),
+                                        new Float(properties.getProperty("burst")),
+                                        getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
+                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties), BeyTypes.getByName(properties.getProperty("type")));
+                                break;
+                            case "layerDual":
+                                new ItemBeyLayerDual(entry.getName().replace(".properties", ""),
+                                        new Float(properties.getProperty("attack")),
+                                        new Float(properties.getProperty("defense")),
+                                        new Float(properties.getProperty("weight")),
+                                        new Float(properties.getProperty("burst")),
+                                        getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
+                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties), BeyTypes.getByName(properties.getProperty("type")));
+                                break;
+                            case "disc":
+                                new ItemBeyDisc(entry.getName().replace(".properties", ""), new Float(properties.getProperty("attack")),
+                                        new Float(properties.getProperty("defense")),
+                                        new Float(properties.getProperty("weight")), new Float(properties.getProperty("speed")),
+                                        getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
+                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties), new Item.Properties());
+                                break;
+                            case "frame":
+                                new ItemBeyFrame(entry.getName()
+                                        .replace(".properties", ""));
+                                break;
+                            case "framedisc":
+                                new ItemBeyDiscFrame(entry.getName().replace(".properties", ""), new Float(properties.getProperty("attack")),
+                                        new Float(properties.getProperty("defense")),
+                                        new Float(properties.getProperty("weight")), new Float(properties.getProperty("speed")),new Float(properties.getProperty("frameRotation")),
+                                        getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties), getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties));
+                                break;
+                            case "driver":
+                                new ItemBeyDriver(entry.getName().replace(".properties", ""), new Float(properties.getProperty("friction")),
+                                        new Float(properties.getProperty("radiusReduction")), getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties), getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+                                        BeyTypes.getByName(properties.getProperty("type")));
+                                break;
+                            case "GTlayer":
+                                new ItemBeyLayerGT(entry.getName().replace(".properties", ""),
+                                        new Float(properties.getProperty("rotationDirection")),
+                                        new Float(properties.getProperty("attack")),
+                                        new Float(properties.getProperty("defense")),
+                                        new Float(properties.getProperty("weight")),
+                                        new Float(properties.getProperty("burst")),
+                                        getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
+                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties), BeyTypes.getByName(properties.getProperty("type")));
+                                break;
+                            case "GTlayerDual":
+                                new ItemBeyLayerGTDual(entry.getName().replace(".properties", ""),
+                                        new Float(properties.getProperty("attack")),
+                                        new Float(properties.getProperty("defense")),
+                                        new Float(properties.getProperty("weight")),
+                                        new Float(properties.getProperty("burst")),
+                                        getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
+                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties), BeyTypes.getByName(properties.getProperty("type")));
+                                break;
+                            case "GTchip":
+                                new ItemBeyGTChip(entry.getName().replace(".properties", ""));
+                                break;
+                            case "GTWeight":
+                                new ItemBeyGTWeight(entry.getName().replace(".properties", ""), Float.valueOf(properties.getProperty("weight")));
+                                break;
                         }
                         if (isPatchuoliInstalled()) {
                             File entryBookFolder = new File("patchouli_books/beycraft/en_us/entries/" + entry.getName().replace(".properties", ""));
@@ -116,36 +163,58 @@ public class ItemCreator {
                             if (properties.contains("description")) {
                                 description = properties.getProperty("description");
                             }
-                            if (!properties.get("part").equals("framedisc")) {
-                                fileWriter.write("{\n" +
-                                        "  \"name\": \"" + properties.get("name") + "\",\n" +
-                                        "  \"icon\": \"beycraft:" + entry.getName().replace(".properties", "") + "\",\n" +
-                                        "  \"category\": \"" + properties.get("part") + "s_category\",\n" +
-                                        "  \"pages\": [\n" +
-                                        "    {\n" +
-                                        "      \"type\": \"entity\",\n" +
-                                        "      \"entity\": \"minecraft:item{Item:{id:\'beycraft:" + entry.getName().replace(".properties", "") + "',Damage:1,Count:1b}}\",\n" +
-                                        "      \"scale\": 5," +
-                                        "      \"offset\": -0.25," +
-                                        "      \"text\": \"" + description + "\"\n" +
-                                        "    }\n" +
-                                        "  ]\n" +
-                                        "}");
-                            } else {
-                                fileWriter.write("{\n" +
-                                        "  \"name\": \"" + properties.get("name") + "\",\n" +
-                                        "  \"icon\": \"beycraft:" + entry.getName().replace(".properties", "") + "\",\n" +
-                                        "  \"category\": \"discs_category\",\n" +
-                                        "  \"pages\": [\n" +
-                                        "    {\n" +
-                                        "      \"type\": \"entity\",\n" +
-                                        "      \"entity\": \"minecraft:item{Item:{id:\'beycraft:" + entry.getName().replace(".properties", "") + "',Damage:1,Count:1b}}\",\n" +
-                                        "      \"scale\": 5," +
-                                        "      \"offset\": -0.25," +
-                                        "      \"text\": \"" + description + "\"\n" +
-                                        "    }\n" +
-                                        "  ]\n" +
-                                        "}");
+                            switch((String) properties.get("part")){
+                                case "framedisc":
+                                    fileWriter.write("{\n" +
+                                            "  \"name\": \"" + properties.get("name") + "\",\n" +
+                                            "  \"icon\": \"beycraft:" + entry.getName().replace(".properties", "") + "\",\n" +
+                                            "  \"category\": \"discs_category\",\n" +
+                                            "  \"pages\": [\n" +
+                                            "    {\n" +
+                                            "      \"type\": \"entity\",\n" +
+                                            "      \"entity\": \"minecraft:item{Item:{id:\'beycraft:" + entry.getName().replace(".properties", "") + "',Damage:1,Count:1b}}\",\n" +
+                                            "      \"scale\": 5," +
+                                            "      \"offset\": -0.25," +
+                                            "      \"text\": \"" + description + "\"\n" +
+                                            "    }\n" +
+                                            "  ]\n" +
+                                            "}");
+                                    break;
+                                case "GTlayer":
+                                case "GTlayerDual":
+                                case "GTchip":
+                                case "GTWeight":
+                                case "layerDual":
+                                    fileWriter.write("{\n" +
+                                            "  \"name\": \"" + properties.get("name") + "\",\n" +
+                                            "  \"icon\": \"beycraft:" + entry.getName().replace(".properties", "") + "\",\n" +
+                                            "  \"category\": \"layers_category\",\n" +
+                                            "  \"pages\": [\n" +
+                                            "    {\n" +
+                                            "      \"type\": \"entity\",\n" +
+                                            "      \"entity\": \"minecraft:item{Item:{id:\'beycraft:" + entry.getName().replace(".properties", "") + "',Damage:1,Count:1b}}\",\n" +
+                                            "      \"scale\": 5," +
+                                            "      \"offset\": -0.25," +
+                                            "      \"text\": \"" + description + "\"\n" +
+                                            "    }\n" +
+                                            "  ]\n" +
+                                            "}");
+                                    break;
+                                default:
+                                    fileWriter.write("{\n" +
+                                            "  \"name\": \"" + properties.get("name") + "\",\n" +
+                                            "  \"icon\": \"beycraft:" + entry.getName().replace(".properties", "") + "\",\n" +
+                                            "  \"category\": \"" + properties.get("part") + "s_category\",\n" +
+                                            "  \"pages\": [\n" +
+                                            "    {\n" +
+                                            "      \"type\": \"entity\",\n" +
+                                            "      \"entity\": \"minecraft:item{Item:{id:\'beycraft:" + entry.getName().replace(".properties", "") + "',Damage:1,Count:1b}}\",\n" +
+                                            "      \"scale\": 5," +
+                                            "      \"offset\": -0.25," +
+                                            "      \"text\": \"" + description + "\"\n" +
+                                            "    }\n" +
+                                            "  ]\n" +
+                                            "}");
                             }
                             fileWriter.flush();
                             fileWriter.close();
@@ -197,7 +266,7 @@ public class ItemCreator {
                     fileWriter.flush();
                     fileWriter.close();
                 }
-                if (!BeyRegistry.ITEMSFRAMELIST.isEmpty()) {
+                if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
                     categoryFile = new File(bookFolder.getPath() + "/en_us/categories/frames_category.json");
                     fileWriter = new FileWriter(categoryFile);
                     fileWriter.write("{\n" +

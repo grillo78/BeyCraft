@@ -2,7 +2,6 @@ package com.grillo78.beycraft.gui;
 
 import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.inventory.BeltContainer;
-import com.grillo78.beycraft.inventory.BeyContainer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;

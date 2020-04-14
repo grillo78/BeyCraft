@@ -27,13 +27,12 @@ public class LauncherContainer extends Container {
      * @param type
      * @param id
      */
-    public LauncherContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory,
-                             PlayerEntity player, int rotation, Hand hand) {
+    public LauncherContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory, Hand hand) {
         super(type, id);
         this.stack = stack;
         this.hand = hand;
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                .ifPresent(h -> this.addSlot(new SlotBeyLayer(h, 0, 10, 10, rotation)));
+                .ifPresent(h -> this.addSlot(new SlotBeyLayer(h, 0, 10, 10, stack)));
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .ifPresent(h -> {
                     this.addSlot(new SlotHandle(h, 1, 62, 10));

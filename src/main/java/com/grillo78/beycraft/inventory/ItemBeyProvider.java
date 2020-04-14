@@ -1,20 +1,15 @@
 package com.grillo78.beycraft.inventory;
 
-import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.items.ItemBeyLayer;
 import com.grillo78.beycraft.items.ItemBeyLayerGT;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -24,8 +19,6 @@ import javax.annotation.Nonnull;
 public class ItemBeyProvider implements ICapabilityProvider, ICapabilitySerializable {
 
     private final LazyOptional<IItemHandler> inventory;
-
-
 
     public ItemBeyProvider(ItemStack stack) {
         if (stack.getItem() instanceof ItemBeyLayerGT) {

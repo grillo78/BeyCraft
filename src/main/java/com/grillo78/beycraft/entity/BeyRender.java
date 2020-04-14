@@ -99,7 +99,7 @@ public class BeyRender extends EntityRenderer<EntityBey> {
         matrixStack.rotate(new Quaternion(0, 0,
                 entity.getRotationDirection() * -entity.getHealth() + entity.getRotationDirection() + 85, true));
         matrixStack.translate(0, 0, 0.078);
-        Minecraft.getInstance().getItemRenderer().renderItem(entity.getDisk(), TransformType.FIXED, packedLightIn,
+        Minecraft.getInstance().getItemRenderer().renderItem(entity.getDisc(), TransformType.FIXED, packedLightIn,
                 OverlayTexture.NO_OVERLAY, matrixStack, bufferIn);
         matrixStack.translate(0, 0, 0.15);
         Minecraft.getInstance().getItemRenderer().renderItem(entity.getDriver(), TransformType.FIXED, packedLightIn,

@@ -3,17 +3,10 @@ package com.grillo78.beycraft.blocks;
 import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
-import com.grillo78.beycraft.inventory.BeyContainer;
 import com.grillo78.beycraft.inventory.BeyCreatorContainer;
-import com.grillo78.beycraft.items.ItemBeyDisc;
-import com.grillo78.beycraft.items.ItemBeyDriver;
-import com.grillo78.beycraft.items.ItemBeyLayer;
-import com.grillo78.beycraft.items.ItemPlastic;
 import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
-import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.ItemEntity;
@@ -23,7 +16,6 @@ import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.*;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.ChestType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -40,7 +32,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
@@ -226,23 +217,24 @@ public class BeyCreatorBlock extends Block {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
                                              Hand hand, BlockRayTraceResult p_225533_6_) {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        if (tileentity instanceof BeyCreatorTileEntity) {
-            if (!playerIn.isCrouching()) {
-                ((BeyCreatorTileEntity) tileentity).getInventory().ifPresent(h -> {
-                    if (h.getStackInSlot(0) != ItemStack.EMPTY) {
-                        worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
-                        h.extractItem(0, 1, false);
-                    }
-                    if (playerIn.getHeldItem(hand).getItem() == BeyRegistry.PLASTIC || playerIn.getHeldItem(hand).getItem() == Items.IRON_INGOT) {
-                        ItemStack newStack = playerIn.getHeldItem(hand).copy();
-                        newStack.setCount(1);
-                        h.insertItem(0, newStack, false);
-                        playerIn.getHeldItem(hand).shrink(1);
-                    }
-                });
-            } else {
-                if (!worldIn.isRemote) {
+        if (!worldIn.isRemote) {
+            TileEntity tileentity = worldIn.getTileEntity(pos);
+            if (tileentity instanceof BeyCreatorTileEntity) {
+                if (!playerIn.isCrouching()) {
+                    ((BeyCreatorTileEntity) tileentity).getInventory().ifPresent(h -> {
+                        if (h.getStackInSlot(0) != ItemStack.EMPTY) {
+                            worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
+                            h.extractItem(0, 1, false);
+                        }
+                        if (playerIn.getHeldItem(hand).getItem() == BeyRegistry.PLASTIC || playerIn.getHeldItem(hand).getItem() == Items.IRON_INGOT) {
+                            ItemStack newStack = playerIn.getHeldItem(hand).copy();
+                            newStack.setCount(1);
+                            h.insertItem(0, newStack, false);
+                            playerIn.getHeldItem(hand).shrink(1);
+                        }
+                        worldIn.notifyBlockUpdate(pos, state, state, 0);
+                    });
+                } else {
                     ItemStack stack = playerIn.getHeldItem(hand);
                     NetworkHooks.openGui((ServerPlayerEntity) playerIn,
                             new SimpleNamedContainerProvider(

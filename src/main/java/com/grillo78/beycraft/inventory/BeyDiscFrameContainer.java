@@ -4,7 +4,6 @@ import com.grillo78.beycraft.BeyRegistry;
 
 import com.grillo78.beycraft.inventory.slots.LockedSlot;
 import com.grillo78.beycraft.inventory.slots.SlotBeyFrame;
-import com.grillo78.beycraft.network.PacketHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -13,7 +12,6 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
-import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -26,7 +24,7 @@ public class BeyDiscFrameContainer extends Container {
 	
 	public BeyDiscFrameContainer(int id, ItemStack stack, PlayerInventory playerInventory,
                                  PlayerEntity player, Hand hand) {
-		super(BeyRegistry.DISK_FRAME_CONTAINER, id);
+		super(BeyRegistry.DISC_FRAME_CONTAINER, id);
         this.stack = stack;
         this.hand = hand;
 		if(stack!=null) {

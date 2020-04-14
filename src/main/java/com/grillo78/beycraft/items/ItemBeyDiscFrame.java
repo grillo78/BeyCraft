@@ -6,7 +6,7 @@ import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.abilities.Ability;
 import com.grillo78.beycraft.inventory.BeyDiscFrameContainer;
 import com.grillo78.beycraft.inventory.ItemBeyDiscFrameProvider;
-import com.grillo78.beycraft.items.render.DiskFrameItemStackRendererTileEntity;
+import com.grillo78.beycraft.items.render.DiscFrameItemStackRendererTileEntity;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -23,11 +23,18 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ItemBeyDiscFrame extends ItemBeyDisc {
 
-	public ItemBeyDiscFrame(String name, float attack, float defense, float weight, float burst, Ability primaryAbility,
+	private float frameRotation;
+
+	public ItemBeyDiscFrame(String name, float attack, float defense, float weight, float burst, float frameRotation, Ability primaryAbility,
 							Ability secundaryAbility) {
 		super(name, attack, defense, weight, burst, primaryAbility, secundaryAbility,
-				new Item.Properties().setISTER(() -> DiskFrameItemStackRendererTileEntity::new));
+				new Item.Properties().setISTER(() -> DiscFrameItemStackRendererTileEntity::new));
+		this.frameRotation = frameRotation;
 		BeyRegistry.ITEMSDISCFRAME.add(this);
+	}
+
+	public float getFrameRotation() {
+		return frameRotation;
 	}
 
 	@Override

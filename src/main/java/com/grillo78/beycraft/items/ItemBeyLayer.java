@@ -4,6 +4,7 @@ import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.abilities.Ability;
 import com.grillo78.beycraft.inventory.BeyContainer;
+import com.grillo78.beycraft.inventory.BeyGTContainer;
 import com.grillo78.beycraft.inventory.ItemBeyProvider;
 import com.grillo78.beycraft.items.render.BeyItemStackRendererTileEntity;
 import com.grillo78.beycraft.util.BeyTypes;
@@ -50,18 +51,30 @@ public class ItemBeyLayer extends ItemBeyPart {
     }
 
 
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
         ActionResult<ItemStack> result = super.onItemRightClick(world, player, handIn);
         if (result.getType() == ActionResultType.FAIL) {
             if (!world.isRemote) {
                 ItemStack stack = player.getHeldItem(handIn);
-                NetworkHooks.openGui((ServerPlayerEntity) player,
-                        new SimpleNamedContainerProvider(
-                                (id, playerInventory, playerEntity) -> new BeyContainer(BeyRegistry.BEY_CONTAINER, id,
-                                        stack, playerInventory, playerEntity, handIn),
-                                new StringTextComponent(getTranslationKey())));
+                stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                    switch (h.getSlots()) {
+                        case 2:
+                            NetworkHooks.openGui((ServerPlayerEntity) player,
+                                    new SimpleNamedContainerProvider(
+                                            (id, playerInventory, playerEntity) -> new BeyContainer(BeyRegistry.BEY_CONTAINER, id,
+                                                    stack, playerInventory, playerEntity, handIn),
+                                            new StringTextComponent(getTranslationKey())));
+                            break;
+                        case 4:
+                            NetworkHooks.openGui((ServerPlayerEntity) player,
+                                    new SimpleNamedContainerProvider(
+                                            (id, playerInventory, playerEntity) -> new BeyGTContainer(BeyRegistry.BEY_GT_CONTAINER, id,
+                                                    stack, playerInventory, playerEntity, handIn),
+                                            new StringTextComponent(getTranslationKey())));
+                            break;
+                    }
+                });
             }
         }
         return result;

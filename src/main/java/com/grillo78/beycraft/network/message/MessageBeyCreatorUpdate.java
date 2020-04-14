@@ -2,8 +2,6 @@ package com.grillo78.beycraft.network.message;
 
 import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
-import jdk.nashorn.internal.ir.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;

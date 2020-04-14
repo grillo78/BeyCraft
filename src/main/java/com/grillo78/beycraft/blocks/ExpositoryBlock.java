@@ -6,7 +6,6 @@ import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.items.ItemBeyDisc;
 import com.grillo78.beycraft.items.ItemBeyDriver;
 import com.grillo78.beycraft.items.ItemBeyLayer;
-import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;
 
 import net.minecraft.block.Block;
@@ -22,7 +21,6 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -83,17 +81,20 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
             return super.onBlockActivated(state,worldIn,pos,playerIn,hand,p_225533_6_);
         }
         TileEntity tileentity = worldIn.getTileEntity(pos);
-        if (tileentity instanceof ExpositoryTileEntity) {
-            ((ExpositoryTileEntity) tileentity).getInventory().ifPresent(h -> {
-                if(h.getStackInSlot(0)!=ItemStack.EMPTY){
-                    worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
-                    h.extractItem(0,1,false);
-                }
-                if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyLayer || playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDisc || playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDriver) {
-                    h.insertItem(0,playerIn.getHeldItem(hand).copy(),false);
-                    playerIn.getHeldItem(hand).shrink(1);
-                }
-            });
+        if(!worldIn.isRemote){
+            if (tileentity instanceof ExpositoryTileEntity) {
+                ((ExpositoryTileEntity) tileentity).getInventory().ifPresent(h -> {
+                    if(h.getStackInSlot(0)!=ItemStack.EMPTY){
+                        worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
+                        h.extractItem(0,1,false);
+                    }
+                    if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyLayer || playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDisc || playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDriver) {
+                        h.insertItem(0,playerIn.getHeldItem(hand).copy(),false);
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
+                });
+                worldIn.notifyBlockUpdate(pos, state, state, 0);
+            }
         }
         return ActionResultType.SUCCESS;
     }

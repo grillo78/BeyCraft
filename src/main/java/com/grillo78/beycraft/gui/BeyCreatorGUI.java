@@ -2,14 +2,9 @@ package com.grillo78.beycraft.gui;
 
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
-import com.grillo78.beycraft.events.ClientEvents;
-import com.grillo78.beycraft.inventory.BeltContainer;
 import com.grillo78.beycraft.inventory.BeyCreatorContainer;
-import com.grillo78.beycraft.items.ItemBeyDriver;
 import com.grillo78.beycraft.network.PacketHandler;
 import com.grillo78.beycraft.network.message.MessageBeyCreatorUpdate;
-import com.grillo78.beycraft.network.message.MessageOpenBelt;
-import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -17,9 +12,7 @@ import com.mojang.brigadier.Message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.widget.button.CheckboxButton;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -27,7 +20,6 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -38,7 +30,6 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentUtils;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.core.appender.rolling.action.IfAll;
 
 /**
  * @author a19guillermong
@@ -51,7 +42,7 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
     private Button nextPart;
     private Button nextPartType;
     private RayTraceResult rayTraceBlock = Minecraft.getInstance().player.pick(20.0D, 0.0F, false);
-    private BlockPos pos = ((BlockRayTraceResult)rayTraceBlock).getPos();
+    private BlockPos pos = ((BlockRayTraceResult) rayTraceBlock).getPos();
 
     /**
      * @param screenContainer
@@ -95,16 +86,32 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
                     break;
 
                 case 3:
-                    if (!BeyRegistry.ITEMSFRAMELIST.isEmpty()) {
+                    if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
                         partCount--;
                         if (partCount == -1) {
-                            partCount = BeyRegistry.ITEMSFRAMELIST.size() - 1;
+                            partCount = BeyRegistry.ITEMSFRAME.size() - 1;
+                        }
+                    }
+                    break;
+                case 4:
+                    if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
+                        partCount--;
+                        if (partCount == -1) {
+                            partCount = BeyRegistry.ITEMSGTCHIP.size() - 1;
+                        }
+                    }
+                    break;
+                case 5:
+                    if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
+                        partCount--;
+                        if (partCount == -1) {
+                            partCount = BeyRegistry.ITEMSGTWEIGHT.size() - 1;
                         }
                     }
                     break;
             }
         });
-        nextPart = new Button(relX + 65, relY, 10, 20, ">", (Button) -> {
+        nextPart = new Button(relX + 66, relY, 10, 20, ">", (Button) -> {
             switch (partType) {
                 case 0:
                     if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
@@ -132,19 +139,36 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
                     break;
 
                 case 3:
-                    if (!BeyRegistry.ITEMSFRAMELIST.isEmpty()) {
+                    if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
                         partCount++;
-                        if (partCount == BeyRegistry.ITEMSFRAMELIST.size()) {
+                        if (partCount == BeyRegistry.ITEMSFRAME.size()) {
+                            partCount = 0;
+                        }
+                    }
+                    break;
+
+                case 4:
+                    if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
+                        partCount++;
+                        if (partCount == BeyRegistry.ITEMSGTCHIP.size()) {
+                            partCount = 0;
+                        }
+                    }
+                    break;
+                case 5:
+                    if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
+                        partCount++;
+                        if (partCount == BeyRegistry.ITEMSGTWEIGHT.size()) {
                             partCount = 0;
                         }
                     }
                     break;
             }
         });
-        nextPartType = new Button(relX + 15, relY, 45, 20, "Layer", (Button) -> {
+        nextPartType = new Button(relX + 10, relY, 56, 20, "Layer", (Button) -> {
             partType++;
             partCount = 0;
-            if (partType == 4) {
+            if (partType == 6) {
                 partType = 0;
             }
             switch (partType) {
@@ -159,6 +183,12 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
                     break;
                 case 3:
                     nextPartType.setMessage("Frames");
+                    break;
+                case 4:
+                    nextPartType.setMessage("GT Chips");
+                    break;
+                case 5:
+                    nextPartType.setMessage("GT Weights");
                     break;
             }
         });
@@ -182,12 +212,24 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
                     break;
 
                 case 3:
-                    if (!BeyRegistry.ITEMSFRAMELIST.isEmpty()) {
-                        stack = new ItemStack(BeyRegistry.ITEMSFRAMELIST.get(partCount));
+                    if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
+                        stack = new ItemStack(BeyRegistry.ITEMSFRAME.get(partCount));
+                    }
+                    break;
+
+                case 4:
+                    if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
+                        stack = new ItemStack(BeyRegistry.ITEMSGTCHIP.get(partCount));
+                    }
+                    break;
+
+                case 5:
+                    if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
+                        stack = new ItemStack(BeyRegistry.ITEMSGTWEIGHT.get(partCount));
                     }
                     break;
             }
-            PacketHandler.instance.sendToServer(new MessageBeyCreatorUpdate(stack,pos));
+            if (stack != null) PacketHandler.instance.sendToServer(new MessageBeyCreatorUpdate(stack, pos));
         }));
         this.addButton(nextPartType);
         this.addButton(prevPart);
@@ -222,8 +264,18 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
                         }
                         return "";
                     case 3:
-                        if (!BeyRegistry.ITEMSFRAMELIST.isEmpty()) {
-                            return BeyRegistry.ITEMSFRAMELIST.get(partCount).getName().getString();
+                        if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
+                            return BeyRegistry.ITEMSFRAME.get(partCount).getName().getString();
+                        }
+                        return "";
+                    case 4:
+                        if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
+                            return BeyRegistry.ITEMSGTCHIP.get(partCount).getName().getString();
+                        }
+                        return "";
+                    case 5:
+                        if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
+                            return BeyRegistry.ITEMSGTWEIGHT.get(partCount).getName().getString();
                         }
                         return "";
                 }
@@ -253,8 +305,20 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
                 }
                 break;
             case 3:
-                if (!BeyRegistry.ITEMSFRAMELIST.isEmpty()) {
-                    ItemStack stack = new ItemStack(BeyRegistry.ITEMSFRAMELIST.get(partCount));
+                if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
+                    ItemStack stack = new ItemStack(BeyRegistry.ITEMSFRAME.get(partCount));
+                    renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15, Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(stack, (World) null, (LivingEntity) null));
+                }
+                break;
+            case 4:
+                if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
+                    ItemStack stack = new ItemStack(BeyRegistry.ITEMSGTCHIP.get(partCount));
+                    renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15, Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(stack, (World) null, (LivingEntity) null));
+                }
+                break;
+            case 5:
+                if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
+                    ItemStack stack = new ItemStack(BeyRegistry.ITEMSGTWEIGHT.get(partCount));
                     renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15, Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(stack, (World) null, (LivingEntity) null));
                 }
                 break;

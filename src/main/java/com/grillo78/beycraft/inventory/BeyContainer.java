@@ -1,9 +1,6 @@
 package com.grillo78.beycraft.inventory;
 
-import com.grillo78.beycraft.inventory.slots.LockedSlot;
-import com.grillo78.beycraft.inventory.slots.SlotBeyDisk;
-import com.grillo78.beycraft.inventory.slots.SlotBeyDriver;
-import com.grillo78.beycraft.items.ItemBeyLayerGT;
+import com.grillo78.beycraft.inventory.slots.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -34,10 +31,6 @@ public class BeyContainer extends Container {
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             this.addSlot(new SlotBeyDisk(h, 0, 10, 10));
             this.addSlot(new SlotBeyDriver(h, 1, 10, 30));
-            if(stack.getItem() instanceof ItemBeyLayerGT){
-                this.addSlot(new SlotBeyDriver(h, 2, 10, 30));
-                this.addSlot(new SlotBeyDriver(h, 3, 10, 30));
-            }
         });
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);
     }

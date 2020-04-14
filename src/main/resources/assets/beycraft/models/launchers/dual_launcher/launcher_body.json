@@ -2,5 +2,5 @@
   "parent": "forge:item/default",
   "loader": "forge:obj",
   "flip-v": true,
-  "model": "beycraft:models/item/handle.obj"
+  "model": "beycraft:models/launchers/dual_launcher/launcher_body.obj"
 }

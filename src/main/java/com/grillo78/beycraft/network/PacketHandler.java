@@ -22,6 +22,7 @@ public class PacketHandler {
                 .simpleChannel();
         register(MessageOpenBelt.class, new MessageOpenBelt());
         register(MessageBeyCreatorUpdate.class, new MessageBeyCreatorUpdate());
+        register(MessageUpdateDualLauncher.class, new MessageUpdateDualLauncher());
     }
 
     private static <T> void register(Class<T> clazz, IMessage<T> message)

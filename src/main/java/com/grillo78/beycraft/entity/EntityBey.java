@@ -2,10 +2,9 @@ package com.grillo78.beycraft.entity;
 
 import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
+import com.grillo78.beycraft.abilities.Absorb;
 import com.grillo78.beycraft.blocks.StadiumBlock;
-import com.grillo78.beycraft.items.ItemBeyDisc;
-import com.grillo78.beycraft.items.ItemBeyDriver;
-import com.grillo78.beycraft.items.ItemBeyLayer;
+import com.grillo78.beycraft.items.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -43,6 +42,8 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
     private ItemStackHandler inventory = new ItemStackHandler(3);
     private int rotationDirection;
+    private int rotationStartedCount = 0;
+    private boolean rotationStarted = false;
     private static final DataParameter<Float> ROTATIONSPEED = EntityDataManager.createKey(EntityBey.class,
             DataSerializers.FLOAT);
     private static final DataParameter<Float> MAXROTATIONSPEED = EntityDataManager.createKey(EntityBey.class,
@@ -71,11 +72,11 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         super(type, world);
         this.rotationDirection = rotationDirection;
         this.inventory = new ItemStackHandler(3);
-        this.inventory.setStackInSlot(0, layer);
-        layer.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            this.inventory.setStackInSlot(1, h.getStackInSlot(0).copy());
-            this.inventory.setStackInSlot(2, h.getStackInSlot(1).copy());
-        });
+        if (layer.hasTag()) {
+            this.inventory.setStackInSlot(0, layer);
+            this.inventory.setStackInSlot(1, ItemStack.read(layer.getTag().getCompound("disc")));
+            this.inventory.setStackInSlot(2, ItemStack.read(layer.getTag().getCompound("driver")));
+        }
         this.playerName = playerName;
         if (!world.isRemote) {
             this.setMaxRotationSpeed(7);
@@ -104,6 +105,14 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
     public float getMaxRadius() {
         return maxRadius;
+    }
+
+    public void setRotationStarted(boolean rotationStarted) {
+        this.rotationStarted = rotationStarted;
+    }
+
+    public boolean isRotationStarted() {
+        return rotationStarted;
     }
 
     private void dropItems() {
@@ -268,10 +277,23 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                     .getBlockState(
                             new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
                     .getBlock() instanceof StadiumBlock))) {
-                setRotationSpeed(
-                        getRotationSpeed() - 0.005F * ((ItemBeyDriver) inventory.getStackInSlot(2).getItem()).getFriction());
 
-                angle += getRotationSpeed() * 30 * -rotationDirection;
+                if (!rotationStarted) {
+                    rotationStartedCount++;
+                    if (rotationStartedCount == 4) {
+                        rotationStarted = true;
+                    }
+                } else {
+                    if (this.getLayer().getItem() instanceof ItemBeyLayerGT) {
+                        setRotationSpeed(
+                                getRotationSpeed() - ((ItemBeyDriver) getDriver().getItem()).getFriction() / (10 * (((ItemBeyDisc) getDisc().getItem()).getWeight() + ((ItemBeyGTWeight) ItemStack.read(getLayer().getTag().getCompound("weight")).getItem()).getWeight())));
+                    } else {
+                        setRotationSpeed(
+                                getRotationSpeed() - 0.005F * ((ItemBeyDriver) getDriver().getItem()).getFriction() / (10 * ((ItemBeyDisc) getDisc().getItem()).getWeight()));
+
+                    }
+                    angle += getRotationSpeed() * 30 * -rotationDirection;
+                }
             } else {
                 if (!stoped) {
                     stoped = true;
@@ -284,6 +306,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                     world.addParticle(BeyRegistry.SPARKLE, getPosX(), getPosY() + 0.5, getPosZ(), rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
                 }
             }
+
         }
         updatePoints(this);
         super.tick();
@@ -302,13 +325,22 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     protected void collideWithEntity(Entity entityIn) {
         if (!world.isRemote) {
             if (!stoped && entityIn instanceof EntityBey) {
+                EntityBey bey = (EntityBey) entityIn;
                 playHurtSound(DamageSource.GENERIC);
                 double x = (getPosX() - entityIn.getPosX()) / 2;
                 double y = (getPosY() - entityIn.getPosY()) / 2;
                 double z = (getPosZ() - entityIn.getPosZ()) / 2;
                 ((ServerWorld) world).spawnParticle(BeyRegistry.SPARKLE, getPosX(), getPosY(), getPosZ(), 10, x, y, z, 10);
-                setRotationSpeed(getRotationSpeed() - ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack() + ((ItemBeyLayer) getLayer().getItem()).getBurst() - ((ItemBeyLayer) getLayer().getItem()).getDefense());
-                if (new Random().nextInt(10) == 1) {
+                if(((ItemBeyLayer)getLayer().getItem()).getPrimaryAbility() instanceof Absorb || ((ItemBeyLayer)getLayer().getItem()).getSecundaryAbility() instanceof Absorb){
+                    setRotationSpeed(getRotationSpeed() + (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack() + ((ItemBeyLayer) getLayer().getItem()).getDefense()) / 10);
+                    bey.setRotationSpeed(bey.getRotationSpeed() - (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack() + ((ItemBeyLayer) getLayer().getItem()).getDefense()) / 10);
+                    if(getRotationSpeed()>getMaxRotationSpeed()){
+                        setRotationSpeed(getMaxRotationSpeed());
+                    }
+                } else{
+                    setRotationSpeed(getRotationSpeed() - (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack() + ((ItemBeyLayer) getLayer().getItem()).getDefense()) / 10);
+                }
+                if (getRadius() == 0 && new Random().nextInt(10) == 1) {
                     increaseRadius = true;
                     if (new Random().nextInt(100) == 1) {
                         getLayer().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
@@ -370,7 +402,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         inventory.setStackInSlot(0, layer);
     }
 
-    public ItemStack getDisk() {
+    public ItemStack getDisc() {
         return inventory.getStackInSlot(1);
     }
 

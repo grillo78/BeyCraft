@@ -181,36 +181,64 @@ public class StadiumBlock extends Block implements IWaterLoggable {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 
+    private void breackBlock(World worldIn, BlockPos pos){
+        if(worldIn.getBlockState(pos).getBlock()==this){
+            if (worldIn.getBlockState(pos).getFluidState().isEmpty()) {
+                worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+            } else {
+                worldIn.setBlockState(pos, Blocks.WATER.getDefaultState());
+            }
+        }
+    }
+
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         if (newState.getBlock() != this) {
-            if (worldIn.getBlockState(pos.north()).getBlock() instanceof StadiumBlock) {
-                if (worldIn.getBlockState(pos.north()).getFluidState().isEmpty()) {
-                    worldIn.setBlockState(pos.north(), Blocks.AIR.getDefaultState());
-                } else {
-                    worldIn.setBlockState(pos.north(), Blocks.WATER.getDefaultState());
-                }
-            }
-            if (worldIn.getBlockState(pos.south()).getBlock() instanceof StadiumBlock) {
-                if (worldIn.getBlockState(pos.south()).getFluidState().isEmpty()) {
-                    worldIn.setBlockState(pos.south(), Blocks.AIR.getDefaultState());
-                } else {
-                    worldIn.setBlockState(pos.south(), Blocks.WATER.getDefaultState());
-                }
-            }
-            if (worldIn.getBlockState(pos.west()).getBlock() instanceof StadiumBlock) {
-                if (worldIn.getBlockState(pos.west()).getFluidState().isEmpty()) {
-                    worldIn.setBlockState(pos.west(), Blocks.AIR.getDefaultState());
-                } else {
-                    worldIn.setBlockState(pos.west(), Blocks.WATER.getDefaultState());
-                }
-            }
-            if (worldIn.getBlockState(pos.east()).getBlock() instanceof StadiumBlock) {
-                if (worldIn.getBlockState(pos.east()).getFluidState().isEmpty()) {
-                    worldIn.setBlockState(pos.east(), Blocks.AIR.getDefaultState());
-                } else {
-                    worldIn.setBlockState(pos.east(), Blocks.WATER.getDefaultState());
-                }
+            System.out.println(state.get(PART).getName());
+            System.out.println();
+            switch (state.get(PART).getName()){
+                case "topleft":
+                    breackBlock(worldIn, pos.south());
+                    breackBlock(worldIn, pos.west());
+                    break;
+                case "topcenter":
+                    breackBlock(worldIn, pos.north());
+                    breackBlock(worldIn, pos.south());
+                    breackBlock(worldIn, pos.west());
+                    break;
+                case "topright":
+                    breackBlock(worldIn, pos.north());
+                    breackBlock(worldIn, pos.west());
+                    break;
+                case "middleleft":
+                    breackBlock(worldIn, pos.south());
+                    breackBlock(worldIn, pos.west());
+                    breackBlock(worldIn, pos.east());
+                    break;
+                case "middlecenter":
+                    breackBlock(worldIn, pos.north());
+                    breackBlock(worldIn, pos.south());
+                    breackBlock(worldIn, pos.east());
+                    breackBlock(worldIn, pos.west());
+                    break;
+                case "middleright":
+                    breackBlock(worldIn, pos.north());
+                    breackBlock(worldIn, pos.east());
+                    breackBlock(worldIn, pos.west());
+                    break;
+                case "bottomleft":
+                    breackBlock(worldIn, pos.south());
+                    breackBlock(worldIn, pos.east());
+                    break;
+                case "bottomcenter":
+                    breackBlock(worldIn, pos.north());
+                    breackBlock(worldIn, pos.south());
+                    breackBlock(worldIn, pos.east());
+                    break;
+                case "bottomright":
+                    breackBlock(worldIn, pos.north());
+                    breackBlock(worldIn, pos.east());
+                    break;
             }
         }
     }

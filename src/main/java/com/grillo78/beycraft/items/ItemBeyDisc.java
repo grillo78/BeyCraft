@@ -16,7 +16,6 @@ public class ItemBeyDisc extends ItemBeyPart{
 					   float speed, Ability primaryAbility, Ability secondaryAbility, Item.Properties properties) {
 		super(name, null, primaryAbility, secondaryAbility, BeyCraft.BEYCRAFTDISKS,properties);
 		this.weight = weight;
-		BeyRegistry.ITEMSDISC.put(name, this);
 		BeyRegistry.ITEMSDISCLIST.add(this);
 	}
 
