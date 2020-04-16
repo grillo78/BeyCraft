@@ -20,14 +20,15 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class ItemBeyDiscFrame extends ItemBeyDisc {
 
 	private float frameRotation;
 
-	public ItemBeyDiscFrame(String name, float attack, float defense, float weight, float burst, float frameRotation, Ability primaryAbility,
+	public ItemBeyDiscFrame(String name, float attack, float defense, float weight, float frameRotation, Ability primaryAbility,
 							Ability secundaryAbility) {
-		super(name, attack, defense, weight, burst, primaryAbility, secundaryAbility,
+		super(name, attack, defense, weight, primaryAbility, secundaryAbility,
 				new Item.Properties().setISTER(() -> DiscFrameItemStackRendererTileEntity::new));
 		this.frameRotation = frameRotation;
 		BeyRegistry.ITEMSDISCFRAME.add(this);
@@ -40,6 +41,22 @@ public class ItemBeyDiscFrame extends ItemBeyDisc {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
 		return new ItemBeyDiscFrameProvider();
+	}
+
+	@Override
+	public float getAttack(ItemStack stack) {
+		return super.getAttack(stack);
+	}
+
+	@Override
+	public float getDefense(ItemStack stack) {
+		float[] attack = {super.getDefense(stack)};
+		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h->{
+			if(h.getStackInSlot(0).getItem() instanceof ItemBeyFrame){
+				attack[0] += ((ItemBeyFrame) h.getStackInSlot(0).getItem()).getAttack();
+			}
+		});
+		return attack[0];
 	}
 
 	@Override

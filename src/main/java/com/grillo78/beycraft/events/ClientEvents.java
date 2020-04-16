@@ -4,21 +4,27 @@ import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.entity.BeyEntityRenderFactory;
 import com.grillo78.beycraft.gui.*;
+import com.grillo78.beycraft.items.ItemLauncher;
 import com.grillo78.beycraft.network.PacketHandler;
 import com.grillo78.beycraft.network.message.MessageOpenBelt;
 import com.grillo78.beycraft.particles.SparkleParticle;
 import com.grillo78.beycraft.tileentity.RenderBeyCreator;
 import com.grillo78.beycraft.tileentity.RenderExpository;
 import com.mojang.text2speech.Narrator;
+import com.mrcrayfish.obfuscate.client.event.PlayerModelEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.resources.ClientResourcePackInfo;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.resources.*;
+import net.minecraft.util.Hand;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -109,6 +115,7 @@ public class ClientEvents {
         Minecraft.getInstance().particles.registerFactory(BeyRegistry.SPARKLE, SparkleParticle.Factory::new);
     }
 
+
     @SubscribeEvent
     public static void doClientStuff(final FMLClientSetupEvent event) {
         RenderTypeLookup.setRenderLayer(BeyRegistry.STADIUM, RenderType.getCutoutMipped());
@@ -135,9 +142,9 @@ public class ClientEvents {
         for (Item item : BeyRegistry.ITEMSDISCFRAME) {
             ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "discsframe/" + item.getTranslationKey().replace("item.beycraft.", "")));
         }
-        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "")+"/launcher_body"));
-        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "")+"/grab_part"));
-        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "")+"/launcher_lever"));
+        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/launcher_body"));
+        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/grab_part"));
+        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/launcher_lever"));
         RenderingRegistry.registerEntityRenderingHandler(BeyRegistry.BEY_ENTITY_TYPE,
                 new BeyEntityRenderFactory());
         ClientRegistry.bindTileEntityRenderer(BeyRegistry.EXPOSITORYTILEENTITYTYPE, RenderExpository::new);
@@ -164,6 +171,30 @@ public class ClientEvents {
                 return;
             if (ClientEvents.BELTKEY.isPressed()) {
                 Narrator.getNarrator().say(new TranslationTextComponent("text.countdown").getString(), false);
+            }
+        }
+
+        @SubscribeEvent
+        public static void onSetupAngles(PlayerModelEvent.SetupAngles.Post event) {
+            PlayerEntity player = event.getPlayer();
+            if (player.equals(Minecraft.getInstance().player) && Minecraft.getInstance().gameSettings.thirdPersonView == 0)
+                return;
+
+            if (player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemLauncher || player.getHeldItem(Hand.OFF_HAND).getItem() instanceof ItemLauncher) {
+                PlayerModel model = event.getModelPlayer();
+                if (player.rotationPitch < 0) {
+                    model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(25 * ((90 - (-player.rotationPitch)) / 90));
+                    model.bipedRightArm.rotateAngleY = (float) Math.toRadians(-25 * ((90 - (-player.rotationPitch)) / 90));
+                    model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(25 * (1-((90 - (-player.rotationPitch)) / 90)));
+                    model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(25 * (1-((90 - player.rotationPitch) / 90)));
+                } else {
+                    model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(25 * ((90 - player.rotationPitch) / 90));
+                    model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(25 * (1-((90 - player.rotationPitch) / 90)));
+                    model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(25 * (1-((90 - (-player.rotationPitch)) / 90)));
+                    model.bipedRightArm.rotateAngleY = (float) Math.toRadians(-25 * ((90 - player.rotationPitch) / 90));
+                }
+                model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(player.rotationPitch - 90);
+                model.bipedRightArm.rotateAngleX = (float) Math.toRadians(player.rotationPitch - 90);
             }
         }
     }

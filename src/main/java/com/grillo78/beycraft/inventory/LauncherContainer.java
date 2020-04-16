@@ -4,6 +4,7 @@ import com.grillo78.beycraft.inventory.slots.LockedSlot;
 import com.grillo78.beycraft.inventory.slots.SlotBeyLayer;
 import com.grillo78.beycraft.inventory.slots.SlotBeyLogger;
 import com.grillo78.beycraft.inventory.slots.SlotHandle;
+import com.grillo78.beycraft.items.ItemLauncher;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -55,10 +56,10 @@ public class LauncherContainer extends Container {
         for (int row = 0; row < 9; ++row) {
             int x = 8 + row * 18;
             int y = yStart + 58;
-            if (row != locked)
-                this.addSlot(new SlotItemHandler(playerinventory, row, x, y));
-            else
+            if (row == locked && playerinventory.getStackInSlot(locked).getItem() instanceof ItemLauncher)
                 this.addSlot(new LockedSlot(playerinventory, row, x, y));
+            else
+                this.addSlot(new SlotItemHandler(playerinventory, row, x, y));
         }
     }
 

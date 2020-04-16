@@ -48,7 +48,7 @@ public class ItemCreator {
         if (isPatchuoliInstalled()) {
             try {
                 File patchouli_booksFolder = new File("patchouli_books");
-                if (!patchouli_booksFolder.exists()){
+                if (!patchouli_booksFolder.exists()) {
                     patchouli_booksFolder.mkdir();
                 }
                 File bookFolder = new File("patchouli_books/beycraft");
@@ -86,7 +86,7 @@ public class ItemCreator {
                         InputStreamReader reader = new InputStreamReader(zipFile.getInputStream(entry));
                         Properties properties = new Properties();
                         properties.load(reader);
-                        switch ((String) properties.get("part")){
+                        switch ((String) properties.get("part")) {
                             case "layer":
                                 new ItemBeyLayer(entry.getName().replace(".properties", ""),
                                         new Float(properties.getProperty("rotationDirection")),
@@ -107,24 +107,28 @@ public class ItemCreator {
                                         getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties), BeyTypes.getByName(properties.getProperty("type")));
                                 break;
                             case "disc":
-                                new ItemBeyDisc(entry.getName().replace(".properties", ""), new Float(properties.getProperty("attack")),
+                                new ItemBeyDisc(entry.getName().replace(".properties", ""),
+                                        new Float(properties.getProperty("attack")),
                                         new Float(properties.getProperty("defense")),
-                                        new Float(properties.getProperty("weight")), new Float(properties.getProperty("speed")),
+                                        new Float(properties.getProperty("weight")),
                                         getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
                                         getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties), new Item.Properties());
                                 break;
                             case "frame":
                                 new ItemBeyFrame(entry.getName()
-                                        .replace(".properties", ""));
+                                        .replace(".properties", ""),
+                                        new Float(properties.getProperty("attack")),
+                                        new Float(properties.getProperty("defense")));
                                 break;
                             case "framedisc":
                                 new ItemBeyDiscFrame(entry.getName().replace(".properties", ""), new Float(properties.getProperty("attack")),
                                         new Float(properties.getProperty("defense")),
-                                        new Float(properties.getProperty("weight")), new Float(properties.getProperty("speed")),new Float(properties.getProperty("frameRotation")),
+                                        new Float(properties.getProperty("weight")), new Float(properties.getProperty("frameRotation")),
                                         getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties), getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties));
                                 break;
                             case "driver":
-                                new ItemBeyDriver(entry.getName().replace(".properties", ""), new Float(properties.getProperty("friction")),
+                                new ItemBeyDriver(entry.getName().replace(".properties", ""),
+                                        new Float(properties.getProperty("friction")),
                                         new Float(properties.getProperty("radiusReduction")), getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties), getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
                                         BeyTypes.getByName(properties.getProperty("type")));
                                 break;
@@ -163,7 +167,7 @@ public class ItemCreator {
                             if (properties.contains("description")) {
                                 description = properties.getProperty("description");
                             }
-                            switch((String) properties.get("part")){
+                            switch ((String) properties.get("part")) {
                                 case "framedisc":
                                     fileWriter.write("{\n" +
                                             "  \"name\": \"" + properties.get("name") + "\",\n" +

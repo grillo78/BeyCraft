@@ -42,6 +42,7 @@ public class ItemLauncher extends Item {
         return new ItemLauncherProvider();
     }
 
+
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
         BeyCraft.logger.info(handIn.name());

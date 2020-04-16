@@ -26,7 +26,7 @@ logoFile="logo.png" #optional
 # A text field displayed in the mod UI
 credits="Thanks to all the people that help with assets and suggestions" #optional
 # A text field displayed in the mod UI
-authors="grillo78" #optional
+authors="grillo78, Marctron" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 This mod adds beyblades to minecraft, you can add content packs in the folder called BeyParts inside of the minecraft folder
@@ -49,4 +49,10 @@ This mod adds beyblades to minecraft, you can add content packs in the folder ca
     mandatory=true
     versionRange="[1.15.2]"
     ordering="NONE"
+    side="BOTH"
+[[dependencies.beycraft]]
+    modId="obfuscate"
+    mandatory=true
+    versionRange="[0.3.4,)"
+    ordering="AFTER"
     side="BOTH"
