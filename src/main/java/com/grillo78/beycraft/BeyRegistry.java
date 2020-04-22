@@ -88,7 +88,7 @@ public class BeyRegistry {
     public static final Item DRIVERICON = new Item(new Item.Properties()).setRegistryName(Reference.MODID, "drivericon");
 
 
-    public static final ItemLauncher REDLAUNCHER = new ItemLauncher("red_launcher", 1);
+    public static final ItemLauncher LAUNCHER = new ItemLauncher("launcher", 1);
     public static final ItemLauncher LEFTLAUNCHER = new ItemLauncher("left_launcher", -1);
     public static final ItemDualLauncher DUALLAUNCHER = new ItemDualLauncher("dual_launcher");
     public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("launcherhandle");

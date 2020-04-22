@@ -6,6 +6,8 @@ import com.grillo78.beycraft.capabilities.BladerLevelProvider;
 import com.grillo78.beycraft.entity.EntityBey;
 import com.grillo78.beycraft.inventory.*;
 import com.grillo78.beycraft.items.ItemBladerBelt;
+import com.grillo78.beycraft.network.PacketHandler;
+import com.grillo78.beycraft.network.message.MessageSyncBladerLevel;
 import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;
 import com.grillo78.beycraft.util.ItemCreator;
@@ -15,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,16 +37,10 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.NetworkDirection;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonEvents {
-
-    @SubscribeEvent
-    public static void playerCapabilitiesInjection(final AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() instanceof PlayerEntity) {
-            event.addCapability(new ResourceLocation(Reference.MODID, "BladerLevel"), new BladerLevelProvider());
-        }
-    }
 
     @SubscribeEvent
     public static void registerEntityType(final RegistryEvent.Register<EntityType<?>> event) {
@@ -78,13 +75,13 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
-        if(!BeyRegistry.ITEMSDISCFRAME.isEmpty()) {
+        if (!BeyRegistry.ITEMSDISCFRAME.isEmpty()) {
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-                return new BeyDiscFrameContainer(windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player, Hand.MAIN_HAND);
+                return new BeyDiscFrameContainer(windowId, new ItemStack(BeyRegistry.LAUNCHER), inv, inv.player, Hand.MAIN_HAND);
             }).setRegistryName("discframe"));
         }
         event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-            return new LauncherContainer(BeyRegistry.LAUNCHER_RIGHT_CONTAINER, windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, Hand.MAIN_HAND);
+            return new LauncherContainer(BeyRegistry.LAUNCHER_RIGHT_CONTAINER, windowId, new ItemStack(BeyRegistry.LAUNCHER), inv, Hand.MAIN_HAND);
         }).setRegistryName("right_launcher"));
         event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
             return new LauncherContainer(BeyRegistry.LAUNCHER_RIGHT_CONTAINER, windowId, new ItemStack(BeyRegistry.LEFTLAUNCHER), inv, Hand.MAIN_HAND);
@@ -92,12 +89,12 @@ public class CommonEvents {
         event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
             return new LauncherContainer(BeyRegistry.LAUNCHER_DUAL_CONTAINER, windowId, new ItemStack(BeyRegistry.DUALLAUNCHER), inv, Hand.MAIN_HAND);
         }).setRegistryName("dual_launcher"));
-        if(!BeyRegistry.ITEMSLAYER.isEmpty() && BeyRegistry.ITEMSLAYERGT.size() != BeyRegistry.ITEMSLAYER.size()) {
+        if (!BeyRegistry.ITEMSLAYER.isEmpty() && BeyRegistry.ITEMSLAYERGT.size() != BeyRegistry.ITEMSLAYER.size()) {
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
                 return new BeyContainer(BeyRegistry.BEY_CONTAINER, windowId, new ItemStack(BeyRegistry.ITEMSLAYER.get(0)), inv, inv.player, Hand.MAIN_HAND);
             }).setRegistryName("bey"));
         }
-        if(!BeyRegistry.ITEMSLAYERGT.isEmpty()){
+        if (!BeyRegistry.ITEMSLAYERGT.isEmpty()) {
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
                 return new BeyGTContainer(BeyRegistry.BEY_GT_CONTAINER, windowId, new ItemStack(BeyRegistry.ITEMSLAYERGT.get(0)), inv, inv.player, Hand.MAIN_HAND);
             }).setRegistryName("beygt"));
@@ -113,7 +110,7 @@ public class CommonEvents {
             return new BeyCreatorContainer(BeyRegistry.BEY_CREATOR_CONTAINER, windowId, new BeyCreatorTileEntity());
         }).setRegistryName("beycreator"));
         event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-            return new HandleContainer(BeyRegistry.HANDLE_CONTAINER, windowId, new ItemStack(BeyRegistry.REDLAUNCHER), inv, inv.player, Hand.MAIN_HAND);
+            return new HandleContainer(BeyRegistry.HANDLE_CONTAINER, windowId, new ItemStack(BeyRegistry.LAUNCHER), inv, inv.player, Hand.MAIN_HAND);
         }).setRegistryName("handle"));
     }
 
@@ -127,7 +124,7 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void registerItem(final RegistryEvent.Register<Item> event) {
-        DistExecutor.runWhenOn(Dist.CLIENT,()->()->{
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             ClientEvents.injectResources();
         });
 
@@ -144,98 +141,76 @@ public class CommonEvents {
             event.getRegistry().register(new ItemBladerBelt("belt"));
         } catch (Exception e) {
         }
-        if(!BeyRegistry.ITEMSLAYER.isEmpty()){
+        if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
             for (Item item : BeyRegistry.ITEMSLAYER) {
                 event.getRegistry().register(item);
             }
         }
-        if(!BeyRegistry.ITEMSFRAME.isEmpty()){
+        if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
             for (Item item : BeyRegistry.ITEMSFRAME) {
                 event.getRegistry().register(item);
             }
         }
-        if(!BeyRegistry.ITEMSDISCLIST.isEmpty()){
+        if (!BeyRegistry.ITEMSDISCLIST.isEmpty()) {
             for (Item item : BeyRegistry.ITEMSDISCLIST) {
                 event.getRegistry().register(item);
             }
         }
-        if(!BeyRegistry.ITEMSDRIVER.isEmpty()){
+        if (!BeyRegistry.ITEMSDRIVER.isEmpty()) {
             for (Item item : BeyRegistry.ITEMSDRIVER) {
                 event.getRegistry().register(item);
             }
         }
-        if(!BeyRegistry.ITEMSGTCHIP.isEmpty()){
+        if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
             for (Item item : BeyRegistry.ITEMSGTCHIP) {
                 event.getRegistry().register(item);
             }
         }
-        if(!BeyRegistry.ITEMSGTWEIGHT.isEmpty()){
+        if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
             for (Item item : BeyRegistry.ITEMSGTWEIGHT) {
                 event.getRegistry().register(item);
             }
         }
     }
 
-//		@SubscribeEvent
-//		public static void playerJoined(final event event) {
-//			PlayerEntity player = event.getPlayer();
-//			ITextComponent prefix = TextComponentUtils.toTextComponent(new Message() {
-//
-//				@Override
-//				public String getString() {
-//					return "[BeyCraft] -> Join to my Discord server: ";
-//				}
-//			});
-//			ITextComponent url = TextComponentUtils.toTextComponent(new Message() {
-//
-//				@Override
-//				public String getString() {
-//					return "https://discord.gg/2PpbtFr";
-//				}
-//			});
-//			Style sPrefix = new Style();
-//			sPrefix.setColor(TextFormatting.GOLD);
-//			Style sUrl = new Style();
-//			sUrl.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr"))
-//					.setColor(TextFormatting.GOLD);
-//			prefix.setStyle(sPrefix);
-//			url.setStyle(sUrl);
-//			player.sendMessage(prefix);
-//			player.sendMessage(url);
-////			BeyCraft.INSTANCE.sendTo(
-////					new BladerLevelMessage(
-////							(int) event.player.getCapability(Provider.BLADERLEVEL_CAP, null).getBladerLevel()),
-////					(PlayerEntityMP) event.player);
-//		}
-
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
-    public static class SpecialEvents{
+    public static class SpecialEvents {
 
         @SubscribeEvent
-        public static void playerEnterWorld(final PlayerEvent.PlayerLoggedInEvent event){
+        public static void playerCapabilitiesInjection(final AttachCapabilitiesEvent<Entity> event) {
+            if (event.getObject() instanceof PlayerEntity) {
+                event.addCapability(new ResourceLocation(Reference.MODID, "bladerlevel"), new BladerLevelProvider());
+            }
+        }
+
+        @SubscribeEvent
+        public static void playerEnterWorld(final PlayerEvent.PlayerLoggedInEvent event) {
             ITextComponent prefix = TextComponentUtils.toTextComponent(new Message() {
 
-				@Override
-				public String getString() {
-					return "[BeyCraft] -> Join to my Discord server: ";
-				}
-			});
-			ITextComponent url = TextComponentUtils.toTextComponent(new Message() {
+                @Override
+                public String getString() {
+                    return "[BeyCraft] -> Join to my Discord server: ";
+                }
+            });
+            ITextComponent url = TextComponentUtils.toTextComponent(new Message() {
 
-				@Override
-				public String getString() {
-					return "https://discord.gg/2PpbtFr";
-				}
-			});
-			Style sPrefix = new Style();
-			sPrefix.setColor(TextFormatting.GOLD);
-			Style sUrl = new Style();
-			sUrl.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr"))
-					.setColor(TextFormatting.GOLD);
-			prefix.setStyle(sPrefix);
-			url.setStyle(sUrl);
+                @Override
+                public String getString() {
+                    return "https://discord.gg/2PpbtFr";
+                }
+            });
+            Style sPrefix = new Style();
+            sPrefix.setColor(TextFormatting.GOLD);
+            Style sUrl = new Style();
+            sUrl.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr"))
+                    .setColor(TextFormatting.GOLD);
+            prefix.setStyle(sPrefix);
+            url.setStyle(sUrl);
             event.getPlayer().sendMessage(prefix);
             event.getPlayer().sendMessage(url);
+            event.getPlayer().getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(h->{
+                PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(),h.getExperience()), ((ServerPlayerEntity)event.getPlayer()).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+            });
         }
     }
 }

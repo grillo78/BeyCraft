@@ -237,6 +237,12 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
     }
 
     @Override
+    public void render(int p_render_1_, int p_render_2_, float p_render_3_) {
+        this.renderBackground();
+        super.render(p_render_1_, p_render_2_, p_render_3_);
+    }
+
+    @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1f, 1f, 1f, 1f);
         this.minecraft.getTextureManager().bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/beycreator.png"));

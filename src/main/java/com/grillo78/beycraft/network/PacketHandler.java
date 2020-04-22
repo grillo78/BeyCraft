@@ -23,6 +23,8 @@ public class PacketHandler {
         register(MessageOpenBelt.class, new MessageOpenBelt());
         register(MessageBeyCreatorUpdate.class, new MessageBeyCreatorUpdate());
         register(MessageUpdateDualLauncher.class, new MessageUpdateDualLauncher());
+        register(MessageUpdateColorLauncher.class, new MessageUpdateColorLauncher());
+        register(MessageSyncBladerLevel.class, new MessageSyncBladerLevel());
     }
 
     private static <T> void register(Class<T> clazz, IMessage<T> message)

@@ -14,6 +14,6 @@ public class BeyCraftTab extends ItemGroup{
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(BeyRegistry.REDLAUNCHER);
+		return new ItemStack(BeyRegistry.LAUNCHER);
 	}
 }

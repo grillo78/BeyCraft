@@ -23,6 +23,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -65,10 +66,10 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
      * @param world
      */
     public EntityBey(EntityType<? extends EntityBey> type, World world) {
-        this(type, world, ItemStack.EMPTY, 1, "");
+        this(type, world, ItemStack.EMPTY, 1, null);
     }
 
-    public EntityBey(EntityType<? extends EntityBey> type, World world, ItemStack layer, int rotationDirection, String playerName) {
+    public EntityBey(EntityType<? extends EntityBey> type, World world, ItemStack layer, int rotationDirection, PlayerEntity playerEntity) {
         super(type, world);
         this.rotationDirection = rotationDirection;
         this.inventory = new ItemStackHandler(3);
@@ -77,7 +78,11 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
             this.inventory.setStackInSlot(1, ItemStack.read(layer.getTag().getCompound("disc")));
             this.inventory.setStackInSlot(2, ItemStack.read(layer.getTag().getCompound("driver")));
         }
-        this.playerName = playerName;
+        if(playerEntity != null){
+            this.playerName = playerEntity.getName().getString();
+        } else {
+            this.playerName = "";
+        }
         if (!world.isRemote) {
             this.setMaxRotationSpeed(7);
             this.setRotationSpeed(getMaxRotationSpeed());
@@ -87,6 +92,11 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         stepHeight = 0;
     }
 
+    @Nullable
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox() {
+        return super.getCollisionBoundingBox();
+    }
 
     @Nullable
     @Override
@@ -308,7 +318,9 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
             }
 
         }
-        updatePoints(this);
+        if(world.isRemote){
+            updatePoints(this);
+        }
         super.tick();
     }
 
@@ -322,6 +334,11 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     }
 
     @Override
+    public void applyEntityCollision(Entity entityIn) {
+        super.applyEntityCollision(entityIn);
+    }
+
+    @Override
     protected void collideWithEntity(Entity entityIn) {
         if (!world.isRemote) {
             if (!stoped && entityIn instanceof EntityBey) {
@@ -332,13 +349,13 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                 double z = (getPosZ() - entityIn.getPosZ()) / 2;
                 ((ServerWorld) world).spawnParticle(BeyRegistry.SPARKLE, getPosX(), getPosY(), getPosZ(), 10, x, y, z, 10);
                 if(((ItemBeyLayer)getLayer().getItem()).getPrimaryAbility() instanceof Absorb || ((ItemBeyLayer)getLayer().getItem()).getSecundaryAbility() instanceof Absorb){
-                    setRotationSpeed(getRotationSpeed() + (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack() + ((ItemBeyLayer) getLayer().getItem()).getDefense()) / 10);
-                    bey.setRotationSpeed(bey.getRotationSpeed() - (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack() + ((ItemBeyLayer) getLayer().getItem()).getDefense()) / 10);
+                    setRotationSpeed(getRotationSpeed() + (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack() + ((ItemBeyLayer) getLayer().getItem()).getDefense()) / 100);
+                    bey.setRotationSpeed(bey.getRotationSpeed() - (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack() + ((ItemBeyLayer) getLayer().getItem()).getDefense()) / 100);
                     if(getRotationSpeed()>getMaxRotationSpeed()){
                         setRotationSpeed(getMaxRotationSpeed());
                     }
                 } else{
-                    setRotationSpeed(getRotationSpeed() - (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack() + ((ItemBeyLayer) getLayer().getItem()).getDefense()) / 10);
+                    setRotationSpeed(getRotationSpeed() - (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack() + ((ItemBeyLayer) getLayer().getItem()).getDefense()) / 100);
                 }
                 if (getRadius() == 0 && new Random().nextInt(10) == 1) {
                     increaseRadius = true;

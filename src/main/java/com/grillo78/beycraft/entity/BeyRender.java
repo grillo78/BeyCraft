@@ -88,11 +88,11 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                     new Quaternion(new Vector3f((float) -entity.getLookVec().x * entity.getRotationDirection(), 0,
                             (float) -entity.getLookVec().z * entity.getRotationDirection()), -30, true));
         }
-        matrixStack.rotate(new Quaternion(0, 0, entity.angle, true));
-        if (entity.getRotationSpeed() < 2) {
+        matrixStack.rotate(new Quaternion(0, 0, -entity.angle*1.5f, true));
+        if (entity.getRotationSpeed() < 1) {
             matrixStack.rotate(
                     new Quaternion(new Vector3f((float) entity.getLookVec().x, (float) entity.getLookVec().z, 0),
-                            40 * ((2 - entity.getRotationSpeed()) / (2)), true));
+                            40 * ((1 - entity.getRotationSpeed())), true));
         }
         Minecraft.getInstance().getItemRenderer().renderItem(entity.getLayer(), TransformType.FIXED, packedLightIn,
                 OverlayTexture.NO_OVERLAY, matrixStack, bufferIn);

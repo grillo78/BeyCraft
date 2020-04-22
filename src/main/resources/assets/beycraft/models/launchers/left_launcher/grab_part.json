@@ -1,0 +1,6 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:obj",
+  "flip-v": true,
+  "model": "beycraft:models/launchers/left_launcher/grab_part.obj"
+}

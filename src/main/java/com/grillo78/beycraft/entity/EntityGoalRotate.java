@@ -64,7 +64,6 @@ public class EntityGoalRotate extends Goal {
                     }
                 }
                 if (bey.getRadius() > 0 && !bey.isIncreaseRadius()) {
-                    System.out.println(bey.getRadius());
                     bey.setRadius(bey.getRadius()
                             - (0.002f * bey.getMaxRotationSpeed() / 10) * ((ItemBeyDriver) bey.getInventory().getStackInSlot(2).getItem()).getRadiusReduction()
                             * bey.getRotationSpeed() / (bey.getMaxRotationSpeed()));

@@ -40,7 +40,7 @@ public class DiscFrameItemStackRendererTileEntity extends ItemStackTileEntityRen
         } else{
             ItemModels.MODELS.put(stack.getItem().getTranslationKey(),Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft", "discsframe/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "") + "")));
         }
-        if (stack.getItem() instanceof ItemBeyDiscFrame && stack.hasTag()) {
+        if (stack.hasTag()) {
             matrixStack.scale(2F, 2F, 2F);
             matrixStack.rotate(new Quaternion(new Vector3f(0, ((ItemBeyDiscFrame)stack.getItem()).getFrameRotation(), 0), -15, true));
             matrixStack.translate(0F, 0.01F, 0.25F);

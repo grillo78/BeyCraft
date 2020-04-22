@@ -1,5 +1,8 @@
 package com.grillo78.beycraft;
 
+import com.grillo78.beycraft.capabilities.BladerLevelStorage;
+import com.grillo78.beycraft.capabilities.Factory;
+import com.grillo78.beycraft.capabilities.IBladerLevel;
 import com.grillo78.beycraft.network.PacketHandler;
 import com.grillo78.beycraft.tab.BeyCraftDisksTab;
 import com.grillo78.beycraft.tab.BeyCraftDriversTab;
@@ -7,6 +10,7 @@ import com.grillo78.beycraft.tab.BeyCraftLayersTab;
 import com.grillo78.beycraft.tab.BeyCraftTab;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -35,6 +39,7 @@ public class BeyCraft {
 
     private void setup(final FMLCommonSetupEvent event) {
         PacketHandler.init();
+        CapabilityManager.INSTANCE.register(IBladerLevel.class, new BladerLevelStorage(), new Factory());
     }
 
 }

@@ -2,9 +2,11 @@ package com.grillo78.beycraft.events;
 
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
+import com.grillo78.beycraft.capabilities.BladerLevelProvider;
 import com.grillo78.beycraft.entity.BeyEntityRenderFactory;
 import com.grillo78.beycraft.gui.*;
 import com.grillo78.beycraft.items.ItemLauncher;
+import com.grillo78.beycraft.items.ItemLauncherHandle;
 import com.grillo78.beycraft.network.PacketHandler;
 import com.grillo78.beycraft.network.message.MessageOpenBelt;
 import com.grillo78.beycraft.particles.SparkleParticle;
@@ -39,7 +41,9 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.items.CapabilityItemHandler;
 
+import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -145,6 +149,10 @@ public class ClientEvents {
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/launcher_body"));
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/grab_part"));
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/launcher_lever"));
+        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.LAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/launcher_body"));
+        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.LAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/grab_part"));
+        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.LEFTLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/launcher_body"));
+        ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/" + BeyRegistry.LEFTLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/grab_part"));
         RenderingRegistry.registerEntityRenderingHandler(BeyRegistry.BEY_ENTITY_TYPE,
                 new BeyEntityRenderFactory());
         ClientRegistry.bindTileEntityRenderer(BeyRegistry.EXPOSITORYTILEENTITYTYPE, RenderExpository::new);
@@ -161,6 +169,12 @@ public class ClientEvents {
                     Minecraft.getInstance().getRenderManager().textureManager
                             .bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/bladerlevel.png"));
                     AbstractGui.blit(0, 0, 0, 0, 75, 80, 256, 256);
+                    Minecraft.getInstance().fontRenderer.drawString("Blader level:",5, 25, Color.BLACK.hashCode());
+                    Minecraft.getInstance().player.getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(h->{
+                        Minecraft.getInstance().fontRenderer.drawString(String.valueOf(h.getBladerLevel()),5, 35, Color.BLACK.hashCode());
+                        Minecraft.getInstance().fontRenderer.drawString("Exp. for next level:",5, 45, Color.BLACK.hashCode());
+                        Minecraft.getInstance().fontRenderer.drawString(String.valueOf(h.getExpForNextLevel()),5, 55, Color.BLACK.hashCode());
+                    });
                 }
             }
         }
@@ -170,6 +184,9 @@ public class ClientEvents {
             if (Minecraft.getInstance().player == null)
                 return;
             if (ClientEvents.BELTKEY.isPressed()) {
+                PacketHandler.instance.sendToServer(new MessageOpenBelt());
+            }
+            if (ClientEvents.COUNTDOWNKEY.isPressed()) {
                 Narrator.getNarrator().say(new TranslationTextComponent("text.countdown").getString(), false);
             }
         }
@@ -182,19 +199,81 @@ public class ClientEvents {
 
             if (player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemLauncher || player.getHeldItem(Hand.OFF_HAND).getItem() instanceof ItemLauncher) {
                 PlayerModel model = event.getModelPlayer();
-                if (player.rotationPitch < 0) {
-                    model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(25 * ((90 - (-player.rotationPitch)) / 90));
-                    model.bipedRightArm.rotateAngleY = (float) Math.toRadians(-25 * ((90 - (-player.rotationPitch)) / 90));
-                    model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(25 * (1-((90 - (-player.rotationPitch)) / 90)));
-                    model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(25 * (1-((90 - player.rotationPitch) / 90)));
-                } else {
-                    model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(25 * ((90 - player.rotationPitch) / 90));
-                    model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(25 * (1-((90 - player.rotationPitch) / 90)));
-                    model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(25 * (1-((90 - (-player.rotationPitch)) / 90)));
-                    model.bipedRightArm.rotateAngleY = (float) Math.toRadians(-25 * ((90 - player.rotationPitch) / 90));
-                }
                 model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(player.rotationPitch - 90);
                 model.bipedRightArm.rotateAngleX = (float) Math.toRadians(player.rotationPitch - 90);
+
+                model.bipedLeftArmwear.rotateAngleX = (float) Math.toRadians(player.rotationPitch - 90);
+                model.bipedRightArmwear.rotateAngleX = (float) Math.toRadians(player.rotationPitch - 90);
+
+                model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(25);
+                model.bipedRightArm.rotateAngleY = (float) Math.toRadians(-25);
+                model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(25 * (1 - ((90 - (-player.rotationPitch)) / 90)));
+                model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(25 * (1 - ((90 - player.rotationPitch) / 90)));
+
+                model.bipedLeftArmwear.rotateAngleY = (float) Math.toRadians(25);
+                model.bipedRightArmwear.rotateAngleY = (float) Math.toRadians(-25);
+                model.bipedRightArmwear.rotateAngleZ = (float) Math.toRadians(25 * (1 - ((90 - (-player.rotationPitch)) / 90)));
+                model.bipedLeftArmwear.rotateAngleZ = (float) Math.toRadians(25 * (1 - ((90 - player.rotationPitch) / 90)));
+
+                if (player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemLauncher) {
+                    player.getHeldItem(Hand.MAIN_HAND).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h->{
+                        if(h.getStackInSlot(1).getItem() instanceof ItemLauncherHandle){
+                            if (player.getPrimaryHand() == HandSide.RIGHT) {
+                                model.bipedRightArm.rotateAngleY = (float) Math.toRadians(0);
+                                model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0);
+                                model.bipedRightArmwear.rotateAngleY = (float) Math.toRadians(0);
+                                model.bipedRightArmwear.rotateAngleZ = (float) Math.toRadians(0);
+                            } else {
+                                model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(0);
+                                model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0);
+                                model.bipedLeftArmwear.rotateAngleY = (float) Math.toRadians(0);
+                                model.bipedLeftArmwear.rotateAngleZ = (float) Math.toRadians(0);
+                            }
+                        }
+                    });
+                    if (player.getCooldownTracker().hasCooldown(player.getHeldItem(Hand.MAIN_HAND).getItem())) {
+                        if (player.getPrimaryHand() == HandSide.RIGHT) {
+                            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(-25);
+                            model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(-25 * (1 - ((90 - player.rotationPitch) / 90)));
+                            model.bipedLeftArmwear.rotateAngleY = (float) Math.toRadians(-25);
+                            model.bipedLeftArmwear.rotateAngleZ = (float) Math.toRadians(-25 * (1 - ((90 - player.rotationPitch) / 90)));
+                        } else {
+                            model.bipedRightArm.rotateAngleY = (float) Math.toRadians(25);
+                            model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(-25 * (1 - ((90 - (-player.rotationPitch)) / 90)));
+                            model.bipedRightArmwear.rotateAngleY = (float) Math.toRadians(25);
+                            model.bipedRightArmwear.rotateAngleZ = (float) Math.toRadians(-25 * (1 - ((90 - (-player.rotationPitch)) / 90)));
+                        }
+                    }
+                } else {
+                    player.getHeldItem(Hand.OFF_HAND).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h->{
+                        if(h.getStackInSlot(1).getItem() instanceof ItemLauncherHandle){
+                            if (player.getPrimaryHand() == HandSide.RIGHT) {
+                                model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(0);
+                                model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0);
+                                model.bipedLeftArmwear.rotateAngleY = (float) Math.toRadians(0);
+                                model.bipedLeftArmwear.rotateAngleZ = (float) Math.toRadians(0);
+                            } else {
+                                model.bipedRightArm.rotateAngleY = (float) Math.toRadians(0);
+                                model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0);
+                                model.bipedRightArmwear.rotateAngleY = (float) Math.toRadians(0);
+                                model.bipedRightArmwear.rotateAngleZ = (float) Math.toRadians(0);
+                            }
+                        }
+                    });
+                    if (player.getCooldownTracker().hasCooldown(player.getHeldItem(Hand.OFF_HAND).getItem())) {
+                        if (player.getPrimaryHand() == HandSide.RIGHT) {
+                            model.bipedRightArm.rotateAngleY = (float) Math.toRadians(25);
+                            model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(-25 * (1 - ((90 - (-player.rotationPitch)) / 90)));
+                            model.bipedRightArmwear.rotateAngleY = (float) Math.toRadians(25);
+                            model.bipedRightArmwear.rotateAngleZ = (float) Math.toRadians(-25 * (1 - ((90 - (-player.rotationPitch)) / 90)));
+                        } else {
+                            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(-25);
+                            model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(-25 * (1 - ((90 - player.rotationPitch) / 90)));
+                            model.bipedLeftArmwear.rotateAngleY = (float) Math.toRadians(-25);
+                            model.bipedLeftArmwear.rotateAngleZ = (float) Math.toRadians(-25 * (1 - ((90 - player.rotationPitch) / 90)));
+                        }
+                    }
+                }
             }
         }
     }
