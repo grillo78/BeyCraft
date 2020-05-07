@@ -3,12 +3,15 @@ package com.grillo78.beycraft;
 import com.google.common.collect.Lists;
 import com.grillo78.beycraft.blocks.BeyCreatorBlock;
 import com.grillo78.beycraft.blocks.ExpositoryBlock;
+import com.grillo78.beycraft.blocks.RobotBlock;
 import com.grillo78.beycraft.blocks.StadiumBlock;
 import com.grillo78.beycraft.entity.EntityBey;
 import com.grillo78.beycraft.inventory.*;
+import com.grillo78.beycraft.inventory.slots.BeyLoggerContainer;
 import com.grillo78.beycraft.items.*;
 import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;
+import com.grillo78.beycraft.tileentity.RobotTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
@@ -48,6 +51,8 @@ public class BeyRegistry {
     public static final TileEntityType<ExpositoryTileEntity> EXPOSITORYTILEENTITYTYPE = null;
     @ObjectHolder(Reference.MODID + ":beycreatortileentity")
     public static final TileEntityType<BeyCreatorTileEntity> BEYCREATORTILEENTITYTYPE = null;
+    @ObjectHolder(Reference.MODID + ":robottileentity")
+    public static final TileEntityType<RobotTileEntity> ROBOTTILEENTITYTYPE = null;
 
     /* Container */
     @ObjectHolder("beycraft:right_launcher")
@@ -68,6 +73,8 @@ public class BeyRegistry {
     public static final ContainerType<BeyDiscFrameContainer> DISC_FRAME_CONTAINER = null;
     @ObjectHolder("beycraft:beycreator")
     public static final ContainerType<BeyCreatorContainer> BEY_CREATOR_CONTAINER = null;
+    @ObjectHolder("beycraft:beylogger")
+    public static final ContainerType<BeyLoggerContainer> BEYLOGGER_CONTAINER = null;
 
 
     /* ArmorMaterials */
@@ -79,7 +86,7 @@ public class BeyRegistry {
     public static final SoundEvent HITSOUND = new SoundEvent(new ResourceLocation(Reference.MODID, "bey.hit"));
 
     /* Items */
-    public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("package");
+//    public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("package");
     public static final ItemBeyRubber BEYRUBBER = new ItemBeyRubber("rubber");
     public static final ItemPlastic PLASTIC = new ItemPlastic("plastic");
 
@@ -91,7 +98,7 @@ public class BeyRegistry {
     public static final ItemLauncher LAUNCHER = new ItemLauncher("launcher", 1);
     public static final ItemLauncher LEFTLAUNCHER = new ItemLauncher("left_launcher", -1);
     public static final ItemDualLauncher DUALLAUNCHER = new ItemDualLauncher("dual_launcher");
-    public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("launcherhandle");
+    public static final ItemLauncherHandle LAUNCHERHANDLE = new ItemLauncherHandle("launcher_handle");
     public static final ItemBeyLogger BEYLOGGER = new ItemBeyLogger("beylogger");
     public static final ItemBeyLogger BEYLOGGERPLUS = new ItemBeyLogger("beylogger_plus");
 
@@ -121,6 +128,7 @@ public class BeyRegistry {
     public static final BeyCreatorBlock BEYCREATORBLOCK = new BeyCreatorBlock(Material.ANVIL, "beycreator");
     public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.ANVIL, "expository");
     public static final StadiumBlock STADIUM = new StadiumBlock(Material.IRON, "stadium");
+    public static final RobotBlock ROBOT = new RobotBlock(Material.IRON, "robot");
 
     /* Profession */
 //    @Nullable

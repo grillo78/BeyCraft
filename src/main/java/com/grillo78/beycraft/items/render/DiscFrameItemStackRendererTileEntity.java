@@ -31,14 +31,14 @@ public class DiscFrameItemStackRendererTileEntity extends ItemStackTileEntityRen
     public void render(ItemStack stack, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn,
                        int combinedOverlayIn) {
         matrixStack.push();
-        if(ItemModels.MODELS.containsKey(stack.getItem().getTranslationKey()) && ItemModels.MODELS.get(stack.getItem().getTranslationKey()) != null) {
-            IBakedModel model = ItemModels.MODELS.get(stack.getItem().getTranslationKey());
-            IVertexBuilder vertexBuilder = buffer.getBuffer(RenderType.getEntityTranslucent(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
-            for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
-                vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, 1, 1, combinedOverlayIn, true);
-            }
-        } else{
+        if(!ItemModels.MODELS.containsKey(stack.getItem().getTranslationKey()) || ItemModels.MODELS.get(stack.getItem().getTranslationKey()) == null) {
             ItemModels.MODELS.put(stack.getItem().getTranslationKey(),Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft", "discsframe/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "") + "")));
+
+        }
+        IBakedModel model = ItemModels.MODELS.get(stack.getItem().getTranslationKey());
+        IVertexBuilder vertexBuilder = buffer.getBuffer(RenderType.getEntityTranslucent(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
+        for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
+            vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, 1, 1, combinedOverlayIn, true);
         }
         if (stack.hasTag()) {
             matrixStack.scale(2F, 2F, 2F);

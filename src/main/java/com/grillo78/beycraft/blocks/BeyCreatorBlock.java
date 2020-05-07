@@ -199,21 +199,6 @@ public class BeyCreatorBlock extends Block {
         return shape;
     }
 
-
-    /**
-     *
-     */
-    private void setItemStack(BeyCreatorTileEntity tileEntity, int index, ItemStack stack) {
-        tileEntity.getInventory().ifPresent(h -> {
-            if (stack != ItemStack.EMPTY) {
-                h.insertItem(index, stack.copy(), false);
-                stack.shrink(1);
-            } else {
-
-            }
-        });
-    }
-
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
                                              Hand hand, BlockRayTraceResult p_225533_6_) {
@@ -238,7 +223,7 @@ public class BeyCreatorBlock extends Block {
                     ItemStack stack = playerIn.getHeldItem(hand);
                     NetworkHooks.openGui((ServerPlayerEntity) playerIn,
                             new SimpleNamedContainerProvider(
-                                    (id, playerInventory, playerEntity) -> new BeyCreatorContainer(BeyRegistry.BEY_CREATOR_CONTAINER, id, (BeyCreatorTileEntity) tileentity),
+                                    (id, playerInventory, playerEntity) -> new BeyCreatorContainer(BeyRegistry.BEY_CREATOR_CONTAINER, id),
                                     new StringTextComponent(getTranslationKey())));
 
                 }

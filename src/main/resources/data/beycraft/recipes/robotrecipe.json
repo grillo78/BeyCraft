@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BI ",
+    "PIP",
+    "LIH"
+  ],
+  "key": {
+    "P": {
+      "item": "beycraft:plastic"
+    }, "I": {
+      "item": "minecraft:iron_ingot"
+    }, "L": {
+      "item": "beycraft:dual_launcher"
+    }, "H": {
+      "item": "beycraft:launcher_handle"
+    }, "B": {
+      "item": "beycraft:beylogger_plus"
+    }
+  },
+  "result": {
+    "item": "beycraft:robot",
+    "count": 1
+  }
+}

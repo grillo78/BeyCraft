@@ -42,7 +42,7 @@ public class ItemCreator {
                 return name.endsWith(".zip");
             }
         });
-        BeyCraft.logger.info(zipFiles.length + " items was found in the folder");
+        BeyCraft.logger.info(zipFiles.length + " packs was found in BeyParts folder");
         FileReader fileReader;
 
         if (isPatchuoliInstalled()) {

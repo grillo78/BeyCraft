@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "PP ",
+    " I "
+  ],
+  "key": {
+    "P": {
+      "item": "beycraft:plastic"
+    },
+    "I": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
+  "result": {
+    "item": "beycraft:beylogger",
+    "count": 1
+  }
+}

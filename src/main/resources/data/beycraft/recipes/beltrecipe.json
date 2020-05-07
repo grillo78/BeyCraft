@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "LGL",
+    "   "
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    }, "G": {
+      "item": "minecraft:gold_nugget"
+    }
+  },
+  "result": {
+    "item": "beycraft:belt",
+    "count": 1
+  }
+}

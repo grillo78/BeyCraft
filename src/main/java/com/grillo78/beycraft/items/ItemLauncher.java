@@ -52,7 +52,6 @@ public class ItemLauncher extends Item {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
-        BeyCraft.logger.info(handIn.name());
         ItemStack launcher = player.getHeldItem(handIn);
         if (!player.isCrouching()) {
             if (!world.isRemote) {

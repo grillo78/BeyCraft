@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "## ",
+    "##S",
+    "## "
+  ],
+  "key": {
+    "#": {
+      "item": "beycraft:plastic"
+    }, "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "beycraft:launcher",
+    "count": 1
+  }
+}

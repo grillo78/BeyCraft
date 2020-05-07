@@ -14,9 +14,9 @@ import javax.annotation.Nullable;
 public class BladerLevelProvider implements ICapabilitySerializable<INBT> {
     @CapabilityInject(IBladerLevel.class)
     public static final Capability<IBladerLevel> BLADERLEVEL_CAP = null;
-    private LazyOptional<IBladerLevel> bladerLevel = LazyOptional.of(()-> new BladerLevel());
-
     private IBladerLevel instance = BLADERLEVEL_CAP.getDefaultInstance();
+
+    private LazyOptional<IBladerLevel> bladerLevel = LazyOptional.of(()-> instance);
 
 
     @Override

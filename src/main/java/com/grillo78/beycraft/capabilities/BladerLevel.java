@@ -4,12 +4,12 @@ public class BladerLevel implements IBladerLevel{
 
     private int bladerLevel=1;
     private float experience=0;
-    private float expForNexLevel;
+    private float expForNexLevel = (float) (Math.exp(bladerLevel/3)*100/5);
 
     @Override
     public void setBladerLevel(int level) {
         bladerLevel = level;
-        expForNexLevel = (float) (Math.log(bladerLevel)*2+2);
+        expForNexLevel = (float) (Math.exp(bladerLevel/3)*100/5);
     }
 
     @Override
@@ -23,7 +23,8 @@ public class BladerLevel implements IBladerLevel{
         expForNexLevel -= experience;
         if(expForNexLevel<=0){
             bladerLevel++;
-            expForNexLevel = (float) (Math.exp(bladerLevel/3)*100/5)-this.experience;
+            this.experience = 0;
+            expForNexLevel = (float) (Math.exp(bladerLevel/3)*100/5);
         }
     }
 
@@ -40,7 +41,7 @@ public class BladerLevel implements IBladerLevel{
     @Override
     public void setExperience(float experience) {
         this.experience = experience;
-        expForNexLevel = (float) (Math.log(bladerLevel)*2+2-experience);
+        expForNexLevel = (float) (Math.exp(bladerLevel/3)*100/5)-this.experience;
     }
 
     @Override

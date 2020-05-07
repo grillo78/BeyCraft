@@ -9,12 +9,8 @@ import javax.annotation.Nullable;
 
 public class BeyCreatorContainer extends Container {
 
-    public BeyCreatorContainer(@Nullable ContainerType<?> containerType, int id, BeyCreatorTileEntity tileEntity) {
+    public BeyCreatorContainer(@Nullable ContainerType<?> containerType, int id) {
         super(containerType, id);
-        tileEntity.getInventory().ifPresent(h -> {
-//            this.addSlot(new SlotItemHandler(h, 0, Integer.MIN_VALUE, Integer.MIN_VALUE));
-//            this.addSlot(new SlotItemHandler(h, 1, -15, -15));
-        });
     }
 
     @Override

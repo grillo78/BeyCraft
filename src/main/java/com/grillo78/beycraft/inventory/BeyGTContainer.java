@@ -1,5 +1,6 @@
 package com.grillo78.beycraft.inventory;
 
+import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.inventory.slots.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -28,12 +29,15 @@ public class BeyGTContainer extends Container {
         super(type, id);
         this.hand = hand;
         this.stack = stack;
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            this.addSlot(new SlotBeyDisk(h, 0, 10, 10));
-            this.addSlot(new SlotBeyDriver(h, 1, 10, 30));
-            this.addSlot(new SlotBeyGTChip(h, 2, 30, 10));
-            this.addSlot(new SlotBeyGTWeight(h, 3, 30, 30));
-        });
+
+        if(!BeyRegistry.ITEMSLAYERGT.isEmpty()){
+            stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                this.addSlot(new SlotBeyDisk(h, 0, 10, 10));
+                this.addSlot(new SlotBeyDriver(h, 1, 10, 30));
+                this.addSlot(new SlotBeyGTChip(h, 2, 30, 10));
+                this.addSlot(new SlotBeyGTWeight(h, 3, 30, 30));
+            });
+        }
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);
     }
 

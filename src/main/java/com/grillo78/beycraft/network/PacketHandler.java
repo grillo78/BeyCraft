@@ -25,6 +25,7 @@ public class PacketHandler {
         register(MessageUpdateDualLauncher.class, new MessageUpdateDualLauncher());
         register(MessageUpdateColorLauncher.class, new MessageUpdateColorLauncher());
         register(MessageSyncBladerLevel.class, new MessageSyncBladerLevel());
+        register(MessageUpdateUrlBeyLogger.class, new MessageUpdateUrlBeyLogger());
     }
 
     private static <T> void register(Class<T> clazz, IMessage<T> message)

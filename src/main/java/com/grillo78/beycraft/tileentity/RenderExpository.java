@@ -35,8 +35,6 @@ public class RenderExpository extends TileEntityRenderer<ExpositoryTileEntity> {
         if(!Minecraft.getInstance().isGamePaused()){
             if (beyRotation < 360) {
                 beyRotation += 5;
-            } else {
-                beyRotation = 0;
             }
             matrixStack.rotate(new Quaternion(0, 0, beyRotation, true));
         }

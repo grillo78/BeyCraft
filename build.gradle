@@ -18,7 +18,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.0.7'
+version = '0.8.4'
 group = 'com.grillo78.beycraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'beycraft'
 
@@ -47,12 +47,17 @@ minecraft {
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
-            args '--username', 'grillo78', '--uuid', 'b8a6cebf-7221-4d53-b120-6e759f14fbfb'
             mods {
                 beycraft {
                     source sourceSets.main
                 }
             }
+        }
+
+        clientWithCredentials {
+            parent runs.client
+
+            args '--username', 'grillo78', '--uuid', 'b8a6cebf-7221-4d53-b120-6e759f14fbfb'
         }
 
         server {
@@ -106,14 +111,15 @@ dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.15.2-31.1.46'
+    minecraft 'net.minecraftforge:forge:1.15.2-31.1.75'
     compile fg.deobf("vazkii.patchouli:Patchouli:1.15.2-1.2-29.147")
     compile name: 'baubles-1.7.1-1.15.2-deobf'
-    compile fg.deobf("curse.maven:chineseworkshop:2869421")
-    compile fg.deobf("curse.maven:kiwi:2887957")
+//    compile fg.deobf("curse.maven:chineseworkshop:2869421")
+//    compile fg.deobf("curse.maven:kiwi:2887957")
 //    compile fg.deobf("curse.maven:mrcrayfish-furniture-mod:2853267")
 //    compile fg.deobf("curse.maven:mrcrayfish-vehicle-mod:2899889")
-    compile fg.deobf("curse.maven:obfuscate:2912283")
+    compile fg.deobf("curse.maven:obfuscate:2946425")
+//    compile fg.deobf("curse.maven:advanced-skin-customization:2901659")
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
     // compile "some.group:artifact:version"

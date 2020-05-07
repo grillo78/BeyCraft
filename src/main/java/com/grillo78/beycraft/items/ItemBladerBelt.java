@@ -45,6 +45,6 @@ public class ItemBladerBelt extends Item {
                                     player.getHeldItem(handIn), playerInventory, true),
                             new StringTextComponent(getRegistryName().getPath())));
         }
-        return super.onItemRightClick(world, player, handIn);
+        return ActionResult.resultSuccess(player.getHeldItem(handIn));
     }
 }

@@ -82,7 +82,7 @@ public class BeyRender extends EntityRenderer<EntityBey> {
         }
         matrixStack.scale(0.5F, 0.5F, 0.5F);
         matrixStack.rotate(new Quaternion(90, 0, 0, true));
-        matrixStack.translate(0, 0, -0.25);
+        matrixStack.translate(0, 0, -0.30);
         if (entity.getRadius() != 0 && entity.getRotationSpeed() > 2) {
             matrixStack.rotate(
                     new Quaternion(new Vector3f((float) -entity.getLookVec().x * entity.getRotationDirection(), 0,
@@ -96,8 +96,13 @@ public class BeyRender extends EntityRenderer<EntityBey> {
         }
         Minecraft.getInstance().getItemRenderer().renderItem(entity.getLayer(), TransformType.FIXED, packedLightIn,
                 OverlayTexture.NO_OVERLAY, matrixStack, bufferIn);
-        matrixStack.rotate(new Quaternion(0, 0,
-                entity.getRotationDirection() * -entity.getHealth() + entity.getRotationDirection() + 85, true));
+        if(entity.getRotationDirection()==1){
+            matrixStack.rotate(new Quaternion(0, 0,
+                    entity.getRotationDirection() * -entity.getHealth() + 85, true));
+        } else {
+            matrixStack.rotate(new Quaternion(0, 0,
+                    entity.getRotationDirection() * -entity.getHealth() +11, true));
+        }
         matrixStack.translate(0, 0, 0.078);
         Minecraft.getInstance().getItemRenderer().renderItem(entity.getDisc(), TransformType.FIXED, packedLightIn,
                 OverlayTexture.NO_OVERLAY, matrixStack, bufferIn);
