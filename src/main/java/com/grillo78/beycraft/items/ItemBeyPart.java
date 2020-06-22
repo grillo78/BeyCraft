@@ -67,9 +67,9 @@ public class ItemBeyPart extends Item {
                     tooltip.add(new TranslationTextComponent(stack.getTag().getString("Type")));
                 } else {
                     if (PRIMARYABILITY instanceof MultiType) {
-						tooltip.add(new TranslationTextComponent(((MultiType) PRIMARYABILITY).getTypes().get(0).name()));
+						tooltip.add(new TranslationTextComponent(((MultiType) PRIMARYABILITY).getTypes().get(0).getType().name()));
                     } else {
-						tooltip.add(new TranslationTextComponent(((MultiType) SECUNDARYABILITY).getTypes().get(0).name()));
+						tooltip.add(new TranslationTextComponent(((MultiType) SECUNDARYABILITY).getTypes().get(0).getType().name()));
                     }
                 }
             } else {

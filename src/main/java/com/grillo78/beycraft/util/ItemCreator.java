@@ -43,7 +43,6 @@ public class ItemCreator {
             }
         });
         BeyCraft.logger.info(zipFiles.length + " packs was found in BeyParts folder");
-        FileReader fileReader;
 
         if (isPatchuoliInstalled()) {
             try {
@@ -286,7 +285,7 @@ public class ItemCreator {
             }
         }
 
-        BeyCraft.logger.info("items were registered");
+        BeyCraft.logger.info("Items were registered");
     }
 
     private static Ability getFirstAbilityByName(String name, Properties properties) {
@@ -294,7 +293,7 @@ public class ItemCreator {
             case "Absorb":
                 return new Absorb();
             case "MultiType":
-                return new MultiType(getTypes(properties.getProperty("types").split(",")));
+                return new MultiType(getTypes(properties.getProperty("types").split(" ")));
             default:
                 return null;
         }
@@ -305,18 +304,18 @@ public class ItemCreator {
             case "Absorb":
                 return new Absorb();
             case "MultiType":
-                return new MultiType(getTypes(properties.getProperty("types").split(",")));
+                return new MultiType(getTypes(properties.getProperty("types").split(" ")));
             default:
                 return null;
         }
     }
 
 
-    private static List<BeyTypes> getTypes(String[] list) {
-        List<BeyTypes> typeList = Lists.newArrayList();
+    private static List<Type> getTypes(String[] list) {
+        List<Type> typeList = Lists.newArrayList();
 
-        for (String name : list) {
-            typeList.add(BeyTypes.getByName(name));
+        for (String type : list) {
+            typeList.add(new Type(type));
         }
 
         return typeList;

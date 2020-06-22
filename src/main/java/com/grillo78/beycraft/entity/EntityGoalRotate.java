@@ -36,13 +36,13 @@ public class EntityGoalRotate extends Goal {
                             if (bey.getRadius() == 0) bey.move(MoverType.SELF, new Vec3d(0.1, 0, 0.1));
                             break;
                         case 1:
-                            bey.move(MoverType.SELF, new Vec3d(-0.01 * ((ItemBeyDriver) bey.getDriver().getItem()).getRadiusReduction(), 0, 0));
+                            bey.move(MoverType.SELF, new Vec3d(-0.01 * ((ItemBeyDriver) bey.getDriver().getItem()).getRadiusReduction(bey.getDriver()), 0, 0));
                             break;
                         case 2:
                             if (bey.getRadius() == 0) bey.move(MoverType.SELF, new Vec3d(0.1, 0, -0.1));
                             break;
                         case 3:
-                            bey.move(MoverType.SELF, new Vec3d(0, 0, 0.01 * ((ItemBeyDriver) bey.getDriver().getItem()).getRadiusReduction()));
+                            bey.move(MoverType.SELF, new Vec3d(0, 0, 0.01 * ((ItemBeyDriver) bey.getDriver().getItem()).getRadiusReduction(bey.getDriver())));
                             break;
                         case 4:
                             bey.move(MoverType.SELF,
@@ -50,13 +50,13 @@ public class EntityGoalRotate extends Goal {
                                             (bey.getPosition().getZ() + 0.5 - bey.getPositionVector().z) / 4));
                             break;
                         case 5:
-                            bey.move(MoverType.SELF, new Vec3d(0, 0, -0.01 * ((ItemBeyDriver) bey.getDriver().getItem()).getRadiusReduction()));
+                            bey.move(MoverType.SELF, new Vec3d(0, 0, -0.01 * ((ItemBeyDriver) bey.getDriver().getItem()).getRadiusReduction(bey.getDriver())));
                             break;
                         case 6:
                             if (bey.getRadius() == 0) bey.move(MoverType.SELF, new Vec3d(-0.1, 0, 0.1));
                             break;
                         case 7:
-                            bey.move(MoverType.SELF, new Vec3d(0.01 * ((ItemBeyDriver) bey.getDriver().getItem()).getRadiusReduction(), 0, 0));
+                            bey.move(MoverType.SELF, new Vec3d(0.01 * ((ItemBeyDriver) bey.getDriver().getItem()).getRadiusReduction(bey.getDriver()), 0, 0));
                             break;
                         case 8:
                             if (bey.getRadius() == 0) bey.move(MoverType.SELF, new Vec3d(-0.1, 0, -0.1));
@@ -65,12 +65,12 @@ public class EntityGoalRotate extends Goal {
                 }
                 if (bey.getRadius() > 0 && !bey.isIncreaseRadius()) {
                     bey.setRadius(bey.getRadius()
-                            - (0.002f * bey.getMaxRotationSpeed() / 10) * ((ItemBeyDriver) bey.getInventory().getStackInSlot(2).getItem()).getRadiusReduction()
+                            - (0.002f * bey.getMaxRotationSpeed() / 10) * ((ItemBeyDriver) bey.getInventory().getStackInSlot(2).getItem()).getRadiusReduction(bey.getDriver())
                             * bey.getRotationSpeed() / (bey.getMaxRotationSpeed()));
                 } else {
                     if (bey.isIncreaseRadius()) {
                         bey.setRadius(bey.getRadius() + 0.001f
-                                * ((ItemBeyDriver) bey.getInventory().getStackInSlot(2).getItem()).getRadiusReduction()
+                                * ((ItemBeyDriver) bey.getInventory().getStackInSlot(2).getItem()).getRadiusReduction(bey.getDriver())
                                 * bey.getRotationSpeed() / (bey.getMaxRotationSpeed()));
                         if (bey.getRadius() >= bey.getMaxRadius() * bey.getRotationSpeed() / bey.getMaxRotationSpeed()) {
                             bey.setIncreaseRadius(false);

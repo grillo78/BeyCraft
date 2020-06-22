@@ -1,3 +1,12 @@
 {
-  "text.countdown": "three, two, one, go, shoot"
+  "text.countdown": "three, two, one, go, shoot",
+  "item.beycraft.launcher": "Launcher",
+  "item.beycraft.left_launcher": "Left Launcher",
+  "item.beycraft.dual_launcher": "Dual Launcher",
+  "item.beycraft.beylogger": "Beylogger",
+  "item.beycraft.beylogger_plus": "Beylogger plus",
+  "item.beycraft.launcher_handle": "Handle",
+  "item.beycraft.plastic": "Plastic",
+  "item.beycraft.rubber": "Rubber",
+  "item.beycraft.stadium": "Stadium"
 }

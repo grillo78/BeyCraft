@@ -8,6 +8,7 @@ import com.grillo78.beycraft.tab.BeyCraftDisksTab;
 import com.grillo78.beycraft.tab.BeyCraftDriversTab;
 import com.grillo78.beycraft.tab.BeyCraftLayersTab;
 import com.grillo78.beycraft.tab.BeyCraftTab;
+import com.grillo78.beycraft.util.ConfigManager;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -33,6 +34,8 @@ public class BeyCraft {
     public BeyCraft() {
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        // Load the config of the mod
+        ConfigManager.load();
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }

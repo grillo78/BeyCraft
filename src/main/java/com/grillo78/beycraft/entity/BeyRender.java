@@ -13,6 +13,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 
+import java.math.BigDecimal;
+
 public class BeyRender extends EntityRenderer<EntityBey> {
 
 
@@ -25,6 +27,9 @@ public class BeyRender extends EntityRenderer<EntityBey> {
         return null;
     }
 
+    public float round(float d, int decimalPlace) {
+        return BigDecimal.valueOf(d).setScale(decimalPlace, BigDecimal.ROUND_HALF_UP).floatValue();
+    }
 
     @Override
     public void render(EntityBey entity, float entityYaw, float partialTicks, MatrixStack matrixStack,
@@ -36,18 +41,12 @@ public class BeyRender extends EntityRenderer<EntityBey> {
             renderName(entity, entity.getPlayerName(), matrixStack, bufferIn,
                     packedLightIn);
             matrixStack.translate(0, -0.25F, 0);
-            renderName(entity, "Health: "+entity.getHealth()*100/entity.getMaxHealth()+"%", matrixStack, bufferIn,
+            renderName(entity, "Health: "+round(entity.getHealth()*100/entity.getMaxHealth(),2)+"%", matrixStack, bufferIn,
                     packedLightIn);
-//            matrixStack.translate(0, -0.25F, 0);
-//            renderName(entity, entity.getDriver().getItem().getName().getFormattedText(), matrixStack, bufferIn,
-//                    packedLightIn);
-//            matrixStack.translate(0, -0.25F, 0);
-//            renderName(entity, "Radius:" + entity.getRadius(), matrixStack, bufferIn, packedLightIn);
             matrixStack.pop();
         }
         matrixStack.push();
         if (entity.onGround && !entity.isStoped()) {
-            Vec3d[] points = entity.getPoints();
             Matrix4f matrix4f1 = matrixStack.getLast().getMatrix();
             for (int i = 0; i < entity.getPoints().length; i++) {
                 if (entity.getPoints()[i] != null) {

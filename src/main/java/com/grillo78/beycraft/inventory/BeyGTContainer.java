@@ -34,8 +34,8 @@ public class BeyGTContainer extends Container {
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 this.addSlot(new SlotBeyDisk(h, 0, 10, 10));
                 this.addSlot(new SlotBeyDriver(h, 1, 10, 30));
-                this.addSlot(new SlotBeyGTChip(h, 2, 30, 10));
-                this.addSlot(new SlotBeyGTWeight(h, 3, 30, 30));
+                this.addSlot(new SlotBeyGTChip(h, 2, 38, 10));
+                this.addSlot(new SlotBeyGTWeight(h, 3, 38, 30));
             });
         }
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);

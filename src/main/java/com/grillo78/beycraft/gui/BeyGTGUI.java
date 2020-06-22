@@ -34,7 +34,7 @@ public class BeyGTGUI extends ContainerScreen<BeyGTContainer>{
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
-		this.minecraft.getTextureManager().bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/2_slots.png"));
+		this.minecraft.getTextureManager().bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/4_slots.png"));
 		int relX = (this.width - this.xSize) / 2;
         int relY = (this.height - this.ySize) / 2;
         this.blit(relX, relY, 0, 0, this.xSize, this.ySize);

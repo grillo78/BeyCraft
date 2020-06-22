@@ -130,8 +130,4 @@ public class BeyRegistry {
     public static final StadiumBlock STADIUM = new StadiumBlock(Material.IRON, "stadium");
     public static final RobotBlock ROBOT = new RobotBlock(Material.IRON, "robot");
 
-    /* Profession */
-//    @Nullable
-//    public static VillagerProfession VILLAGERBEYTRADER = new VillagerProfession();
-
 }
