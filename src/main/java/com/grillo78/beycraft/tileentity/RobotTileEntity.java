@@ -2,6 +2,7 @@ package com.grillo78.beycraft.tileentity;
 
 import com.grillo78.beycraft.BeyRegistry;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -28,11 +29,11 @@ public class RobotTileEntity extends TileEntity  {
 	public LazyOptional<IItemHandler> getInventory() {
 		return inventory;
 	}
-	
+
 	@Override
-	public void read(CompoundNBT compound) {
-		readNetwork(compound);
-		super.read(compound);
+	public void func_230337_a_(BlockState p_230337_1_, CompoundNBT p_230337_2_) {
+		super.func_230337_a_(p_230337_1_, p_230337_2_);
+		readNetwork(p_230337_2_);
 	}
 
 	@Override
@@ -65,8 +66,8 @@ public class RobotTileEntity extends TileEntity  {
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundNBT tag) {
-		super.read(tag);
+	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+		super.deserializeNBT(tag);
 		this.readNetwork(tag);
 	}
 

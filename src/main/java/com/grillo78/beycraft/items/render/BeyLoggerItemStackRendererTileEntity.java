@@ -13,14 +13,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.texture.*;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.resources.IFutureReloadListener;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix3f;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraftforge.client.model.data.EmptyModelData;
-import org.lwjgl.opengl.GL11;
 
 public class BeyLoggerItemStackRendererTileEntity extends ItemStackTileEntityRenderer {
 
@@ -29,9 +30,9 @@ public class BeyLoggerItemStackRendererTileEntity extends ItemStackTileEntityRen
 	private Random random = new Random();
 
 	@Override
-	public void render(ItemStack stack, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn,
-			int combinedOverlayIn) {
-		super.render(stack, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
+	public void func_239207_a_(ItemStack stack, TransformType transformType, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn,
+							   int combinedOverlayIn) {
+		super.func_239207_a_(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
 		matrixStack.push();
 		if (!ItemModels.MODELS.containsKey(stack.getItem().getTranslationKey())
 				|| ItemModels.MODELS.get(stack.getItem().getTranslationKey()) == null) {

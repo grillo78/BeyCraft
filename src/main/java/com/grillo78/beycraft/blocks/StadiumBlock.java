@@ -14,8 +14,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
@@ -186,7 +186,7 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 	}
 
 	@Override
-	public IFluidState getFluidState(BlockState state) {
+	public FluidState getFluidState(BlockState state) {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
@@ -203,9 +203,9 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 	@Override
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (newState.getBlock() != this) {
-			System.out.println(state.get(PART).getName());
+			System.out.println(state.get(PART).func_176610_l());
 			System.out.println();
-			switch (state.get(PART).getName()) {
+			switch (state.get(PART).func_176610_l()) {
 			case "topleft":
 				breackBlock(worldIn, pos.south());
 				breackBlock(worldIn, pos.west());
@@ -354,12 +354,13 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 			return this.NAME;
 		}
 
-		public String getName() {
-			return this.NAME;
-		}
-
 		public int getID() {
 			return ID;
+		}
+
+		@Override
+		public String func_176610_l() {
+			return this.NAME;
 		}
 	}
 }

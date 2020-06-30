@@ -28,39 +28,39 @@ public class ItemBeyPackage extends Item {
 			Random random = new Random();
 			int randomNumber = random.nextInt(BeyRegistry.ITEMSLAYER.size());
 			if (randomNumber != 0) {
-				ItemEntity itemLayer = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-						playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+				ItemEntity itemLayer = new ItemEntity(worldIn, playerIn.getPosX(),
+						playerIn.getPosY(), playerIn.getPosZ(),
 						new ItemStack(BeyRegistry.ITEMSLAYER.get(randomNumber - 1), 1));
 				worldIn.addEntity(itemLayer);
 				if(BeyRegistry.ITEMSLAYER.get(randomNumber-1) instanceof ItemBeyLayerGT){
 					randomNumber = random.nextInt(BeyRegistry.ITEMSGTCHIP.size());
 					if(randomNumber != 0){
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-								playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),
+								playerIn.getPosY(), playerIn.getPosZ(),
 								new ItemStack(BeyRegistry.ITEMSGTCHIP.get(randomNumber - 1), 1));
 						worldIn.addEntity(itemChip);
 					} else{
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-								playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),
+								playerIn.getPosY(), playerIn.getPosZ(),
 								new ItemStack(BeyRegistry.ITEMSGTCHIP.get(randomNumber), 1));
 						worldIn.addEntity(itemChip);
 					}
 				}
 			} else {
-				ItemEntity itemLayer = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-						playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+				ItemEntity itemLayer = new ItemEntity(worldIn, playerIn.getPosX(),
+						playerIn.getPosY(), playerIn.getPosZ(),
 						new ItemStack(BeyRegistry.ITEMSLAYER.get(randomNumber), 1));
 				worldIn.addEntity(itemLayer);
 				if(BeyRegistry.ITEMSLAYER.get(randomNumber) instanceof ItemBeyLayerGT){
 					randomNumber = random.nextInt(BeyRegistry.ITEMSGTCHIP.size());
 					if(randomNumber != 0){
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-								playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),
+								playerIn.getPosY(), playerIn.getPosZ(),
 								new ItemStack(BeyRegistry.ITEMSGTCHIP.get(randomNumber - 1), 1));
 						worldIn.addEntity(itemChip);
 					} else{
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-								playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),
+								playerIn.getPosY(), playerIn.getPosZ(),
 								new ItemStack(BeyRegistry.ITEMSGTCHIP.get(randomNumber), 1));
 						worldIn.addEntity(itemChip);
 					}
@@ -68,39 +68,39 @@ public class ItemBeyPackage extends Item {
 			}
 			randomNumber = random.nextInt(BeyRegistry.ITEMSDISCLIST.size());
 			if (randomNumber != 0) {
-				ItemEntity itemDisk = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-						playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+				ItemEntity itemDisk = new ItemEntity(worldIn, playerIn.getPosX(),
+						playerIn.getPosY(), playerIn.getPosZ(),
 						new ItemStack(BeyRegistry.ITEMSDISCLIST.get(randomNumber - 1), 1));
 				worldIn.addEntity(itemDisk);
 				if(BeyRegistry.ITEMSDISCLIST.get(randomNumber-1) instanceof ItemBeyDiscFrame && random.nextInt(2) == 1){
 					randomNumber = random.nextInt(BeyRegistry.ITEMSFRAME.size());
 					if(randomNumber != 0) {
-						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-								playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getPosX(),
+								playerIn.getPosY(), playerIn.getPosZ(),
 								new ItemStack(BeyRegistry.ITEMSFRAME.get(randomNumber - 1), 1));
 						worldIn.addEntity(itemFrame);
 					}else{
-						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-								playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getPosX(),
+								playerIn.getPosY(), playerIn.getPosZ(),
 								new ItemStack(BeyRegistry.ITEMSFRAME.get(randomNumber), 1));
 						worldIn.addEntity(itemFrame);
 					}
 				}
 			} else {
-				ItemEntity itemDisk = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-						playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+				ItemEntity itemDisk = new ItemEntity(worldIn, playerIn.getPosX(),
+						playerIn.getPosY(), playerIn.getPosZ(),
 						new ItemStack(BeyRegistry.ITEMSDISCLIST.get(randomNumber), 1));
 				worldIn.addEntity(itemDisk);
 				if(BeyRegistry.ITEMSDISCLIST.get(randomNumber) instanceof ItemBeyDiscFrame && random.nextInt(2) == 1){
 					randomNumber = random.nextInt(BeyRegistry.ITEMSFRAME.size());
 					if(randomNumber != 0) {
-						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-								playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getPosX(),
+								playerIn.getPosY(), playerIn.getPosZ(),
 								new ItemStack(BeyRegistry.ITEMSFRAME.get(randomNumber - 1), 1));
 						worldIn.addEntity(itemFrame);
 					}else{
-						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-								playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getPosX(),
+								playerIn.getPosY(), playerIn.getPosZ(),
 								new ItemStack(BeyRegistry.ITEMSFRAME.get(randomNumber), 1));
 						worldIn.addEntity(itemFrame);
 					}
@@ -108,13 +108,13 @@ public class ItemBeyPackage extends Item {
 			}
 			randomNumber = random.nextInt(BeyRegistry.ITEMSDRIVER.size());
 			if (randomNumber != 0) {
-				ItemEntity itemDriver = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-						playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+				ItemEntity itemDriver = new ItemEntity(worldIn, playerIn.getPosX(),
+						playerIn.getPosY(), playerIn.getPosZ(),
 						new ItemStack(BeyRegistry.ITEMSDRIVER.get(randomNumber - 1), 1));
 				worldIn.addEntity(itemDriver);
 			} else {
-				ItemEntity itemDriver = new ItemEntity(worldIn, playerIn.getPosition().getX(),
-						playerIn.getPosition().getY(), playerIn.getPosition().getZ(),
+				ItemEntity itemDriver = new ItemEntity(worldIn, playerIn.getPosX(),
+						playerIn.getPosY(), playerIn.getPosZ(),
 						new ItemStack(BeyRegistry.ITEMSDRIVER.get(randomNumber), 1));
 				worldIn.addEntity(itemDriver);
 			}

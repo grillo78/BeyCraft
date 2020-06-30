@@ -2,6 +2,7 @@ package com.grillo78.beycraft.tileentity;
 
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.items.*;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -31,9 +32,9 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-        readNetwork(compound);
-        super.read(compound);
+    public void func_230337_a_(BlockState p_230337_1_, CompoundNBT p_230337_2_) {
+        super.func_230337_a_(p_230337_1_, p_230337_2_);
+        readNetwork(p_230337_2_);
     }
 
     @Override
@@ -58,8 +59,8 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
     }
 
     @Override
-    public void handleUpdateTag(CompoundNBT tag) {
-        super.read(tag);
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+        super.deserializeNBT(tag);
         this.readNetwork(tag);
     }
 

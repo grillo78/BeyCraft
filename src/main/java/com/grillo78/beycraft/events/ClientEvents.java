@@ -15,14 +15,14 @@ import com.grillo78.beycraft.particles.SparkleParticle;
 import com.grillo78.beycraft.tileentity.RenderBeyCreator;
 import com.grillo78.beycraft.tileentity.RenderExpository;
 import com.grillo78.beycraft.tileentity.RenderRobot;
-import com.lazy.baubles.api.cap.BaublesCapabilities;
 import com.mojang.text2speech.Narrator;
-import com.mrcrayfish.obfuscate.client.event.PlayerModelEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.texture.*;
@@ -35,6 +35,7 @@ import net.minecraft.resources.*;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.TransformationMatrix;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -42,6 +43,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -60,6 +62,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientEvents {
@@ -80,56 +83,52 @@ public class ClientEvents {
 				return name.endsWith(".zip");
 			}
 		});
-		try {
-			for (File file : zipFiles) {
-				try {
-					final String id = file.getName().replace(".zip", "").replace(" ", "_") + "_addon_resources";
-					final ITextComponent name = new StringTextComponent(
-							file.getName().replace(".zip", "") + " Resources");
-					final ITextComponent description = new StringTextComponent("Beycraft addon resources.");
+		for (File file : zipFiles) {
+			try {
+				final String id = file.getName().replace(".zip", "").replace(" ", "_") + "_addon_resources";
+				final String name = file.getName().replace(".zip", "") + " Resources";
+				final String description = "Beycraft addon resources.";
 
-					final IResourcePack pack = new FilePack(file) {
-						String prefix = "assets/beycraft";
+				final IResourcePack pack = new FilePack(file) {
+					String prefix = "assets/beycraft";
 
-						@Override
-						protected InputStream getInputStream(String resourcePath) throws IOException {
-							if ("pack.mcmeta".equals(resourcePath))
-								return new ByteArrayInputStream(
-										("{\"pack\":{\"description\": \"dummy\",\"pack_format\": 4}}")
-												.getBytes(StandardCharsets.UTF_8));
-							if (!resourcePath.startsWith(prefix))
-								throw new FileNotFoundException(resourcePath);
+					@Override
+					protected InputStream getInputStream(String resourcePath) throws IOException {
+						if ("pack.mcmeta".equals(resourcePath))
+							return new ByteArrayInputStream(
+									("{\"pack\":{\"description\": \""+description+"\",\"pack_format\": 5}}")
+											.getBytes(StandardCharsets.UTF_8));
+						if (!resourcePath.startsWith(prefix))
+							throw new FileNotFoundException(resourcePath);
 
-							return super.getInputStream(resourcePath);
+						return super.getInputStream(resourcePath);
+					}
+
+					@Override
+					public boolean resourceExists(String resourcePath) {
+						if ("pack.mcmeta".equals(resourcePath))
+							return true;
+						if (!resourcePath.startsWith(prefix))
+							return false;
+
+						return super.resourceExists(resourcePath);
+					}
+				};
+
+				Minecraft.getInstance().getResourcePackList().addPackFinder(new IPackFinder() {
+					@Override
+					public <T extends ResourcePackInfo> void func_230230_a_(Consumer<T> p_230230_1_,
+							ResourcePackInfo.IFactory<T> p_230230_2_) {
+						T t = ResourcePackInfo.createResourcePack(name, true, () -> pack,
+								p_230230_2_, ResourcePackInfo.Priority.TOP, IPackNameDecorator.field_232625_a_);
+						if (t != null) {
+							p_230230_1_.accept(t);
 						}
+					}
+				});
+			} catch (Exception e) {
 
-						@Override
-						public boolean resourceExists(String resourcePath) {
-							if ("pack.mcmeta".equals(resourcePath))
-								return true;
-							if (!resourcePath.startsWith(prefix))
-								return false;
-
-							return super.resourceExists(resourcePath);
-						}
-					};
-
-					Minecraft.getInstance().getResourcePackList().addPackFinder(new IPackFinder() {
-						@Override
-						public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> nameToPackMap,
-								ResourcePackInfo.IFactory<T> packInfoFactory) {
-							nameToPackMap.put(id,
-									(T) new ClientResourcePackInfo(id, true, () -> pack, name, description,
-											PackCompatibility.COMPATIBLE, ResourcePackInfo.Priority.TOP, false, null,
-											false));
-						}
-					});
-				} catch (Exception e) {
-
-				}
 			}
-		} catch (Exception e) {
-
 		}
 
 	}
@@ -209,28 +208,21 @@ public class ClientEvents {
 				if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
 					Minecraft.getInstance().player.getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(h -> {
 						String s = String.valueOf(h.getBladerLevel());
-						float i1 = (75
-								- Minecraft.getInstance().fontRenderer.getStringWidth(s)) / 2f;
+						float i1 = (75 - Minecraft.getInstance().fontRenderer.getStringWidth(s)) / 2f;
 						int j1 = 16;
-						Minecraft.getInstance().fontRenderer.drawString(s, (i1 + 1), (float) j1, 0);
-						Minecraft.getInstance().fontRenderer.drawString(s, (i1 - 1), (float) j1, 0);
-						Minecraft.getInstance().fontRenderer.drawString(s, i1, (float) (j1 + 1), 0);
-						Minecraft.getInstance().fontRenderer.drawString(s, i1, (float) (j1 - 1), 0);
-						Minecraft.getInstance().fontRenderer.drawString(s, i1, (float) j1, 8453920);
+						Minecraft.getInstance().fontRenderer.func_238405_a_(event.getMatrixStack(), s, i1, (float) j1,
+								8453920);
 						s = "Blader Level:";
 
 						i1 = 5;
 						j1 = 5;
-						Minecraft.getInstance().fontRenderer.drawString(s, (i1 + 1), (float) j1, 0);
-						Minecraft.getInstance().fontRenderer.drawString(s, (i1 - 1), (float) j1, 0);
-						Minecraft.getInstance().fontRenderer.drawString(s, i1, (float) (j1 + 1), 0);
-						Minecraft.getInstance().fontRenderer.drawString(s, i1, (float) (j1 - 1), 0);
-						Minecraft.getInstance().fontRenderer.drawString(s, i1, (float) j1, 8453920);
+						Minecraft.getInstance().fontRenderer.func_238405_a_(event.getMatrixStack(), s, i1, (float) j1,
+								8453920);
 						Minecraft.getInstance().getRenderManager().textureManager
-								.bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+								.bindTexture(AbstractGui.field_230665_h_);
 						float i = h.getExperience() / (h.getExpForNextLevel() + h.getExperience());
-						AbstractGui.blit(1, 27, 0, 74, 75, 5, 105, 256);
-						AbstractGui.blit(1, 27, 0, 79, (int) (i * 75), 5, 105, 256);
+						AbstractGui.func_238463_a_(event.getMatrixStack(), 1, 27, 0, 74, 75, 5, 105, 256);
+						AbstractGui.func_238463_a_(event.getMatrixStack(), 1, 27, 0, 79, (int) (i * 75), 5, 105, 256);
 					});
 				}
 			}
@@ -254,105 +246,13 @@ public class ClientEvents {
 			}
 		}
 
+
 		@SubscribeEvent
-		public static void onSetupAngles(PlayerModelEvent.SetupAngles.Post event) {
+		public static void onSetupAngles(RenderPlayerEvent.Pre event) {
 			PlayerEntity player = event.getPlayer();
-			if (player.equals(Minecraft.getInstance().player)
-					&& Minecraft.getInstance().gameSettings.thirdPersonView == 0)
-				return;
 
-			if (player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemLauncher
-					|| player.getHeldItem(Hand.OFF_HAND).getItem() instanceof ItemLauncher) {
-				PlayerModel model = event.getModelPlayer();
-				model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(player.rotationPitch - 90);
-				model.bipedRightArm.rotateAngleX = (float) Math.toRadians(player.rotationPitch - 90);
+			event.isCancelable();
 
-				model.bipedLeftArmwear.rotateAngleX = (float) Math.toRadians(player.rotationPitch - 90);
-				model.bipedRightArmwear.rotateAngleX = (float) Math.toRadians(player.rotationPitch - 90);
-
-				model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(25);
-				model.bipedRightArm.rotateAngleY = (float) Math.toRadians(-25);
-				model.bipedRightArm.rotateAngleZ = (float) Math
-						.toRadians(25 * (1 - ((90 - (-player.rotationPitch)) / 90)));
-				model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(25 * (1 - ((90 - player.rotationPitch) / 90)));
-
-				model.bipedLeftArmwear.rotateAngleY = (float) Math.toRadians(25);
-				model.bipedRightArmwear.rotateAngleY = (float) Math.toRadians(-25);
-				model.bipedRightArmwear.rotateAngleZ = (float) Math
-						.toRadians(25 * (1 - ((90 - (-player.rotationPitch)) / 90)));
-				model.bipedLeftArmwear.rotateAngleZ = (float) Math
-						.toRadians(25 * (1 - ((90 - player.rotationPitch) / 90)));
-
-				if (player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemLauncher) {
-					if (player.getHeldItem(Hand.MAIN_HAND).hasTag()
-							&& (player.getHeldItem(Hand.MAIN_HAND).getTag().contains("handle")
-									&& ItemStack.read(player.getHeldItem(Hand.MAIN_HAND).getTag().getCompound("handle"))
-											.getItem() instanceof ItemLauncherHandle)) {
-						if (player.getPrimaryHand() == HandSide.RIGHT) {
-							model.bipedRightArm.rotateAngleY = (float) Math.toRadians(0);
-							model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0);
-							model.bipedRightArmwear.rotateAngleY = (float) Math.toRadians(0);
-							model.bipedRightArmwear.rotateAngleZ = (float) Math.toRadians(0);
-						} else {
-							model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(0);
-							model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0);
-							model.bipedLeftArmwear.rotateAngleY = (float) Math.toRadians(0);
-							model.bipedLeftArmwear.rotateAngleZ = (float) Math.toRadians(0);
-						}
-					}
-					if (player.getCooldownTracker().hasCooldown(player.getHeldItem(Hand.MAIN_HAND).getItem())) {
-						if (player.getPrimaryHand() == HandSide.RIGHT) {
-							model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(-25);
-							model.bipedLeftArm.rotateAngleZ = (float) Math
-									.toRadians(-25 * (1 - ((90 - player.rotationPitch) / 90)));
-							model.bipedLeftArmwear.rotateAngleY = (float) Math.toRadians(-25);
-							model.bipedLeftArmwear.rotateAngleZ = (float) Math
-									.toRadians(-25 * (1 - ((90 - player.rotationPitch) / 90)));
-						} else {
-							model.bipedRightArm.rotateAngleY = (float) Math.toRadians(25);
-							model.bipedRightArm.rotateAngleZ = (float) Math
-									.toRadians(-25 * (1 - ((90 - (-player.rotationPitch)) / 90)));
-							model.bipedRightArmwear.rotateAngleY = (float) Math.toRadians(25);
-							model.bipedRightArmwear.rotateAngleZ = (float) Math
-									.toRadians(-25 * (1 - ((90 - (-player.rotationPitch)) / 90)));
-						}
-					}
-				} else {
-					if (player.getHeldItem(Hand.OFF_HAND).hasTag()
-							&& (player.getHeldItem(Hand.OFF_HAND).getTag().contains("handle")
-									&& ItemStack.read(player.getHeldItem(Hand.OFF_HAND).getTag().getCompound("handle"))
-											.getItem() instanceof ItemLauncherHandle)) {
-						if (player.getPrimaryHand() == HandSide.RIGHT) {
-							model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(0);
-							model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0);
-							model.bipedLeftArmwear.rotateAngleY = (float) Math.toRadians(0);
-							model.bipedLeftArmwear.rotateAngleZ = (float) Math.toRadians(0);
-						} else {
-							model.bipedRightArm.rotateAngleY = (float) Math.toRadians(0);
-							model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0);
-							model.bipedRightArmwear.rotateAngleY = (float) Math.toRadians(0);
-							model.bipedRightArmwear.rotateAngleZ = (float) Math.toRadians(0);
-						}
-					}
-					if (player.getCooldownTracker().hasCooldown(player.getHeldItem(Hand.OFF_HAND).getItem())) {
-						if (player.getPrimaryHand() == HandSide.RIGHT) {
-							model.bipedRightArm.rotateAngleY = (float) Math.toRadians(25);
-							model.bipedRightArm.rotateAngleZ = (float) Math
-									.toRadians(-25 * (1 - ((90 - (-player.rotationPitch)) / 90)));
-							model.bipedRightArmwear.rotateAngleY = (float) Math.toRadians(25);
-							model.bipedRightArmwear.rotateAngleZ = (float) Math
-									.toRadians(-25 * (1 - ((90 - (-player.rotationPitch)) / 90)));
-						} else {
-							model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(-25);
-							model.bipedLeftArm.rotateAngleZ = (float) Math
-									.toRadians(-25 * (1 - ((90 - player.rotationPitch) / 90)));
-							model.bipedLeftArmwear.rotateAngleY = (float) Math.toRadians(-25);
-							model.bipedLeftArmwear.rotateAngleZ = (float) Math
-									.toRadians(-25 * (1 - ((90 - player.rotationPitch) / 90)));
-						}
-					}
-				}
-			}
 		}
 	}
 }

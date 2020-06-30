@@ -25,10 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentUtils;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 
 /**
@@ -54,11 +51,11 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
 	}
 
 	@Override
-	protected void init() {
-		super.init();
-		int relX = (this.width - this.xSize) / 2;
-		int relY = (this.height - this.ySize) / 2;
-		prevPart = new Button(relX + 5, relY + 5, 10, 20, "<", (Button) -> {
+	protected void func_231160_c_() {
+		super.func_231160_c_();
+		int relX = (this.field_230708_k_ - this.xSize) / 2;
+		int relY = (this.field_230709_l_ - this.ySize) / 2;
+		prevPart = new Button(relX + 5, relY + 5, 10, 20, new StringTextComponent("<"), (Button) -> {
 			switch (partType) {
 			case 0:
 				if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
@@ -111,7 +108,7 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
 				break;
 			}
 		});
-		nextPart = new Button(relX + 71, relY + 5, 10, 20, ">", (Button) -> {
+		nextPart = new Button(relX + 71, relY + 5, 10, 20, new StringTextComponent(">"), (Button) -> {
 			switch (partType) {
 			case 0:
 				if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
@@ -165,7 +162,7 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
 				break;
 			}
 		});
-		nextPartType = new Button(relX + 15, relY + 5, 56, 20, "Layer", (Button) -> {
+		nextPartType = new Button(relX + 15, relY + 5, 56, 20, new StringTextComponent("Layers"), (Button) -> {
 			partType++;
 			partCount = 0;
 			if (partType == 6) {
@@ -173,26 +170,26 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
 			}
 			switch (partType) {
 			case 0:
-				nextPartType.setMessage("Layers");
+				nextPartType.func_238482_a_(new StringTextComponent("Layers"));
 				break;
 			case 1:
-				nextPartType.setMessage("Discs");
+				nextPartType.func_238482_a_(new StringTextComponent("Discs"));
 				break;
 			case 2:
-				nextPartType.setMessage("Drivers");
+				nextPartType.func_238482_a_(new StringTextComponent("Drivers"));
 				break;
 			case 3:
-				nextPartType.setMessage("Frames");
+				nextPartType.func_238482_a_(new StringTextComponent("Frames"));
 				break;
 			case 4:
-				nextPartType.setMessage("GT Chips");
+				nextPartType.func_238482_a_(new StringTextComponent("GT Chips"));
 				break;
 			case 5:
-				nextPartType.setMessage("GT Weights");
+				nextPartType.func_238482_a_(new StringTextComponent("GT Weights"));
 				break;
 			}
 		});
-		this.addButton(new Button(relX + 5, relY + ySize-26, 54, 20, "Accept", (Button) -> {
+		this.func_230480_a_(new Button(relX + 5, relY + ySize-26, 54, 20, new StringTextComponent("Accept"), (Button) -> {
 			ItemStack stack = null;
 			switch (partType) {
 			case 0:
@@ -231,27 +228,27 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
 			}
 			if (stack != null)
 				PacketHandler.instance.sendToServer(new MessageBeyCreatorUpdate(stack, pos));
-			minecraft.displayGuiScreen(null);
+			getMinecraft().displayGuiScreen(null);
 		}));
-		this.addButton(nextPartType);
-		this.addButton(prevPart);
-		this.addButton(nextPart);
+		this.func_230480_a_(nextPartType);
+		this.func_230480_a_(prevPart);
+		this.func_230480_a_(nextPart);
 	}
 
-	@Override
-	public void render(int p_render_1_, int p_render_2_, float p_render_3_) {
-		this.renderBackground();
-		super.render(p_render_1_, p_render_2_, p_render_3_);
-	}
+//	@Override
+//	public void render(int p_render_1_, int p_render_2_, float p_render_3_) {
+//		this.renderBackground();
+//		super.render(p_render_1_, p_render_2_, p_render_3_);
+//	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
-		this.minecraft.getTextureManager()
+		this.getMinecraft().getTextureManager()
 				.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/empty_container.png"));
-		int relX = (this.width - this.xSize) / 2;
-		int relY = (this.height - this.ySize) / 2;
-		this.blit(relX, relY, 0, 0, this.xSize, this.ySize);
+		int relX = (this.field_230708_k_ - this.xSize) / 2;
+		int relY = (this.field_230709_l_ - this.ySize) / 2;
+		this.func_238474_b_(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
 		ITextComponent partName = TextComponentUtils.toTextComponent(new Message() {
 
 			@Override
@@ -291,86 +288,53 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
 				return "";
 			}
 		});
-		Style sPartName = new Style();
-		sPartName.setColor(TextFormatting.BLACK);
-		partName.setStyle(sPartName);
+		Style sPartName = partName.getStyle();
+		sPartName.func_240712_a_(TextFormatting.BLACK);
 		switch (partType) {
 		case 0:
 			if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
 				ItemStack stack = new ItemStack(BeyRegistry.ITEMSLAYER.get(partCount));
-				renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15, Minecraft.getInstance()
-						.getItemRenderer().getItemModelWithOverrides(stack, (World) null, (LivingEntity) null));
+				Minecraft.getInstance()
+						.getItemRenderer().renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15);
 			}
 			break;
 		case 1:
 			if (!BeyRegistry.ITEMSDISCLIST.isEmpty()) {
 				ItemStack stack = new ItemStack(BeyRegistry.ITEMSDISCLIST.get(partCount));
-				renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15, Minecraft.getInstance()
-						.getItemRenderer().getItemModelWithOverrides(stack, (World) null, (LivingEntity) null));
+				Minecraft.getInstance()
+						.getItemRenderer().renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15);
 			}
 			break;
 		case 2:
 			if (!BeyRegistry.ITEMSDRIVER.isEmpty()) {
 				ItemStack stack = new ItemStack(BeyRegistry.ITEMSDRIVER.get(partCount));
-				renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15, Minecraft.getInstance()
-						.getItemRenderer().getItemModelWithOverrides(stack, (World) null, (LivingEntity) null));
+				Minecraft.getInstance()
+						.getItemRenderer().renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15);
 			}
 			break;
 		case 3:
 			if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
 				ItemStack stack = new ItemStack(BeyRegistry.ITEMSFRAME.get(partCount));
-				renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15, Minecraft.getInstance()
-						.getItemRenderer().getItemModelWithOverrides(stack, (World) null, (LivingEntity) null));
+				Minecraft.getInstance()
+						.getItemRenderer().renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15);
 			}
 			break;
 		case 4:
 			if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
 				ItemStack stack = new ItemStack(BeyRegistry.ITEMSGTCHIP.get(partCount));
-				renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15, Minecraft.getInstance()
-						.getItemRenderer().getItemModelWithOverrides(stack, (World) null, (LivingEntity) null));
+				Minecraft.getInstance()
+						.getItemRenderer().renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15);
 			}
 			break;
 		case 5:
 			if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
 				ItemStack stack = new ItemStack(BeyRegistry.ITEMSGTWEIGHT.get(partCount));
-				renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15, Minecraft.getInstance()
-						.getItemRenderer().getItemModelWithOverrides(stack, (World) null, (LivingEntity) null));
+				Minecraft.getInstance()
+						.getItemRenderer().renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15);
 			}
 			break;
 		}
-		this.font.drawString(partName.getFormattedText(), relX + (getXSize()
-				- Minecraft.getInstance().fontRenderer.getStringWidth(partName.getFormattedText())) / 2f, relY + 30, 50);
-	}
-
-	private void renderItemIntoGUI(ItemStack stack, int x, int y, IBakedModel bakedmodel) {
-		RenderSystem.pushMatrix();
-		Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-		Minecraft.getInstance().getTextureManager().getTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE)
-				.setBlurMipmapDirect(false, false);
-		RenderSystem.enableRescaleNormal();
-		RenderSystem.enableAlphaTest();
-		RenderSystem.defaultAlphaFunc();
-		RenderSystem.enableBlend();
-		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.translatef((float) x, (float) y, 100.0F + Minecraft.getInstance().getItemRenderer().zLevel);
-		RenderSystem.translatef(8.0F, 8.0F, 0.0F);
-		RenderSystem.scalef(1.0F, -1.0F, 1.0F);
-		RenderSystem.scalef(128, 128, 128);
-		MatrixStack matrixstack = new MatrixStack();
-		IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers()
-				.getBufferSource();
-
-		RenderHelper.setupGuiFlatDiffuseLighting();
-
-		Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GUI, false,
-				matrixstack, irendertypebuffer$impl, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
-		irendertypebuffer$impl.finish();
-		RenderSystem.enableDepthTest();
-		RenderHelper.setupGui3DDiffuseLighting();
-
-		RenderSystem.disableAlphaTest();
-		RenderSystem.disableRescaleNormal();
-		RenderSystem.popMatrix();
+//		this.field_230712_o_.renderString(partName, relX + (getXSize()
+//				- Minecraft.getInstance().fontRenderer.getStringWidth(partName.getString())) / 2f, relY + 30, 50, false, );
 	}
 }

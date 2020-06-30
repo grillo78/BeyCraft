@@ -18,6 +18,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
 import java.util.Random;
@@ -25,9 +28,8 @@ import java.util.Random;
 public class LauncherItemStackRendererTileEntity extends ItemStackTileEntityRenderer {
 
 	@Override
-	public void render(ItemStack stack, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn,
-			int combinedOverlayIn) {
-		super.render(stack, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
+	public void func_239207_a_(ItemStack stack, TransformType transformType, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+		super.func_239207_a_(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
 		matrixStack.push();
 		matrixStack.scale(1.5f, 1.5f, 1.5f);
 		matrixStack.translate(0.5, 0, 0);

@@ -83,15 +83,15 @@ public class ItemBeyLayer extends ItemBeyPart {
 
     @Override
     public ITextComponent getDisplayName(ItemStack stack) {
-        ITextComponent textComponent = super.getDisplayName(stack);
+        final String[] text = {super.getDisplayName(stack).getString()};
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             for (int i = 0; i < 2; i++) {
                 if (h.getStackInSlot(i).getItem() != Items.AIR) {
-                    textComponent.appendText(" " + h.getStackInSlot(i).getDisplayName().getString());
+                    text[0] = text[0] + " " + h.getStackInSlot(i).getDisplayName().getString();
                 }
             }
         });
-        return textComponent;
+        return new StringTextComponent(text[0]);
     }
 
     public float getAttack(ItemStack stack) {

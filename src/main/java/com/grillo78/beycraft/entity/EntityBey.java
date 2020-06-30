@@ -11,6 +11,8 @@ import com.mojang.brigadier.Message;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -28,7 +30,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextComponentUtils;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -65,7 +67,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	private boolean stoped = false;
 	private float maxRadius;
 
-	private Vec3d[] points = new Vec3d[5];
+	private Vector3d[] points = new Vector3d[5];
 
 	/**
 	 * @param type
@@ -108,6 +110,10 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		return super.getCollisionBoundingBox();
 	}
 
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MobEntity.func_233666_p_().func_233815_a_(Attributes.field_233818_a_, 74.0D);
+	}
+
 	@Nullable
 	@Override
 	protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
@@ -139,7 +145,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		BlockPos pos = null;
 		for(PlayerEntity player : world.getPlayers()){
 			if(playerName.equals(player)){
-				pos = player.getPosition();
+				pos = new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ());
 			}
 		}
 		inventory.getStackInSlot(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
@@ -170,8 +176,8 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
 	private void dropItem(PlayerEntity player) {
 		inventory.getStackInSlot(0).getTag().putBoolean("isEntity", false);
-		world.addEntity(new ItemEntity(world, player.getPosition().getX(), player.getPosition().getY(),
-				player.getPosition().getZ(), inventory.getStackInSlot(0)));
+		world.addEntity(new ItemEntity(world, player.getPosX(), player.getPosY(),
+				player.getPosZ(), inventory.getStackInSlot(0)));
 	}
 
 	@Override
@@ -189,11 +195,11 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		super.registerData();
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(74.0D);
-	}
+//	@Override
+//	protected void registerAttributes() {
+//		super.registerAttributes();
+//		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(74.0D);
+//	}
 
 	@Override
 	public void onDeath(DamageSource cause) {
@@ -274,7 +280,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	}
 
 	@Override
-	public ActionResultType applyPlayerInteraction(PlayerEntity player, Vec3d vec, Hand hand) {
+	public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
 		if (!world.isRemote && !player.isSpectator()) {
 			if (hand == Hand.MAIN_HAND) {
 				dropItem(player);
@@ -305,7 +311,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		}
 	}
 
-	public Vec3d[] getPoints() {
+	public Vector3d[] getPoints() {
 		return points;
 	}
 
@@ -314,13 +320,13 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		if (!onGround || inventory.getStackInSlot(0).getItem() instanceof ItemBeyLayer
 				&& inventory.getStackInSlot(1).getItem() instanceof ItemBeyDisc
 				&& inventory.getStackInSlot(2).getItem() instanceof ItemBeyDriver) {
-			if (this.getRotationSpeed() > 0 && (world.getBlockState(this.getPosition().down())
+			if (this.getRotationSpeed() > 0 && (world.getBlockState(this.getOnPosition().down())
 					.getBlock() instanceof StadiumBlock
-					|| world.getBlockState(this.getPosition().down()).getBlock() == Blocks.AIR
-					|| (world.getBlockState(getPosition()).getBlock() instanceof StadiumBlock && world.getBlockState(
-							new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
+					|| world.getBlockState(this.getOnPosition().down()).getBlock() == Blocks.AIR
+					|| (world.getBlockState(getOnPosition()).getBlock() instanceof StadiumBlock && world.getBlockState(
+							new BlockPos(getPositionVec().x, getPositionVec().y - 0.1, getPositionVec().z))
 							.getBlock() instanceof StadiumBlock) || (!ConfigManager.isOnlyStadium() && (!ConfigManager.getBlockBlackList().contains(world.getBlockState(
-					new BlockPos(getPositionVector().x, getPositionVector().y - 0.1, getPositionVector().z))
+					new BlockPos(getPositionVec().x, getPositionVec().y - 0.1, getPositionVec().z))
 					.getBlock()))))) {
 
 				if (!rotationStarted) {
@@ -363,7 +369,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	}
 
 	@Override
-	public void travel(Vec3d p_213352_1_) {
+	public void travel(Vector3d p_213352_1_) {
 		super.travel(p_213352_1_);
 		if (collidedHorizontally) {
 			rotationYaw += 90 * rotationDirection;

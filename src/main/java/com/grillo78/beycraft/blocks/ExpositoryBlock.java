@@ -14,8 +14,8 @@ import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.*;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -44,12 +44,18 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public ExpositoryBlock(Material materialIn, String name) {
-        super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).harvestTool(ToolType.PICKAXE).notSolid());
+        super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).notSolid());
         setRegistryName(new ResourceLocation(Reference.MODID, name));
 
         BeyRegistry.BLOCKS.add(this);
         BeyRegistry.ITEMS.put(name,new BlockItem(this, new Item.Properties().group(BeyCraft.BEYCRAFTTAB))
                 .setRegistryName(this.getRegistryName()));
+    }
+
+    @Nullable
+    @Override
+    public ToolType getHarvestTool(BlockState state) {
+        return ToolType.PICKAXE;
     }
 
     @Override
@@ -111,7 +117,7 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public IFluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 

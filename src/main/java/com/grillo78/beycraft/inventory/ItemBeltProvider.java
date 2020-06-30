@@ -1,8 +1,5 @@
 package com.grillo78.beycraft.inventory;
 
-import com.lazy.baubles.api.BaubleType;
-import com.lazy.baubles.api.IBauble;
-import com.lazy.baubles.api.cap.BaublesCapabilities;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
@@ -17,21 +14,21 @@ import net.minecraftforge.items.ItemStackHandler;
 public class ItemBeltProvider implements ICapabilityProvider, ICapabilitySerializable {
 
 	private final LazyOptional<IItemHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(2));
-	private final LazyOptional<IBauble> iBaubleCap = LazyOptional.of(() -> new IBauble() {
-		@Override
-		public BaubleType getBaubleType() {
-			return BaubleType.BELT;
-		}
-	});
+//	private final LazyOptional<IBauble> iBaubleCap = LazyOptional.of(() -> new IBauble() {
+//		@Override
+//		public BaubleType getBaubleType() {
+//			return BaubleType.BELT;
+//		}
+//	});
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return inventory.cast();
 		}
-		if (cap == BaublesCapabilities.ITEM_BAUBLE) {
-			return BaublesCapabilities.ITEM_BAUBLE.orEmpty(cap, iBaubleCap);
-		}
+//		if (cap == BaublesCapabilities.ITEM_BAUBLE) {
+//			return BaublesCapabilities.ITEM_BAUBLE.orEmpty(cap, iBaubleCap);
+//		}
 		return LazyOptional.empty();
 	}
 

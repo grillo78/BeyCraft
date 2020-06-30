@@ -11,7 +11,10 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.text.StringTextComponent;
 
 import java.math.BigDecimal;
 
@@ -38,15 +41,15 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                 && Minecraft.isGuiEnabled()) {
             matrixStack.push();
             matrixStack.translate(0, 0.1F, 0);
-            renderName(entity, entity.getPlayerName(), matrixStack, bufferIn,
+            renderName(entity, new StringTextComponent(entity.getPlayerName()), matrixStack, bufferIn,
                     packedLightIn);
             matrixStack.translate(0, -0.25F, 0);
-            renderName(entity, "Health: "+round(entity.getHealth()*100/entity.getMaxHealth(),2)+"%", matrixStack, bufferIn,
+            renderName(entity, new StringTextComponent("Health: "+round(entity.getHealth()*100/entity.getMaxHealth(),2)+"%"), matrixStack, bufferIn,
                     packedLightIn);
             matrixStack.pop();
         }
         matrixStack.push();
-        if (entity.onGround && !entity.isStoped()) {
+        if (!entity.isDescending() && !entity.isStoped()) {
             Matrix4f matrix4f1 = matrixStack.getLast().getMatrix();
             for (int i = 0; i < entity.getPoints().length; i++) {
                 if (entity.getPoints()[i] != null) {

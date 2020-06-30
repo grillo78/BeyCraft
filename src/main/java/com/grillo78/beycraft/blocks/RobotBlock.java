@@ -42,13 +42,19 @@ public class RobotBlock extends Block {
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
 	public RobotBlock(Material materialIn, String name) {
-		super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).harvestTool(ToolType.PICKAXE).notSolid());
+		super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).notSolid());
 		setDefaultState(this.stateContainer.getBaseState().with(PART, EnumPartType.BOTTOM));
 		setRegistryName(new ResourceLocation(Reference.MODID, name));
 
 		BeyRegistry.BLOCKS.add(this);
 		BeyRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().group(BeyCraft.BEYCRAFTTAB))
 				.setRegistryName(this.getRegistryName()));
+	}
+
+	@Nullable
+	@Override
+	public ToolType getHarvestTool(BlockState state) {
+		return ToolType.PICKAXE;
 	}
 
 	@Override
@@ -227,12 +233,14 @@ public class RobotBlock extends Block {
 			return this.NAME;
 		}
 
-		public String getName() {
-			return this.NAME;
-		}
 
 		public int getID() {
 			return ID;
+		}
+
+		@Override
+		public String func_176610_l() {
+			return this.NAME;
 		}
 	}
 }

@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.grillo78.beycraft.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "beycraft.refmap.json",
+  "mixins": [
+  ],
+  "client":[
+    "MixinPlayerRenderer"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

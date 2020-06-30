@@ -18,6 +18,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
@@ -29,6 +31,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.*;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,6 +39,7 @@ import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -50,6 +54,9 @@ public class CommonEvents {
 				.size(0.19F, 0.25F).build(Reference.MODID + ":bey");
 		type.setRegistryName(Reference.MODID, "bey");
 		event.getRegistry().register(type);
+
+		GlobalEntityTypeAttributes.put((EntityType<? extends EntityBey>) type, EntityBey.registerAttributes().func_233813_a_());
+
 	}
 
 	@SubscribeEvent
@@ -224,29 +231,15 @@ public class CommonEvents {
 
 		@SubscribeEvent
 		public static void playerEnterWorld(final PlayerEvent.PlayerLoggedInEvent event) {
-			ITextComponent prefix = TextComponentUtils.toTextComponent(new Message() {
-
-				@Override
-				public String getString() {
-					return "[BeyCraft] -> Join to my Discord server: ";
-				}
-			});
-			ITextComponent url = TextComponentUtils.toTextComponent(new Message() {
-
-				@Override
-				public String getString() {
-					return "https://discord.gg/2PpbtFr";
-				}
-			});
-			Style sPrefix = new Style();
-			sPrefix.setColor(TextFormatting.GOLD);
-			Style sUrl = new Style();
-			sUrl.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr"))
-					.setColor(TextFormatting.GOLD);
-			prefix.setStyle(sPrefix);
-			url.setStyle(sUrl);
-			event.getPlayer().sendMessage(prefix);
-			event.getPlayer().sendMessage(url);
+			ITextComponent prefix = new StringTextComponent("[BeyCraft] -> Join to my Discord server: ");
+			ITextComponent url = new StringTextComponent("https://discord.gg/2PpbtFr");
+			Style sPrefix = prefix.getStyle();
+			sPrefix.func_240712_a_(TextFormatting.GOLD);
+			Style sUrl = url.getStyle();
+			sUrl.func_240715_a_(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr"))
+					.func_240712_a_(TextFormatting.GOLD);
+			event.getPlayer().sendMessage(prefix, Util.field_240973_b_);
+			event.getPlayer().sendMessage(url, Util.field_240973_b_);
 			event.getPlayer().getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(h -> {
 				PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(), h.getExperience()),
 						((ServerPlayerEntity) event.getPlayer()).connection.getNetworkManager(),

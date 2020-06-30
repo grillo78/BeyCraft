@@ -43,13 +43,19 @@ public class BeyCreatorBlock extends Block {
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
     public BeyCreatorBlock(Material materialIn, String name) {
-        super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).harvestTool(ToolType.PICKAXE).notSolid());
+        super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).notSolid());
         setRegistryName(new ResourceLocation(Reference.MODID, name));
 
 
         BeyRegistry.BLOCKS.add(this);
         BeyRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().group(BeyCraft.BEYCRAFTTAB))
                 .setRegistryName(this.getRegistryName()));
+    }
+
+    @Nullable
+    @Override
+    public ToolType getHarvestTool(BlockState state) {
+        return ToolType.PICKAXE;
     }
 
     @Override
