@@ -39,23 +39,30 @@ import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.network.NetworkDirection;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotTypeMessage;
+import top.theillusivec4.curios.api.SlotTypePreset;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonEvents {
 
 	@SubscribeEvent
 	public static void registerEntityType(final RegistryEvent.Register<EntityType<?>> event) {
-		EntityType<?> type = EntityType.Builder.<EntityBey>create(EntityBey::new, EntityClassification.MISC).disableSummoning()
-				.size(0.19F, 0.25F).build(Reference.MODID + ":bey");
+		EntityType<?> type = EntityType.Builder.<EntityBey>create(EntityBey::new, EntityClassification.MISC)
+				.disableSummoning().size(0.19F, 0.25F).build(Reference.MODID + ":bey");
 		type.setRegistryName(Reference.MODID, "bey");
 		event.getRegistry().register(type);
 
-		GlobalEntityTypeAttributes.put((EntityType<? extends EntityBey>) type, EntityBey.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put((EntityType<? extends EntityBey>) type,
+				EntityBey.registerAttributes().func_233813_a_());
 
 	}
 
@@ -84,6 +91,8 @@ public class CommonEvents {
 	public static void onSoundRegistry(final RegistryEvent.Register<SoundEvent> event) {
 		BeyRegistry.HITSOUND.setRegistryName("bey.hit");
 		event.getRegistry().register(BeyRegistry.HITSOUND);
+		BeyRegistry.OPEN_CLOSE_BELT.setRegistryName("open_close_belt");
+		event.getRegistry().register(BeyRegistry.OPEN_CLOSE_BELT);
 	}
 
 	@SubscribeEvent
@@ -118,14 +127,10 @@ public class CommonEvents {
 						new ItemStack(BeyRegistry.ITEMSLAYERGT.get(0)), inv, inv.player, Hand.MAIN_HAND);
 			}).setRegistryName("beygt"));
 		}
-		try {
-			Class.forName("com.lazy.baubles.Baubles");
-			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-				return new BeltContainer(BeyRegistry.BELT_CONTAINER, windowId,
-						new ItemStack(BeyRegistry.ITEMS.get("belt")), inv, true);
-			}).setRegistryName("belt"));
-		} catch (Exception e) {
-		}
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+			return new BeltContainer(BeyRegistry.BELT_CONTAINER, windowId, new ItemStack(BeyRegistry.ITEMS.get("belt")),
+					inv, true);
+		}).setRegistryName("belt"));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
 			return new BeyLoggerContainer(BeyRegistry.BEYLOGGER_CONTAINER, windowId);
 		}).setRegistryName("beylogger"));
@@ -147,6 +152,12 @@ public class CommonEvents {
 	}
 
 	@SubscribeEvent
+	public static void enqueueIMC(final InterModEnqueueEvent event) {
+		InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE,
+				() -> SlotTypePreset.BELT.getMessageBuilder().build());
+	}
+
+	@SubscribeEvent
 	public static void registerItem(final RegistryEvent.Register<Item> event) {
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
 			ClientEvents.injectResources();
@@ -160,11 +171,7 @@ public class CommonEvents {
 		BeyRegistry.ITEMS.forEach((name, item) -> {
 			event.getRegistry().register(item);
 		});
-		try {
-			Class.forName("com.lazy.baubles.Baubles");
-			event.getRegistry().register(new ItemBladerBelt("belt"));
-		} catch (Exception e) {
-		}
+		event.getRegistry().register(new ItemBladerBelt("belt"));
 		if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
 			for (Item item : BeyRegistry.ITEMSLAYER) {
 				event.getRegistry().register(item);
@@ -201,11 +208,11 @@ public class CommonEvents {
 	public static class SpecialEvents {
 
 		@SubscribeEvent
-		public static void onPlayerRespawn(final PlayerEvent.PlayerRespawnEvent event){
-			event.getPlayer().getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(h->{
-						PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(), h.getExperience()),
-								((ServerPlayerEntity) event.getPlayer()).connection.getNetworkManager(),
-								NetworkDirection.PLAY_TO_CLIENT);
+		public static void onPlayerRespawn(final PlayerEvent.PlayerRespawnEvent event) {
+			event.getPlayer().getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(h -> {
+				PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(), h.getExperience()),
+						((ServerPlayerEntity) event.getPlayer()).connection.getNetworkManager(),
+						NetworkDirection.PLAY_TO_CLIENT);
 			});
 		}
 
@@ -234,12 +241,12 @@ public class CommonEvents {
 			ITextComponent prefix = new StringTextComponent("[BeyCraft] -> Join to my Discord server: ");
 			ITextComponent url = new StringTextComponent("https://discord.gg/2PpbtFr");
 			Style sPrefix = prefix.getStyle();
-			sPrefix.func_240712_a_(TextFormatting.GOLD);
+			sPrefix.setColor(Color.func_240744_a_(TextFormatting.GOLD));
 			Style sUrl = url.getStyle();
-			sUrl.func_240715_a_(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr"))
-					.func_240712_a_(TextFormatting.GOLD);
-			event.getPlayer().sendMessage(prefix, Util.field_240973_b_);
-			event.getPlayer().sendMessage(url, Util.field_240973_b_);
+			sUrl.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr"))
+					.setColor(Color.func_240744_a_(TextFormatting.GOLD));
+			event.getPlayer().sendMessage(prefix, Util.DUMMY_UUID);
+			event.getPlayer().sendMessage(url, Util.DUMMY_UUID);
 			event.getPlayer().getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(h -> {
 				PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(), h.getExperience()),
 						((ServerPlayerEntity) event.getPlayer()).connection.getNetworkManager(),

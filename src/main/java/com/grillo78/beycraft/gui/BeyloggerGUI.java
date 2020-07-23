@@ -19,6 +19,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 /**
  * @author a19guillermong
@@ -39,38 +40,41 @@ public class BeyloggerGUI extends ContainerScreen<BeyLoggerContainer> {
 		super(screenContainer, inv, titleIn);
 	}
 
-//	@Override
-//	protected void init() {
-//		super.init();
-//		if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemBeyLogger) {
-//			beyLogger = Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND);
-//		} else {
-//			beyLogger = Minecraft.getInstance().player.getHeldItem(Hand.OFF_HAND);
-//		}
-//		if (!beyLogger.hasTag()) {
-//			CompoundNBT compound = new CompoundNBT();
-//			beyLogger.setTag(compound);
-//		}
-//
-//		int relX = (this.width - this.xSize) / 2;
-//		int relY = (this.height - this.ySize) / 2;
-//
-//		setUrlBtn = new Button(relX + 9, relY + 40, 50, 20, "Set URL", (Button) -> {
-//			beyLogger.getTag().putString("url", urlText.getText());
-//			PacketHandler.instance.sendToServer(new MessageUpdateUrlBeyLogger(urlText.getText()));
-//			minecraft.displayGuiScreen(null);
-//		});
-//		this.(setUrlBtn);
-//
-//		urlText = new TextFieldWidget(font, relX + 10, relY + 25, 155, 10, "");
-//		urlText.setMaxStringLength(Integer.MAX_VALUE);
-//		children.add(urlText);
-//		if (beyLogger.getTag().contains("url")) {
-//			urlText.setText(beyLogger.getTag().getString("url"));
-//		}
-//	}
+	@Override
+	protected void init() {
+		super.init();
+		if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemBeyLogger) {
+			beyLogger = Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND);
+		} else {
+			beyLogger = Minecraft.getInstance().player.getHeldItem(Hand.OFF_HAND);
+		}
+		if (!beyLogger.hasTag()) {
+			CompoundNBT compound = new CompoundNBT();
+			beyLogger.setTag(compound);
+		}
 
+		int relX = (this.width - this.xSize) / 2;
+		int relY = (this.height - this.ySize) / 2;
 
+		setUrlBtn = new Button(relX + 9, relY + 40, 50, 20, new StringTextComponent("Set URL"), (Button) -> {
+			beyLogger.getTag().putString("url", urlText.getText());
+			PacketHandler.instance.sendToServer(new MessageUpdateUrlBeyLogger(urlText.getText()));
+			Minecraft.getInstance().displayGuiScreen(null);
+		});
+		this.addButton(setUrlBtn);
+
+		urlText = new TextFieldWidget(font, relX + 10, relY + 25, 155, 10, new StringTextComponent(""));
+		urlText.setMaxStringLength(Integer.MAX_VALUE);
+		children.add(urlText);
+		if (beyLogger.getTag().contains("url")) {
+			urlText.setText(beyLogger.getTag().getString("url"));
+		}
+	}
+
+	@Override
+	protected void func_230451_b_(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
+		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("URL:"), xSize/2, ySize-155.0F, 4210752);
+	}
 
 //	@Override
 //	public void render(int mouseX, int mouseY, float partialTicks) {
@@ -83,14 +87,26 @@ public class BeyloggerGUI extends ContainerScreen<BeyLoggerContainer> {
 //	}
 
 	@Override
+	public void tick() {
+		super.tick();
+		urlText.tick();
+	}
+
+	@Override
+	public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
+		this.renderBackground(p_230430_1_);
+		super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+		this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
+		urlText.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+	}
+
+	@Override
 	protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
 		this.getMinecraft().getTextureManager()
 				.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/beylogger.png"));
-		int relX = (this.field_230708_k_ - this.xSize) / 2;
-		int relY = (this.field_230709_l_ - this.ySize) / 2;
-		this.func_238474_b_(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
-		this.urlText.func_231043_a_(mouseX, mouseY, partialTicks);
-
+		int relX = (this.width - this.xSize) / 2;
+		int relY = (this.height - this.ySize) / 2;
+		this.blit(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
 	}
 }

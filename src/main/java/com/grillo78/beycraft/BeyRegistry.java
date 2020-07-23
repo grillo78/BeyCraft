@@ -84,9 +84,11 @@ public class BeyRegistry {
 
     /* Sounds */
     public static final SoundEvent HITSOUND = new SoundEvent(new ResourceLocation(Reference.MODID, "bey.hit"));
+    public static final SoundEvent OPEN_CLOSE_BELT = new SoundEvent(new ResourceLocation(Reference.MODID, "open_close_belt"));
+    public static final SoundEvent COUNTDOWN = new SoundEvent(new ResourceLocation(Reference.MODID, "countdown"));
 
     /* Items */
-//    public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("package");
+    public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("package");
     public static final ItemBeyRubber BEYRUBBER = new ItemBeyRubber("rubber");
     public static final ItemPlastic PLASTIC = new ItemPlastic("plastic");
 

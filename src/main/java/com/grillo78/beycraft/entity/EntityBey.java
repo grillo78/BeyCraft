@@ -111,7 +111,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	}
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MobEntity.func_233666_p_().func_233815_a_(Attributes.field_233818_a_, 74.0D);
+		return MobEntity.func_233666_p_().func_233815_a_(Attributes.MAX_HEALTH, 74.0D);
 	}
 
 	@Nullable

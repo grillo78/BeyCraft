@@ -203,9 +203,7 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 	@Override
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (newState.getBlock() != this) {
-			System.out.println(state.get(PART).func_176610_l());
-			System.out.println();
-			switch (state.get(PART).func_176610_l()) {
+			switch (state.get(PART).getString()) {
 			case "topleft":
 				breackBlock(worldIn, pos.south());
 				breackBlock(worldIn, pos.west());
@@ -359,7 +357,7 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 		}
 
 		@Override
-		public String func_176610_l() {
+		public String getString() {
 			return this.NAME;
 		}
 	}

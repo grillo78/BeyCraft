@@ -1,8 +1,32 @@
 {
-	"bey.hit":
-	{
-		"category": "entity",
-		"subtitle": "bey.hit",
-		"sounds":[{"name": "beycraft:bey/hit", "stream": true}]
-	}
+  "bey.hit": {
+    "category": "entity",
+    "subtitle": "bey.hit",
+    "sounds": [
+      {
+        "name": "beycraft:bey/hit",
+        "stream": true
+      }
+    ]
+  },
+  "open_close_belt": {
+    "category": "player",
+    "subtitle": "open_close_belt",
+    "sounds": [
+      {
+        "name": "beycraft:open_close_belt",
+        "stream": true
+      }
+    ]
+  },
+  "countdown": {
+    "category": "player",
+    "subtitle": "countdown",
+    "sounds": [
+      {
+        "name": "beycraft:countdown",
+        "stream": true
+      }
+    ]
+  }
 }

@@ -11,6 +11,7 @@ import com.grillo78.beycraft.items.ItemLauncherHandle;
 import com.grillo78.beycraft.items.render.BeyLoggerItemStackRendererTileEntity;
 import com.grillo78.beycraft.network.PacketHandler;
 import com.grillo78.beycraft.network.message.MessageOpenBelt;
+import com.grillo78.beycraft.network.message.MessagePlayCountdown;
 import com.grillo78.beycraft.particles.SparkleParticle;
 import com.grillo78.beycraft.tileentity.RenderBeyCreator;
 import com.grillo78.beycraft.tileentity.RenderExpository;
@@ -51,6 +52,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
+import org.lwjgl.glfw.GLFW;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -96,7 +98,7 @@ public class ClientEvents {
 					protected InputStream getInputStream(String resourcePath) throws IOException {
 						if ("pack.mcmeta".equals(resourcePath))
 							return new ByteArrayInputStream(
-									("{\"pack\":{\"description\": \""+description+"\",\"pack_format\": 5}}")
+									("{\"pack\":{\"description\": \"" + description + "\",\"pack_format\": 5}}")
 											.getBytes(StandardCharsets.UTF_8));
 						if (!resourcePath.startsWith(prefix))
 							throw new FileNotFoundException(resourcePath);
@@ -119,8 +121,8 @@ public class ClientEvents {
 					@Override
 					public <T extends ResourcePackInfo> void func_230230_a_(Consumer<T> p_230230_1_,
 							ResourcePackInfo.IFactory<T> p_230230_2_) {
-						T t = ResourcePackInfo.createResourcePack(name, true, () -> pack,
-								p_230230_2_, ResourcePackInfo.Priority.TOP, IPackNameDecorator.field_232625_a_);
+						T t = ResourcePackInfo.createResourcePack(name, true, () -> pack, p_230230_2_,
+								ResourcePackInfo.Priority.TOP, IPackNameDecorator.field_232625_a_);
 						if (t != null) {
 							p_230230_1_.accept(t);
 						}
@@ -149,13 +151,9 @@ public class ClientEvents {
 		ScreenManager.registerFactory(BeyRegistry.LAUNCHER_LEFT_CONTAINER, LauncherGUI::new);
 		ScreenManager.registerFactory(BeyRegistry.LAUNCHER_DUAL_CONTAINER, LauncherDualGUI::new);
 		ScreenManager.registerFactory(BeyRegistry.DISC_FRAME_CONTAINER, DiskFrameGUI::new);
-		try {
-			Class.forName("com.lazy.baubles.Baubles");
-			ScreenManager.registerFactory(BeyRegistry.BELT_CONTAINER, BeltGUI::new);
-			BELTKEY = new KeyBinding("key.beycraft.belt", 66, "key.beycraft.category");
-			ClientRegistry.registerKeyBinding(ClientEvents.BELTKEY);
-		} catch (Exception e) {
-		}
+		ScreenManager.registerFactory(BeyRegistry.BELT_CONTAINER, BeltGUI::new);
+		BELTKEY = new KeyBinding("key.beycraft.belt", 66, "key.beycraft.category");
+		ClientRegistry.registerKeyBinding(ClientEvents.BELTKEY);
 		ScreenManager.registerFactory(BeyRegistry.BEY_CREATOR_CONTAINER, BeyCreatorGUI::new);
 		ScreenManager.registerFactory(BeyRegistry.BEYLOGGER_CONTAINER, BeyloggerGUI::new);
 		if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
@@ -210,19 +208,19 @@ public class ClientEvents {
 						String s = String.valueOf(h.getBladerLevel());
 						float i1 = (75 - Minecraft.getInstance().fontRenderer.getStringWidth(s)) / 2f;
 						int j1 = 16;
-						Minecraft.getInstance().fontRenderer.func_238405_a_(event.getMatrixStack(), s, i1, (float) j1,
-								8453920);
+						Minecraft.getInstance().fontRenderer.drawStringWithShadow(event.getMatrixStack(), s, i1,
+								(float) j1, 8453920);
 						s = "Blader Level:";
 
 						i1 = 5;
 						j1 = 5;
-						Minecraft.getInstance().fontRenderer.func_238405_a_(event.getMatrixStack(), s, i1, (float) j1,
-								8453920);
+						Minecraft.getInstance().fontRenderer.drawStringWithShadow(event.getMatrixStack(), s, i1,
+								(float) j1, 8453920);
 						Minecraft.getInstance().getRenderManager().textureManager
-								.bindTexture(AbstractGui.field_230665_h_);
+								.bindTexture(AbstractGui.GUI_ICONS_LOCATION);
 						float i = h.getExperience() / (h.getExpForNextLevel() + h.getExperience());
-						AbstractGui.func_238463_a_(event.getMatrixStack(), 1, 27, 0, 74, 75, 5, 105, 256);
-						AbstractGui.func_238463_a_(event.getMatrixStack(), 1, 27, 0, 79, (int) (i * 75), 5, 105, 256);
+						AbstractGui.blit(event.getMatrixStack(), 1, 27, 0, 74, 75, 5, 105, 256);
+						AbstractGui.blit(event.getMatrixStack(), 1, 27, 0, 79, (int) (i * 75), 5, 105, 256);
 					});
 				}
 			}
@@ -232,27 +230,12 @@ public class ClientEvents {
 		public static void onKeyPressed(final InputEvent.KeyInputEvent event) {
 			if (Minecraft.getInstance().player == null)
 				return;
-
-			try {
-				Class.forName("com.lazy.baubles.Baubles");
-				if (ClientEvents.BELTKEY.isPressed()) {
-					PacketHandler.instance.sendToServer(new MessageOpenBelt());
-				}
-			} catch (Exception e) {
-
+			if (ClientEvents.BELTKEY.isPressed()) {
+				PacketHandler.instance.sendToServer(new MessageOpenBelt());
 			}
-			if (ClientEvents.COUNTDOWNKEY.isPressed()) {
-				Narrator.getNarrator().say(new TranslationTextComponent("text.countdown").getString(), false);
+			if (ClientEvents.COUNTDOWNKEY.isPressed() && event.getAction() == GLFW.GLFW_PRESS) {
+				PacketHandler.instance.sendToServer(new MessagePlayCountdown());
 			}
-		}
-
-
-		@SubscribeEvent
-		public static void onSetupAngles(RenderPlayerEvent.Pre event) {
-			PlayerEntity player = event.getPlayer();
-
-			event.isCancelable();
-
 		}
 	}
 }

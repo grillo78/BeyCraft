@@ -1,5 +1,6 @@
 package com.grillo78.beycraft.inventory;
 
+import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.inventory.slots.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -7,6 +8,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -31,6 +33,12 @@ public class BeltContainer extends Container {
 		} else {
 			addPlayerSlots(new InvWrapper(playerInventory), playerInventory.getSizeInventory());
 		}
+	}
+
+	@Override
+	public void onContainerClosed(PlayerEntity playerIn) {
+		super.onContainerClosed(playerIn);
+		playerIn.playSound(BeyRegistry.OPEN_CLOSE_BELT, SoundCategory.PLAYERS, 1, 1);
 	}
 
 	protected void addPlayerSlots(InvWrapper playerinventory, int locked) {

@@ -50,9 +50,9 @@ This mod adds beyblades to minecraft, you can add content packs in the folder ca
     versionRange="[1.16.1]"
     ordering="NONE"
     side="BOTH"
-#[[dependencies.beycraft]]
-#    modId="obfuscate"
-#    mandatory=true
-#    versionRange="[0.3.4,)"
-#    ordering="AFTER"
-#    side="BOTH"
+[[dependencies.beycraft]]
+    modId="curios"
+    mandatory=true
+    versionRange="[FORGE-1.16.1-3.0-beta4,)"
+    ordering="AFTER"
+    side="BOTH"

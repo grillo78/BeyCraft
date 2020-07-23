@@ -41,8 +41,11 @@ public class ConfigManager {
 
     public static ArrayList<Block> getBlockBlackList(){
 	    ArrayList<Block> blocks = new ArrayList<>();
-	    for(String s : CONFIG.getProperty("blockBlackList").split(",")){
-            blocks.add(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s.split(":")[0],s.split(":")[1])));
+	    String[] blocksStr = CONFIG.getProperty("blockBlackList").split(",");
+	    if(!CONFIG.getProperty("blockBlackList").equals("")){
+	        for(String s : blocksStr){
+                blocks.add(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s.split(":")[0],s.split(":")[1])));
+            }
         }
 	    return blocks;
     }

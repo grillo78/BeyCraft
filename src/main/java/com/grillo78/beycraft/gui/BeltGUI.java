@@ -28,9 +28,15 @@ public class BeltGUI extends ContainerScreen<BeltContainer>{
 	protected void func_230450_a_(MatrixStack matrixStack, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
 		this.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/2_slots.png"));
-		int relX = (this.field_230708_k_ - this.xSize) / 2;
-        int relY = (this.field_230709_l_ - this.ySize) / 2;
-        this.func_238474_b_(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
+		int relX = (this.width - this.xSize) / 2;
+		int relY = (this.height - this.ySize) / 2;
+        this.blit(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
+	}
 
+	@Override
+	public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
+		this.renderBackground(p_230430_1_);
+		super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+		this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
 	}
 }

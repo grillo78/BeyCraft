@@ -1,3 +1,13 @@
 {
-  "text.countdown": "tres, dos, uno, lanza, miento"
+  "text.countdown": "tres, dos, uno, lanza, miento",
+  "item.beycraft.launcher": "Lanzador",
+  "item.beycraft.left_launcher": "Lanzador de izquierda",
+  "item.beycraft.dual_launcher": "Lanzador dual",
+  "item.beycraft.beylogger": "Beylogger",
+  "item.beycraft.beylogger_plus": "Beylogger plus",
+  "item.beycraft.launcher_handle": "Mango",
+  "item.beycraft.plastic": "Plastico",
+  "item.beycraft.rubber": "Goma",
+  "item.beycraft.stadium": "Estadio",
+  "item.beycraft.package": "Paquete"
 }
