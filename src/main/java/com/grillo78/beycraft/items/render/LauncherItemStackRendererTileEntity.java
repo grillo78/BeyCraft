@@ -4,6 +4,7 @@ import com.grillo78.beycraft.items.ItemBeyLayer;
 import com.grillo78.beycraft.items.ItemBeyLogger;
 import com.grillo78.beycraft.items.ItemDualLauncher;
 import com.grillo78.beycraft.items.ItemLauncherHandle;
+import com.grillo78.beycraft.util.CachedStacks;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
@@ -23,37 +24,50 @@ import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class LauncherItemStackRendererTileEntity extends ItemStackTileEntityRenderer {
 
+	private HashMap<CompoundNBT, ItemStack> stacks;
+
+	public LauncherItemStackRendererTileEntity() {
+		stacks = CachedStacks.INSTANCE.getStacks();
+	}
+
 	@Override
-	public void func_239207_a_(ItemStack stack, TransformType transformType, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+	public void func_239207_a_(ItemStack stack, TransformType transformType, MatrixStack matrixStack,
+			IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
 		super.func_239207_a_(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
 		matrixStack.push();
 		matrixStack.scale(1.5f, 1.5f, 1.5f);
 		matrixStack.translate(0.5, 0, 0);
 		matrixStack.rotate(new Quaternion(new Vector3f(0, 1, 0), 90, true));
-		if (stack.hasTag() && stack.getTag().contains("handle")
-				&& ItemStack.read((CompoundNBT) stack.getTag().get("handle")).getItem() instanceof ItemLauncherHandle) {
+		if (stack.hasTag() && stack.getTag().contains("handle")) {
 			matrixStack.scale(1.5f, 1.5f, 1.5f);
 			matrixStack.rotate(new Quaternion(new Vector3f(1, 0, 0), 90, true));
-			Minecraft.getInstance().getItemRenderer().renderItem(
-					ItemStack.read((CompoundNBT) stack.getTag().get("handle")), TransformType.FIXED, combinedLightIn,
-					combinedOverlayIn, matrixStack, buffer);
-			matrixStack.translate(-0.05, 0.4, 0.075);
+
+			if (!stacks.containsKey(stack.getTag().get("handle"))) {
+				stacks.put((CompoundNBT) stack.getTag().get("handle"),
+						ItemStack.read((CompoundNBT) stack.getTag().get("handle")));
+			}
+			Minecraft.getInstance().getItemRenderer().renderItem(stacks.get(stack.getTag().get("handle")),
+					TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
+			matrixStack.translate(-0.08, 0.37, 0.06);
 			matrixStack.rotate(new Quaternion(new Vector3f(1, 0, 0), -90, true));
 			matrixStack.scale(0.5f, 0.5f, 0.5f);
 		}
-		if (stack.hasTag() && stack.getTag().contains("beylogger")
-				&& ItemStack.read((CompoundNBT) stack.getTag().get("beylogger")).getItem() instanceof ItemBeyLogger) {
+		if (stack.hasTag() && stack.getTag().contains("beylogger")) {
 			matrixStack.scale(1.5f, 1.5f, 1.5f);
 			matrixStack.rotate(new Quaternion(new Vector3f(1, 0, 0), 90, true));
-			matrixStack.translate(0.09,-0.37,-0.08);
-			Minecraft.getInstance().getItemRenderer().renderItem(
-					ItemStack.read((CompoundNBT) stack.getTag().get("beylogger")), TransformType.FIXED, combinedLightIn,
-					combinedOverlayIn, matrixStack, buffer);
-			matrixStack.translate(-0.09,0.37,0.08);
+			matrixStack.translate(0.09, -0.37, -0.08);
+			if (!stacks.containsKey(stack.getTag().get("beylogger"))) {
+				stacks.put((CompoundNBT) stack.getTag().get("beylogger"),
+						ItemStack.read((CompoundNBT) stack.getTag().get("beylogger")));
+			}
+			Minecraft.getInstance().getItemRenderer().renderItem(stacks.get(stack.getTag().get("beylogger")),
+					TransformType.FIXED, Integer.MAX_VALUE, combinedOverlayIn, matrixStack, buffer);
+			matrixStack.translate(-0.09, 0.37, 0.08);
 			matrixStack.rotate(new Quaternion(new Vector3f(1, 0, 0), -90, true));
 			matrixStack.scale(0.5f, 0.5f, 0.5f);
 		}
@@ -65,12 +79,12 @@ public class LauncherItemStackRendererTileEntity extends ItemStackTileEntityRend
 				.getBuffer(RenderType.getEntityTranslucentCull(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
 		for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
 			if (stack.hasTag() && stack.getTag().contains("color")) {
-				vertexBuilder.addVertexData(matrixStack.getLast(), quad,
+				vertexBuilder.addQuad(matrixStack.getLast(), quad,
 						stack.getTag().getCompound("color").getFloat("red"),
 						stack.getTag().getCompound("color").getFloat("green"),
-						stack.getTag().getCompound("color").getFloat("blue"), 1, 1, combinedOverlayIn, true);
+						stack.getTag().getCompound("color").getFloat("blue"), combinedLightIn, combinedOverlayIn);
 			} else {
-				vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, 1, 1, combinedOverlayIn, true);
+				vertexBuilder.addQuad(matrixStack.getLast(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn);
 			}
 		}
 		if (stack.getItem() instanceof ItemDualLauncher) {
@@ -81,10 +95,10 @@ public class LauncherItemStackRendererTileEntity extends ItemStackTileEntityRend
 					+ stack.getItem().getTranslationKey().replace("item.beycraft.", "") + "/launcher_lever"));
 			for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
 				if (stack.hasTag() && stack.getTag().contains("color")) {
-					vertexBuilder.addVertexData(matrixStack.getLast(), quad,
+					vertexBuilder.addQuad(matrixStack.getLast(), quad,
 							stack.getTag().getCompound("color").getFloat("red"),
 							stack.getTag().getCompound("color").getFloat("green"),
-							stack.getTag().getCompound("color").getFloat("blue"), 1, 1, combinedOverlayIn, false);
+							stack.getTag().getCompound("color").getFloat("blue"), combinedLightIn, combinedOverlayIn);
 				} else {
 					vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, 1, 1, combinedOverlayIn, false);
 				}
@@ -105,21 +119,24 @@ public class LauncherItemStackRendererTileEntity extends ItemStackTileEntityRend
 		vertexBuilder = buffer.getBuffer(RenderType.getEntityTranslucentCull(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
 		for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
 			if (stack.hasTag() && stack.getTag().contains("color")) {
-				vertexBuilder.addVertexData(matrixStack.getLast(), quad,
+				vertexBuilder.addQuad(matrixStack.getLast(), quad,
 						stack.getTag().getCompound("color").getFloat("red"),
 						stack.getTag().getCompound("color").getFloat("green"),
-						stack.getTag().getCompound("color").getFloat("blue"), 1, 1, combinedOverlayIn, true);
+						stack.getTag().getCompound("color").getFloat("blue"), combinedLightIn, combinedOverlayIn);
 			} else {
-				vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, 1, 1, combinedOverlayIn, true);
+				vertexBuilder.addQuad(matrixStack.getLast(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn);
 			}
 		}
 		matrixStack.translate(0, 0.05, 0);
 		matrixStack.rotate(new Quaternion(new Vector3f(1, 0, 0), 90, true));
-		if (stack.hasTag() && stack.getTag().contains("bey")
-				&& ItemStack.read((CompoundNBT) stack.getTag().get("bey")).getItem() instanceof ItemBeyLayer) {
-			Minecraft.getInstance().getItemRenderer().renderItem(
-					ItemStack.read((CompoundNBT) stack.getTag().get("bey")), TransformType.FIXED, combinedLightIn,
-					combinedOverlayIn, matrixStack, buffer);
+		if (stack.hasTag() && stack.getTag().contains("bey")) {
+
+			if (!stacks.containsKey(stack.getTag().get("bey"))) {
+				stacks.put((CompoundNBT) stack.getTag().get("bey"),
+						ItemStack.read((CompoundNBT) stack.getTag().get("bey")));
+			}
+			Minecraft.getInstance().getItemRenderer().renderItem(stacks.get(stack.getTag().get("bey")),
+					TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
 		}
 
 		matrixStack.pop();

@@ -2,6 +2,7 @@ package com.grillo78.beycraft.inventory;
 
 import com.grillo78.beycraft.items.ItemBeyLayer;
 import com.grillo78.beycraft.items.ItemBeyLayerGT;
+import com.grillo78.beycraft.items.ItemBeyLayerGTNoWeight;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -36,19 +37,35 @@ public class ItemBeyProvider implements ICapabilityProvider, ICapabilitySerializ
                 }
             });
         } else {
-            inventory = LazyOptional.of(() -> new ItemStackHandler(2) {
-                @Override
-                public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                    return !(stack.getItem() instanceof ItemBeyLayer);
-                }
+            if(stack.getItem() instanceof ItemBeyLayerGTNoWeight){
+                inventory = LazyOptional.of(() -> new ItemStackHandler(3) {
+                    @Override
+                    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+                        return !(stack.getItem() instanceof ItemBeyLayer);
+                    }
 
-                @Nonnull
-                @Override
-                public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                    if (!isItemValid(slot, stack)) return stack;
-                    return super.insertItem(slot, stack, simulate);
-                }
-            });
+                    @Nonnull
+                    @Override
+                    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+                        if (!isItemValid(slot, stack)) return stack;
+                        return super.insertItem(slot, stack, simulate);
+                    }
+                });
+            }else{
+                inventory = LazyOptional.of(() -> new ItemStackHandler(2) {
+                    @Override
+                    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+                        return !(stack.getItem() instanceof ItemBeyLayer);
+                    }
+
+                    @Nonnull
+                    @Override
+                    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+                        if (!isItemValid(slot, stack)) return stack;
+                        return super.insertItem(slot, stack, simulate);
+                    }
+                });
+            }
         }
     }
 

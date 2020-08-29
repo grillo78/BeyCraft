@@ -1,5 +1,7 @@
 {
-  "text.countdown": "three, two, one, go, shoot",
+  "itemGroup.Layers": "Layers",
+  "itemGroup.Disks": "Discs",
+  "itemGroup.Drivers": "Drivers",
   "item.beycraft.launcher": "Launcher",
   "item.beycraft.left_launcher": "Left Launcher",
   "item.beycraft.dual_launcher": "Dual Launcher",
@@ -9,5 +11,9 @@
   "item.beycraft.plastic": "Plastic",
   "item.beycraft.rubber": "Rubber",
   "item.beycraft.stadium": "Stadium",
-  "item.beycraft.package": "Package"
+  "item.beycraft.package": "Package",
+  "beycoins.command.message": "You have %s BeyCoins",
+  "beybox.successful.command.message": "You bought a random bey box",
+  "beybox.fail.command.message": "You don't have enough money to buy a random bey box",
+  "missing_packs.message": "You forgot to install Content Packs, without it you won't have beyblade parts\nso you can have a beyblade or do battles, only decorate,\nto get content packs go to official discord:\nhttps://discord.gg/2PpbtFr"
 }

@@ -4,7 +4,12 @@ import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.entity.EntityBey;
+import com.grillo78.beycraft.inventory.BeyContainer;
 import com.grillo78.beycraft.items.*;
+import com.grillo78.beycraft.network.PacketHandler;
+import com.grillo78.beycraft.network.message.MessageOpenBelt;
+import com.grillo78.beycraft.network.message.MessageOpenRobotGUI;
+import com.grillo78.beycraft.network.message.MessagePlayCountdown;
 import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;
 import com.grillo78.beycraft.tileentity.RobotTileEntity;
@@ -16,6 +21,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
@@ -27,10 +34,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
@@ -68,80 +78,65 @@ public class RobotBlock extends Block {
 		}
 		if (!worldIn.isRemote) {
 			if (tileentity instanceof RobotTileEntity) {
-				((RobotTileEntity) tileentity).getInventory().ifPresent(h -> {
-					if (h.getStackInSlot(0).getItem() instanceof ItemBeyLayer) {
-						EntityBey entity;
-						switch (state.get(FACING)) {
-						case NORTH:
-							entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, worldIn, h.getStackInSlot(0).copy(),
+				if (!playerIn.isCrouching()) {
+					((RobotTileEntity) tileentity).getInventory().ifPresent(h -> {
+						if (h.getStackInSlot(0).getItem() instanceof ItemBeyLayer) {
+							EntityBey entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, worldIn,
+									h.getStackInSlot(0).copy(),
 									(int) ((ItemBeyLayer) h.getStackInSlot(0).getItem()).getRotationDirection(),
-									playerIn);
-							entity.setLocationAndAngles(tileentity.getPos().getX() + 0.5,
-									tileentity.getPos().getY() + 0.025, tileentity.getPos().getZ() - 0.2, 180, 0);
+									"Training Robot", ((RobotTileEntity) tileentity).getBladerLevel());
+							switch (state.get(FACING)) {
+							case NORTH:
+								entity.setLocationAndAngles(tileentity.getPos().getX() + 0.5,
+										tileentity.getPos().getY() + 0.025, tileentity.getPos().getZ() - 0.2, 180, 0);
+								break;
+							case SOUTH:
+								entity.setLocationAndAngles(tileentity.getPos().getX() + 0.5,
+										tileentity.getPos().getY() + 0.025, tileentity.getPos().getZ() + 0.2 + 1, 0, 0);
+								break;
+							case EAST:
+								entity.setLocationAndAngles(tileentity.getPos().getX() + 0.2 + 1,
+										tileentity.getPos().getY() + 0.025, tileentity.getPos().getZ() + 0.5, -90, 0);
+								break;
+							case WEST:
+								entity.setLocationAndAngles(tileentity.getPos().getX() - 0.2,
+										tileentity.getPos().getY() + 0.025, tileentity.getPos().getZ() + 0.5, 90, 0);
+								break;
+							}
+
 							entity.rotationYawHead = entity.rotationYaw;
 							entity.renderYawOffset = entity.rotationYaw;
 							worldIn.addEntity(entity);
 							h.getStackInSlot(0).shrink(1);
-							break;
-						case SOUTH:
-							entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, worldIn, h.getStackInSlot(0).copy(),
-									(int) ((ItemBeyLayer) h.getStackInSlot(0).getItem()).getRotationDirection(),
-									playerIn);
-							entity.setLocationAndAngles(tileentity.getPos().getX() + 0.5,
-									tileentity.getPos().getY() + 0.025, tileentity.getPos().getZ() + 0.2 + 1, 0, 0);
-							entity.rotationYawHead = entity.rotationYaw;
-							entity.renderYawOffset = entity.rotationYaw;
-							worldIn.addEntity(entity);
-							h.getStackInSlot(0).shrink(1);
-							break;
-						case EAST:
-							entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, worldIn, h.getStackInSlot(0).copy(),
-									(int) ((ItemBeyLayer) h.getStackInSlot(0).getItem()).getRotationDirection(),
-									playerIn);
-							entity.setLocationAndAngles(tileentity.getPos().getX() + 0.2 + 1,
-									tileentity.getPos().getY() + 0.025, tileentity.getPos().getZ() + 0.5, -90, 0);
-							entity.rotationYawHead = entity.rotationYaw;
-							entity.renderYawOffset = entity.rotationYaw;
-							worldIn.addEntity(entity);
-							h.getStackInSlot(0).shrink(1);
-							break;
-						case WEST:
-							entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, worldIn, h.getStackInSlot(0).copy(),
-									(int) ((ItemBeyLayer) h.getStackInSlot(0).getItem()).getRotationDirection(),
-									playerIn);
-							entity.setLocationAndAngles(tileentity.getPos().getX() - 0.2,
-									tileentity.getPos().getY() + 0.025, tileentity.getPos().getZ() + 0.5, 90, 0);
-							entity.rotationYawHead = entity.rotationYaw;
-							entity.renderYawOffset = entity.rotationYaw;
-							worldIn.addEntity(entity);
-							h.getStackInSlot(0).shrink(1);
-							break;
 						}
-					}
-					if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyLayer) {
-						playerIn.getHeldItem(hand).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-								.ifPresent(i -> {
-									switch (i.getSlots()) {
-									case 2:
-										if (i.getStackInSlot(0).getItem() instanceof ItemBeyDisc
-												&& i.getStackInSlot(1).getItem() instanceof ItemBeyDriver) {
-											h.insertItem(0, playerIn.getHeldItem(hand).copy(), false);
-											playerIn.getHeldItem(hand).shrink(1);
+						if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyLayer) {
+							playerIn.getHeldItem(hand).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+									.ifPresent(i -> {
+										switch (i.getSlots()) {
+										case 2:
+											if (i.getStackInSlot(0).getItem() instanceof ItemBeyDisc
+													&& i.getStackInSlot(1).getItem() instanceof ItemBeyDriver) {
+												h.insertItem(0, playerIn.getHeldItem(hand).copy(), false);
+												playerIn.getHeldItem(hand).shrink(1);
+											}
+											break;
+										case 4:
+											if (i.getStackInSlot(0).getItem() instanceof ItemBeyDisc
+													&& i.getStackInSlot(1).getItem() instanceof ItemBeyDriver
+													&& i.getStackInSlot(2).getItem() instanceof ItemBeyGTChip) {
+												h.insertItem(0, playerIn.getHeldItem(hand).copy(), false);
+												playerIn.getHeldItem(hand).shrink(1);
+											}
+											break;
 										}
-										break;
-									case 4:
-										if (i.getStackInSlot(0).getItem() instanceof ItemBeyDisc
-												&& i.getStackInSlot(1).getItem() instanceof ItemBeyDriver
-												&& i.getStackInSlot(2).getItem() instanceof ItemBeyGTChip
-												&& i.getStackInSlot(3).getItem() instanceof ItemBeyGTWeight) {
-											h.insertItem(0, playerIn.getHeldItem(hand).copy(), false);
-											playerIn.getHeldItem(hand).shrink(1);
-										}
-										break;
-									}
-								});
-					}
-				});
+									});
+						}
+					});
+				} else {
+					PacketHandler.instance.sendTo(new MessageOpenRobotGUI(),
+							((ServerPlayerEntity) playerIn).connection.getNetworkManager(),
+							NetworkDirection.PLAY_TO_CLIENT);
+				}
 				if (state.get(PART).equals(EnumPartType.TOP)) {
 					worldIn.notifyBlockUpdate(pos, state, worldIn.getBlockState(pos), 0);
 				} else {
@@ -232,7 +227,6 @@ public class RobotBlock extends Block {
 		public String toString() {
 			return this.NAME;
 		}
-
 
 		public int getID() {
 			return ID;

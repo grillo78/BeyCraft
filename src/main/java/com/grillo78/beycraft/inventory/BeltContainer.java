@@ -4,10 +4,12 @@ import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.inventory.slots.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -16,6 +18,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 public class BeltContainer extends Container {
 
 	private boolean canBeOpened = true;
+	private ItemStack stack;
 
 	/**
 	 * @param type
@@ -24,6 +27,7 @@ public class BeltContainer extends Container {
 	public BeltContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory,
 			boolean locked) {
 		super(type, id);
+		this.stack = stack;
 		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
 			this.addSlot(new SlotBeyBothLayer(h, 0, 10, 10));
 			this.addSlot(new SlotBeyLauncher(h, 1, 10, 30));
@@ -39,6 +43,18 @@ public class BeltContainer extends Container {
 	public void onContainerClosed(PlayerEntity playerIn) {
 		super.onContainerClosed(playerIn);
 		playerIn.playSound(BeyRegistry.OPEN_CLOSE_BELT, SoundCategory.PLAYERS, 1, 1);
+		if (playerIn instanceof ServerPlayerEntity) {
+			stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+				if(!stack.hasTag()){
+					CompoundNBT nbt = new CompoundNBT();
+					stack.setTag(nbt);
+				}
+				CompoundNBT nbt = stack.getTag();
+				nbt.putBoolean("isEntity", false);
+				nbt.put("bey", h.getStackInSlot(0).write(new CompoundNBT()));
+				nbt.put("launcher", h.getStackInSlot(1).write(new CompoundNBT()));
+			});
+		}
 	}
 
 	protected void addPlayerSlots(InvWrapper playerinventory, int locked) {

@@ -1,14 +1,44 @@
 package com.grillo78.beycraft.events;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
+import java.util.Random;
+import java.util.function.Consumer;
+
+import com.grillo78.beycraft.BeyCraft;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.arikia.dev.drpc.DiscordEventHandlers;
+import net.arikia.dev.drpc.DiscordRPC;
+import net.arikia.dev.drpc.DiscordRichPresence;
+import net.minecraft.client.gui.screen.MainMenuScreen;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.model.BakedQuad;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.tileentity.BellTileEntity;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import org.lwjgl.glfw.GLFW;
+
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
-import com.grillo78.beycraft.capabilities.BladerLevel;
-import com.grillo78.beycraft.capabilities.BladerLevelProvider;
+import com.grillo78.beycraft.capabilities.BladerCapProvider;
 import com.grillo78.beycraft.entity.BeyEntityRenderFactory;
 import com.grillo78.beycraft.gui.*;
-import com.grillo78.beycraft.items.ItemLauncher;
-import com.grillo78.beycraft.items.ItemLauncherHandle;
-import com.grillo78.beycraft.items.render.BeyLoggerItemStackRendererTileEntity;
 import com.grillo78.beycraft.network.PacketHandler;
 import com.grillo78.beycraft.network.message.MessageOpenBelt;
 import com.grillo78.beycraft.network.message.MessagePlayCountdown;
@@ -16,61 +46,29 @@ import com.grillo78.beycraft.particles.SparkleParticle;
 import com.grillo78.beycraft.tileentity.RenderBeyCreator;
 import com.grillo78.beycraft.tileentity.RenderExpository;
 import com.grillo78.beycraft.tileentity.RenderRobot;
-import com.mojang.text2speech.Narrator;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.model.PlayerModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.client.renderer.texture.*;
-import net.minecraft.client.resources.ClientResourcePackInfo;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.resources.*;
-import net.minecraft.util.Hand;
-import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.TransformationMatrix;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.items.CapabilityItemHandler;
-import org.lwjgl.glfw.GLFW;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.lang.annotation.Native;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientEvents {
 
 	public static KeyBinding BELTKEY;
 	public static final KeyBinding COUNTDOWNKEY = new KeyBinding("key.beycraft.countdown", 67, "key.beycraft.category");
+	private static boolean firstScreenMenuOpen = true;
+	private static Random random = new Random();
 
 	public static void injectResources() {
 		Minecraft mc = Minecraft.getInstance();
@@ -78,6 +76,9 @@ public class ClientEvents {
 			return;
 
 		File itemsFolder = new File(Minecraft.getInstance().gameDir, "BeyParts");
+		if (!itemsFolder.exists()) {
+			itemsFolder.mkdir();
+		}
 		File[] zipFiles = itemsFolder.listFiles(new FilenameFilter() {
 
 			@Override
@@ -119,9 +120,9 @@ public class ClientEvents {
 
 				Minecraft.getInstance().getResourcePackList().addPackFinder(new IPackFinder() {
 					@Override
-					public <T extends ResourcePackInfo> void func_230230_a_(Consumer<T> p_230230_1_,
-							ResourcePackInfo.IFactory<T> p_230230_2_) {
-						T t = ResourcePackInfo.createResourcePack(name, true, () -> pack, p_230230_2_,
+					public void func_230230_a_(Consumer<ResourcePackInfo> p_230230_1_,
+							ResourcePackInfo.IFactory p_230230_2_) {
+						ResourcePackInfo t = ResourcePackInfo.createResourcePack(name, true, () -> pack, p_230230_2_,
 								ResourcePackInfo.Priority.TOP, IPackNameDecorator.field_232625_a_);
 						if (t != null) {
 							p_230230_1_.accept(t);
@@ -142,6 +143,7 @@ public class ClientEvents {
 
 	@SubscribeEvent
 	public static void doClientStuff(final FMLClientSetupEvent event) {
+
 		RenderTypeLookup.setRenderLayer(BeyRegistry.STADIUM, RenderType.getCutoutMipped());
 		RenderTypeLookup.setRenderLayer(BeyRegistry.EXPOSITORY, RenderType.getCutoutMipped());
 		RenderTypeLookup.setRenderLayer(BeyRegistry.BEYCREATORBLOCK, RenderType.getCutoutMipped());
@@ -162,6 +164,9 @@ public class ClientEvents {
 			}
 			if (!BeyRegistry.ITEMSLAYERGT.isEmpty()) {
 				ScreenManager.registerFactory(BeyRegistry.BEY_GT_CONTAINER, BeyGTGUI::new);
+			}
+			if (!BeyRegistry.ITEMSLAYERGTNOWEIGHT.isEmpty()) {
+				ScreenManager.registerFactory(BeyRegistry.BEY_GT_CONTAINER_NO_WEIGHT, BeyGTNoWeightGUI::new);
 			}
 		}
 		ScreenManager.registerFactory(BeyRegistry.HANDLE_CONTAINER, HandleGUI::new);
@@ -201,21 +206,58 @@ public class ClientEvents {
 	public static class SpecialClientEvents {
 
 		@SubscribeEvent
+		public static void onScreenOpen(final GuiOpenEvent event) {
+			if (event.getGui() instanceof MainMenuScreen && firstScreenMenuOpen) {
+				firstScreenMenuOpen = false;
+				DiscordRPC.discordInitialize("736594360149344267",
+						new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
+							System.out
+									.println("Discord RPC is ready for user: " + user.username + "#" + user.discriminator);
+						}).build(), true);
+				BeyCraft.TIME_STAMP = new Timestamp(System.currentTimeMillis()).getTime();
+				setDiscordRPC();
+				Runtime.getRuntime().addShutdownHook(new Thread() {
+					@Override
+					public void run() {
+						DiscordRPC.discordShutdown();
+					}
+				});
+				File[] zipFiles = new File("BeyParts").listFiles(new FilenameFilter() {
+
+					@Override
+					public boolean accept(File dir, String name) {
+						return name.endsWith(".zip");
+					}
+				});
+				if (zipFiles.length == 0) {
+					event.setCanceled(true);
+					Minecraft.getInstance().displayGuiScreen(new MissingContentPacksScreen(new StringTextComponent("")));
+				}
+			}
+		}
+
+		public static void setDiscordRPC() {
+			DiscordRichPresence rich = new DiscordRichPresence.Builder("In the menus").setBigImage("beycraft", "")
+					.setStartTimestamps(BeyCraft.TIME_STAMP).build();
+			DiscordRPC.discordUpdatePresence(rich);
+		}
+
+		@SubscribeEvent
 		public static void editHud(RenderGameOverlayEvent.Post event) {
 			if (!Minecraft.getInstance().gameSettings.showDebugInfo) {
 				if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-					Minecraft.getInstance().player.getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(h -> {
+					Minecraft.getInstance().player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
 						String s = String.valueOf(h.getBladerLevel());
 						float i1 = (75 - Minecraft.getInstance().fontRenderer.getStringWidth(s)) / 2f;
 						int j1 = 16;
-						Minecraft.getInstance().fontRenderer.drawStringWithShadow(event.getMatrixStack(), s, i1,
-								(float) j1, 8453920);
+						Minecraft.getInstance().fontRenderer.drawStringWithShadow(event.getMatrixStack(), s, i1, (float) j1,
+								8453920);
 						s = "Blader Level:";
 
 						i1 = 5;
 						j1 = 5;
-						Minecraft.getInstance().fontRenderer.drawStringWithShadow(event.getMatrixStack(), s, i1,
-								(float) j1, 8453920);
+						Minecraft.getInstance().fontRenderer.drawStringWithShadow(event.getMatrixStack(), s, i1, (float) j1,
+								8453920);
 						Minecraft.getInstance().getRenderManager().textureManager
 								.bindTexture(AbstractGui.GUI_ICONS_LOCATION);
 						float i = h.getExperience() / (h.getExpForNextLevel() + h.getExperience());
@@ -235,6 +277,13 @@ public class ClientEvents {
 			}
 			if (ClientEvents.COUNTDOWNKEY.isPressed() && event.getAction() == GLFW.GLFW_PRESS) {
 				PacketHandler.instance.sendToServer(new MessagePlayCountdown());
+			}
+		}
+
+		@SubscribeEvent
+		public static void onPlayerExitsWorld(final PlayerEvent.PlayerLoggedOutEvent event) {
+			if (event.getPlayer().getName().equals(Minecraft.getInstance().player.getName())) {
+				setDiscordRPC();
 			}
 		}
 	}

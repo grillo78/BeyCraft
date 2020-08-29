@@ -20,6 +20,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 /**
  * @author a19guillermong
@@ -56,7 +57,7 @@ public class BeyloggerGUI extends ContainerScreen<BeyLoggerContainer> {
 		int relX = (this.width - this.xSize) / 2;
 		int relY = (this.height - this.ySize) / 2;
 
-		setUrlBtn = new Button(relX + 9, relY + 40, 50, 20, new StringTextComponent("Set URL"), (Button) -> {
+		setUrlBtn = new Button(relX + 9, relY + 40, 50, 20, new TranslationTextComponent("gui.done"), (Button) -> {
 			beyLogger.getTag().putString("url", urlText.getText());
 			PacketHandler.instance.sendToServer(new MessageUpdateUrlBeyLogger(urlText.getText()));
 			Minecraft.getInstance().displayGuiScreen(null);
@@ -72,19 +73,9 @@ public class BeyloggerGUI extends ContainerScreen<BeyLoggerContainer> {
 	}
 
 	@Override
-	protected void func_230451_b_(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
-		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("URL:"), xSize/2, ySize-155.0F, 4210752);
+	protected void drawGuiContainerForegroundLayer(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
+		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("URL:").func_241878_f(), xSize/2, ySize-155.0F, 4210752);
 	}
-
-//	@Override
-//	public void render(int mouseX, int mouseY, float partialTicks) {
-//		this.renderBackground();
-//		super.render(mouseX, mouseY, partialTicks);
-//		int relX = (this.width - this.xSize) / 2;
-//		int relY = (this.height - this.ySize) / 2;
-//		this.font.drawString("URL:", relX + 10.0F, relY + 10.0F, 4210752);
-//		this.renderHoveredToolTip(mouseX, mouseY);
-//	}
 
 	@Override
 	public void tick() {
@@ -101,7 +92,7 @@ public class BeyloggerGUI extends ContainerScreen<BeyLoggerContainer> {
 	}
 
 	@Override
-	protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
 		this.getMinecraft().getTextureManager()
 				.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/beylogger.png"));

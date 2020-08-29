@@ -42,7 +42,7 @@ public class MultiType extends Ability {
 	public void executeAbility(ItemStack stack) {
 		if(!stack.hasTag()) {
 			CompoundNBT compound = new CompoundNBT();
-			compound.putString("Type", ((ItemBeyPart)stack.getItem()).getType().name());
+			compound.putString("Type", ((ItemBeyPart)stack.getItem()).getType(stack).name());
 			stack.setTag(compound);
 		}
 		int count = 0;

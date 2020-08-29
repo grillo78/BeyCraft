@@ -102,32 +102,16 @@ public class LauncherGUI extends ContainerScreen<LauncherContainer>{
 		blueText.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
 	}
 
-	//	@Override
-//	public void render(int mouseX, int mouseY, float partialTicks) {
-//		this.renderBackground();
-//		super.render(mouseX, mouseY, partialTicks);
-//		this.redText.render(mouseX, mouseY, partialTicks);
-//		this.greenText.render(mouseX, mouseY, partialTicks);
-//		this.blueText.render(mouseX, mouseY, partialTicks);
-//		int relX = (this.width - this.xSize) / 2;
-//		int relY = (this.height - this.ySize) / 2;
-//		this.font.drawString("R:", relX+85.0F, relY+10.0F, 4210752);
-//		this.font.drawString("G:", relX+85.0F, relY+25.0F, 4210752);
-//		this.font.drawString("B:", relX+85.0F, relY+40.0F, 4210752);
-//		this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), relX+5,relY+74, 4210752);
-//		this.renderHoveredToolTip(mouseX, mouseY);
-//	}
-
 	@Override
-	protected void func_230451_b_(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
-		this.font.func_238422_b_(p_230451_1_, this.playerInventory.getDisplayName(), (float)this.field_238744_r_, (float)this.field_238745_s_, 4210752);
-		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("R:"), xSize/2, ySize-155.0F, 4210752);
-		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("G:"), xSize/2, ySize-140.0F, 4210752);
-		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("B:"), xSize/2, ySize-125.0F, 4210752);
+	protected void drawGuiContainerForegroundLayer(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
+		this.font.func_238422_b_(p_230451_1_, this.playerInventory.getDisplayName().func_241878_f(), (float)this.playerInventoryTitleX, (float)this.playerInventoryTitleY, 4210752);
+		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("R:").func_241878_f(), xSize/2, ySize-155.0F, 4210752);
+		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("G:").func_241878_f(), xSize/2, ySize-140.0F, 4210752);
+		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("B:").func_241878_f(), xSize/2, ySize-125.0F, 4210752);
 	}
 
 	@Override
-	protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
 		this.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/launcher.png"));
 		int relX = (this.width - this.xSize) / 2;

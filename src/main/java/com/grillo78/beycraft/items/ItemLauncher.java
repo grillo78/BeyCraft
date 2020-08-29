@@ -5,12 +5,11 @@ import javax.annotation.Nullable;
 import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
-import com.grillo78.beycraft.capabilities.BladerLevelProvider;
+import com.grillo78.beycraft.capabilities.BladerCapProvider;
 import com.grillo78.beycraft.entity.EntityBey;
 import com.grillo78.beycraft.inventory.ItemLauncherProvider;
 import com.grillo78.beycraft.inventory.LauncherContainer;
 
-import com.grillo78.beycraft.items.render.DiscFrameItemStackRendererTileEntity;
 import com.grillo78.beycraft.items.render.LauncherItemStackRendererTileEntity;
 import com.grillo78.beycraft.network.PacketHandler;
 import com.grillo78.beycraft.network.message.MessageSyncBladerLevel;
@@ -29,9 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
-import org.apache.logging.log4j.core.jmx.Server;
 
 public class ItemLauncher extends Item {
 
@@ -59,20 +56,23 @@ public class ItemLauncher extends Item {
                     launcher.getTag().put("bey", ItemStack.EMPTY.write(new CompoundNBT()));
                     launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                         if (h.getStackInSlot(0).getItem() instanceof ItemBeyLayer) {
-                            h.getStackInSlot(0).getTag().putBoolean("isEntity", true);
-                            EntityBey entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, world,
-                                    h.getStackInSlot(0).copy(),
-                                    getRotation(launcher), player);
-                            entity.setLocationAndAngles(player.getPositionVec().x + player.getLookVec().x / 2,
-                                    player.getPositionVec().y + 1 + player.getLookVec().y/2,
-                                    player.getPositionVec().z + player.getLookVec().z/2, player.rotationYaw , 0);
-                            entity.rotationYawHead = entity.rotationYaw;
-                            entity.renderYawOffset = entity.rotationYaw;
-                            world.addEntity(entity);
+
+                            player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(i->{
+                                h.getStackInSlot(0).getTag().putBoolean("isEntity", true);
+                                EntityBey entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, world,
+                                        h.getStackInSlot(0).copy(),
+                                        getRotation(launcher), player.getName().getString(),i.getBladerLevel());
+                                entity.setLocationAndAngles(player.getPositionVec().x + player.getLookVec().x / 2,
+                                        player.getPositionVec().y + 1 + player.getLookVec().y/2,
+                                        player.getPositionVec().z + player.getLookVec().z/2, player.rotationYaw , 0);
+                                entity.rotationYawHead = entity.rotationYaw;
+                                entity.renderYawOffset = entity.rotationYaw;
+                                world.addEntity(entity);
+                            });
                             h.getStackInSlot(0).shrink(1);
                             player.addStat(Stats.ITEM_USED.get(this));
                             player.getCooldownTracker().setCooldown(this, 20);
-                            player.getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(i->{
+                            player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(i->{
                                 i.increaseExperience(0.5f);
                                 PacketHandler.instance.sendTo(new MessageSyncBladerLevel(i.getBladerLevel(),i.getExperience()), ((ServerPlayerEntity)player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
                             });

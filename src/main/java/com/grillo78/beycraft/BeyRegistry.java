@@ -12,6 +12,8 @@ import com.grillo78.beycraft.items.*;
 import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;
 import com.grillo78.beycraft.tileentity.RobotTileEntity;
+import com.grillo78.beycraft.tileentity.StadiumTileEntity;
+import com.grillo78.beycraft.util.BeyTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
@@ -31,12 +33,15 @@ public class BeyRegistry {
     public static HashMap<String,Item> ITEMS = new HashMap();
     public static List<Item> ITEMSLAYER = Lists.newArrayList();
     public static List<Item> ITEMSLAYERGT = Lists.newArrayList();
+    public static List<Item> ITEMSLAYERGTNOWEIGHT = Lists.newArrayList();
     public static List<Item> ITEMSFRAME = Lists.newArrayList();
     public static List<Item> ITEMSGTWEIGHT = Lists.newArrayList();
     public static List<Item> ITEMSDISCFRAME = Lists.newArrayList();
     public static final List<Item> ITEMSDISCLIST = Lists.newArrayList();
     public static List<Item> ITEMSDRIVER = Lists.newArrayList();
     public static List<Item> ITEMSGTCHIP = Lists.newArrayList();
+
+    public static ItemBeyLayerGTNoWeight test = new ItemBeyLayerGTNoWeight("test",1,1,1,1,null,null, BeyTypes.ATTACK);
 
     @ObjectHolder(Reference.MODID + ":sparkle")
     public static BasicParticleType SPARKLE;
@@ -53,6 +58,8 @@ public class BeyRegistry {
     public static final TileEntityType<BeyCreatorTileEntity> BEYCREATORTILEENTITYTYPE = null;
     @ObjectHolder(Reference.MODID + ":robottileentity")
     public static final TileEntityType<RobotTileEntity> ROBOTTILEENTITYTYPE = null;
+    @ObjectHolder(Reference.MODID + ":stadiumtileentity")
+    public static final TileEntityType<StadiumTileEntity> STADIUMTILEENTITYTYPE = null;
 
     /* Container */
     @ObjectHolder("beycraft:right_launcher")
@@ -65,6 +72,8 @@ public class BeyRegistry {
     public static final ContainerType<BeyContainer> BEY_CONTAINER = null;
     @ObjectHolder("beycraft:beygt")
     public static final ContainerType<BeyGTContainer> BEY_GT_CONTAINER = null;
+    @ObjectHolder("beycraft:beygtnoweight")
+    public static final ContainerType<BeyGTNoWeightContainer> BEY_GT_CONTAINER_NO_WEIGHT = null;
     @ObjectHolder("beycraft:belt")
     public static final ContainerType<BeltContainer> BELT_CONTAINER = null;
     @ObjectHolder("beycraft:handle")

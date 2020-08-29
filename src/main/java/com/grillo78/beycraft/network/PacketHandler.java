@@ -27,6 +27,8 @@ public class PacketHandler {
         register(MessageSyncBladerLevel.class, new MessageSyncBladerLevel());
         register(MessageUpdateUrlBeyLogger.class, new MessageUpdateUrlBeyLogger());
         register(MessagePlayCountdown.class, new MessagePlayCountdown());
+        register(MessageOpenRobotGUI.class, new MessageOpenRobotGUI());
+        register(MessageSetRobotLevel.class, new MessageSetRobotLevel());
     }
 
     private static <T> void register(Class<T> clazz, IMessage<T> message)

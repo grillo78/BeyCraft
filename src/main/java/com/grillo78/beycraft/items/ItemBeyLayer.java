@@ -3,9 +3,11 @@ package com.grillo78.beycraft.items;
 import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.abilities.Ability;
+import com.grillo78.beycraft.abilities.MultiMode;
 import com.grillo78.beycraft.abilities.MultiType;
 import com.grillo78.beycraft.inventory.BeyContainer;
 import com.grillo78.beycraft.inventory.BeyGTContainer;
+import com.grillo78.beycraft.inventory.BeyGTNoWeightContainer;
 import com.grillo78.beycraft.inventory.ItemBeyProvider;
 import com.grillo78.beycraft.items.render.BeyItemStackRendererTileEntity;
 import com.grillo78.beycraft.util.BeyTypes;
@@ -64,6 +66,13 @@ public class ItemBeyLayer extends ItemBeyPart {
                             NetworkHooks.openGui((ServerPlayerEntity) player,
                                     new SimpleNamedContainerProvider(
                                             (id, playerInventory, playerEntity) -> new BeyContainer(BeyRegistry.BEY_CONTAINER, id,
+                                                    stack, playerInventory),
+                                            new StringTextComponent(getTranslationKey())));
+                            break;
+                        case 3:
+                            NetworkHooks.openGui((ServerPlayerEntity) player,
+                                    new SimpleNamedContainerProvider(
+                                            (id, playerInventory, playerEntity) -> new BeyGTNoWeightContainer(BeyRegistry.BEY_GT_CONTAINER_NO_WEIGHT, id,
                                                     stack, playerInventory, playerEntity, handIn),
                                             new StringTextComponent(getTranslationKey())));
                             break;
@@ -107,6 +116,20 @@ public class ItemBeyLayer extends ItemBeyPart {
             }
             return ((MultiType) SECUNDARYABILITY).getTypes().get(0).getValues()[0];
         }
+        if (PRIMARYABILITY instanceof MultiMode) {
+            if (stack.hasTag() && stack.getTag().contains("Mode")) {
+                return ((MultiMode) PRIMARYABILITY).getModeHashMap().get(stack.getTag().getString("Mode"))
+                        .getValues()[1];
+            }
+            return ((MultiMode) PRIMARYABILITY).getModes().get(0).getValues()[0];
+        }
+        if (SECUNDARYABILITY instanceof MultiMode) {
+            if (stack.hasTag() && stack.getTag().contains("Mode")) {
+                return ((MultiMode) SECUNDARYABILITY).getModeHashMap().get(stack.getTag().getString("Mode"))
+                        .getValues()[1];
+            }
+            return ((MultiMode) SECUNDARYABILITY).getModes().get(0).getValues()[0];
+        }
         return attack;
     }
 
@@ -123,10 +146,25 @@ public class ItemBeyLayer extends ItemBeyPart {
             }
             return ((MultiType) SECUNDARYABILITY).getTypes().get(0).getValues()[1];
         }
+
+        if (PRIMARYABILITY instanceof MultiMode) {
+            if (stack.hasTag() && stack.getTag().contains("Mode")) {
+                return ((MultiMode) PRIMARYABILITY).getModeHashMap().get(stack.getTag().getString("Mode"))
+                        .getValues()[1];
+            }
+            return ((MultiMode) PRIMARYABILITY).getModes().get(0).getValues()[1];
+        }
+        if (SECUNDARYABILITY instanceof MultiMode) {
+            if (stack.hasTag() && stack.getTag().contains("Mode")) {
+                return ((MultiMode) SECUNDARYABILITY).getModeHashMap().get(stack.getTag().getString("Mode"))
+                        .getValues()[1];
+            }
+            return ((MultiMode) SECUNDARYABILITY).getModes().get(0).getValues()[1];
+        }
         return defense;
     }
 
-    public float getWeight() {
+    public float getWeight(ItemStack stack) {
         return weight;
     }
 
@@ -142,6 +180,20 @@ public class ItemBeyLayer extends ItemBeyPart {
                 return ((MultiType) SECUNDARYABILITY).getTypeHashMap().get(stack.getTag().getString("Type")).getValues()[2];
             }
             return ((MultiType) SECUNDARYABILITY).getTypes().get(0).getValues()[2];
+        }
+        if (PRIMARYABILITY instanceof MultiMode) {
+            if (stack.hasTag() && stack.getTag().contains("Mode")) {
+                return ((MultiMode) PRIMARYABILITY).getModeHashMap().get(stack.getTag().getString("Mode"))
+                        .getValues()[1];
+            }
+            return ((MultiMode) PRIMARYABILITY).getModes().get(0).getValues()[2];
+        }
+        if (SECUNDARYABILITY instanceof MultiMode) {
+            if (stack.hasTag() && stack.getTag().contains("Mode")) {
+                return ((MultiMode) SECUNDARYABILITY).getModeHashMap().get(stack.getTag().getString("Mode"))
+                        .getValues()[1];
+            }
+            return ((MultiMode) SECUNDARYABILITY).getModes().get(0).getValues()[2];
         }
         return burst;
     }

@@ -1,14 +1,14 @@
 package com.grillo78.beycraft;
 
-import com.grillo78.beycraft.capabilities.BladerLevelStorage;
-import com.grillo78.beycraft.capabilities.Factory;
-import com.grillo78.beycraft.capabilities.IBladerLevel;
+import com.grillo78.beycraft.capabilities.*;
 import com.grillo78.beycraft.network.PacketHandler;
 import com.grillo78.beycraft.tab.BeyCraftDisksTab;
 import com.grillo78.beycraft.tab.BeyCraftDriversTab;
 import com.grillo78.beycraft.tab.BeyCraftLayersTab;
 import com.grillo78.beycraft.tab.BeyCraftTab;
 import com.grillo78.beycraft.util.ConfigManager;
+import net.arikia.dev.drpc.DiscordEventHandlers;
+import net.arikia.dev.drpc.DiscordRPC;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -17,7 +17,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import top.theillusivec4.curios.api.CuriosApi;
+
+import java.sql.Timestamp;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Reference.MODID)
@@ -25,6 +26,8 @@ public class BeyCraft {
 
     // Directly reference a log4j logger.
     public static final Logger logger = LogManager.getLogger();
+
+    public static long TIME_STAMP;
 
     public static final ItemGroup BEYCRAFTLAYERS = new BeyCraftLayersTab("Layers");
     public static final ItemGroup BEYCRAFTDISKS = new BeyCraftDisksTab("Disks");
@@ -43,7 +46,8 @@ public class BeyCraft {
 
     private void setup(final FMLCommonSetupEvent event) {
         PacketHandler.init();
-        CapabilityManager.INSTANCE.register(IBladerLevel.class, new BladerLevelStorage(), new Factory());
+        CapabilityManager.INSTANCE.register(IBladerLevel.class, new BladerLevelStorage(), new BladerLevelFactory());
+        CapabilityManager.INSTANCE.register(ICurrency.class, new CurrencyStorage(), new CurrencyFactory());
     }
 
 }

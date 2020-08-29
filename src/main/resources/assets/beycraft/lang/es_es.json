@@ -1,5 +1,7 @@
 {
-  "text.countdown": "tres, dos, uno, lanza, miento",
+  "itemGroup.Layers": "Layers",
+  "itemGroup.Disks": "Discos",
+  "itemGroup.Drivers": "Drivers",
   "item.beycraft.launcher": "Lanzador",
   "item.beycraft.left_launcher": "Lanzador de izquierda",
   "item.beycraft.dual_launcher": "Lanzador dual",
@@ -9,5 +11,8 @@
   "item.beycraft.plastic": "Plastico",
   "item.beycraft.rubber": "Goma",
   "item.beycraft.stadium": "Estadio",
-  "item.beycraft.package": "Paquete"
+  "item.beycraft.package": "Paquete",
+  "beycoins.command.message": "Tienes %s BeyCoins",
+  "beybox.successful.command.message": "Compraste una caja aleatoria bey",
+  "beybox.fail.command.message": "No tienes dinero para comprar una caja aleatoria bey"
 }

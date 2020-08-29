@@ -1,12 +1,8 @@
 package com.grillo78.beycraft.network.message;
 
-import com.grillo78.beycraft.BeyCraft;
-import com.grillo78.beycraft.capabilities.BladerLevelProvider;
-import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
+import com.grillo78.beycraft.capabilities.BladerCapProvider;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -37,7 +33,7 @@ public class MessageSyncBladerLevel implements IMessage<MessageSyncBladerLevel> 
     @Override
     public void handle(MessageSyncBladerLevel message, Supplier<NetworkEvent.Context> supplier) {
         supplier.get().enqueueWork(()->{
-            Minecraft.getInstance().player.getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(h->{
+            Minecraft.getInstance().player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h->{
                 h.setBladerLevel(message.bladerLevel);
                 h.setExperience(message.experience);
             });

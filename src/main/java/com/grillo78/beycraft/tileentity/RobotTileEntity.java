@@ -18,6 +18,7 @@ public class RobotTileEntity extends TileEntity  {
 	private LazyOptional<IItemHandler> inventory =  LazyOptional.of(() -> new ItemStackHandler(1));
 	private AxisAlignedBB renderBox;
 
+	private int bladerLevel = 0;
 
 	public RobotTileEntity() {
 		super(BeyRegistry.ROBOTTILEENTITYTYPE);
@@ -28,6 +29,14 @@ public class RobotTileEntity extends TileEntity  {
 	 */
 	public LazyOptional<IItemHandler> getInventory() {
 		return inventory;
+	}
+
+	public int getBladerLevel() {
+		return bladerLevel;
+	}
+
+	public void setBladerLevel(int bladerLevel) {
+		this.bladerLevel = bladerLevel;
 	}
 
 	@Override
@@ -72,6 +81,7 @@ public class RobotTileEntity extends TileEntity  {
 	}
 
 	private CompoundNBT writeNetwork(CompoundNBT compound){
+		compound.putInt("bladerLevel",bladerLevel);
 		inventory.ifPresent(h-> {
 			CompoundNBT tag = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
 			compound.put("inv",tag);
@@ -81,6 +91,7 @@ public class RobotTileEntity extends TileEntity  {
 
 	private void readNetwork(CompoundNBT compound){
 		CompoundNBT invTag = compound.getCompound("inv");
+		bladerLevel = compound.getInt("bladerLevel");
 		inventory.ifPresent(h->((INBTSerializable<CompoundNBT>) h).deserializeNBT(invTag));
 	}
 }

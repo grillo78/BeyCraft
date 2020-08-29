@@ -18,16 +18,13 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 public class BeyContainer extends Container {
 
     private ItemStack stack;
-    private Hand hand;
 
     /**
      * @param type
      * @param id
      */
-    public BeyContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory,
-                        PlayerEntity player, Hand hand) {
+    public BeyContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory) {
         super(type, id);
-        this.hand = hand;
         this.stack = stack;
         if(!BeyRegistry.ITEMSLAYER.isEmpty()){
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {

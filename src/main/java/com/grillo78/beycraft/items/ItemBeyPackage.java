@@ -33,6 +33,18 @@ public class ItemBeyPackage extends Item {
 						new ItemStack(BeyRegistry.ITEMSLAYER.get(randomNumber - 1), 1));
 				worldIn.addEntity(itemLayer);
 				if(BeyRegistry.ITEMSLAYER.get(randomNumber-1) instanceof ItemBeyLayerGT){
+					randomNumber = random.nextInt(BeyRegistry.ITEMSGTWEIGHT.size());
+					if(randomNumber != 0){
+						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),
+								playerIn.getPosY(), playerIn.getPosZ(),
+								new ItemStack(BeyRegistry.ITEMSGTWEIGHT.get(randomNumber - 1), 1));
+						worldIn.addEntity(itemChip);
+					} else{
+						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),
+								playerIn.getPosY(), playerIn.getPosZ(),
+								new ItemStack(BeyRegistry.ITEMSGTWEIGHT.get(randomNumber), 1));
+						worldIn.addEntity(itemChip);
+					}
 					randomNumber = random.nextInt(BeyRegistry.ITEMSGTCHIP.size());
 					if(randomNumber != 0){
 						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),

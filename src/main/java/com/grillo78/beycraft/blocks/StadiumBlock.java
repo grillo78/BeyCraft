@@ -6,6 +6,8 @@ import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
 
+import com.grillo78.beycraft.tileentity.RobotTileEntity;
+import com.grillo78.beycraft.tileentity.StadiumTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -24,6 +26,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -333,6 +336,18 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 				|| world.getBlockState(pos).getBlock() == Blocks.SEAGRASS
 				|| world.getBlockState(pos).getBlock() == Blocks.WATER
 				|| world.getBlockState(pos).getBlock() == Blocks.LAVA;
+	}
+
+	@Override
+	public boolean hasTileEntity(BlockState state) {
+		return state.get(PART) == EnumPartType.MIDDLECENTER;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+
+		return new StadiumTileEntity();
 	}
 
 	public static enum EnumPartType implements IStringSerializable {

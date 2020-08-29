@@ -2,8 +2,12 @@ package com.grillo78.beycraft.events;
 
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
-import com.grillo78.beycraft.capabilities.BladerLevelProvider;
+import com.grillo78.beycraft.capabilities.BladerCapProvider;
+import com.grillo78.beycraft.commands.BeyBoxCommand;
+import com.grillo78.beycraft.commands.BeyCoinsCommand;
+import com.grillo78.beycraft.commands.SetLevelCommand;
 import com.grillo78.beycraft.entity.EntityBey;
+import com.grillo78.beycraft.gui.BeyGTNoWeightGUI;
 import com.grillo78.beycraft.inventory.*;
 import com.grillo78.beycraft.inventory.slots.BeyLoggerContainer;
 import com.grillo78.beycraft.items.ItemBladerBelt;
@@ -12,13 +16,12 @@ import com.grillo78.beycraft.network.message.MessageSyncBladerLevel;
 import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;
 import com.grillo78.beycraft.tileentity.RobotTileEntity;
+import com.grillo78.beycraft.tileentity.StadiumTileEntity;
 import com.grillo78.beycraft.util.ItemCreator;
-import com.mojang.brigadier.Message;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -37,10 +40,11 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
@@ -62,24 +66,21 @@ public class CommonEvents {
 		event.getRegistry().register(type);
 
 		GlobalEntityTypeAttributes.put((EntityType<? extends EntityBey>) type,
-				EntityBey.registerAttributes().func_233813_a_());
+				EntityBey.registerAttributes().create());
 
 	}
 
 	@SubscribeEvent
 	public static void registerTileEntityType(final RegistryEvent.Register<TileEntityType<?>> event) {
+		event.getRegistry().register(TileEntityType.Builder.create(ExpositoryTileEntity::new, BeyRegistry.EXPOSITORY)
+				.build(null).setRegistryName(new ResourceLocation(Reference.MODID, "expositorytileentity")));
 		event.getRegistry()
-				.register((TileEntityType<ExpositoryTileEntity>) TileEntityType.Builder
-						.create(ExpositoryTileEntity::new, BeyRegistry.EXPOSITORY).build(null)
-						.setRegistryName(new ResourceLocation(Reference.MODID, "expositorytileentity")));
-		event.getRegistry()
-				.register((TileEntityType<ExpositoryTileEntity>) TileEntityType.Builder
-						.create(BeyCreatorTileEntity::new, BeyRegistry.BEYCREATORBLOCK).build(null)
-						.setRegistryName(new ResourceLocation(Reference.MODID, "beycreatortileentity")));
-		event.getRegistry()
-				.register((TileEntityType<RobotTileEntity>) TileEntityType.Builder
-						.create(RobotTileEntity::new, BeyRegistry.ROBOT).build(null)
-						.setRegistryName(new ResourceLocation(Reference.MODID, "robottileentity")));
+				.register(TileEntityType.Builder.create(BeyCreatorTileEntity::new, BeyRegistry.BEYCREATORBLOCK)
+						.build(null).setRegistryName(new ResourceLocation(Reference.MODID, "beycreatortileentity")));
+		event.getRegistry().register(TileEntityType.Builder.create(RobotTileEntity::new, BeyRegistry.ROBOT).build(null)
+				.setRegistryName(new ResourceLocation(Reference.MODID, "robottileentity")));
+		event.getRegistry().register(TileEntityType.Builder.create(StadiumTileEntity::new, BeyRegistry.STADIUM)
+				.build(null).setRegistryName(new ResourceLocation(Reference.MODID, "stadiumtileentity")));
 	}
 
 	@SubscribeEvent
@@ -118,7 +119,7 @@ public class CommonEvents {
 		if (!BeyRegistry.ITEMSLAYER.isEmpty() && BeyRegistry.ITEMSLAYERGT.size() != BeyRegistry.ITEMSLAYER.size()) {
 			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
 				return new BeyContainer(BeyRegistry.BEY_CONTAINER, windowId,
-						new ItemStack(BeyRegistry.ITEMSLAYER.get(0)), inv, inv.player, Hand.MAIN_HAND);
+						new ItemStack(BeyRegistry.ITEMSLAYER.get(0)), inv);
 			}).setRegistryName("bey"));
 		}
 		if (!BeyRegistry.ITEMSLAYERGT.isEmpty()) {
@@ -126,6 +127,12 @@ public class CommonEvents {
 				return new BeyGTContainer(BeyRegistry.BEY_GT_CONTAINER, windowId,
 						new ItemStack(BeyRegistry.ITEMSLAYERGT.get(0)), inv, inv.player, Hand.MAIN_HAND);
 			}).setRegistryName("beygt"));
+		}
+		if (!BeyRegistry.ITEMSLAYERGTNOWEIGHT.isEmpty()) {
+			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+				return new BeyGTNoWeightContainer(BeyRegistry.BEY_GT_CONTAINER_NO_WEIGHT, windowId,
+						new ItemStack(BeyRegistry.ITEMSLAYERGTNOWEIGHT.get(0)), inv, inv.player, Hand.MAIN_HAND);
+			}).setRegistryName("beygtnoweight"));
 		}
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
 			return new BeltContainer(BeyRegistry.BELT_CONTAINER, windowId, new ItemStack(BeyRegistry.ITEMS.get("belt")),
@@ -145,7 +152,6 @@ public class CommonEvents {
 
 	@SubscribeEvent
 	public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
-		// register a new block here
 		for (Block block : BeyRegistry.BLOCKS) {
 			event.getRegistry().register(block);
 		}
@@ -159,7 +165,7 @@ public class CommonEvents {
 
 	@SubscribeEvent
 	public static void registerItem(final RegistryEvent.Register<Item> event) {
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
 			ClientEvents.injectResources();
 		});
 
@@ -208,8 +214,15 @@ public class CommonEvents {
 	public static class SpecialEvents {
 
 		@SubscribeEvent
+		public static void onCommandRegistry(final RegisterCommandsEvent event) {
+			SetLevelCommand.register(event.getDispatcher());
+			BeyCoinsCommand.register(event.getDispatcher());
+			BeyBoxCommand.register(event.getDispatcher());
+		}
+
+		@SubscribeEvent
 		public static void onPlayerRespawn(final PlayerEvent.PlayerRespawnEvent event) {
-			event.getPlayer().getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(h -> {
+			event.getPlayer().getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
 				PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(), h.getExperience()),
 						((ServerPlayerEntity) event.getPlayer()).connection.getNetworkManager(),
 						NetworkDirection.PLAY_TO_CLIENT);
@@ -219,8 +232,8 @@ public class CommonEvents {
 		@SubscribeEvent
 		public static void playerClone(final PlayerEvent.Clone event) {
 			if (event.isWasDeath()) {
-				event.getOriginal().getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(h -> {
-					event.getPlayer().getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(i -> {
+				event.getOriginal().getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
+					event.getPlayer().getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(i -> {
 						i.setExperience(h.getExperience());
 						i.setBladerLevel(h.getBladerLevel());
 						i.setExpForNextLevel(h.getExpForNextLevel());
@@ -232,22 +245,20 @@ public class CommonEvents {
 		@SubscribeEvent
 		public static void playerCapabilitiesInjection(final AttachCapabilitiesEvent<Entity> event) {
 			if (event.getObject() instanceof PlayerEntity) {
-				event.addCapability(new ResourceLocation(Reference.MODID, "bladerlevel"), new BladerLevelProvider());
+				event.addCapability(new ResourceLocation(Reference.MODID, "bladerlevel"), new BladerCapProvider());
 			}
 		}
 
 		@SubscribeEvent
 		public static void playerEnterWorld(final PlayerEvent.PlayerLoggedInEvent event) {
-			ITextComponent prefix = new StringTextComponent("[BeyCraft] -> Join to my Discord server: ");
-			ITextComponent url = new StringTextComponent("https://discord.gg/2PpbtFr");
-			Style sPrefix = prefix.getStyle();
-			sPrefix.setColor(Color.func_240744_a_(TextFormatting.GOLD));
-			Style sUrl = url.getStyle();
-			sUrl.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr"))
-					.setColor(Color.func_240744_a_(TextFormatting.GOLD));
+			StringTextComponent prefix = new StringTextComponent("[BeyCraft] -> Join to my Discord server: ");
+			StringTextComponent url = new StringTextComponent("https://discord.gg/2PpbtFr");
+			prefix.mergeStyle(TextFormatting.GOLD);
+			url.mergeStyle(TextFormatting.GOLD);
+//			sUrl.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr"));
 			event.getPlayer().sendMessage(prefix, Util.DUMMY_UUID);
 			event.getPlayer().sendMessage(url, Util.DUMMY_UUID);
-			event.getPlayer().getCapability(BladerLevelProvider.BLADERLEVEL_CAP).ifPresent(h -> {
+			event.getPlayer().getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
 				PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(), h.getExperience()),
 						((ServerPlayerEntity) event.getPlayer()).connection.getNetworkManager(),
 						NetworkDirection.PLAY_TO_CLIENT);

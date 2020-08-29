@@ -51,10 +51,6 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
 	}
 
 	@Override
-	protected void func_230451_b_(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
-	}
-
-	@Override
 	protected void init() {
 		super.init();
 		int relX = (this.width - this.xSize) / 2;
@@ -240,7 +236,7 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
 	}
 
 	@Override
-	protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
 		this.getMinecraft().getTextureManager()
 				.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/empty_container.png"));
@@ -327,7 +323,7 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
 			}
 			break;
 		}
-		this.font.func_238422_b_(matrixStack, partName, relX + 4, relY + 30, 4210752);
+		this.font.func_238422_b_(matrixStack, partName.func_241878_f(), relX + 4, relY + 30, 4210752);
 	}
 
 	@Override
@@ -336,6 +332,7 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
 		super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
 		this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
 	}
+
 
 	protected void renderItemIntoGUI(ItemStack stack, int x, int y) {
 		IBakedModel bakedmodel = Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(stack, (World)null, (LivingEntity)null);

@@ -21,17 +21,17 @@ public enum BeyTypes {
 		}
 	}
 	
-	public static String getName(int index){
-		switch(index) {
+	public String getName(){
+		switch(this) {
 		default:
-		case 0:
-			return "Attack";
-		case 1:
-			return "Defense";
-		case 2:
-			return "Stamina";
-		case 3:
-			return "Balance";
+		case ATTACK:
+			return "attack";
+			case DEFENSE:
+			return "defense";
+			case STAMINA:
+			return "stamina";
+			case BALANCE:
+			return "balance";
 		}
 	}
 	

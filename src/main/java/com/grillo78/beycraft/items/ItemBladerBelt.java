@@ -34,7 +34,7 @@ public class ItemBladerBelt extends Item {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        return new ItemBeltProvider();
+        return new ItemBeltProvider(stack);
     }
 
     @Override

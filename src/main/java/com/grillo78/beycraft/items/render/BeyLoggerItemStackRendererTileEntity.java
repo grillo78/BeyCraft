@@ -27,21 +27,17 @@ public class BeyLoggerItemStackRendererTileEntity extends ItemStackTileEntityRen
 
 	private HashMap<String, DynamicTexture> textures = new HashMap<>();
 	private HashMap<String, ResourceLocation> textureLocations = new HashMap<>();
+	private HashMap<String, NativeImage> textureImages = new HashMap<>();
 	private Random random = new Random();
 
 	@Override
-	public void func_239207_a_(ItemStack stack, TransformType transformType, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn,
-							   int combinedOverlayIn) {
+	public void func_239207_a_(ItemStack stack, TransformType transformType, MatrixStack matrixStack,
+			IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
 		super.func_239207_a_(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
 		matrixStack.push();
-		if (!ItemModels.MODELS.containsKey(stack.getItem().getTranslationKey())
-				|| ItemModels.MODELS.get(stack.getItem().getTranslationKey()) == null) {
 
-			ItemModels.MODELS.put(stack.getItem().getTranslationKey(),
-					Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft",
-							"beyloggers/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "") + "")));
-		}
-		IBakedModel model = ItemModels.MODELS.get(stack.getItem().getTranslationKey());
+		IBakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft",
+				"beyloggers/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "") + ""));
 		IVertexBuilder vertexBuilder = buffer
 				.getBuffer(RenderType.getEntityTranslucent(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
 		for (BakedQuad quad : model.getQuads(null, null, random, EmptyModelData.INSTANCE)) {
@@ -50,14 +46,18 @@ public class BeyLoggerItemStackRendererTileEntity extends ItemStackTileEntityRen
 
 		if (stack.hasTag() && stack.getTag().contains("url")
 				&& !textures.containsKey(stack.getTag().getString("url"))) {
-			Thread t1 = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					getTexture(stack.getTag().getString("url"));
-				}
-			});
+			if(!textureImages.containsKey(stack.getTag().getString("url"))){
+				Thread t1 = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						downloadTexture(stack.getTag().getString("url"));
+					}
+				});
+				t1.start();
+			} else {
+				getTexture(stack.getTag().getString("url"));
+			}
 
-			t1.start();
 		}
 
 		if (stack.hasTag() && stack.getTag().contains("url") && textures.containsKey(stack.getTag().getString("url"))) {
@@ -90,18 +90,28 @@ public class BeyLoggerItemStackRendererTileEntity extends ItemStackTileEntityRen
 		matrixStack.pop();
 	}
 
-	public void getTexture(String urlS) {
+	private void downloadTexture(String urlS){
 		try {
 			URL url = new URL(urlS);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestProperty("User-Agent", "Mozilla/5.0");
 			NativeImage beyloggerImages = NativeImage.read(conn.getInputStream());
+			textureImages.put(urlS, beyloggerImages);
+		} catch (Exception e) {
+			if (textureImages.containsKey(urlS)) {
+				textureImages.remove(urlS);
+			}
+		}
+	}
+
+	public void getTexture(String urlS) {
+		try {
+			NativeImage beyloggerImages = textureImages.get(urlS);
 			DynamicTexture texture = new DynamicTexture(beyloggerImages);
-			texture.updateDynamicTexture();
 			textureLocations.put(urlS, new ResourceLocation("dynamic_texture_" + textureLocations.size()));
 			Minecraft.getInstance().textureManager.loadTexture(textureLocations.get(urlS), texture);
 			textures.put(urlS, texture);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			if (textures.containsKey(urlS)) {
 				textures.remove(urlS);
 			}

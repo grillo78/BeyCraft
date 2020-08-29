@@ -1,5 +1,7 @@
 package com.grillo78.beycraft.entity;
 
+import com.grillo78.beycraft.items.ItemBeyDriver;
+import com.grillo78.beycraft.util.BeyTypes;
 import com.grillo78.beycraft.util.CustomRenderType;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
@@ -49,6 +51,7 @@ public class BeyRender extends EntityRenderer<EntityBey> {
             matrixStack.pop();
         }
         matrixStack.push();
+//        Minecraft.getInstance().gameRenderer.loadShader(new ResourceLocation("shaders/post/entity_outline.json"));
         if (!entity.isDescending() && !entity.isStoped()) {
             Matrix4f matrix4f1 = matrixStack.getLast().getMatrix();
             for (int i = 0; i < entity.getPoints().length; i++) {
@@ -79,16 +82,20 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                     }
                 }
             }
-
-
         }
         matrixStack.scale(0.5F, 0.5F, 0.5F);
         matrixStack.rotate(new Quaternion(90, 0, 0, true));
         matrixStack.translate(0, 0, -0.30);
         if (entity.getRadius() != 0 && entity.getRotationSpeed() > 2) {
-            matrixStack.rotate(
-                    new Quaternion(new Vector3f((float) -entity.getLookVec().x * entity.getRotationDirection(), 0,
-                            (float) -entity.getLookVec().z * entity.getRotationDirection()), -30, true));
+            if(((ItemBeyDriver)entity.getDriver().getItem()).getType(entity.getDriver()) == BeyTypes.ATTACK){
+                matrixStack.rotate(
+                        new Quaternion(new Vector3f((float) -entity.getLookVec().x * -entity.getRotationDirection(), 0,
+                                (float) -entity.getLookVec().z * entity.getRotationDirection()), -30, true));
+            } else {
+                matrixStack.rotate(
+                        new Quaternion(new Vector3f((float) -entity.getLookVec().x * entity.getRotationDirection(), 0,
+                                (float) -entity.getLookVec().z * entity.getRotationDirection()), -30, true));
+            }
         }
         matrixStack.rotate(new Quaternion(0, 0, -entity.angle*1.5f, true));
         if (entity.getRotationSpeed() < 1) {
@@ -96,7 +103,7 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                     new Quaternion(new Vector3f((float) entity.getLookVec().x, (float) entity.getLookVec().z, 0),
                             40 * ((1 - entity.getRotationSpeed())), true));
         }
-        Minecraft.getInstance().getItemRenderer().renderItem(entity.getLayer(), TransformType.FIXED, packedLightIn,
+        Minecraft.getInstance().getItemRenderer().renderItem(entity.getLayer(), TransformType.FIXED, Minecraft.getInstance().getRenderManager().getPackedLight(entity,partialTicks),
                 OverlayTexture.NO_OVERLAY, matrixStack, bufferIn);
         if(entity.getRotationDirection()==1){
             matrixStack.rotate(new Quaternion(0, 0,
@@ -106,10 +113,10 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                     entity.getRotationDirection() * -entity.getHealth() +11, true));
         }
         matrixStack.translate(0, 0, 0.078);
-        Minecraft.getInstance().getItemRenderer().renderItem(entity.getDisc(), TransformType.FIXED, packedLightIn,
+        Minecraft.getInstance().getItemRenderer().renderItem(entity.getDisc(), TransformType.FIXED, Minecraft.getInstance().getRenderManager().getPackedLight(entity,partialTicks),
                 OverlayTexture.NO_OVERLAY, matrixStack, bufferIn);
         matrixStack.translate(0, 0, 0.15);
-        Minecraft.getInstance().getItemRenderer().renderItem(entity.getDriver(), TransformType.FIXED, packedLightIn,
+        Minecraft.getInstance().getItemRenderer().renderItem(entity.getDriver(), TransformType.FIXED, Minecraft.getInstance().getRenderManager().getPackedLight(entity,partialTicks),
                 OverlayTexture.NO_OVERLAY, matrixStack, bufferIn);
         matrixStack.pop();
     }
