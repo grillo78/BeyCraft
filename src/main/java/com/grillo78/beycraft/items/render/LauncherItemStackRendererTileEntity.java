@@ -79,12 +79,12 @@ public class LauncherItemStackRendererTileEntity extends ItemStackTileEntityRend
 				.getBuffer(RenderType.getEntityTranslucentCull(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
 		for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
 			if (stack.hasTag() && stack.getTag().contains("color")) {
-				vertexBuilder.addQuad(matrixStack.getLast(), quad,
+				vertexBuilder.addVertexData(matrixStack.getLast(), quad,
 						stack.getTag().getCompound("color").getFloat("red"),
 						stack.getTag().getCompound("color").getFloat("green"),
-						stack.getTag().getCompound("color").getFloat("blue"), combinedLightIn, combinedOverlayIn);
+						stack.getTag().getCompound("color").getFloat("blue"), combinedLightIn, combinedOverlayIn, true);
 			} else {
-				vertexBuilder.addQuad(matrixStack.getLast(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn);
+				vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn, true);
 			}
 		}
 		if (stack.getItem() instanceof ItemDualLauncher) {
@@ -95,12 +95,12 @@ public class LauncherItemStackRendererTileEntity extends ItemStackTileEntityRend
 					+ stack.getItem().getTranslationKey().replace("item.beycraft.", "") + "/launcher_lever"));
 			for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
 				if (stack.hasTag() && stack.getTag().contains("color")) {
-					vertexBuilder.addQuad(matrixStack.getLast(), quad,
+					vertexBuilder.addVertexData(matrixStack.getLast(), quad,
 							stack.getTag().getCompound("color").getFloat("red"),
 							stack.getTag().getCompound("color").getFloat("green"),
-							stack.getTag().getCompound("color").getFloat("blue"), combinedLightIn, combinedOverlayIn);
+							stack.getTag().getCompound("color").getFloat("blue"), combinedLightIn, combinedOverlayIn, true);
 				} else {
-					vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, 1, 1, combinedOverlayIn, false);
+					vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, 1, 1, combinedOverlayIn, true);
 				}
 			}
 		}
@@ -119,12 +119,12 @@ public class LauncherItemStackRendererTileEntity extends ItemStackTileEntityRend
 		vertexBuilder = buffer.getBuffer(RenderType.getEntityTranslucentCull(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
 		for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
 			if (stack.hasTag() && stack.getTag().contains("color")) {
-				vertexBuilder.addQuad(matrixStack.getLast(), quad,
+				vertexBuilder.addVertexData(matrixStack.getLast(), quad,
 						stack.getTag().getCompound("color").getFloat("red"),
 						stack.getTag().getCompound("color").getFloat("green"),
-						stack.getTag().getCompound("color").getFloat("blue"), combinedLightIn, combinedOverlayIn);
+						stack.getTag().getCompound("color").getFloat("blue"), combinedLightIn, combinedOverlayIn, true);
 			} else {
-				vertexBuilder.addQuad(matrixStack.getLast(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn);
+				vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn, true);
 			}
 		}
 		matrixStack.translate(0, 0.05, 0);
