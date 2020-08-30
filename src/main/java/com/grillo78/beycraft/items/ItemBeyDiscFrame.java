@@ -66,7 +66,7 @@ public class ItemBeyDiscFrame extends ItemBeyDisc {
 			NetworkHooks.openGui((ServerPlayerEntity) player,
 					new SimpleNamedContainerProvider(
 							(id, playerInventory, playerEntity) -> new BeyDiscFrameContainer(id,
-									player.getHeldItem(handIn), playerInventory, playerEntity, handIn),
+									player.getHeldItem(handIn), playerInventory),
 							new StringTextComponent(getRegistryName().getPath())));
 		}
 		return super.onItemRightClick(world, player, handIn);

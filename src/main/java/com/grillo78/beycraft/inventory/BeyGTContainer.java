@@ -5,9 +5,11 @@ import com.grillo78.beycraft.inventory.slots.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
@@ -39,6 +41,12 @@ public class BeyGTContainer extends Container {
             });
         }
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);
+    }
+
+    @Override
+    protected boolean mergeItemStack(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
+        Item item = stack.getItem();
+        return super.mergeItemStack(stack, startIndex, endIndex, reverseDirection);
     }
 
     protected void addPlayerSlots(InvWrapper playerinventory, int locked) {
