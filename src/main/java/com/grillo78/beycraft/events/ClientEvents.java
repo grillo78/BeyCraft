@@ -168,6 +168,9 @@ public class ClientEvents {
 			if (!BeyRegistry.ITEMSLAYERGTNOWEIGHT.isEmpty()) {
 				ScreenManager.registerFactory(BeyRegistry.BEY_GT_CONTAINER_NO_WEIGHT, BeyGTNoWeightGUI::new);
 			}
+			if (!BeyRegistry.ITEMSLAYERGOD.isEmpty()) {
+				ScreenManager.registerFactory(BeyRegistry.BEY_GOD_CONTAINER, BeyGodGUI::new);
+			}
 		}
 		ScreenManager.registerFactory(BeyRegistry.HANDLE_CONTAINER, HandleGUI::new);
 		for (Item item : BeyRegistry.ITEMSLAYER) {

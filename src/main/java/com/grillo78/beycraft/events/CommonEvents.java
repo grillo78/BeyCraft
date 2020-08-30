@@ -100,9 +100,13 @@ public class CommonEvents {
 	public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
 		if (!BeyRegistry.ITEMSDISCFRAME.isEmpty()) {
 			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-				return new BeyDiscFrameContainer(windowId, new ItemStack(BeyRegistry.LAUNCHER), inv, inv.player,
-						Hand.MAIN_HAND);
+				return new BeyDiscFrameContainer(windowId, new ItemStack(BeyRegistry.LAUNCHER), inv);
 			}).setRegistryName("discframe"));
+		}
+		if(!BeyRegistry.ITEMSLAYERGOD.isEmpty()){
+			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+				return new BeyGodContainer(BeyRegistry.BEY_GOD_CONTAINER, windowId, new ItemStack(BeyRegistry.ITEMSLAYERGOD.get(0)), inv);
+			}).setRegistryName("beygod"));
 		}
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
 			return new LauncherContainer(BeyRegistry.LAUNCHER_RIGHT_CONTAINER, windowId,
@@ -131,7 +135,7 @@ public class CommonEvents {
 		if (!BeyRegistry.ITEMSLAYERGTNOWEIGHT.isEmpty()) {
 			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
 				return new BeyGTNoWeightContainer(BeyRegistry.BEY_GT_CONTAINER_NO_WEIGHT, windowId,
-						new ItemStack(BeyRegistry.ITEMSLAYERGTNOWEIGHT.get(0)), inv, inv.player, Hand.MAIN_HAND);
+						new ItemStack(BeyRegistry.ITEMSLAYERGTNOWEIGHT.get(0)), inv);
 			}).setRegistryName("beygtnoweight"));
 		}
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {

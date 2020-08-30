@@ -32,6 +32,7 @@ public class BeyRegistry {
     public static List<Block> BLOCKS = Lists.newArrayList();
     public static HashMap<String,Item> ITEMS = new HashMap();
     public static List<Item> ITEMSLAYER = Lists.newArrayList();
+    public static List<Item> ITEMSLAYERGOD = Lists.newArrayList();
     public static List<Item> ITEMSLAYERGT = Lists.newArrayList();
     public static List<Item> ITEMSLAYERGTNOWEIGHT = Lists.newArrayList();
     public static List<Item> ITEMSFRAME = Lists.newArrayList();
@@ -74,6 +75,8 @@ public class BeyRegistry {
     public static final ContainerType<BeyGTContainer> BEY_GT_CONTAINER = null;
     @ObjectHolder("beycraft:beygtnoweight")
     public static final ContainerType<BeyGTNoWeightContainer> BEY_GT_CONTAINER_NO_WEIGHT = null;
+    @ObjectHolder("beycraft:beygod")
+    public static final ContainerType<BeyGodContainer> BEY_GOD_CONTAINER = null;
     @ObjectHolder("beycraft:belt")
     public static final ContainerType<BeltContainer> BELT_CONTAINER = null;
     @ObjectHolder("beycraft:handle")

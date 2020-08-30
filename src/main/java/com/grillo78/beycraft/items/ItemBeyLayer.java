@@ -5,10 +5,7 @@ import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.abilities.Ability;
 import com.grillo78.beycraft.abilities.MultiMode;
 import com.grillo78.beycraft.abilities.MultiType;
-import com.grillo78.beycraft.inventory.BeyContainer;
-import com.grillo78.beycraft.inventory.BeyGTContainer;
-import com.grillo78.beycraft.inventory.BeyGTNoWeightContainer;
-import com.grillo78.beycraft.inventory.ItemBeyProvider;
+import com.grillo78.beycraft.inventory.*;
 import com.grillo78.beycraft.items.render.BeyItemStackRendererTileEntity;
 import com.grillo78.beycraft.util.BeyTypes;
 
@@ -61,29 +58,35 @@ public class ItemBeyLayer extends ItemBeyPart {
             if (!world.isRemote) {
                 ItemStack stack = player.getHeldItem(handIn);
                 stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                    switch (h.getSlots()) {
-                        case 2:
-                            NetworkHooks.openGui((ServerPlayerEntity) player,
-                                    new SimpleNamedContainerProvider(
-                                            (id, playerInventory, playerEntity) -> new BeyContainer(BeyRegistry.BEY_CONTAINER, id,
-                                                    stack, playerInventory),
-                                            new StringTextComponent(getTranslationKey())));
-                            break;
-                        case 3:
-                            NetworkHooks.openGui((ServerPlayerEntity) player,
-                                    new SimpleNamedContainerProvider(
-                                            (id, playerInventory, playerEntity) -> new BeyGTNoWeightContainer(BeyRegistry.BEY_GT_CONTAINER_NO_WEIGHT, id,
-                                                    stack, playerInventory, playerEntity, handIn),
-                                            new StringTextComponent(getTranslationKey())));
-                            break;
-                        case 4:
+                        if (stack.getItem() instanceof ItemBeyLayerGT) {
                             NetworkHooks.openGui((ServerPlayerEntity) player,
                                     new SimpleNamedContainerProvider(
                                             (id, playerInventory, playerEntity) -> new BeyGTContainer(BeyRegistry.BEY_GT_CONTAINER, id,
                                                     stack, playerInventory, playerEntity, handIn),
                                             new StringTextComponent(getTranslationKey())));
-                            break;
-                    }
+                        } else {
+                            if (stack.getItem() instanceof ItemBeyLayerGTNoWeight) {
+                                NetworkHooks.openGui((ServerPlayerEntity) player,
+                                        new SimpleNamedContainerProvider(
+                                                (id, playerInventory, playerEntity) -> new BeyGTNoWeightContainer(BeyRegistry.BEY_GT_CONTAINER_NO_WEIGHT, id,
+                                                        stack, playerInventory),
+                                                new StringTextComponent(getTranslationKey())));
+                            } else {
+                                if(stack.getItem() instanceof ItemBeyLayerGod){
+                                    NetworkHooks.openGui((ServerPlayerEntity) player,
+                                            new SimpleNamedContainerProvider(
+                                                    (id, playerInventory, playerEntity) -> new BeyGodContainer(BeyRegistry.BEY_GOD_CONTAINER, id,
+                                                            stack, playerInventory),
+                                                    new StringTextComponent(getTranslationKey())));
+                                } else {
+                                    NetworkHooks.openGui((ServerPlayerEntity) player,
+                                            new SimpleNamedContainerProvider(
+                                                    (id, playerInventory, playerEntity) -> new BeyContainer(BeyRegistry.BEY_CONTAINER, id,
+                                                            stack, playerInventory),
+                                                    new StringTextComponent(getTranslationKey())));
+                                }
+                            }
+                        }
                 });
             }
         }
@@ -104,14 +107,14 @@ public class ItemBeyLayer extends ItemBeyPart {
     }
 
     public float getAttack(ItemStack stack) {
-        if(PRIMARYABILITY instanceof MultiType){
-            if(stack.hasTag() && stack.getTag().contains("Type")){
+        if (PRIMARYABILITY instanceof MultiType) {
+            if (stack.hasTag() && stack.getTag().contains("Type")) {
                 return ((MultiType) PRIMARYABILITY).getTypeHashMap().get(stack.getTag().getString("Type")).getValues()[0];
             }
             return ((MultiType) PRIMARYABILITY).getTypes().get(0).getValues()[0];
         }
-        if(SECUNDARYABILITY instanceof MultiType){
-            if(stack.hasTag() && stack.getTag().contains("Type")){
+        if (SECUNDARYABILITY instanceof MultiType) {
+            if (stack.hasTag() && stack.getTag().contains("Type")) {
                 return ((MultiType) SECUNDARYABILITY).getTypeHashMap().get(stack.getTag().getString("Type")).getValues()[0];
             }
             return ((MultiType) SECUNDARYABILITY).getTypes().get(0).getValues()[0];
@@ -134,14 +137,14 @@ public class ItemBeyLayer extends ItemBeyPart {
     }
 
     public float getDefense(ItemStack stack) {
-        if(PRIMARYABILITY instanceof MultiType){
-            if(stack.hasTag() && stack.getTag().contains("Type")){
+        if (PRIMARYABILITY instanceof MultiType) {
+            if (stack.hasTag() && stack.getTag().contains("Type")) {
                 return ((MultiType) PRIMARYABILITY).getTypeHashMap().get(stack.getTag().getString("Type")).getValues()[1];
             }
             return ((MultiType) PRIMARYABILITY).getTypes().get(0).getValues()[1];
         }
-        if(SECUNDARYABILITY instanceof MultiType){
-            if(stack.hasTag() && stack.getTag().contains("Type")){
+        if (SECUNDARYABILITY instanceof MultiType) {
+            if (stack.hasTag() && stack.getTag().contains("Type")) {
                 return ((MultiType) SECUNDARYABILITY).getTypeHashMap().get(stack.getTag().getString("Type")).getValues()[1];
             }
             return ((MultiType) SECUNDARYABILITY).getTypes().get(0).getValues()[1];
@@ -169,14 +172,14 @@ public class ItemBeyLayer extends ItemBeyPart {
     }
 
     public float getBurst(ItemStack stack) {
-        if(PRIMARYABILITY instanceof MultiType){
-            if(stack.hasTag() && stack.getTag().contains("Type")){
+        if (PRIMARYABILITY instanceof MultiType) {
+            if (stack.hasTag() && stack.getTag().contains("Type")) {
                 return ((MultiType) PRIMARYABILITY).getTypeHashMap().get(stack.getTag().getString("Type")).getValues()[2];
             }
             return ((MultiType) PRIMARYABILITY).getTypes().get(0).getValues()[2];
         }
-        if(SECUNDARYABILITY instanceof MultiType){
-            if(stack.hasTag() && stack.getTag().contains("Type")){
+        if (SECUNDARYABILITY instanceof MultiType) {
+            if (stack.hasTag() && stack.getTag().contains("Type")) {
                 return ((MultiType) SECUNDARYABILITY).getTypeHashMap().get(stack.getTag().getString("Type")).getValues()[2];
             }
             return ((MultiType) SECUNDARYABILITY).getTypes().get(0).getValues()[2];
