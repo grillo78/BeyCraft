@@ -27,6 +27,7 @@ import java.util.Random;
 public class DiscFrameItemStackRendererTileEntity extends ItemStackTileEntityRenderer {
 
 	private HashMap<CompoundNBT, ItemStack> stacks;
+	private Random random = new Random();
 
 	public DiscFrameItemStackRendererTileEntity() {
 		stacks = CachedStacks.INSTANCE.getStacks();
@@ -41,8 +42,9 @@ public class DiscFrameItemStackRendererTileEntity extends ItemStackTileEntityRen
 				"discsframe/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "") + ""));
 		IVertexBuilder vertexBuilder = buffer
 				.getBuffer(RenderType.getEntityTranslucent(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
-		for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
-			vertexBuilder.addQuad(matrixStack.getLast(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn);
+		MatrixStack.Entry entry = matrixStack.getLast();
+		for (int i = 0; i < model.getQuads(null, null, random, EmptyModelData.INSTANCE).size(); i++) {
+			vertexBuilder.addVertexData(entry, model.getQuads(null, null, random, EmptyModelData.INSTANCE).get(i), 1, 1, 1, 1, combinedLightIn,combinedOverlayIn, true);
 		}
 		if (stack.hasTag()) {
 			matrixStack.scale(2F, 2F, 2F);

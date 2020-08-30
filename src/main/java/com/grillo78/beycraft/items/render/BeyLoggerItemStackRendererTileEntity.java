@@ -40,8 +40,9 @@ public class BeyLoggerItemStackRendererTileEntity extends ItemStackTileEntityRen
 				"beyloggers/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "") + ""));
 		IVertexBuilder vertexBuilder = buffer
 				.getBuffer(RenderType.getEntityTranslucent(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
-		for (BakedQuad quad : model.getQuads(null, null, random, EmptyModelData.INSTANCE)) {
-			vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, 1, 0, combinedOverlayIn, true);
+		MatrixStack.Entry entry = matrixStack.getLast();
+		for (int i = 0; i < model.getQuads(null, null, random, EmptyModelData.INSTANCE).size(); i++) {
+			vertexBuilder.addVertexData(entry, model.getQuads(null, null, random, EmptyModelData.INSTANCE).get(i), 1, 1, 1, 1, combinedLightIn,combinedOverlayIn, true);
 		}
 
 		if (stack.hasTag() && stack.getTag().contains("url")

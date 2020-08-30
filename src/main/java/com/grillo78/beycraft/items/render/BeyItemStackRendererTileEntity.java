@@ -46,7 +46,7 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
 				.getBuffer(RenderType.getEntityTranslucentCull(PlayerContainer.LOCATION_BLOCKS_TEXTURE));
 		MatrixStack.Entry entry = matrixStack.getLast();
 		for (int i = 0; i < model.getQuads(null, null, random, EmptyModelData.INSTANCE).size(); i++) {
-			vertexBuilder.addQuad(entry, model.getQuads(null, null, random, EmptyModelData.INSTANCE).get(i), 1, 1, 1, combinedLightIn,combinedOverlayIn);
+			vertexBuilder.addVertexData(entry, model.getQuads(null, null, random, EmptyModelData.INSTANCE).get(i), 1, 1, 1, 1, combinedLightIn,combinedOverlayIn, true);
 		}
 		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
 			matrixStack.translate(0, 0, 0.5);
