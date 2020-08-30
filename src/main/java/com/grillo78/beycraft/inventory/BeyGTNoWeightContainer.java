@@ -25,10 +25,8 @@ public class BeyGTNoWeightContainer extends Container {
      * @param type
      * @param id
      */
-    public BeyGTNoWeightContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory,
-                                  PlayerEntity player, Hand hand) {
+    public BeyGTNoWeightContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory) {
         super(type, id);
-        this.hand = hand;
         this.stack = stack;
 
         if(!BeyRegistry.ITEMSLAYERGT.isEmpty()){

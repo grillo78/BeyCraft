@@ -20,13 +20,10 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 public class BeyDiscFrameContainer extends Container {
 
     private ItemStack stack;
-    private Hand hand;
 	
-	public BeyDiscFrameContainer(int id, ItemStack stack, PlayerInventory playerInventory,
-                                 PlayerEntity player, Hand hand) {
+	public BeyDiscFrameContainer(int id, ItemStack stack, PlayerInventory playerInventory) {
 		super(BeyRegistry.DISC_FRAME_CONTAINER, id);
         this.stack = stack;
-        this.hand = hand;
 		if(stack!=null) {
 			stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			.ifPresent(h -> this.addSlot(new SlotBeyFrame(h, 0, 10, 10)));
