@@ -7,30 +7,13 @@ import java.util.Random;
 import java.util.function.Consumer;
 
 import com.grillo78.beycraft.BeyCraft;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tileentity.BellTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.lwjgl.glfw.GLFW;
 
@@ -41,7 +24,7 @@ import com.grillo78.beycraft.entity.BeyEntityRenderFactory;
 import com.grillo78.beycraft.gui.*;
 import com.grillo78.beycraft.network.PacketHandler;
 import com.grillo78.beycraft.network.message.MessageOpenBelt;
-import com.grillo78.beycraft.network.message.MessagePlayCountdown;
+import com.grillo78.beycraft.network.message.MessageNotifyPlayCountdown;
 import com.grillo78.beycraft.particles.SparkleParticle;
 import com.grillo78.beycraft.tileentity.RenderBeyCreator;
 import com.grillo78.beycraft.tileentity.RenderExpository;
@@ -212,19 +195,23 @@ public class ClientEvents {
 		public static void onScreenOpen(final GuiOpenEvent event) {
 			if (event.getGui() instanceof MainMenuScreen && firstScreenMenuOpen) {
 				firstScreenMenuOpen = false;
-				DiscordRPC.discordInitialize("736594360149344267",
-						new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
-							System.out
-									.println("Discord RPC is ready for user: " + user.username + "#" + user.discriminator);
-						}).build(), true);
-				BeyCraft.TIME_STAMP = new Timestamp(System.currentTimeMillis()).getTime();
-				setDiscordRPC();
-				Runtime.getRuntime().addShutdownHook(new Thread() {
-					@Override
-					public void run() {
-						DiscordRPC.discordShutdown();
-					}
-				});
+				try {
+					DiscordRPC.discordInitialize("736594360149344267",
+							new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
+								BeyCraft.logger.info(
+										"Discord RPC is ready for user: " + user.username + "#" + user.discriminator);
+							}).build(), true);
+					BeyCraft.TIME_STAMP = new Timestamp(System.currentTimeMillis()).getTime();
+					setDiscordRPC();
+					Runtime.getRuntime().addShutdownHook(new Thread() {
+						@Override
+						public void run() {
+							DiscordRPC.discordShutdown();
+						}
+					});
+				} catch (Exception e) {
+					BeyCraft.logger.error("Error during Discord RPC start");
+				}
 				File[] zipFiles = new File("BeyParts").listFiles(new FilenameFilter() {
 
 					@Override
@@ -234,7 +221,8 @@ public class ClientEvents {
 				});
 				if (zipFiles.length == 0) {
 					event.setCanceled(true);
-					Minecraft.getInstance().displayGuiScreen(new MissingContentPacksScreen(new StringTextComponent("")));
+					Minecraft.getInstance()
+							.displayGuiScreen(new MissingContentPacksScreen(new StringTextComponent("")));
 				}
 			}
 		}
@@ -253,14 +241,14 @@ public class ClientEvents {
 						String s = String.valueOf(h.getBladerLevel());
 						float i1 = (75 - Minecraft.getInstance().fontRenderer.getStringWidth(s)) / 2f;
 						int j1 = 16;
-						Minecraft.getInstance().fontRenderer.drawStringWithShadow(event.getMatrixStack(), s, i1, (float) j1,
-								8453920);
+						Minecraft.getInstance().fontRenderer.drawStringWithShadow(event.getMatrixStack(), s, i1,
+								(float) j1, 8453920);
 						s = "Blader Level:";
 
 						i1 = 5;
 						j1 = 5;
-						Minecraft.getInstance().fontRenderer.drawStringWithShadow(event.getMatrixStack(), s, i1, (float) j1,
-								8453920);
+						Minecraft.getInstance().fontRenderer.drawStringWithShadow(event.getMatrixStack(), s, i1,
+								(float) j1, 8453920);
 						Minecraft.getInstance().getRenderManager().textureManager
 								.bindTexture(AbstractGui.GUI_ICONS_LOCATION);
 						float i = h.getExperience() / (h.getExpForNextLevel() + h.getExperience());
@@ -279,7 +267,7 @@ public class ClientEvents {
 				PacketHandler.instance.sendToServer(new MessageOpenBelt());
 			}
 			if (ClientEvents.COUNTDOWNKEY.isPressed() && event.getAction() == GLFW.GLFW_PRESS) {
-				PacketHandler.instance.sendToServer(new MessagePlayCountdown());
+				PacketHandler.instance.sendToServer(new MessageNotifyPlayCountdown());
 			}
 		}
 

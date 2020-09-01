@@ -259,7 +259,6 @@ public class CommonEvents {
 			StringTextComponent url = new StringTextComponent("https://discord.gg/2PpbtFr");
 			prefix.mergeStyle(TextFormatting.GOLD);
 			url.mergeStyle(TextFormatting.GOLD);
-//			sUrl.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/2PpbtFr"));
 			event.getPlayer().sendMessage(prefix, Util.DUMMY_UUID);
 			event.getPlayer().sendMessage(url, Util.DUMMY_UUID);
 			event.getPlayer().getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {

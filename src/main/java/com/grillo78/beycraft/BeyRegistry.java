@@ -42,8 +42,6 @@ public class BeyRegistry {
     public static List<Item> ITEMSDRIVER = Lists.newArrayList();
     public static List<Item> ITEMSGTCHIP = Lists.newArrayList();
 
-    public static ItemBeyLayerGTNoWeight test = new ItemBeyLayerGTNoWeight("test",1,1,1,1,null,null, BeyTypes.ATTACK);
-
     @ObjectHolder(Reference.MODID + ":sparkle")
     public static BasicParticleType SPARKLE;
 
