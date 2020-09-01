@@ -43,12 +43,6 @@ public class BeyGTContainer extends Container {
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);
     }
 
-    @Override
-    protected boolean mergeItemStack(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
-        Item item = stack.getItem();
-        return super.mergeItemStack(stack, startIndex, endIndex, reverseDirection);
-    }
-
     protected void addPlayerSlots(InvWrapper playerinventory, int locked) {
         int yStart = 30 + 18 * 3;
         for (int row = 0; row < 3; ++row) {
