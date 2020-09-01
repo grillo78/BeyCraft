@@ -26,6 +26,7 @@ public class PacketHandler {
         register(MessageUpdateColorLauncher.class, new MessageUpdateColorLauncher());
         register(MessageSyncBladerLevel.class, new MessageSyncBladerLevel());
         register(MessageUpdateUrlBeyLogger.class, new MessageUpdateUrlBeyLogger());
+        register(MessageNotifyPlayCountdown.class, new MessageNotifyPlayCountdown());
         register(MessagePlayCountdown.class, new MessagePlayCountdown());
         register(MessageOpenRobotGUI.class, new MessageOpenRobotGUI());
         register(MessageSetRobotLevel.class, new MessageSetRobotLevel());
