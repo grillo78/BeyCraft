@@ -28,18 +28,20 @@ public class EntityGoalRotate extends Goal {
 	public boolean shouldContinueExecuting() {
 		if (!bey.isStoped()) {
 			if (!bey.isStoped() && !bey.isDescending() && bey.isRotationStarted()) {
-				if (((ItemBeyDriver) bey.getDriver().getItem()).getType(bey.getDriver()) == BeyTypes.ATTACK) {
-					if (count < 6) {
-						count++;
-						if(count%2 == 0)bey.rotationYaw += bey.getRotationSpeed() * -bey.getRotationDirection() * 2
-								/ (-bey.getMaxRotationSpeed() * 0.1);
+				if(bey.isOnGround()){
+					if (((ItemBeyDriver) bey.getDriver().getItem()).getType(bey.getDriver()) == BeyTypes.ATTACK) {
+						if (count < 6) {
+							count++;
+							if(count%2 == 0)bey.rotationYaw += bey.getRotationSpeed() * -bey.getRotationDirection() * 2
+									/ (-bey.getMaxRotationSpeed() * 0.1);
+						} else {
+							count = 0;
+							bey.rotationYaw += 160 * bey.getRotationDirection();
+						}
 					} else {
-						count = 0;
-						bey.rotationYaw += 160 * bey.getRotationDirection();
+						bey.rotationYaw += bey.getRotationSpeed() * -bey.getRotationDirection() * 2
+								/ (-bey.getMaxRotationSpeed() * 0.1);
 					}
-				} else {
-					bey.rotationYaw += bey.getRotationSpeed() * -bey.getRotationDirection() * 2
-							/ (-bey.getMaxRotationSpeed() * 0.1);
 				}
 				moveToCenter();
 				if (bey.getRadius() > 0 && !bey.isIncreaseRadius()) {

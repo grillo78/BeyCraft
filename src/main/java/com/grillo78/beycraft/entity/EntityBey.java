@@ -98,7 +98,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	}
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 74.0D);
+		return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 74.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.6D);
 	}
 
 	@Nullable
@@ -385,11 +385,27 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 						if (getRotationSpeed() > getMaxRotationSpeed()) {
 							setRotationSpeed(getMaxRotationSpeed());
 						}
+						if (new Random().nextInt(3) == 1) {
+							attackEntityFrom(DamageSource.causeMobDamage((LivingEntity) entityIn),
+									(int) (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem())
+											.getAttack(getLayer())
+											+ ((ItemBeyLayer) getLayer().getItem()).getBurst(getLayer())
+											- ((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer())
+											+ ((EntityBey) entityIn).getBladerLevel() - getBladerLevel()));
+						}
 					} else {
 						setRotationSpeed(getRotationSpeed()
 								- (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack(getLayer())
 										+ ((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer())
 										+ ((EntityBey) entityIn).getBladerLevel()) / getBladerLevel());
+						if (new Random().nextInt(3) == 1) {
+							attackEntityFrom(DamageSource.causeMobDamage((LivingEntity) entityIn),
+									(int) (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem())
+											.getAttack(getLayer())
+											+ ((ItemBeyLayer) getLayer().getItem()).getBurst(getLayer())
+											- ((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer())
+											+ ((EntityBey) entityIn).getBladerLevel() - getBladerLevel()));
+						}
 					}
 					if (getRadius() == 0 && new Random().nextInt(5) == 1) {
 						increaseRadius = true;
