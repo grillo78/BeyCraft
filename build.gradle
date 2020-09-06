@@ -20,7 +20,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.12'
+version = '1.0'
 group = 'com.grillo78.beycraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'beycraft'
 
@@ -121,7 +121,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.2-33.0.5'
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.2-4.0.0.0")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.2-4.0.0.0:api")
-    compile fg.deobf("curse.maven:camera-mod:3031592")
+//    compile fg.deobf("curse.maven:camera-mod:3031592")
     implementation 'com.github.Vatuu:discord-rpc:1.6.2'
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
