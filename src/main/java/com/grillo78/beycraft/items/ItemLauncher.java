@@ -61,7 +61,7 @@ public class ItemLauncher extends Item {
                                 h.getStackInSlot(0).getTag().putBoolean("isEntity", true);
                                 EntityBey entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, world,
                                         h.getStackInSlot(0).copy(),
-                                        getRotation(launcher), player.getName().getString(),i.getBladerLevel());
+                                        getRotation(launcher), player.getName().getString(),i.getBladerLevel(), h.getStackInSlot(2).getItem() instanceof ItemBeyLogger);
                                 entity.setLocationAndAngles(player.getPositionVec().x + player.getLookVec().x / 2,
                                         player.getPositionVec().y + 1 + player.getLookVec().y/2,
                                         player.getPositionVec().z + player.getLookVec().z/2, player.rotationYaw , 0);

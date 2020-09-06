@@ -76,7 +76,7 @@ public class RobotBlock extends Block {
 							EntityBey entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, worldIn,
 									h.getStackInSlot(0).copy(),
 									(int) ((ItemBeyLayer) h.getStackInSlot(0).getItem()).getRotationDirection(),
-									"Training Robot", ((RobotTileEntity) tileentity).getBladerLevel());
+									"Training Robot", ((RobotTileEntity) tileentity).getBladerLevel(), false);
 							switch (state.get(FACING)) {
 							case NORTH:
 								entity.setLocationAndAngles(tileentity.getPos().getX() + 0.5,

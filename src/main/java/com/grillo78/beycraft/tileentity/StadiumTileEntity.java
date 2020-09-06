@@ -49,24 +49,28 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
 		if (inBattle) {
 			if (beysSpinning == 1 && !world.isRemote) {
 				for (ServerPlayerEntity player : ((ServerWorld) world).getServer().getPlayerList().getPlayers()) {
-					if (player.getName().getString().equals(beys.get(0).getPlayerName())) {
-						player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h -> {
-							Random rand = new Random();
-							h.increaseCurrency(round(rand.nextInt(100) + rand.nextFloat(), 2));
-						});
-						player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
-							Random rand = new Random();
-							if (beys.size() != beysInBattle) {
-								h.increaseExperience(round(
-										rand.nextInt(100 * (beysInBattle - beys.size())) + rand.nextFloat(), 2));
-							} else {
-								h.increaseExperience(round(
-										rand.nextInt(50 * (beysInBattle-1))*beys.get(0).getBladerLevel() + rand.nextFloat(), 2));
-							}
+					for(EntityBey bey : beys){
+						if (player.getName().getString().equals(bey.getPlayerName())) {
+							player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h -> {
+								Random rand = new Random();
+								h.increaseCurrency(round(rand.nextInt(100) + rand.nextFloat(), 2));
+							});
+							if(bey.hasBeylogger()){
+								player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
+									Random rand = new Random();
+									if (beys.size() != beysInBattle) {
+										h.increaseExperience(round(
+												rand.nextInt(100 * (beysInBattle - beys.size())) + rand.nextFloat(), 2));
+									} else {
+										h.increaseExperience(round(
+												rand.nextInt(50 * (beysInBattle-1))*beys.get(0).getBladerLevel() + rand.nextFloat(), 2));
+									}
 
-							PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(),h.getExperience()),player.connection.getNetworkManager(),
-									NetworkDirection.PLAY_TO_CLIENT);
-						});
+									PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(),h.getExperience()),player.connection.getNetworkManager(),
+											NetworkDirection.PLAY_TO_CLIENT);
+								});
+							}
+						}
 					}
 				}
 

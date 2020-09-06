@@ -65,6 +65,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	private boolean increaseRadius = false;
 	private boolean stoped = false;
 	private float maxRadius;
+	private boolean beylogger = false;
 
 	private Vector3d[] points = new Vector3d[5];
 
@@ -73,12 +74,13 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	 * @param world
 	 */
 	public EntityBey(EntityType<? extends EntityBey> type, World world) {
-		this(type, world, ItemStack.EMPTY, 1, null, 0);
+		this(type, world, ItemStack.EMPTY, 1, null, 0, false);
 	}
 
 	public EntityBey(EntityType<? extends EntityBey> type, World world, ItemStack layer, int rotationDirection,
-			String playerName, int bladerLevel) {
+			String playerName, int bladerLevel, boolean beylogger) {
 		super(type, world);
+		this.beylogger = beylogger;
 		this.rotationDirection = rotationDirection;
 		this.inventory = new ItemStackHandler(3);
 		if (layer.hasTag()) {
@@ -95,6 +97,10 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		maxRadius = 1.6F * getMaxRotationSpeed() / 15;
 		this.setRadius(maxRadius);
 		stepHeight = 0;
+	}
+
+	public boolean hasBeylogger(){
+		return beylogger;
 	}
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
