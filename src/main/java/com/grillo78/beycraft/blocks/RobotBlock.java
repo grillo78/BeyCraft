@@ -125,7 +125,7 @@ public class RobotBlock extends Block {
 						}
 					});
 				} else {
-					PacketHandler.instance.sendTo(new MessageOpenRobotGUI(),
+					PacketHandler.instance.sendTo(new MessageOpenRobotGUI(true),
 							((ServerPlayerEntity) playerIn).connection.getNetworkManager(),
 							NetworkDirection.PLAY_TO_CLIENT);
 				}

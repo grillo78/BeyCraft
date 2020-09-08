@@ -2,12 +2,17 @@ package com.grillo78.beycraft.tileentity;
 
 import com.grillo78.beycraft.BeyRegistry;
 
+import com.grillo78.beycraft.gui.RobotGUI;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
@@ -22,6 +27,11 @@ public class RobotTileEntity extends TileEntity  {
 
 	public RobotTileEntity() {
 		super(BeyRegistry.ROBOTTILEENTITYTYPE);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public void openGUI(){
+		Minecraft.getInstance().displayGuiScreen(new RobotGUI(new StringTextComponent(""), this));
 	}
 
 	/**
