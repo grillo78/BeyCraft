@@ -39,12 +39,12 @@ public class DiscFrameItemStackRendererTileEntity extends ItemStackTileEntityRen
 		matrixStack.push();
 
 		IBakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft",
-				"discsframe/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "") + ""));
+				"discsframe/" + stack.getItem().getRegistryName().getPath()));
 		IVertexBuilder vertexBuilder = buffer
 				.getBuffer(RenderType.getEntityTranslucent(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
 		MatrixStack.Entry entry = matrixStack.getLast();
-		for (int i = 0; i < model.getQuads(null, null, random, EmptyModelData.INSTANCE).size(); i++) {
-			vertexBuilder.addVertexData(entry, model.getQuads(null, null, random, EmptyModelData.INSTANCE).get(i), 1, 1, 1, 1, combinedLightIn,combinedOverlayIn, true);
+		for (BakedQuad quad : model.getQuads(null, null, random, EmptyModelData.INSTANCE)) {
+			vertexBuilder.addVertexData(entry, quad, 1, 1, 1, 1, combinedLightIn,combinedOverlayIn, true);
 		}
 		if (stack.hasTag()) {
 			matrixStack.scale(2F, 2F, 2F);

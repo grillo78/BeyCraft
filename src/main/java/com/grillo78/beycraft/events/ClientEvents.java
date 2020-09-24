@@ -156,36 +156,40 @@ public class ClientEvents {
 			}
 		}
 		ScreenManager.registerFactory(BeyRegistry.HANDLE_CONTAINER, HandleGUI::new);
-		for (Item item : BeyRegistry.ITEMSLAYER) {
-			ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
-					"layers/" + item.getTranslationKey().replace("item.beycraft.", "")));
-		}
-		for (Item item : BeyRegistry.ITEMSDISCFRAME) {
-			ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
-					"discsframe/" + item.getTranslationKey().replace("item.beycraft.", "")));
-		}
-		ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
-				+ BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/launcher_body"));
-		ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
-				+ BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/grab_part"));
-		ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
-				+ BeyRegistry.DUALLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/launcher_lever"));
-		ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
-				+ BeyRegistry.LAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/launcher_body"));
-		ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
-				"launchers/" + BeyRegistry.LAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/grab_part"));
-		ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
-				+ BeyRegistry.LEFTLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/launcher_body"));
-		ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
-				+ BeyRegistry.LEFTLAUNCHER.getTranslationKey().replace("item.beycraft.", "") + "/grab_part"));
-		ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
-				"beyloggers/" + BeyRegistry.BEYLOGGERPLUS.getTranslationKey().replace("item.beycraft.", "")));
-		ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
-				"beyloggers/" + BeyRegistry.BEYLOGGER.getTranslationKey().replace("item.beycraft.", "")));
 		RenderingRegistry.registerEntityRenderingHandler(BeyRegistry.BEY_ENTITY_TYPE, new BeyEntityRenderFactory());
 		ClientRegistry.bindTileEntityRenderer(BeyRegistry.EXPOSITORYTILEENTITYTYPE, RenderExpository::new);
 		ClientRegistry.bindTileEntityRenderer(BeyRegistry.BEYCREATORTILEENTITYTYPE, RenderBeyCreator::new);
 		ClientRegistry.bindTileEntityRenderer(BeyRegistry.ROBOTTILEENTITYTYPE, RenderRobot::new);
+	}
+	
+	@SubscribeEvent
+	public static void registerModel(final ModelRegistryEvent event){
+		for (Item item : BeyRegistry.ITEMSLAYER) {
+			ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
+					"layers/" + item.getRegistryName().getPath()));
+		}
+		for (Item item : BeyRegistry.ITEMSDISCFRAME) {
+			ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
+					"discsframe/" + item.getRegistryName().getPath()));
+		}
+		ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
+				+ BeyRegistry.DUALLAUNCHER.getRegistryName().getPath() + "/launcher_body"));
+		ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
+				+ BeyRegistry.DUALLAUNCHER.getRegistryName().getPath() + "/grab_part"));
+		ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
+				+ BeyRegistry.DUALLAUNCHER.getRegistryName().getPath() + "/launcher_lever"));
+		ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
+				+ BeyRegistry.LAUNCHER.getRegistryName().getPath() + "/launcher_body"));
+		ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
+				"launchers/" + BeyRegistry.LAUNCHER.getRegistryName().getPath() + "/grab_part"));
+		ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
+				+ BeyRegistry.LEFTLAUNCHER.getRegistryName().getPath() + "/launcher_body"));
+		ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
+				+ BeyRegistry.LEFTLAUNCHER.getRegistryName().getPath() + "/grab_part"));
+		ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
+				"beyloggers/" + BeyRegistry.BEYLOGGERPLUS.getRegistryName().getPath()));
+		ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
+				"beyloggers/" + BeyRegistry.BEYLOGGER.getRegistryName().getPath()));
 	}
 
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

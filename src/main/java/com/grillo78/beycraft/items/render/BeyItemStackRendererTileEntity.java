@@ -41,7 +41,7 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
 		matrixStack.push();
 
 		IBakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft",
-				"layers/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "") + ""));
+				"layers/" + stack.getItem().getRegistryName().getPath()));
 		IVertexBuilder vertexBuilder = buffer
 				.getBuffer(RenderType.getEntityTranslucentCull(PlayerContainer.LOCATION_BLOCKS_TEXTURE));
 		MatrixStack.Entry entry = matrixStack.getLast();
