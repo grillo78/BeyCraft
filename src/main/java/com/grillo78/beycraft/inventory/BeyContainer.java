@@ -28,8 +28,8 @@ public class BeyContainer extends Container {
         this.stack = stack;
         if(!BeyRegistry.ITEMSLAYER.isEmpty()){
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                this.addSlot(new SlotBeyDisk(h, 0, 10, 10));
-                this.addSlot(new SlotBeyDriver(h, 1, 10, 30));
+                this.addSlot(new SlotBeyDisk(h, 0, 10, 15));
+                this.addSlot(new SlotBeyDriver(h, 1, 10, 35));
             });
         }
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);

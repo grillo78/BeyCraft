@@ -30,9 +30,9 @@ public class BeyGodContainer extends Container {
 
         if(!BeyRegistry.ITEMSLAYERGT.isEmpty()){
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                this.addSlot(new SlotBeyDisk(h, 0, 10, 10));
-                this.addSlot(new SlotBeyDriver(h, 1, 10, 30));
-                this.addSlot(new SlotBeyGodChip(h, 2, 38, 10));
+                this.addSlot(new SlotBeyDisk(h, 0, 10, 15));
+                this.addSlot(new SlotBeyDriver(h, 1, 10, 35));
+                this.addSlot(new SlotBeyGodChip(h, 2, 38, 15));
             });
         }
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);

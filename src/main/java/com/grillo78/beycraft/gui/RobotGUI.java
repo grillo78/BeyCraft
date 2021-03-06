@@ -1,38 +1,20 @@
 package com.grillo78.beycraft.gui;
 
-import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
-import com.grillo78.beycraft.blocks.RobotBlock;
-import com.grillo78.beycraft.inventory.BeyCreatorContainer;
 import com.grillo78.beycraft.network.PacketHandler;
-import com.grillo78.beycraft.network.message.MessageBeyCreatorUpdate;
 import com.grillo78.beycraft.network.message.MessageSetRobotLevel;
 import com.grillo78.beycraft.tileentity.RobotTileEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.brigadier.Message;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.*;
-import net.minecraft.world.World;
 
 /**
  * @author a19guillermong

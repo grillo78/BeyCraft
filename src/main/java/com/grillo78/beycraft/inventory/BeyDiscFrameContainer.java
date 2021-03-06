@@ -26,7 +26,7 @@ public class BeyDiscFrameContainer extends Container {
         this.stack = stack;
 		if(stack!=null) {
 			stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			.ifPresent(h -> this.addSlot(new SlotBeyFrame(h, 0, 10, 10)));
+			.ifPresent(h -> this.addSlot(new SlotBeyFrame(h, 0, 10, 15)));
 		}
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);
 	}

@@ -1,7 +1,20 @@
 {
   "variants": {
-    "": {
-      "model": "beycraft:block/beycreator"
+    "facing=north": {
+      "model": "beycraft:block/beycreator",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "beycraft:block/beycreator",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "beycraft:block/beycreator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "beycraft:block/beycreator",
+      "y": 270
     }
   }
 }

@@ -33,13 +33,13 @@ public class LauncherContainer extends Container {
         this.stack = stack;
         this.hand = hand;
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                .ifPresent(h -> this.addSlot(new SlotBeyLayer(h, 0, 10, 10, stack)));
+                .ifPresent(h -> this.addSlot(new SlotBeyLayer(h, 0, 10, 15, stack)));
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .ifPresent(h -> {
-                    this.addSlot(new SlotHandle(h, 1, 62, 10));
+                    this.addSlot(new SlotHandle(h, 1, 62, 15));
                         });
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                .ifPresent(h -> this.addSlot(new SlotBeyLogger(h, 2, 62, 30)));
+                .ifPresent(h -> this.addSlot(new SlotBeyLogger(h, 2, 62, 35)));
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);
     }
 

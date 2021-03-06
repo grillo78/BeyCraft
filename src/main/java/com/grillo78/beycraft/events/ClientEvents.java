@@ -139,7 +139,6 @@ public class ClientEvents {
 		ScreenManager.registerFactory(BeyRegistry.BELT_CONTAINER, BeltGUI::new);
 		BELTKEY = new KeyBinding("key.beycraft.belt", 66, "key.beycraft.category");
 		ClientRegistry.registerKeyBinding(ClientEvents.BELTKEY);
-		ScreenManager.registerFactory(BeyRegistry.BEY_CREATOR_CONTAINER, BeyCreatorGUI::new);
 		ScreenManager.registerFactory(BeyRegistry.BEYLOGGER_CONTAINER, BeyloggerGUI::new);
 		if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
 			if (BeyRegistry.ITEMSLAYER.size() != BeyRegistry.ITEMSLAYERGT.size()) {

@@ -81,8 +81,6 @@ public class BeyRegistry {
     public static final ContainerType<HandleContainer> HANDLE_CONTAINER = null;
     @ObjectHolder("beycraft:discframe")
     public static final ContainerType<BeyDiscFrameContainer> DISC_FRAME_CONTAINER = null;
-    @ObjectHolder("beycraft:beycreator")
-    public static final ContainerType<BeyCreatorContainer> BEY_CREATOR_CONTAINER = null;
     @ObjectHolder("beycraft:beylogger")
     public static final ContainerType<BeyLoggerContainer> BEYLOGGER_CONTAINER = null;
 

@@ -3,16 +3,15 @@ package com.grillo78.beycraft.blocks;
 import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
-import com.grillo78.beycraft.inventory.BeyCreatorContainer;
+import com.grillo78.beycraft.gui.BeyCreatorGUI;
 import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.*;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -31,7 +30,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
@@ -208,33 +206,32 @@ public class BeyCreatorBlock extends Block {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
                                              Hand hand, BlockRayTraceResult p_225533_6_) {
-        if (!worldIn.isRemote) {
+
             TileEntity tileentity = worldIn.getTileEntity(pos);
             if (tileentity instanceof BeyCreatorTileEntity) {
                 if (!playerIn.isCrouching()) {
-                    ((BeyCreatorTileEntity) tileentity).getInventory().ifPresent(h -> {
-                        if (h.getStackInSlot(0) != ItemStack.EMPTY) {
-                            worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
-                            h.extractItem(0, 1, false);
-                        }
-                        if (playerIn.getHeldItem(hand).getItem() == BeyRegistry.PLASTIC || playerIn.getHeldItem(hand).getItem() == Items.IRON_INGOT) {
-                            ItemStack newStack = playerIn.getHeldItem(hand).copy();
-                            newStack.setCount(1);
-                            h.insertItem(0, newStack, false);
-                            playerIn.getHeldItem(hand).shrink(1);
-                        }
-                        worldIn.notifyBlockUpdate(pos, state, state, 0);
-                    });
+                    if (!worldIn.isRemote) {
+                        ((BeyCreatorTileEntity) tileentity).getInventory().ifPresent(h -> {
+                            if (h.getStackInSlot(0) != ItemStack.EMPTY) {
+                                worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
+                                h.extractItem(0, 1, false);
+                            }
+                            if (playerIn.getHeldItem(hand).getItem() == BeyRegistry.PLASTIC || playerIn.getHeldItem(hand).getItem() == Items.IRON_INGOT) {
+                                ItemStack newStack = playerIn.getHeldItem(hand).copy();
+                                newStack.setCount(1);
+                                h.insertItem(0, newStack, false);
+                                playerIn.getHeldItem(hand).shrink(1);
+                            }
+                            worldIn.notifyBlockUpdate(pos, state, state, 0);
+                        });
+                    }
                 } else {
-                    ItemStack stack = playerIn.getHeldItem(hand);
-                    NetworkHooks.openGui((ServerPlayerEntity) playerIn,
-                            new SimpleNamedContainerProvider(
-                                    (id, playerInventory, playerEntity) -> new BeyCreatorContainer(BeyRegistry.BEY_CREATOR_CONTAINER, id),
-                                    new StringTextComponent(getTranslationKey())));
-
+                    if (worldIn.isRemote) {
+                        Minecraft.getInstance().displayGuiScreen(new BeyCreatorGUI(new StringTextComponent("")));
+                    }
                 }
             }
-        }
+
         return ActionResultType.SUCCESS;
     }
 

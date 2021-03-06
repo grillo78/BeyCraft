@@ -146,9 +146,6 @@ public class CommonEvents {
 			return new BeyLoggerContainer(BeyRegistry.BEYLOGGER_CONTAINER, windowId);
 		}).setRegistryName("beylogger"));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-			return new BeyCreatorContainer(BeyRegistry.BEY_CREATOR_CONTAINER, windowId);
-		}).setRegistryName("beycreator"));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
 			return new HandleContainer(BeyRegistry.HANDLE_CONTAINER, windowId, new ItemStack(BeyRegistry.LAUNCHER), inv,
 					inv.player, Hand.MAIN_HAND);
 		}).setRegistryName("handle"));

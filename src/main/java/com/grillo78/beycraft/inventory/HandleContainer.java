@@ -31,11 +31,11 @@ public class HandleContainer extends Container {
 		this.stack = stack;
 		this.hand = hand;
 		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 0, 10, 10)));
+				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 0, 10, 15)));
 		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 1, 10, 30)));
+				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 1, 10, 35)));
 		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 2, 10, 50)));
+				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 2, 10, 55)));
 		addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);
 	}
 

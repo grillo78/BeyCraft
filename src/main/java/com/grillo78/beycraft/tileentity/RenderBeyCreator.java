@@ -24,16 +24,7 @@ public class RenderBeyCreator extends TileEntityRenderer<BeyCreatorTileEntity> {
     public void render(BeyCreatorTileEntity tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer iRenderTypeBuffer, int light, int overlay) {
         matrixStack.push();
 
-        matrixStack.translate(0.5, 0.5, 0.5);
-        matrixStack.scale(2,2,2);
-        matrixStack.rotate(new Quaternion(0,180,90,true));
-
-        matrixStack.rotate(tileEntity.getBlockState().get(RobotBlock.FACING).getRotation());
-        Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(BeyRegistry.BEYCREATORBLOCK.asItem()), ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
-
-        matrixStack.scale(0.5f, 0.5f, 0.5f);
-        matrixStack.translate(0, -0.5, 0);
-        matrixStack.translate(0, 0.14, 0);
+        matrixStack.translate(0.5, 0.14, 0.5);
         matrixStack.scale(0.45f, 0.45f, 0.45f);
         matrixStack.rotate(new Quaternion(90, 0, 0, true));
         tileEntity.getInventory().ifPresent(h -> {

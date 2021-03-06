@@ -20,17 +20,13 @@ public class BeltContainer extends Container {
 	private boolean canBeOpened = true;
 	private ItemStack stack;
 
-	/**
-	 * @param type
-	 * @param id
-	 */
 	public BeltContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory,
 			boolean locked) {
 		super(type, id);
 		this.stack = stack;
 		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-			this.addSlot(new SlotBeyBothLayer(h, 0, 10, 10));
-			this.addSlot(new SlotBeyLauncher(h, 1, 10, 30));
+			this.addSlot(new SlotBeyBothLayer(h, 0, 10, 15));
+			this.addSlot(new SlotBeyLauncher(h, 1, 10, 35));
 		});
 		if (locked) {
 			addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);

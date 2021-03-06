@@ -2,7 +2,6 @@ package com.grillo78.beycraft.gui;
 
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
-import com.grillo78.beycraft.inventory.BeyCreatorContainer;
 import com.grillo78.beycraft.network.PacketHandler;
 import com.grillo78.beycraft.network.message.MessageBeyCreatorUpdate;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -10,7 +9,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.brigadier.Message;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -19,7 +18,6 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -29,25 +27,22 @@ import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 
 /**
- * @author a19guillermong
+ * @author grillo78
  */
-public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
+public class BeyCreatorGUI extends Screen {
 
 	private int partCount = 0;
 	private int partType = 0;
 	private Button prevPart;
 	private Button nextPart;
 	private Button nextPartType;
+	protected int xSize = 176;
+	protected int ySize = 166;
 	private RayTraceResult rayTraceBlock = Minecraft.getInstance().player.pick(20.0D, 0.0F, false);
 	private BlockPos pos = ((BlockRayTraceResult) rayTraceBlock).getPos();
 
-	/**
-	 * @param screenContainer
-	 * @param inv
-	 * @param titleIn
-	 */
-	public BeyCreatorGUI(BeyCreatorContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
-		super(screenContainer, inv, titleIn);
+	public BeyCreatorGUI(ITextComponent titleIn) {
+		super(titleIn);
 	}
 
 	@Override
@@ -235,8 +230,7 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
 		this.addButton(nextPart);
 	}
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
 		this.getMinecraft().getTextureManager()
 				.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/empty_container.png"));
@@ -326,11 +320,10 @@ public class BeyCreatorGUI extends ContainerScreen<BeyCreatorContainer> {
 		this.font.func_238422_b_(matrixStack, partName.func_241878_f(), relX + 4, relY + 30, 4210752);
 	}
 
-	@Override
-	public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
-		this.renderBackground(p_230430_1_);
-		super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
-		this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(matrixStack);
+		this.drawGuiContainerBackgroundLayer(matrixStack);
+		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 
 
