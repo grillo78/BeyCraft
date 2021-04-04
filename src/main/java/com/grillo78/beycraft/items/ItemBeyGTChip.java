@@ -12,7 +12,7 @@ public class ItemBeyGTChip extends Item {
     private float burst;
 
     public ItemBeyGTChip(String name, float weight, float burst){
-        super(new Item.Properties().group(BeyCraft.BEYCRAFTLAYERS).maxStackSize(1));
+        super(new Item.Properties().tab(BeyCraft.BEYCRAFTLAYERS).stacksTo(1));
         setRegistryName(new ResourceLocation(Reference.MODID, name));
         BeyRegistry.ITEMSGTCHIP.add(this);
         this.burst = burst;

@@ -25,11 +25,11 @@ public class BeyBoxCommand {
 			player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h->{
 				if(h.getCurrency()>1000){
 					h.increaseCurrency(-1000);
-					player.world.addEntity(new ItemEntity(player.world,player.getPosX(),
-							player.getPosY(), player.getPosZ(), new ItemStack(BeyRegistry.BEYPACKAGE)));
-					source.sendFeedback(new TranslationTextComponent("beybox.successful.command.message"),true);
+					player.level.addFreshEntity(new ItemEntity(player.level,player.getX(),
+							player.getY(), player.getZ(), new ItemStack(BeyRegistry.BEYPACKAGE)));
+					source.sendSuccess(new TranslationTextComponent("beybox.successful.command.message"),true);
 				} else {
-					source.sendErrorMessage(new TranslationTextComponent("beybox.fail.command.message"));
+					source.sendFailure(new TranslationTextComponent("beybox.fail.command.message"));
 				}
 			});
 		}

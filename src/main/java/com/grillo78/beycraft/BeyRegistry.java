@@ -24,6 +24,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.registries.ObjectHolder;
+import xyz.heroesunited.heroesunited.common.objects.container.EquipmentAccessoriesSlot;
 
 import java.util.HashMap;
 import java.util.List;
@@ -115,29 +116,21 @@ public class BeyRegistry {
     /**
      * Armors
      */
-//	public static final ItemBladerArmor AIGER_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_chestplate",
-//			EntityEquipmentSlot.CHEST, "Aiger");
-//	public static final ItemBladerArmor AIGER_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_leggings",
-//			EntityEquipmentSlot.LEGS, "Aiger");
-//	public static final ItemBladerArmor AIGER_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "Aiger_boots",
-//			EntityEquipmentSlot.FEET, "Aiger");
-//	public static final ItemBladerArmor VALT_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL, "valt_chestplate",
-//			EntityEquipmentSlot.CHEST, "Aiger");
-//	public static final ItemBladerArmor VALT_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL, "valt_leggings",
-//			EntityEquipmentSlot.LEGS, "Aiger");
-//	public static final ItemBladerArmor VALT_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "valt_boots",
-//			EntityEquipmentSlot.FEET, "Aiger");
-//	public static final ItemBladerArmor TURBO_VALT_CHESTPLATE = new ItemBladerArmor(BLADER_MATERIAL,
-//			"turbo_valt_chestplate", EntityEquipmentSlot.CHEST, "Aiger");
-//	public static final ItemBladerArmor TURBO_VALT_LEGGINGS = new ItemBladerArmor(BLADER_MATERIAL,
-//			"turbo_valt_leggings", EntityEquipmentSlot.LEGS, "Aiger");
-//	public static final ItemBladerArmor TURBO_VALT_BOOTS = new ItemBladerArmor(BLADER_MATERIAL, "turbo_valt_boots",
-//			EntityEquipmentSlot.FEET, "Aiger");
+	public static final AccessoryItem VARUTO_JACKET = new AccessoryItem( "varuto_jacket",
+			EquipmentAccessoriesSlot.JACKET);
+	public static final AccessoryItem VARUTO_PANTS = new AccessoryItem( "varuto_pants",
+            EquipmentAccessoriesSlot.PANTS);
+	public static final AccessoryItem VARUTO_BOOTS = new AccessoryItem( "varuto_boots",
+            EquipmentAccessoriesSlot.SHOES);
+    public static final AccessoryItem VARUTO_CHEST = new AccessoryItem( "varuto_chest",
+            EquipmentAccessoriesSlot.TSHIRT);
+    public static final AccessoryItem VARUTO_GLOVES = new AccessoryItem( "varuto_gloves",
+            EquipmentAccessoriesSlot.GLOVES);
 
     /* Blocks */
-    public static final BeyCreatorBlock BEYCREATORBLOCK = new BeyCreatorBlock(Material.ANVIL, "beycreator");
-    public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.ANVIL, "expository");
-    public static final StadiumBlock STADIUM = new StadiumBlock(Material.IRON, "stadium");
-    public static final RobotBlock ROBOT = new RobotBlock(Material.IRON, "robot");
+    public static final BeyCreatorBlock BEYCREATORBLOCK = new BeyCreatorBlock(Material.HEAVY_METAL, "beycreator");
+    public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.HEAVY_METAL, "expository");
+    public static final StadiumBlock STADIUM = new StadiumBlock(Material.METAL, "stadium");
+    public static final RobotBlock ROBOT = new RobotBlock(Material.METAL, "robot");
 
 }

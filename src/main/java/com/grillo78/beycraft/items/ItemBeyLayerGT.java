@@ -13,11 +13,11 @@ public class ItemBeyLayerGT extends ItemBeyLayer {
 
     @Override
     public float getWeight(ItemStack stack) {
-        return super.getWeight(stack)+((ItemBeyGTChip)ItemStack.read(stack.getTag().getCompound("chip")).getItem()).getWeight();
+        return super.getWeight(stack)+((ItemBeyGTChip)ItemStack.of(stack.getTag().getCompound("chip")).getItem()).getWeight();
     }
 
     @Override
     public float getBurst(ItemStack stack) {
-        return ((ItemBeyGTChip)ItemStack.read(stack.getTag().getCompound("chip")).getItem()).getBurst();
+        return ((ItemBeyGTChip)ItemStack.of(stack.getTag().getCompound("chip")).getItem()).getBurst();
     }
 }

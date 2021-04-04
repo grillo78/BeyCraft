@@ -27,7 +27,7 @@ public class MissingContentPacksScreen extends Screen {
 		super.init();
 		acceptButton = new Button(width / 2 - 15, height / 2 + 60, 30, 20, new TranslationTextComponent("gui.ok"),
 				(Button) -> {
-					closeScreen();
+					onClose();
 				});
 		this.addButton(acceptButton);
 	}
@@ -36,7 +36,7 @@ public class MissingContentPacksScreen extends Screen {
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(matrixStack);
 
-		minecraft.getTextureManager().bindTexture(BEYCRAFT_LOGO);
+		minecraft.getTextureManager().bind(BEYCRAFT_LOGO);
 		int logoWidth = 256;
 		int logoHeight = 64;
 		this.blit(matrixStack, width / 2 - logoWidth / 2, 30, 0, 0, logoWidth, logoHeight, logoWidth, logoHeight);

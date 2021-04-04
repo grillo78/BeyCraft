@@ -13,6 +13,6 @@ public class ItemBeyLayerGod extends ItemBeyLayer {
 
     @Override
     public float getWeight(ItemStack stack) {
-        return super.getWeight(stack)+((ItemBeyGodChip)ItemStack.read(stack.getTag().getCompound("chip")).getItem()).getWeight();
+        return super.getWeight(stack)+((ItemBeyGodChip)ItemStack.of(stack.getTag().getCompound("chip")).getItem()).getWeight();
     }
 }

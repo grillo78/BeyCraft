@@ -26,23 +26,23 @@ public class BeyGodGUI extends ContainerScreen<BeyGodContainer>{
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
-		this.font.func_238422_b_(p_230451_1_, this.playerInventory.getDisplayName().func_241878_f(), (float)this.playerInventoryTitleX, (float)this.playerInventoryTitleY, 4210752);
+	protected void renderLabels(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
+		this.font.draw(p_230451_1_, this.inventory.getDisplayName().getVisualOrderText(), (float)this.inventoryLabelX, (float)this.inventoryLabelY, 4210752);
 	}
 
 	@Override
 	public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
 		this.renderBackground(p_230430_1_);
 		super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
-		this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
+		this.renderTooltip(p_230430_1_, p_230430_2_, p_230430_3_);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
-		this.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/3_slots.png"));
-		int relX = (this.width - this.xSize) / 2;
-		int relY = (this.height - this.ySize) / 2;
-		this.blit(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
+		this.getMinecraft().getTextureManager().bind(new ResourceLocation(Reference.MODID, "textures/gui/container/3_slots.png"));
+		int relX = (this.width - this.imageWidth) / 2;
+		int relY = (this.height - this.imageHeight) / 2;
+		this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
 	}
 }

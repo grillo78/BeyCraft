@@ -35,7 +35,7 @@ public class ItemLauncher extends Item {
     private int rotation;
 
     public ItemLauncher(String name, int rotation) {
-        super(new Item.Properties().group(BeyCraft.BEYCRAFTTAB).maxStackSize(1).setISTER(() -> LauncherItemStackRendererTileEntity::new));
+        super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1).setISTER(() -> LauncherItemStackRendererTileEntity::new));
         setRegistryName(new ResourceLocation(Reference.MODID, name));
         this.rotation = rotation;
         BeyRegistry.ITEMS.put(name, this);
@@ -48,12 +48,12 @@ public class ItemLauncher extends Item {
 
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
-        ItemStack launcher = player.getHeldItem(handIn);
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand handIn) {
+        ItemStack launcher = player.getItemInHand(handIn);
         if (!player.isCrouching()) {
-            if (!world.isRemote) {
+            if (!world.isClientSide) {
                 if (BeyRegistry.BEY_ENTITY_TYPE != null && launcher.hasTag()) {
-                    launcher.getTag().put("bey", ItemStack.EMPTY.write(new CompoundNBT()));
+                    launcher.getTag().put("bey", ItemStack.EMPTY.save(new CompoundNBT()));
                     launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                         if (h.getStackInSlot(0).getItem() instanceof ItemBeyLayer) {
 
@@ -62,52 +62,52 @@ public class ItemLauncher extends Item {
                                 EntityBey entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, world,
                                         h.getStackInSlot(0).copy(),
                                         getRotation(launcher), player.getName().getString(),i.getBladerLevel(), h.getStackInSlot(2).getItem() instanceof ItemBeyLogger);
-                                entity.setLocationAndAngles(player.getPositionVec().x + player.getLookVec().x / 2,
-                                        player.getPositionVec().y + 1 + player.getLookVec().y/2,
-                                        player.getPositionVec().z + player.getLookVec().z/2, player.rotationYaw , 0);
-                                entity.rotationYawHead = entity.rotationYaw;
-                                entity.renderYawOffset = entity.rotationYaw;
-                                world.addEntity(entity);
+                                entity.moveTo(player.position().x + player.getLookAngle().x / 2,
+                                        player.position().y + 1 + player.getLookAngle().y/2,
+                                        player.position().z + player.getLookAngle().z/2, player.yRot , 0);
+                                entity.yHeadRot = entity.yRot;
+                                entity.yBodyRot = entity.yRot;
+                                world.addFreshEntity(entity);
                             });
                             h.getStackInSlot(0).shrink(1);
-                            player.addStat(Stats.ITEM_USED.get(this));
-                            player.getCooldownTracker().setCooldown(this, 20);
+                            player.awardStat(Stats.ITEM_USED.get(this));
+                            player.getCooldowns().addCooldown(this, 20);
                             player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(i->{
                                 i.increaseExperience(0.5f);
-                                PacketHandler.instance.sendTo(new MessageSyncBladerLevel(i.getBladerLevel(),i.getExperience()), ((ServerPlayerEntity)player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+                                PacketHandler.instance.sendTo(new MessageSyncBladerLevel(i.getBladerLevel(),i.getExperience()), ((ServerPlayerEntity)player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
                             });
                         }
                     });
                 }
             }
         } else {
-            if (!world.isRemote) {
+            if (!world.isClientSide) {
                 if (launcher.getItem() instanceof ItemDualLauncher) {
                     NetworkHooks.openGui((ServerPlayerEntity) player,
                             new SimpleNamedContainerProvider(
                                     (id, playerventory, playerEntity) -> new LauncherContainer(BeyRegistry.LAUNCHER_DUAL_CONTAINER,
-                                            id, player.getHeldItem(handIn), playerventory, handIn),
+                                            id, player.getItemInHand(handIn), playerventory, handIn),
                                     new StringTextComponent(getRegistryName().getPath())));
                 } else {
                     if (rotation == 1) {
                         NetworkHooks.openGui((ServerPlayerEntity) player,
                                 new SimpleNamedContainerProvider(
                                         (id, playerventory, playerEntity) -> new LauncherContainer(BeyRegistry.LAUNCHER_RIGHT_CONTAINER,
-                                                id, player.getHeldItem(handIn), playerventory, handIn),
+                                                id, player.getItemInHand(handIn), playerventory, handIn),
                                         new StringTextComponent(getRegistryName().getPath())));
                     } else {
                         NetworkHooks.openGui((ServerPlayerEntity) player,
                                 new SimpleNamedContainerProvider(
                                         (id, playerventory, playerEntity) -> new LauncherContainer(BeyRegistry.LAUNCHER_LEFT_CONTAINER,
-                                                id, player.getHeldItem(handIn), playerventory, handIn),
+                                                id, player.getItemInHand(handIn), playerventory, handIn),
                                         new StringTextComponent(getRegistryName().getPath())));
                     }
                 }
             }
-            return ActionResult.resultSuccess(launcher);
+            return ActionResult.success(launcher);
 
         }
-        return super.onItemRightClick(world, player, handIn);
+        return super.use(world, player, handIn);
 
     }
 

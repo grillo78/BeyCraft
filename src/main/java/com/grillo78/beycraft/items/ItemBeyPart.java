@@ -29,7 +29,7 @@ public class ItemBeyPart extends Item {
 
 	public ItemBeyPart(String name, BeyTypes type, Ability primaryAbility, Ability secundaryAbility, ItemGroup tab,
 			Item.Properties properties) {
-		super(properties.group(tab).maxStackSize(1));
+		super(properties.tab(tab).stacksTo(1));
 		PRIMARYABILITY = primaryAbility;
 		SECUNDARYABILITY = secundaryAbility;
 		this.type = type;
@@ -61,20 +61,20 @@ public class ItemBeyPart extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand handIn) {
 		if (player.isCrouching() && (PRIMARYABILITY instanceof MultiType || SECUNDARYABILITY instanceof MultiType)) {
 			if (PRIMARYABILITY instanceof MultiType) {
-				PRIMARYABILITY.executeAbility(player.getHeldItem(handIn));
+				PRIMARYABILITY.executeAbility(player.getItemInHand(handIn));
 			} else {
-				SECUNDARYABILITY.executeAbility(player.getHeldItem(handIn));
+				SECUNDARYABILITY.executeAbility(player.getItemInHand(handIn));
 			}
-			return super.onItemRightClick(world, player, handIn);
+			return super.use(world, player, handIn);
 		}
-		return ActionResult.resultFail(player.getHeldItem(handIn));
+		return ActionResult.fail(player.getItemInHand(handIn));
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		BeyTypes type = getType(stack);
 		if(type!=null) tooltip.add(new TranslationTextComponent(type.getName()));
 		if (getPrimaryAbility() instanceof MultiMode) {
@@ -91,6 +91,6 @@ public class ItemBeyPart extends Item {
 				tooltip.add(new StringTextComponent(((MultiMode)getSecundaryAbility()).getModes().get(0).getName()));
 			}
 		}
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 }

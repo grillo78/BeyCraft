@@ -17,7 +17,7 @@ public class ItemHandleAccesory extends Item{
 	 * @param properties
 	 */
 	public ItemHandleAccesory(String name) {
-		super(new Item.Properties().maxStackSize(1).group(BeyCraft.BEYCRAFTTAB).maxStackSize(1));
+		super(new Item.Properties().stacksTo(1).tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
 		setRegistryName(new ResourceLocation(Reference.MODID, name));
 		BeyRegistry.ITEMS.put(name,this);
 	}

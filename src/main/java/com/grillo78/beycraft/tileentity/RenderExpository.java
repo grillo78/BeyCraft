@@ -24,23 +24,23 @@ public class RenderExpository extends TileEntityRenderer<ExpositoryTileEntity> {
 
     @Override
     public void render(ExpositoryTileEntity tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer iRenderTypeBuffer, int light, int overlay) {
-        matrixStack.push();
+        matrixStack.pushPose();
 
         matrixStack.scale(2, 2, 2);
         matrixStack.translate(0.25, 0.25, 0.25);
-        Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(BeyRegistry.EXPOSITORY.asItem()), ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
+        Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyRegistry.EXPOSITORY.asItem()), ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
         matrixStack.translate(0, 0.15, 0);
         matrixStack.scale(0.5f, 0.5f, 0.5f);
-        matrixStack.rotate(new Quaternion(90, 0, 0, true));
-        if(!Minecraft.getInstance().isGamePaused()){
+        matrixStack.mulPose(new Quaternion(90, 0, 0, true));
+        if(!Minecraft.getInstance().isPaused()){
             if (beyRotation < 360) {
                 beyRotation += 5;
             }
-            matrixStack.rotate(new Quaternion(0, 0, beyRotation, true));
+            matrixStack.mulPose(new Quaternion(0, 0, beyRotation, true));
         }
         tileEntity.getInventory().ifPresent(h -> {
-            Minecraft.getInstance().getItemRenderer().renderItem(h.getStackInSlot(0), ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
+            Minecraft.getInstance().getItemRenderer().renderStatic(h.getStackInSlot(0), ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
         });
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 }

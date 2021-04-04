@@ -27,46 +27,46 @@ public class RenderRobot extends TileEntityRenderer<RobotTileEntity> {
 	@Override
 	public void render(RobotTileEntity tileEntity, float partialTicks, MatrixStack matrixStack,
 			IRenderTypeBuffer iRenderTypeBuffer, int light, int overlay) {
-		matrixStack.push();
+		matrixStack.pushPose();
 
 		matrixStack.translate(0,-0.5,0);
 		matrixStack.scale(2,2,2);
 
-		switch (tileEntity.getBlockState().get(HorizontalBlock.HORIZONTAL_FACING).getHorizontalIndex()){
+		switch (tileEntity.getBlockState().getValue(HorizontalBlock.FACING).get2DDataValue()){
 			case 0:
-				matrixStack.rotate(new Quaternion(0,tileEntity.getBlockState().get(RobotBlock.FACING).getOpposite().getHorizontalAngle(),0,true));
+				matrixStack.mulPose(new Quaternion(0,tileEntity.getBlockState().getValue(RobotBlock.FACING).getOpposite().toYRot(),0,true));
 				break;
 			case 1:
-				matrixStack.rotate(new Quaternion(0,90,0,true));
+				matrixStack.mulPose(new Quaternion(0,90,0,true));
 				matrixStack.translate(0,0,0.5);
 				break;
 			case 2:
 				matrixStack.translate(0.5,0,0.5);
 				break;
 			case 3:
-				matrixStack.rotate(new Quaternion(0,-90,0,true));
+				matrixStack.mulPose(new Quaternion(0,-90,0,true));
 				matrixStack.translate(0.5,0,0);
 				break;
 		}
 
-		Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(BeyRegistry.ROBOT.asItem()),
+		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyRegistry.ROBOT.asItem()),
 				ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
-		matrixStack.pop();
-		matrixStack.push();
-		int i = (int) tileEntity.getBlockState().get(RobotBlock.FACING).getHorizontalAngle();
-		matrixStack.rotate(new Quaternion(0,tileEntity.getBlockState().get(RobotBlock.FACING).getHorizontalAngle(),0,true));
+		matrixStack.popPose();
+		matrixStack.pushPose();
+		int i = (int) tileEntity.getBlockState().getValue(RobotBlock.FACING).toYRot();
+		matrixStack.mulPose(new Quaternion(0,tileEntity.getBlockState().getValue(RobotBlock.FACING).toYRot(),0,true));
 
 
-		switch (tileEntity.getBlockState().get(RobotBlock.FACING).getHorizontalIndex()){
+		switch (tileEntity.getBlockState().getValue(RobotBlock.FACING).get2DDataValue()){
 			case 0:
-				matrixStack.rotate(new Quaternion(0,180,0,true));
+				matrixStack.mulPose(new Quaternion(0,180,0,true));
 				matrixStack.translate(0,0,-1.1);
 				break;
 			case 1:
 				matrixStack.translate(0,0,-0.1);
 				break;
 			case 2:
-				matrixStack.rotate(new Quaternion(0,180,0,true));
+				matrixStack.mulPose(new Quaternion(0,180,0,true));
 				matrixStack.translate(1,0,-0.1);
 				break;
 			case 3:
@@ -76,27 +76,27 @@ public class RenderRobot extends TileEntityRenderer<RobotTileEntity> {
 		matrixStack.scale(0.5f, 0.5f, 0.5f);
 		matrixStack.translate(-1.2, 0.4, 0.1);
 
-		matrixStack.rotate(new Quaternion(90, 0, 90, true));
+		matrixStack.mulPose(new Quaternion(90, 0, 90, true));
 		tileEntity.getInventory().ifPresent(h -> {
 			matrixStack.scale(0.5f, 0.5f, 0.5f);
 			matrixStack.translate(0, -0.075, 0.05);
-			matrixStack.rotate(new Quaternion(0, 0, 50, true));
-			Minecraft.getInstance().getItemRenderer().renderItem(h.getStackInSlot(0),
+			matrixStack.mulPose(new Quaternion(0, 0, 50, true));
+			Minecraft.getInstance().getItemRenderer().renderStatic(h.getStackInSlot(0),
 					ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
-			matrixStack.rotate(new Quaternion(0, 0, -50, true));
+			matrixStack.mulPose(new Quaternion(0, 0, -50, true));
 			matrixStack.translate(0, 0.075, -0.05);
 			matrixStack.scale(2f, 2f, 2f);
 		});
 
-		Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(BeyRegistry.DUALLAUNCHER),
+		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyRegistry.DUALLAUNCHER),
 				ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
 		matrixStack.translate(0.1, -0.44, -0.04);
-		Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(BeyRegistry.LAUNCHERHANDLE),
+		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyRegistry.LAUNCHERHANDLE),
 				ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
 		matrixStack.translate(0, 0.03, 0.01);
-		Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(BeyRegistry.BEYLOGGERPLUS),
+		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyRegistry.BEYLOGGERPLUS),
 				ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
 
-		matrixStack.pop();
+		matrixStack.popPose();
 	}
 }

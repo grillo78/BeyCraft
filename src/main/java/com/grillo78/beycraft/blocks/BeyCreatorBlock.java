@@ -35,18 +35,20 @@ import javax.annotation.Nullable;
 import java.util.stream.Stream;
 
 
+import net.minecraft.block.AbstractBlock;
+
 public class BeyCreatorBlock extends Block {
 
     //    private final VoxelShape shape;
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
     public BeyCreatorBlock(Material materialIn, String name) {
-        super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).notSolid());
+        super(AbstractBlock.Properties.of(materialIn).strength(0.6F).noOcclusion());
         setRegistryName(new ResourceLocation(Reference.MODID, name));
 
 
         BeyRegistry.BLOCKS.add(this);
-        BeyRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().group(BeyCraft.BEYCRAFTTAB))
+        BeyRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))
                 .setRegistryName(this.getRegistryName()));
     }
 
@@ -57,14 +59,14 @@ public class BeyCreatorBlock extends Block {
     }
 
     @Override
-    public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        super.onBlockHarvested(world, pos, state, player);
-        world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this)));
-        TileEntity tileentity = world.getTileEntity(pos);
+    public void playerWillDestroy(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        super.playerWillDestroy(world, pos, state, player);
+        world.addFreshEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this)));
+        TileEntity tileentity = world.getBlockEntity(pos);
         if (tileentity instanceof BeyCreatorTileEntity) {
             ((BeyCreatorTileEntity) tileentity).getInventory().ifPresent(h -> {
                 if (h.getStackInSlot(0) != ItemStack.EMPTY) {
-                    world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
+                    world.addFreshEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
                 }
             });
         }
@@ -73,130 +75,130 @@ public class BeyCreatorBlock extends Block {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        Direction direction = context.getPlacementHorizontalFacing().getOpposite();
-        return this.getDefaultState().with(FACING, direction);
+        Direction direction = context.getHorizontalDirection().getOpposite();
+        return this.defaultBlockState().setValue(FACING, direction);
     }
 
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         VoxelShape shape;
-        switch (state.get(FACING)) {
+        switch (state.getValue(FACING)) {
 
             case NORTH:
                 shape = Stream.of(
-                        Block.makeCuboidShape(0, 0, 0, 15.75, 0.5, 0.25),
-                        Block.makeCuboidShape(0.25, 0, 15.75, 15.75, 0.5, 16),
-                        Block.makeCuboidShape(0, 0, 0.25, 0.25, 0.5, 16),
-                        Block.makeCuboidShape(15.75, 0, 0, 16, 0.5, 16),
-                        Block.makeCuboidShape(0, 15.75, 0, 15.75, 16.25, 0.25),
-                        Block.makeCuboidShape(0.25, 15.75, 15.75, 15.75, 16.25, 16),
-                        Block.makeCuboidShape(15.75, 15.75, 0, 16, 16.25, 16),
-                        Block.makeCuboidShape(0, 15.75, 0.25, 0.25, 16.25, 16),
-                        Block.makeCuboidShape(0.25, 0.5, 15.75, 15.75, 15.75, 16),
-                        Block.makeCuboidShape(15.75, 0.5, 8, 16, 15.75, 16),
-                        Block.makeCuboidShape(0, 0.5, 8.25, 0.25, 15.75, 16),
-                        Block.makeCuboidShape(0, 10.5, 0.25, 0.25, 15.75, 8.25),
-                        Block.makeCuboidShape(15.75, 10.5, 0, 16, 15.75, 8),
-                        Block.makeCuboidShape(0, 13.25, 0, 15.75, 15.75, 0.25),
-                        Block.makeCuboidShape(0.25, 16, 0.25, 15.75, 16.25, 15.75),
-                        Block.makeCuboidShape(0.25, 0, 0.25, 15.75, 0.25, 15.75)
+                        Block.box(0, 0, 0, 15.75, 0.5, 0.25),
+                        Block.box(0.25, 0, 15.75, 15.75, 0.5, 16),
+                        Block.box(0, 0, 0.25, 0.25, 0.5, 16),
+                        Block.box(15.75, 0, 0, 16, 0.5, 16),
+                        Block.box(0, 15.75, 0, 15.75, 16.25, 0.25),
+                        Block.box(0.25, 15.75, 15.75, 15.75, 16.25, 16),
+                        Block.box(15.75, 15.75, 0, 16, 16.25, 16),
+                        Block.box(0, 15.75, 0.25, 0.25, 16.25, 16),
+                        Block.box(0.25, 0.5, 15.75, 15.75, 15.75, 16),
+                        Block.box(15.75, 0.5, 8, 16, 15.75, 16),
+                        Block.box(0, 0.5, 8.25, 0.25, 15.75, 16),
+                        Block.box(0, 10.5, 0.25, 0.25, 15.75, 8.25),
+                        Block.box(15.75, 10.5, 0, 16, 15.75, 8),
+                        Block.box(0, 13.25, 0, 15.75, 15.75, 0.25),
+                        Block.box(0.25, 16, 0.25, 15.75, 16.25, 15.75),
+                        Block.box(0.25, 0, 0.25, 15.75, 0.25, 15.75)
                 ).reduce((v1, v2) -> {
-                    return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
+                    return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
                 }).get();
                 break;
             case SOUTH:
                 shape = Stream.of(
-                        Block.makeCuboidShape(0.25, 0, 15.75, 16, 0.5, 16),
-                        Block.makeCuboidShape(0.25, 0, 0, 15.75, 0.5, 0.25),
-                        Block.makeCuboidShape(15.75, 0, 0, 16, 0.5, 15.75),
-                        Block.makeCuboidShape(0, 0, 0, 0.25, 0.5, 16),
-                        Block.makeCuboidShape(0.25, 15.75, 15.75, 16, 16.25, 16),
-                        Block.makeCuboidShape(0.25, 15.75, 0, 15.75, 16.25, 0.25),
-                        Block.makeCuboidShape(0, 15.75, 0, 0.25, 16.25, 16),
-                        Block.makeCuboidShape(15.75, 15.75, 0, 16, 16.25, 15.75),
-                        Block.makeCuboidShape(0.25, 0.5, 0, 15.75, 15.75, 0.25),
-                        Block.makeCuboidShape(0, 0.5, 0, 0.25, 15.75, 8),
-                        Block.makeCuboidShape(15.75, 0.5, 0, 16, 15.75, 7.75),
-                        Block.makeCuboidShape(15.75, 10.5, 7.75, 16, 15.75, 15.75),
-                        Block.makeCuboidShape(0, 10.5, 8, 0.25, 15.75, 16),
-                        Block.makeCuboidShape(0.25, 13.25, 15.75, 16, 15.75, 16),
-                        Block.makeCuboidShape(0.25, 16, 0.25, 15.75, 16.25, 15.75),
-                        Block.makeCuboidShape(0.25, 0, 0.25, 15.75, 0.25, 15.75)
+                        Block.box(0.25, 0, 15.75, 16, 0.5, 16),
+                        Block.box(0.25, 0, 0, 15.75, 0.5, 0.25),
+                        Block.box(15.75, 0, 0, 16, 0.5, 15.75),
+                        Block.box(0, 0, 0, 0.25, 0.5, 16),
+                        Block.box(0.25, 15.75, 15.75, 16, 16.25, 16),
+                        Block.box(0.25, 15.75, 0, 15.75, 16.25, 0.25),
+                        Block.box(0, 15.75, 0, 0.25, 16.25, 16),
+                        Block.box(15.75, 15.75, 0, 16, 16.25, 15.75),
+                        Block.box(0.25, 0.5, 0, 15.75, 15.75, 0.25),
+                        Block.box(0, 0.5, 0, 0.25, 15.75, 8),
+                        Block.box(15.75, 0.5, 0, 16, 15.75, 7.75),
+                        Block.box(15.75, 10.5, 7.75, 16, 15.75, 15.75),
+                        Block.box(0, 10.5, 8, 0.25, 15.75, 16),
+                        Block.box(0.25, 13.25, 15.75, 16, 15.75, 16),
+                        Block.box(0.25, 16, 0.25, 15.75, 16.25, 15.75),
+                        Block.box(0.25, 0, 0.25, 15.75, 0.25, 15.75)
                 ).reduce((v1, v2) -> {
-                    return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
+                    return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
                 }).get();
                 break;
 
             case EAST:
                 shape = Stream.of(
-                        Block.makeCuboidShape(15.75, 0, 0, 16, 0.5, 15.75),
-                        Block.makeCuboidShape(0, 0, 0.25, 0.25, 0.5, 15.75),
-                        Block.makeCuboidShape(0, 0, 0, 15.75, 0.5, 0.25),
-                        Block.makeCuboidShape(0, 0, 15.75, 16, 0.5, 16),
-                        Block.makeCuboidShape(15.75, 15.75, 0, 16, 16.25, 15.75),
-                        Block.makeCuboidShape(0, 15.75, 0.25, 0.25, 16.25, 15.75),
-                        Block.makeCuboidShape(0, 15.75, 15.75, 16, 16.25, 16),
-                        Block.makeCuboidShape(0, 15.75, 0, 15.75, 16.25, 0.25),
-                        Block.makeCuboidShape(0, 0.5, 0.25, 0.25, 15.75, 15.75),
-                        Block.makeCuboidShape(0, 0.5, 15.75, 8, 15.75, 16),
-                        Block.makeCuboidShape(0, 0.5, 0, 7.75, 15.75, 0.25),
-                        Block.makeCuboidShape(7.75, 10.5, 0, 15.75, 15.75, 0.25),
-                        Block.makeCuboidShape(8, 10.5, 15.75, 16, 15.75, 16),
-                        Block.makeCuboidShape(15.75, 13.25, 0, 16, 15.75, 15.75),
-                        Block.makeCuboidShape(0.25, 16, 0.25, 15.75, 16.25, 15.75),
-                        Block.makeCuboidShape(0.25, 0, 0.25, 15.75, 0.25, 15.75)
+                        Block.box(15.75, 0, 0, 16, 0.5, 15.75),
+                        Block.box(0, 0, 0.25, 0.25, 0.5, 15.75),
+                        Block.box(0, 0, 0, 15.75, 0.5, 0.25),
+                        Block.box(0, 0, 15.75, 16, 0.5, 16),
+                        Block.box(15.75, 15.75, 0, 16, 16.25, 15.75),
+                        Block.box(0, 15.75, 0.25, 0.25, 16.25, 15.75),
+                        Block.box(0, 15.75, 15.75, 16, 16.25, 16),
+                        Block.box(0, 15.75, 0, 15.75, 16.25, 0.25),
+                        Block.box(0, 0.5, 0.25, 0.25, 15.75, 15.75),
+                        Block.box(0, 0.5, 15.75, 8, 15.75, 16),
+                        Block.box(0, 0.5, 0, 7.75, 15.75, 0.25),
+                        Block.box(7.75, 10.5, 0, 15.75, 15.75, 0.25),
+                        Block.box(8, 10.5, 15.75, 16, 15.75, 16),
+                        Block.box(15.75, 13.25, 0, 16, 15.75, 15.75),
+                        Block.box(0.25, 16, 0.25, 15.75, 16.25, 15.75),
+                        Block.box(0.25, 0, 0.25, 15.75, 0.25, 15.75)
                 ).reduce((v1, v2) -> {
-                    return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
+                    return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
                 }).get();
                 break;
 
             case WEST:
                 shape = Stream.of(
-                        Block.makeCuboidShape(0, 0, 0.25, 0.25, 0.5, 16),
-                        Block.makeCuboidShape(15.75, 0, 0.25, 16, 0.5, 15.75),
-                        Block.makeCuboidShape(0.25, 0, 15.75, 16, 0.5, 16),
-                        Block.makeCuboidShape(0, 0, 0, 16, 0.5, 0.25),
-                        Block.makeCuboidShape(0, 15.75, 0.25, 0.25, 16.25, 16),
-                        Block.makeCuboidShape(15.75, 15.75, 0.25, 16, 16.25, 15.75),
-                        Block.makeCuboidShape(0, 15.75, 0, 16, 16.25, 0.25),
-                        Block.makeCuboidShape(0.25, 15.75, 15.75, 16, 16.25, 16),
-                        Block.makeCuboidShape(15.75, 0.5, 0.25, 16, 15.75, 15.75),
-                        Block.makeCuboidShape(8, 0.5, 0, 16, 15.75, 0.25),
-                        Block.makeCuboidShape(8.25, 0.5, 15.75, 16, 15.75, 16),
-                        Block.makeCuboidShape(0.25, 10.5, 15.75, 8.25, 15.75, 16),
-                        Block.makeCuboidShape(0, 10.5, 0, 8, 15.75, 0.25),
-                        Block.makeCuboidShape(0, 13.25, 0.25, 0.25, 15.75, 16),
-                        Block.makeCuboidShape(0.25, 16, 0.25, 15.75, 16.25, 15.75),
-                        Block.makeCuboidShape(0.25, 0, 0.25, 15.75, 0.25, 15.75)
+                        Block.box(0, 0, 0.25, 0.25, 0.5, 16),
+                        Block.box(15.75, 0, 0.25, 16, 0.5, 15.75),
+                        Block.box(0.25, 0, 15.75, 16, 0.5, 16),
+                        Block.box(0, 0, 0, 16, 0.5, 0.25),
+                        Block.box(0, 15.75, 0.25, 0.25, 16.25, 16),
+                        Block.box(15.75, 15.75, 0.25, 16, 16.25, 15.75),
+                        Block.box(0, 15.75, 0, 16, 16.25, 0.25),
+                        Block.box(0.25, 15.75, 15.75, 16, 16.25, 16),
+                        Block.box(15.75, 0.5, 0.25, 16, 15.75, 15.75),
+                        Block.box(8, 0.5, 0, 16, 15.75, 0.25),
+                        Block.box(8.25, 0.5, 15.75, 16, 15.75, 16),
+                        Block.box(0.25, 10.5, 15.75, 8.25, 15.75, 16),
+                        Block.box(0, 10.5, 0, 8, 15.75, 0.25),
+                        Block.box(0, 13.25, 0.25, 0.25, 15.75, 16),
+                        Block.box(0.25, 16, 0.25, 15.75, 16.25, 15.75),
+                        Block.box(0.25, 0, 0.25, 15.75, 0.25, 15.75)
                 ).reduce((v1, v2) -> {
-                    return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
+                    return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
                 }).get();
                 break;
 
             default:
                 shape = Stream.of(
-                        Block.makeCuboidShape(0, 0, 0, 15.75, 0.5, 0.25),
-                        Block.makeCuboidShape(0.25, 0, 15.75, 15.75, 0.5, 16),
-                        Block.makeCuboidShape(0, 0, 0.25, 0.25, 0.5, 16),
-                        Block.makeCuboidShape(15.75, 0, 0, 16, 0.5, 16),
-                        Block.makeCuboidShape(0, 15.75, 0, 15.75, 16.25, 0.25),
-                        Block.makeCuboidShape(0.25, 15.75, 15.75, 15.75, 16.25, 16),
-                        Block.makeCuboidShape(15.75, 15.75, 0, 16, 16.25, 16),
-                        Block.makeCuboidShape(0, 15.75, 0.25, 0.25, 16.25, 16),
-                        Block.makeCuboidShape(0.25, 0.5, 15.75, 15.75, 15.75, 16),
-                        Block.makeCuboidShape(15.75, 0.5, 8, 16, 15.75, 16),
-                        Block.makeCuboidShape(0, 0.5, 8.25, 0.25, 15.75, 16),
-                        Block.makeCuboidShape(0, 10.5, 0.25, 0.25, 15.75, 8.25),
-                        Block.makeCuboidShape(15.75, 10.5, 0, 16, 15.75, 8),
-                        Block.makeCuboidShape(0, 13.25, 0, 15.75, 15.75, 0.25),
-                        Block.makeCuboidShape(0.25, 16, 0.25, 15.75, 16.25, 15.75),
-                        Block.makeCuboidShape(0.25, 0, 0.25, 15.75, 0.25, 15.75)
+                        Block.box(0, 0, 0, 15.75, 0.5, 0.25),
+                        Block.box(0.25, 0, 15.75, 15.75, 0.5, 16),
+                        Block.box(0, 0, 0.25, 0.25, 0.5, 16),
+                        Block.box(15.75, 0, 0, 16, 0.5, 16),
+                        Block.box(0, 15.75, 0, 15.75, 16.25, 0.25),
+                        Block.box(0.25, 15.75, 15.75, 15.75, 16.25, 16),
+                        Block.box(15.75, 15.75, 0, 16, 16.25, 16),
+                        Block.box(0, 15.75, 0.25, 0.25, 16.25, 16),
+                        Block.box(0.25, 0.5, 15.75, 15.75, 15.75, 16),
+                        Block.box(15.75, 0.5, 8, 16, 15.75, 16),
+                        Block.box(0, 0.5, 8.25, 0.25, 15.75, 16),
+                        Block.box(0, 10.5, 0.25, 0.25, 15.75, 8.25),
+                        Block.box(15.75, 10.5, 0, 16, 15.75, 8),
+                        Block.box(0, 13.25, 0, 15.75, 15.75, 0.25),
+                        Block.box(0.25, 16, 0.25, 15.75, 16.25, 15.75),
+                        Block.box(0.25, 0, 0.25, 15.75, 0.25, 15.75)
                 ).reduce((v1, v2) -> {
-                    return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
+                    return VoxelShapes.join(v1, v2, IBooleanFunction.OR);
                 }).get();
         }
 
@@ -204,30 +206,30 @@ public class BeyCreatorBlock extends Block {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
                                              Hand hand, BlockRayTraceResult p_225533_6_) {
 
-            TileEntity tileentity = worldIn.getTileEntity(pos);
+            TileEntity tileentity = worldIn.getBlockEntity(pos);
             if (tileentity instanceof BeyCreatorTileEntity) {
                 if (!playerIn.isCrouching()) {
-                    if (!worldIn.isRemote) {
+                    if (!worldIn.isClientSide) {
                         ((BeyCreatorTileEntity) tileentity).getInventory().ifPresent(h -> {
                             if (h.getStackInSlot(0) != ItemStack.EMPTY) {
-                                worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
+                                worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
                                 h.extractItem(0, 1, false);
                             }
-                            if (playerIn.getHeldItem(hand).getItem() == BeyRegistry.PLASTIC || playerIn.getHeldItem(hand).getItem() == Items.IRON_INGOT) {
-                                ItemStack newStack = playerIn.getHeldItem(hand).copy();
+                            if (playerIn.getItemInHand(hand).getItem() == BeyRegistry.PLASTIC || playerIn.getItemInHand(hand).getItem() == Items.IRON_INGOT) {
+                                ItemStack newStack = playerIn.getItemInHand(hand).copy();
                                 newStack.setCount(1);
                                 h.insertItem(0, newStack, false);
-                                playerIn.getHeldItem(hand).shrink(1);
+                                playerIn.getItemInHand(hand).shrink(1);
                             }
-                            worldIn.notifyBlockUpdate(pos, state, state, 0);
+                            worldIn.sendBlockUpdated(pos, state, state, 0);
                         });
                     }
                 } else {
-                    if (worldIn.isRemote) {
-                        Minecraft.getInstance().displayGuiScreen(new BeyCreatorGUI(new StringTextComponent("")));
+                    if (worldIn.isClientSide) {
+                        Minecraft.getInstance().setScreen(new BeyCreatorGUI(new StringTextComponent("")));
                     }
                 }
             }

@@ -24,22 +24,22 @@ public class MessageUpdateUrlBeyLogger implements IMessage<MessageUpdateUrlBeyLo
     @Override
     public void encode(MessageUpdateUrlBeyLogger message, PacketBuffer buffer) {
         buffer.writeInt(message.url.length());
-        buffer.writeString(message.url);
+        buffer.writeUtf(message.url);
     }
 
     @Override
     public MessageUpdateUrlBeyLogger decode(PacketBuffer buffer) {
-        return new MessageUpdateUrlBeyLogger(buffer.readString(buffer.readInt()));
+        return new MessageUpdateUrlBeyLogger(buffer.readUtf(buffer.readInt()));
     }
 
     @Override
     public void handle(MessageUpdateUrlBeyLogger message, Supplier<NetworkEvent.Context> supplier) {
         supplier.get().enqueueWork(() -> {
             ItemStack beyLogger;
-            if (supplier.get().getSender().getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemBeyLogger) {
-                beyLogger = supplier.get().getSender().getHeldItem(Hand.MAIN_HAND);
+            if (supplier.get().getSender().getItemInHand(Hand.MAIN_HAND).getItem() instanceof ItemBeyLogger) {
+                beyLogger = supplier.get().getSender().getItemInHand(Hand.MAIN_HAND);
             } else {
-                beyLogger = supplier.get().getSender().getHeldItem(Hand.OFF_HAND);
+                beyLogger = supplier.get().getSender().getItemInHand(Hand.OFF_HAND);
             }
             if (!beyLogger.hasTag()) {
                 CompoundNBT compound = new CompoundNBT();

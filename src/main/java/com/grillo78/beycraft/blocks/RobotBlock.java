@@ -37,19 +37,21 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.AbstractBlock;
+
 public class RobotBlock extends Block {
 
 	public static final EnumProperty<RobotBlock.EnumPartType> PART = EnumProperty.<RobotBlock.EnumPartType>create(
 			"part", RobotBlock.EnumPartType.class);
-	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+	public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
 	public RobotBlock(Material materialIn, String name) {
-		super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).notSolid());
-		setDefaultState(this.stateContainer.getBaseState().with(PART, EnumPartType.BOTTOM));
+		super(AbstractBlock.Properties.of(materialIn).strength(0.6F).noOcclusion());
+		registerDefaultState(this.stateDefinition.any().setValue(PART, EnumPartType.BOTTOM));
 		setRegistryName(new ResourceLocation(Reference.MODID, name));
 
 		BeyRegistry.BLOCKS.add(this);
-		BeyRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().group(BeyCraft.BEYCRAFTTAB))
+		BeyRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))
 				.setRegistryName(this.getRegistryName()));
 	}
 
@@ -60,15 +62,15 @@ public class RobotBlock extends Block {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
 			Hand hand, BlockRayTraceResult hit) {
 		TileEntity tileentity;
-		if (state.get(PART).equals(EnumPartType.TOP)) {
-			tileentity = worldIn.getTileEntity(pos);
+		if (state.getValue(PART).equals(EnumPartType.TOP)) {
+			tileentity = worldIn.getBlockEntity(pos);
 		} else {
-			tileentity = worldIn.getTileEntity(pos.up());
+			tileentity = worldIn.getBlockEntity(pos.above());
 		}
-		if (!worldIn.isRemote) {
+		if (!worldIn.isClientSide) {
 			if (tileentity instanceof RobotTileEntity) {
 				if (!playerIn.isCrouching()) {
 					((RobotTileEntity) tileentity).getInventory().ifPresent(h -> {
@@ -77,47 +79,47 @@ public class RobotBlock extends Block {
 									h.getStackInSlot(0).copy(),
 									(int) ((ItemBeyLayer) h.getStackInSlot(0).getItem()).getRotationDirection(),
 									"Training Robot", ((RobotTileEntity) tileentity).getBladerLevel(), false);
-							switch (state.get(FACING)) {
+							switch (state.getValue(FACING)) {
 							case NORTH:
-								entity.setLocationAndAngles(tileentity.getPos().getX() + 0.5,
-										tileentity.getPos().getY() + 0.025, tileentity.getPos().getZ() - 0.2, 180, 0);
+								entity.moveTo(tileentity.getBlockPos().getX() + 0.5,
+										tileentity.getBlockPos().getY() + 0.025, tileentity.getBlockPos().getZ() - 0.2, 180, 0);
 								break;
 							case SOUTH:
-								entity.setLocationAndAngles(tileentity.getPos().getX() + 0.5,
-										tileentity.getPos().getY() + 0.025, tileentity.getPos().getZ() + 0.2 + 1, 0, 0);
+								entity.moveTo(tileentity.getBlockPos().getX() + 0.5,
+										tileentity.getBlockPos().getY() + 0.025, tileentity.getBlockPos().getZ() + 0.2 + 1, 0, 0);
 								break;
 							case EAST:
-								entity.setLocationAndAngles(tileentity.getPos().getX() + 0.2 + 1,
-										tileentity.getPos().getY() + 0.025, tileentity.getPos().getZ() + 0.5, -90, 0);
+								entity.moveTo(tileentity.getBlockPos().getX() + 0.2 + 1,
+										tileentity.getBlockPos().getY() + 0.025, tileentity.getBlockPos().getZ() + 0.5, -90, 0);
 								break;
 							case WEST:
-								entity.setLocationAndAngles(tileentity.getPos().getX() - 0.2,
-										tileentity.getPos().getY() + 0.025, tileentity.getPos().getZ() + 0.5, 90, 0);
+								entity.moveTo(tileentity.getBlockPos().getX() - 0.2,
+										tileentity.getBlockPos().getY() + 0.025, tileentity.getBlockPos().getZ() + 0.5, 90, 0);
 								break;
 							}
 
-							entity.rotationYawHead = entity.rotationYaw;
-							entity.renderYawOffset = entity.rotationYaw;
-							worldIn.addEntity(entity);
+							entity.yHeadRot = entity.yRot;
+							entity.yBodyRot = entity.yRot;
+							worldIn.addFreshEntity(entity);
 							h.getStackInSlot(0).shrink(1);
 						}
-						if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyLayer) {
-							playerIn.getHeldItem(hand).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+						if (playerIn.getItemInHand(hand).getItem() instanceof ItemBeyLayer) {
+							playerIn.getItemInHand(hand).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 									.ifPresent(i -> {
 										switch (i.getSlots()) {
 										case 2:
 											if (i.getStackInSlot(0).getItem() instanceof ItemBeyDisc
 													&& i.getStackInSlot(1).getItem() instanceof ItemBeyDriver) {
-												h.insertItem(0, playerIn.getHeldItem(hand).copy(), false);
-												playerIn.getHeldItem(hand).shrink(1);
+												h.insertItem(0, playerIn.getItemInHand(hand).copy(), false);
+												playerIn.getItemInHand(hand).shrink(1);
 											}
 											break;
 										case 4:
 											if (i.getStackInSlot(0).getItem() instanceof ItemBeyDisc
 													&& i.getStackInSlot(1).getItem() instanceof ItemBeyDriver
 													&& i.getStackInSlot(2).getItem() instanceof ItemBeyGTChip) {
-												h.insertItem(0, playerIn.getHeldItem(hand).copy(), false);
-												playerIn.getHeldItem(hand).shrink(1);
+												h.insertItem(0, playerIn.getItemInHand(hand).copy(), false);
+												playerIn.getItemInHand(hand).shrink(1);
 											}
 											break;
 										}
@@ -126,59 +128,59 @@ public class RobotBlock extends Block {
 					});
 				} else {
 					PacketHandler.instance.sendTo(new MessageOpenRobotGUI(true),
-							((ServerPlayerEntity) playerIn).connection.getNetworkManager(),
+							((ServerPlayerEntity) playerIn).connection.getConnection(),
 							NetworkDirection.PLAY_TO_CLIENT);
 				}
-				if (state.get(PART).equals(EnumPartType.TOP)) {
-					worldIn.notifyBlockUpdate(pos, state, worldIn.getBlockState(pos), 0);
+				if (state.getValue(PART).equals(EnumPartType.TOP)) {
+					worldIn.sendBlockUpdated(pos, state, worldIn.getBlockState(pos), 0);
 				} else {
-					worldIn.notifyBlockUpdate(pos.up(), state, worldIn.getBlockState(pos.up()), 0);
+					worldIn.sendBlockUpdated(pos.above(), state, worldIn.getBlockState(pos.above()), 0);
 				}
 			}
 		}
-		if (playerIn.getHeldItem(hand).getItem() instanceof ItemLauncher) {
+		if (playerIn.getItemInHand(hand).getItem() instanceof ItemLauncher) {
 			return ActionResultType.PASS;
 		}
 		return ActionResultType.SUCCESS;
 	}
 
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		super.onBlockHarvested(worldIn, pos, state, player);
-		if (worldIn.getTileEntity(pos) instanceof RobotTileEntity) {
-			RobotTileEntity tileEntity = (RobotTileEntity) worldIn.getTileEntity(pos);
+	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.playerWillDestroy(worldIn, pos, state, player);
+		if (worldIn.getBlockEntity(pos) instanceof RobotTileEntity) {
+			RobotTileEntity tileEntity = (RobotTileEntity) worldIn.getBlockEntity(pos);
 			tileEntity.getInventory().ifPresent(h -> {
-				worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0)));
+				worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0)));
 			});
 		}
-		worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this)));
+		worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this)));
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
 			ItemStack stack) {
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		worldIn.setBlockState(pos.up(), getDefaultState().with(PART, EnumPartType.TOP).with(FACING, state.get(FACING)));
+		super.setPlacedBy(worldIn, pos, state, placer, stack);
+		worldIn.setBlockAndUpdate(pos.above(), defaultBlockState().setValue(PART, EnumPartType.TOP).setValue(FACING, state.getValue(FACING)));
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		super.onReplaced(state, worldIn, pos, newState, isMoving);
-		if (state.get(PART).equals(EnumPartType.BOTTOM)) {
-			worldIn.setBlockState(pos.up(), Blocks.AIR.getDefaultState());
+	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		super.onRemove(state, worldIn, pos, newState, isMoving);
+		if (state.getValue(PART).equals(EnumPartType.BOTTOM)) {
+			worldIn.setBlockAndUpdate(pos.above(), Blocks.AIR.defaultBlockState());
 		} else {
-			worldIn.setBlockState(pos.down(), Blocks.AIR.getDefaultState());
+			worldIn.setBlockAndUpdate(pos.below(), Blocks.AIR.defaultBlockState());
 		}
 	}
 
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		Direction direction = context.getPlacementHorizontalFacing().getOpposite();
-		return this.getDefaultState().with(FACING, direction);
+		Direction direction = context.getHorizontalDirection().getOpposite();
+		return this.defaultBlockState().setValue(FACING, direction);
 	}
 
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(FACING, PART);
 	}
 
@@ -189,15 +191,15 @@ public class RobotBlock extends Block {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		if (state.get(PART).equals(EnumPartType.TOP)) {
+		if (state.getValue(PART).equals(EnumPartType.TOP)) {
 			return new RobotTileEntity();
 		}
 		return super.createTileEntity(state, world);
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		return canReplace(worldIn, pos) && canReplace(worldIn, pos.up());
+	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		return canReplace(worldIn, pos) && canReplace(worldIn, pos.above());
 	}
 
 	private boolean canReplace(IWorldReader world, BlockPos pos) {
@@ -225,7 +227,7 @@ public class RobotBlock extends Block {
 		}
 
 		@Override
-		public String getString() {
+		public String getSerializedName() {
 			return this.NAME;
 		}
 	}

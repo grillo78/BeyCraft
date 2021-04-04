@@ -44,37 +44,37 @@ public class BeyloggerGUI extends ContainerScreen<BeyLoggerContainer> {
 	@Override
 	protected void init() {
 		super.init();
-		if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemBeyLogger) {
-			beyLogger = Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND);
+		if (Minecraft.getInstance().player.getItemInHand(Hand.MAIN_HAND).getItem() instanceof ItemBeyLogger) {
+			beyLogger = Minecraft.getInstance().player.getItemInHand(Hand.MAIN_HAND);
 		} else {
-			beyLogger = Minecraft.getInstance().player.getHeldItem(Hand.OFF_HAND);
+			beyLogger = Minecraft.getInstance().player.getItemInHand(Hand.OFF_HAND);
 		}
 		if (!beyLogger.hasTag()) {
 			CompoundNBT compound = new CompoundNBT();
 			beyLogger.setTag(compound);
 		}
 
-		int relX = (this.width - this.xSize) / 2;
-		int relY = (this.height - this.ySize) / 2;
+		int relX = (this.width - this.imageWidth) / 2;
+		int relY = (this.height - this.imageHeight) / 2;
 
 		setUrlBtn = new Button(relX + 9, relY + 40, 50, 20, new TranslationTextComponent("gui.done"), (Button) -> {
-			beyLogger.getTag().putString("url", urlText.getText());
-			PacketHandler.instance.sendToServer(new MessageUpdateUrlBeyLogger(urlText.getText()));
-			Minecraft.getInstance().displayGuiScreen(null);
+			beyLogger.getTag().putString("url", urlText.getValue());
+			PacketHandler.instance.sendToServer(new MessageUpdateUrlBeyLogger(urlText.getValue()));
+			Minecraft.getInstance().setScreen(null);
 		});
 		this.addButton(setUrlBtn);
 
 		urlText = new TextFieldWidget(font, relX + 10, relY + 25, 155, 10, new StringTextComponent(""));
-		urlText.setMaxStringLength(Integer.MAX_VALUE);
+		urlText.setMaxLength(Integer.MAX_VALUE);
 		children.add(urlText);
 		if (beyLogger.getTag().contains("url")) {
-			urlText.setText(beyLogger.getTag().getString("url"));
+			urlText.setValue(beyLogger.getTag().getString("url"));
 		}
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
-		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("URL:").func_241878_f(), xSize/2, ySize-155.0F, 4210752);
+	protected void renderLabels(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
+		this.font.draw(p_230451_1_, new StringTextComponent("URL:").getVisualOrderText(), imageWidth/2, imageHeight-155.0F, 4210752);
 	}
 
 	@Override
@@ -87,17 +87,17 @@ public class BeyloggerGUI extends ContainerScreen<BeyLoggerContainer> {
 	public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
 		this.renderBackground(p_230430_1_);
 		super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
-		this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
+		this.renderTooltip(p_230430_1_, p_230430_2_, p_230430_3_);
 		urlText.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
 		this.getMinecraft().getTextureManager()
-				.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/beylogger.png"));
-		int relX = (this.width - this.xSize) / 2;
-		int relY = (this.height - this.ySize) / 2;
-		this.blit(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
+				.bind(new ResourceLocation(Reference.MODID, "textures/gui/container/beylogger.png"));
+		int relX = (this.width - this.imageWidth) / 2;
+		int relY = (this.height - this.imageHeight) / 2;
+		this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
 	}
 }

@@ -14,11 +14,11 @@ public class SlotBeyLauncher extends SlotItemHandler {
 	}
 
 	@Override
-	public boolean isItemValid(ItemStack stack) {
+	public boolean mayPlace(ItemStack stack) {
 		boolean isValid = false;
 
 		if(stack.getItem() instanceof ItemLauncher){
-			if(!stack.hasTag() || !(ItemStack.read((CompoundNBT) stack.getTag().get("bey")).getItem() instanceof ItemBeyLayer)){
+			if(!stack.hasTag() || !(ItemStack.of((CompoundNBT) stack.getTag().get("bey")).getItem() instanceof ItemBeyLayer)){
 				isValid = true;
 			}
 		}

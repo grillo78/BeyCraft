@@ -27,7 +27,7 @@ public class BeyCoinsCommand {
 		if(source.getEntity() != null && source.getEntity() instanceof ServerPlayerEntity){
 			ServerPlayerEntity player = (ServerPlayerEntity) source.getEntity();
 			player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h->{
-				source.sendFeedback(new TranslationTextComponent("beycoins.command.message",h.getCurrency()),true);
+				source.sendSuccess(new TranslationTextComponent("beycoins.command.message",h.getCurrency()),true);
 			});
 		}
 		return i;

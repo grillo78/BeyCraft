@@ -26,21 +26,21 @@ import net.minecraftforge.items.CapabilityItemHandler;
 public class ItemBeyLogger extends Item {
 
 	public ItemBeyLogger(String name) {
-		super(new Item.Properties().group(BeyCraft.BEYCRAFTTAB).maxStackSize(1)
+		super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1)
 				.setISTER(() -> BeyLoggerItemStackRendererTileEntity::new));
 		setRegistryName(new ResourceLocation(Reference.MODID, name));
 		BeyRegistry.ITEMS.put(name, this);
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
-		ActionResult<ItemStack> result = super.onItemRightClick(world, player, handIn);
-			if (!world.isRemote) {
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand handIn) {
+		ActionResult<ItemStack> result = super.use(world, player, handIn);
+			if (!world.isClientSide) {
 				NetworkHooks.openGui((ServerPlayerEntity) player,
 						new SimpleNamedContainerProvider(
 								(id, playerInventory, playerEntity) -> new BeyLoggerContainer(BeyRegistry.BEYLOGGER_CONTAINER,
 										id),
-								new StringTextComponent(getTranslationKey())));
+								new StringTextComponent(getDescriptionId())));
 			}
 		return result;
 	}

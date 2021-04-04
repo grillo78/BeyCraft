@@ -25,18 +25,18 @@ public class BeltGUI extends ContainerScreen<BeltContainer>{
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
+	protected void renderBg(MatrixStack matrixStack, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
-		this.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/2_slots.png"));
-		int relX = (this.width - this.xSize) / 2;
-		int relY = (this.height - this.ySize) / 2;
-        this.blit(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
+		this.getMinecraft().getTextureManager().bind(new ResourceLocation(Reference.MODID, "textures/gui/container/2_slots.png"));
+		int relX = (this.width - this.imageWidth) / 2;
+		int relY = (this.height - this.imageHeight) / 2;
+        this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
 	}
 
 	@Override
 	public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
 		this.renderBackground(p_230430_1_);
 		super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
-		this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
+		this.renderTooltip(p_230430_1_, p_230430_2_, p_230430_3_);
 	}
 }

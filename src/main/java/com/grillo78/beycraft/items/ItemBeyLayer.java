@@ -52,38 +52,38 @@ public class ItemBeyLayer extends ItemBeyPart {
 
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
-        ActionResult<ItemStack> result = super.onItemRightClick(world, player, handIn);
-        if (result.getType() == ActionResultType.FAIL) {
-            if (!world.isRemote) {
-                ItemStack stack = player.getHeldItem(handIn);
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand handIn) {
+        ActionResult<ItemStack> result = super.use(world, player, handIn);
+        if (result.getResult() == ActionResultType.FAIL) {
+            if (!world.isClientSide) {
+                ItemStack stack = player.getItemInHand(handIn);
                 stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                         if (stack.getItem() instanceof ItemBeyLayerGT) {
                             NetworkHooks.openGui((ServerPlayerEntity) player,
                                     new SimpleNamedContainerProvider(
                                             (id, playerInventory, playerEntity) -> new BeyGTContainer(BeyRegistry.BEY_GT_CONTAINER, id,
                                                     stack, playerInventory, playerEntity, handIn),
-                                            new StringTextComponent(getTranslationKey())));
+                                            new StringTextComponent(getDescriptionId())));
                         } else {
                             if (stack.getItem() instanceof ItemBeyLayerGTNoWeight) {
                                 NetworkHooks.openGui((ServerPlayerEntity) player,
                                         new SimpleNamedContainerProvider(
                                                 (id, playerInventory, playerEntity) -> new BeyGTNoWeightContainer(BeyRegistry.BEY_GT_CONTAINER_NO_WEIGHT, id,
                                                         stack, playerInventory),
-                                                new StringTextComponent(getTranslationKey())));
+                                                new StringTextComponent(getDescriptionId())));
                             } else {
                                 if(stack.getItem() instanceof ItemBeyLayerGod){
                                     NetworkHooks.openGui((ServerPlayerEntity) player,
                                             new SimpleNamedContainerProvider(
                                                     (id, playerInventory, playerEntity) -> new BeyGodContainer(BeyRegistry.BEY_GOD_CONTAINER, id,
                                                             stack, playerInventory),
-                                                    new StringTextComponent(getTranslationKey())));
+                                                    new StringTextComponent(getDescriptionId())));
                                 } else {
                                     NetworkHooks.openGui((ServerPlayerEntity) player,
                                             new SimpleNamedContainerProvider(
                                                     (id, playerInventory, playerEntity) -> new BeyContainer(BeyRegistry.BEY_CONTAINER, id,
                                                             stack, playerInventory),
-                                                    new StringTextComponent(getTranslationKey())));
+                                                    new StringTextComponent(getDescriptionId())));
                                 }
                             }
                         }
@@ -94,12 +94,12 @@ public class ItemBeyLayer extends ItemBeyPart {
     }
 
     @Override
-    public ITextComponent getDisplayName(ItemStack stack) {
-        final String[] text = {super.getDisplayName(stack).getString()};
+    public ITextComponent getName(ItemStack stack) {
+        final String[] text = {super.getName(stack).getString()};
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             for (int i = 0; i < 2; i++) {
                 if (h.getStackInSlot(i).getItem() != Items.AIR) {
-                    text[0] = text[0] + " " + h.getStackInSlot(i).getDisplayName().getString();
+                    text[0] = text[0] + " " + h.getStackInSlot(i).getHoverName().getString();
                 }
             }
         });

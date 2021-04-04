@@ -39,7 +39,7 @@ public class BeyCreatorGUI extends Screen {
 	protected int xSize = 176;
 	protected int ySize = 166;
 	private RayTraceResult rayTraceBlock = Minecraft.getInstance().player.pick(20.0D, 0.0F, false);
-	private BlockPos pos = ((BlockRayTraceResult) rayTraceBlock).getPos();
+	private BlockPos pos = ((BlockRayTraceResult) rayTraceBlock).getBlockPos();
 
 	public BeyCreatorGUI(ITextComponent titleIn) {
 		super(titleIn);
@@ -223,7 +223,7 @@ public class BeyCreatorGUI extends Screen {
 			}
 			if (stack != null)
 				PacketHandler.instance.sendToServer(new MessageBeyCreatorUpdate(stack, pos));
-			getMinecraft().displayGuiScreen(null);
+			getMinecraft().setScreen(null);
 		}));
 		this.addButton(nextPartType);
 		this.addButton(prevPart);
@@ -233,43 +233,43 @@ public class BeyCreatorGUI extends Screen {
 	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
 		this.getMinecraft().getTextureManager()
-				.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/empty_container.png"));
+				.bind(new ResourceLocation(Reference.MODID, "textures/gui/container/empty_container.png"));
 		int relX = (this.width - this.xSize) / 2;
 		int relY = (this.height - this.ySize) / 2;
 		this.blit(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
-		ITextComponent partName = TextComponentUtils.toTextComponent(new Message() {
+		ITextComponent partName = TextComponentUtils.fromMessage(new Message() {
 
 			@Override
 			public String getString() {
 				switch (partType) {
 				case 0:
 					if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
-						return BeyRegistry.ITEMSLAYER.get(partCount).getName().getString();
+						return BeyRegistry.ITEMSLAYER.get(partCount).getDescription().getString();
 					}
 					return "";
 				case 1:
 					if (!BeyRegistry.ITEMSDISCLIST.isEmpty()) {
-						return BeyRegistry.ITEMSDISCLIST.get(partCount).getName().getString();
+						return BeyRegistry.ITEMSDISCLIST.get(partCount).getDescription().getString();
 					}
 					return "";
 				case 2:
 					if (!BeyRegistry.ITEMSDRIVER.isEmpty()) {
-						return BeyRegistry.ITEMSDRIVER.get(partCount).getName().getString();
+						return BeyRegistry.ITEMSDRIVER.get(partCount).getDescription().getString();
 					}
 					return "";
 				case 3:
 					if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
-						return BeyRegistry.ITEMSFRAME.get(partCount).getName().getString();
+						return BeyRegistry.ITEMSFRAME.get(partCount).getDescription().getString();
 					}
 					return "";
 				case 4:
 					if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
-						return BeyRegistry.ITEMSGTCHIP.get(partCount).getName().getString();
+						return BeyRegistry.ITEMSGTCHIP.get(partCount).getDescription().getString();
 					}
 					return "";
 				case 5:
 					if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
-						return BeyRegistry.ITEMSGTWEIGHT.get(partCount).getName().getString();
+						return BeyRegistry.ITEMSGTWEIGHT.get(partCount).getDescription().getString();
 					}
 					return "";
 				}
@@ -277,7 +277,7 @@ public class BeyCreatorGUI extends Screen {
 			}
 		});
 		Style sPartName = partName.getStyle();
-		sPartName.setColor(Color.func_240744_a_(TextFormatting.BLACK));
+		sPartName.withColor(Color.fromLegacyFormat(TextFormatting.BLACK));
 
 		switch (partType) {
 		case 0:
@@ -317,7 +317,7 @@ public class BeyCreatorGUI extends Screen {
 			}
 			break;
 		}
-		this.font.func_238422_b_(matrixStack, partName.func_241878_f(), relX + 4, relY + 30, 4210752);
+		this.font.draw(matrixStack, partName.getVisualOrderText(), relX + 4, relY + 30, 4210752);
 	}
 
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
@@ -328,37 +328,37 @@ public class BeyCreatorGUI extends Screen {
 
 
 	protected void renderItemIntoGUI(ItemStack stack, int x, int y) {
-		IBakedModel bakedmodel = Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(stack, (World)null, (LivingEntity)null);
+		IBakedModel bakedmodel = Minecraft.getInstance().getItemRenderer().getModel(stack, (World)null, (LivingEntity)null);
 		RenderSystem.pushMatrix();
-		Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-		Minecraft.getInstance().getTextureManager().getTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE).setBlurMipmapDirect(false, false);
+		Minecraft.getInstance().getTextureManager().bind(AtlasTexture.LOCATION_BLOCKS);
+		Minecraft.getInstance().getTextureManager().getTexture(AtlasTexture.LOCATION_BLOCKS).setFilter(false, false);
 		RenderSystem.enableRescaleNormal();
 		RenderSystem.enableAlphaTest();
 		RenderSystem.defaultAlphaFunc();
 		RenderSystem.enableBlend();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.translatef((float)x, (float)y, 100.0F + Minecraft.getInstance().getItemRenderer().zLevel);
+		RenderSystem.translatef((float)x, (float)y, 100.0F + Minecraft.getInstance().getItemRenderer().blitOffset);
 		RenderSystem.translatef(8.0F, 8.0F, 0.0F);
 		RenderSystem.scalef(1.0F, -1.0F, 1.0F);
 		RenderSystem.scalef(16.0F, 16.0F, 16.0F);
 		MatrixStack matrixstack = new MatrixStack();
-		matrixstack.push();
+		matrixstack.pushPose();
 		matrixstack.scale(7,7,7);
-		IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
-		boolean flag = !bakedmodel.func_230044_c_();
+		IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().renderBuffers().bufferSource();
+		boolean flag = !bakedmodel.usesBlockLight();
 		if (flag) {
-			RenderHelper.setupGuiFlatDiffuseLighting();
+			RenderHelper.setupForFlatItems();
 		}
 
-		Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GUI, false, matrixstack, irendertypebuffer$impl, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
-		irendertypebuffer$impl.finish();
+		Minecraft.getInstance().getItemRenderer().render(stack, ItemCameraTransforms.TransformType.GUI, false, matrixstack, irendertypebuffer$impl, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
+		irendertypebuffer$impl.endBatch();
 		RenderSystem.enableDepthTest();
 		if (flag) {
-			RenderHelper.setupGui3DDiffuseLighting();
+			RenderHelper.setupFor3DItems();
 		}
 
-		matrixstack.pop();
+		matrixstack.popPose();
 		RenderSystem.disableAlphaTest();
 		RenderSystem.disableRescaleNormal();
 		RenderSystem.popMatrix();

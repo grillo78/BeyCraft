@@ -15,24 +15,24 @@ public class SparkleParticle extends SpriteTexturedParticle {
 
 	public SparkleParticle(ClientWorld worldIn, double posXIn, double posYIn, double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
-		particleGravity = 1;
+		gravity = 1;
 		setColor(Color.orange.getRed() / 255F, Color.orange.getGreen() / 255F, Color.orange.getBlue() / 255F);
-		particleScale = new Random().nextInt(25) / 100;
+		quadSize = new Random().nextInt(25) / 100;
 	}
 
 	public SparkleParticle(ClientWorld worldIn, double posXIn, double posYIn, double posZIn, double speedX,
 			double speedY, double speedZ) {
 		super(worldIn, posXIn, posYIn, posZIn, speedX, speedY, speedZ);
-		particleGravity = 0;
+		gravity = 0;
 		setColor(Color.orange.getRed() / 255F, Color.orange.getGreen() / 255F, Color.orange.getBlue() / 255F);
-		particleScale = new Random().nextFloat() / 50;
+		quadSize = new Random().nextFloat() / 50;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		if (particleScale > 0)
-			particleScale = particleScale - 0.001F;
+		if (quadSize > 0)
+			quadSize = quadSize - 0.001F;
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class SparkleParticle extends SpriteTexturedParticle {
 
 		@Nullable
 		@Override
-		public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z,
+		public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z,
 				double xSpeed, double ySpeed, double zSpeed) {
 				SparkleParticle sparkleParticle;
 				if (xSpeed == 0 && ySpeed == 0 && zSpeed == 0) {
@@ -58,7 +58,7 @@ public class SparkleParticle extends SpriteTexturedParticle {
 				} else {
 					sparkleParticle = new SparkleParticle((ClientWorld) worldIn, x, y, z, 0, 0, 0);
 				}
-				sparkleParticle.selectSpriteRandomly(this.spriteSet);
+				sparkleParticle.pickSprite(this.spriteSet);
 				return sparkleParticle;
 		}
 	}

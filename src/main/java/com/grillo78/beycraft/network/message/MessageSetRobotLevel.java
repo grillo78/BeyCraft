@@ -37,7 +37,7 @@ public class MessageSetRobotLevel implements IMessage<MessageSetRobotLevel> {
 	@Override
 	public void handle(MessageSetRobotLevel message, Supplier<NetworkEvent.Context> supplier) {
 		supplier.get().enqueueWork(()->{
-			((RobotTileEntity)supplier.get().getSender().world.getTileEntity(message.pos)).setBladerLevel(message.bladerLevel);
+			((RobotTileEntity)supplier.get().getSender().level.getBlockEntity(message.pos)).setBladerLevel(message.bladerLevel);
 		});
 		supplier.get().setPacketHandled(true);
 	}

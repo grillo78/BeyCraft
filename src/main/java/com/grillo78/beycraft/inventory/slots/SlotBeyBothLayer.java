@@ -16,17 +16,17 @@ public class SlotBeyBothLayer extends SlotItemHandler {
 	}
 
 	@Override
-	public boolean isItemValid(ItemStack stack) {
+	public boolean mayPlace(ItemStack stack) {
 		final boolean[] isValid = {false};
 
 		if(stack.getItem() instanceof ItemBeyLayer){
 			stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h->{
 				if (h.getSlots() == 2) {
-					if (ItemStack.read((CompoundNBT) stack.getTag().get("disc")).getItem() instanceof ItemBeyDisc && ItemStack.read((CompoundNBT) stack.getTag().get("driver")).getItem() instanceof ItemBeyDriver) {
+					if (ItemStack.of((CompoundNBT) stack.getTag().get("disc")).getItem() instanceof ItemBeyDisc && ItemStack.of((CompoundNBT) stack.getTag().get("driver")).getItem() instanceof ItemBeyDriver) {
 						isValid[0] = true;
 					}
 				} else {
-					if (ItemStack.read((CompoundNBT) stack.getTag().get("disc")).getItem() instanceof ItemBeyDisc && ItemStack.read((CompoundNBT) stack.getTag().get("driver")).getItem() instanceof ItemBeyDriver) {
+					if (ItemStack.of((CompoundNBT) stack.getTag().get("disc")).getItem() instanceof ItemBeyDisc && ItemStack.of((CompoundNBT) stack.getTag().get("driver")).getItem() instanceof ItemBeyDriver) {
 						isValid[0] = true;
 					}
 				}

@@ -19,7 +19,7 @@ public class SlotBeyLayer extends SlotItemHandler {
 	}
 
 	@Override
-	public boolean isItemValid(ItemStack stack) {
+	public boolean mayPlace(ItemStack stack) {
 		boolean[] isValid = { false };
 		if (!(launcher.getItem() instanceof ItemDualLauncher)) {
 			if (stack.getItem() instanceof ItemBeyLayer && (((ItemBeyLayer) stack.getItem())

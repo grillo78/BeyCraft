@@ -11,7 +11,7 @@ public class ItemBeyGTWeight extends Item {
     private final float weight;
 
     public ItemBeyGTWeight(String name, float weight) {
-        super(new Item.Properties().group(BeyCraft.BEYCRAFTLAYERS).maxStackSize(1));
+        super(new Item.Properties().tab(BeyCraft.BEYCRAFTLAYERS).stacksTo(1));
         this.weight = weight;
         setRegistryName(new ResourceLocation(Reference.MODID, name));
         BeyRegistry.ITEMSGTWEIGHT.add(this);

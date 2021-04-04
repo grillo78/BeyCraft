@@ -42,7 +42,7 @@ public class MessagePlayCountdown implements IMessage<MessagePlayCountdown> {
 	public void handle(MessagePlayCountdown message, Supplier<NetworkEvent.Context> supplier) {
 		supplier.get().enqueueWork(() -> {
 			if (message.isValid) {
-				Minecraft.getInstance().world.playSound(message.pos, BeyRegistry.COUNTDOWN, SoundCategory.PLAYERS, 1, 1,
+				Minecraft.getInstance().level.playLocalSound(message.pos, BeyRegistry.COUNTDOWN, SoundCategory.PLAYERS, 1, 1,
 						true);
 			}
 		});

@@ -32,20 +32,20 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
     }
 
     @Override
-    public void read(BlockState p_230337_1_, CompoundNBT p_230337_2_) {
-        super.read(p_230337_1_, p_230337_2_);
+    public void load(BlockState p_230337_1_, CompoundNBT p_230337_2_) {
+        super.load(p_230337_1_, p_230337_2_);
         readNetwork(p_230337_2_);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         writeNetwork(compound);
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.pos, 1, this.writeNetwork(new CompoundNBT()));
+        return new SUpdateTileEntityPacket(this.worldPosition, 1, this.writeNetwork(new CompoundNBT()));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.readNetwork(pkt.getNbtCompound());
+        this.readNetwork(pkt.getTag());
     }
 
     @Override
@@ -81,7 +81,7 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
 
     @Override
     public void tick() {
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             inventory.ifPresent(h -> {
                 if (!h.getStackInSlot(1).isEmpty() && !h.getStackInSlot(0).isEmpty()) {
                     if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver || h.getStackInSlot(1).getItem() instanceof ItemBeyGTChip) && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
@@ -100,10 +100,10 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
                 if (!h.getStackInSlot(1).isEmpty() && !h.getStackInSlot(0).isEmpty()) {
                     if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver || h.getStackInSlot(1).getItem() instanceof ItemBeyGTChip) && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
 
-                        world.addParticle(BeyRegistry.SPARKLE, pos.getX() + 0.5, pos.getY() + 0.25, pos.getZ() + 0.5, rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
+                        level.addParticle(BeyRegistry.SPARKLE, worldPosition.getX() + 0.5, worldPosition.getY() + 0.25, worldPosition.getZ() + 0.5, rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
                     } else {
                         if ((h.getStackInSlot(1).getItem() instanceof ItemBeyDisc || h.getStackInSlot(1).getItem() instanceof ItemBeyGTWeight) && h.getStackInSlot(0).getItem() == Items.IRON_INGOT) {
-                            world.addParticle(BeyRegistry.SPARKLE, pos.getX() + 0.5, pos.getY() + 0.15, pos.getZ() + 0.5, rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
+                            level.addParticle(BeyRegistry.SPARKLE, worldPosition.getX() + 0.5, worldPosition.getY() + 0.15, worldPosition.getZ() + 0.5, rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
                         }
                     }
                 }
@@ -118,7 +118,7 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
             h.getStackInSlot(0).shrink(1);
             h.insertItem(0, h.getStackInSlot(1).copy(), false);
             h.getStackInSlot(1).shrink(1);
-            world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 0);
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 0);
         }
     }
 

@@ -22,18 +22,18 @@ public class RenderBeyCreator extends TileEntityRenderer<BeyCreatorTileEntity> {
 
     @Override
     public void render(BeyCreatorTileEntity tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer iRenderTypeBuffer, int light, int overlay) {
-        matrixStack.push();
+        matrixStack.pushPose();
 
         matrixStack.translate(0.5, 0.14, 0.5);
         matrixStack.scale(0.45f, 0.45f, 0.45f);
-        matrixStack.rotate(new Quaternion(90, 0, 0, true));
+        matrixStack.mulPose(new Quaternion(90, 0, 0, true));
         tileEntity.getInventory().ifPresent(h -> {
             if(h.getStackInSlot(0).getItem() instanceof ItemBeyDriver){
-                matrixStack.rotate(new Quaternion(180,0,0, true));
+                matrixStack.mulPose(new Quaternion(180,0,0, true));
                 matrixStack.translate(0,0,0.14);
             }
-            Minecraft.getInstance().getItemRenderer().renderItem(h.getStackInSlot(0), ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
+            Minecraft.getInstance().getItemRenderer().renderStatic(h.getStackInSlot(0), ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
         });
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 }

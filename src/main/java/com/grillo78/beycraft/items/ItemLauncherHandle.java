@@ -23,7 +23,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class ItemLauncherHandle extends Item {
 
     public ItemLauncherHandle(String name) {
-        super(new Item.Properties().group(BeyCraft.BEYCRAFTTAB).maxStackSize(1));
+        super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
         setRegistryName(new ResourceLocation(Reference.MODID, name));
         BeyRegistry.ITEMS.put(name,this);
     }
@@ -34,14 +34,14 @@ public class ItemLauncherHandle extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
-        if (!world.isRemote) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand handIn) {
+        if (!world.isClientSide) {
             NetworkHooks.openGui((ServerPlayerEntity) player,
                     new SimpleNamedContainerProvider(
                             (id, playerInventory, playerEntity) -> new HandleContainer(BeyRegistry.HANDLE_CONTAINER, id,
-                                    player.getHeldItem(handIn), playerInventory, playerEntity, handIn),
+                                    player.getItemInHand(handIn), playerInventory, playerEntity, handIn),
                             new StringTextComponent(getRegistryName().getPath())));
         }
-        return super.onItemRightClick(world, player, handIn);
+        return super.use(world, player, handIn);
     }
 }

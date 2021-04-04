@@ -36,55 +36,55 @@ public class LauncherItemStackRendererTileEntity extends ItemStackTileEntityRend
 	}
 
 	@Override
-	public void func_239207_a_(ItemStack stack, TransformType transformType, MatrixStack matrixStack,
+	public void renderByItem(ItemStack stack, TransformType transformType, MatrixStack matrixStack,
 			IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
-		super.func_239207_a_(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
-		matrixStack.push();
+		super.renderByItem(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
+		matrixStack.pushPose();
 		matrixStack.scale(1.5f, 1.5f, 1.5f);
 		matrixStack.translate(0.5, 0, 0);
-		matrixStack.rotate(new Quaternion(new Vector3f(0, 1, 0), 90, true));
+		matrixStack.mulPose(new Quaternion(new Vector3f(0, 1, 0), 90, true));
 		if (stack.hasTag() && stack.getTag().contains("handle")) {
 			matrixStack.scale(1.5f, 1.5f, 1.5f);
-			matrixStack.rotate(new Quaternion(new Vector3f(1, 0, 0), 90, true));
+			matrixStack.mulPose(new Quaternion(new Vector3f(1, 0, 0), 90, true));
 
 			if (!stacks.containsKey(stack.getTag().get("handle"))) {
 				stacks.put((CompoundNBT) stack.getTag().get("handle"),
-						ItemStack.read((CompoundNBT) stack.getTag().get("handle")));
+						ItemStack.of((CompoundNBT) stack.getTag().get("handle")));
 			}
-			Minecraft.getInstance().getItemRenderer().renderItem(stacks.get(stack.getTag().get("handle")),
+			Minecraft.getInstance().getItemRenderer().renderStatic(stacks.get(stack.getTag().get("handle")),
 					TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
 			matrixStack.translate(-0.08, 0.37, 0.06);
-			matrixStack.rotate(new Quaternion(new Vector3f(1, 0, 0), -90, true));
+			matrixStack.mulPose(new Quaternion(new Vector3f(1, 0, 0), -90, true));
 			matrixStack.scale(0.5f, 0.5f, 0.5f);
 		}
 		if (stack.hasTag() && stack.getTag().contains("beylogger")) {
 			matrixStack.scale(1.5f, 1.5f, 1.5f);
-			matrixStack.rotate(new Quaternion(new Vector3f(1, 0, 0), 90, true));
+			matrixStack.mulPose(new Quaternion(new Vector3f(1, 0, 0), 90, true));
 			matrixStack.translate(0.09, -0.37, -0.08);
 			if (!stacks.containsKey(stack.getTag().get("beylogger"))) {
 				stacks.put((CompoundNBT) stack.getTag().get("beylogger"),
-						ItemStack.read((CompoundNBT) stack.getTag().get("beylogger")));
+						ItemStack.of((CompoundNBT) stack.getTag().get("beylogger")));
 			}
-			Minecraft.getInstance().getItemRenderer().renderItem(stacks.get(stack.getTag().get("beylogger")),
+			Minecraft.getInstance().getItemRenderer().renderStatic(stacks.get(stack.getTag().get("beylogger")),
 					TransformType.FIXED, Integer.MAX_VALUE, combinedOverlayIn, matrixStack, buffer);
 			matrixStack.translate(-0.09, 0.37, 0.08);
-			matrixStack.rotate(new Quaternion(new Vector3f(1, 0, 0), -90, true));
+			matrixStack.mulPose(new Quaternion(new Vector3f(1, 0, 0), -90, true));
 			matrixStack.scale(0.5f, 0.5f, 0.5f);
 		}
 		matrixStack.translate(0, -0.05, 0);
 		IBakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft",
-				"launchers/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "") + "/launcher_body"));
+				"launchers/" + stack.getItem().getDescriptionId().replace("item.beycraft.", "") + "/launcher_body"));
 
 		IVertexBuilder vertexBuilder = buffer
-				.getBuffer(RenderType.getEntityTranslucentCull(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
+				.getBuffer(RenderType.entityTranslucentCull(AtlasTexture.LOCATION_BLOCKS));
 		for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
 			if (stack.hasTag() && stack.getTag().contains("color")) {
-				vertexBuilder.addVertexData(matrixStack.getLast(), quad,
+				vertexBuilder.addVertexData(matrixStack.last(), quad,
 						stack.getTag().getCompound("color").getFloat("red"),
 						stack.getTag().getCompound("color").getFloat("green"),
 						stack.getTag().getCompound("color").getFloat("blue"), combinedLightIn, combinedOverlayIn, true);
 			} else {
-				vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn, true);
+				vertexBuilder.addVertexData(matrixStack.last(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn, true);
 			}
 		}
 		if (stack.getItem() instanceof ItemDualLauncher) {
@@ -92,53 +92,53 @@ public class LauncherItemStackRendererTileEntity extends ItemStackTileEntityRend
 				matrixStack.translate(0, 0, -0.1);
 			}
 			model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft", "launchers/"
-					+ stack.getItem().getTranslationKey().replace("item.beycraft.", "") + "/launcher_lever"));
+					+ stack.getItem().getDescriptionId().replace("item.beycraft.", "") + "/launcher_lever"));
 			for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
 				if (stack.hasTag() && stack.getTag().contains("color")) {
-					vertexBuilder.addVertexData(matrixStack.getLast(), quad,
+					vertexBuilder.addVertexData(matrixStack.last(), quad,
 							stack.getTag().getCompound("color").getFloat("red"),
 							stack.getTag().getCompound("color").getFloat("green"),
 							stack.getTag().getCompound("color").getFloat("blue"), combinedLightIn, combinedOverlayIn, true);
 				} else {
-					vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, 1, 1, combinedOverlayIn, true);
+					vertexBuilder.addVertexData(matrixStack.last(), quad, 1, 1, 1, 1, 1, combinedOverlayIn, true);
 				}
 			}
 		}
-		for (PlayerEntity player : Minecraft.getInstance().world.getPlayers()) {
-			if ((player.getHeldItem(Hand.MAIN_HAND) == stack || player.getHeldItem(Hand.OFF_HAND) == stack)
-					&& player.getCooldownTracker().hasCooldown(stack.getItem())) {
-				Matrix4f matrix4f1 = matrixStack.getLast().getMatrix();
+		for (PlayerEntity player : Minecraft.getInstance().level.players()) {
+			if ((player.getItemInHand(Hand.MAIN_HAND) == stack || player.getItemInHand(Hand.OFF_HAND) == stack)
+					&& player.getCooldowns().isOnCooldown(stack.getItem())) {
+				Matrix4f matrix4f1 = matrixStack.last().pose();
 				IVertexBuilder wr2 = buffer.getBuffer(RenderType.LINES);
-				wr2.pos(matrix4f1, 0.05f, 0.215f, 0.35f).color(255, 255, 255, 255).endVertex();
-				wr2.pos(matrix4f1, 0.05f, 0.215f, 2.2f).color(255, 255, 255, 255).endVertex();
+				wr2.vertex(matrix4f1, 0.05f, 0.215f, 0.35f).color(255, 255, 255, 255).endVertex();
+				wr2.vertex(matrix4f1, 0.05f, 0.215f, 2.2f).color(255, 255, 255, 255).endVertex();
 				matrixStack.translate(0, 0, 1.75);
 			}
 		}
 		model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft",
-				"launchers/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "") + "/grab_part"));
-		vertexBuilder = buffer.getBuffer(RenderType.getEntityTranslucentCull(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
+				"launchers/" + stack.getItem().getDescriptionId().replace("item.beycraft.", "") + "/grab_part"));
+		vertexBuilder = buffer.getBuffer(RenderType.entityTranslucentCull(AtlasTexture.LOCATION_BLOCKS));
 		for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
 			if (stack.hasTag() && stack.getTag().contains("color")) {
-				vertexBuilder.addVertexData(matrixStack.getLast(), quad,
+				vertexBuilder.addVertexData(matrixStack.last(), quad,
 						stack.getTag().getCompound("color").getFloat("red"),
 						stack.getTag().getCompound("color").getFloat("green"),
 						stack.getTag().getCompound("color").getFloat("blue"), combinedLightIn, combinedOverlayIn, true);
 			} else {
-				vertexBuilder.addVertexData(matrixStack.getLast(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn, true);
+				vertexBuilder.addVertexData(matrixStack.last(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn, true);
 			}
 		}
 		matrixStack.translate(0, 0.05, 0);
-		matrixStack.rotate(new Quaternion(new Vector3f(1, 0, 0), 90, true));
+		matrixStack.mulPose(new Quaternion(new Vector3f(1, 0, 0), 90, true));
 		if (stack.hasTag() && stack.getTag().contains("bey")) {
 
 			if (!stacks.containsKey(stack.getTag().get("bey"))) {
 				stacks.put((CompoundNBT) stack.getTag().get("bey"),
-						ItemStack.read((CompoundNBT) stack.getTag().get("bey")));
+						ItemStack.of((CompoundNBT) stack.getTag().get("bey")));
 			}
-			Minecraft.getInstance().getItemRenderer().renderItem(stacks.get(stack.getTag().get("bey")),
+			Minecraft.getInstance().getItemRenderer().renderStatic(stacks.get(stack.getTag().get("bey")),
 					TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
 		}
 
-		matrixStack.pop();
+		matrixStack.popPose();
 	}
 }

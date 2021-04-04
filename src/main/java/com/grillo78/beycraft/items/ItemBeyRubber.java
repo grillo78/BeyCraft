@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 public class ItemBeyRubber extends Item {
 
     public ItemBeyRubber(String name) {
-        super(new Item.Properties().group(BeyCraft.BEYCRAFTTAB).maxStackSize(64));
+        super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(64));
         this.setRegistryName(new ResourceLocation(Reference.MODID, name));
         BeyRegistry.ITEMS.put(name, this);
     }

@@ -28,7 +28,7 @@ public class RobotGUI extends Screen {
 	/** The Y size of the inventory window in pixels. */
 	protected int ySize = 166;
 	private RayTraceResult rayTraceBlock = Minecraft.getInstance().player.pick(20.0D, 0.0F, false);
-	private BlockPos pos = ((BlockRayTraceResult) rayTraceBlock).getPos();
+	private BlockPos pos = ((BlockRayTraceResult) rayTraceBlock).getBlockPos();
 	private RobotTileEntity tileEntity;
 
 	/**
@@ -51,15 +51,15 @@ public class RobotGUI extends Screen {
 		int relY = (this.height - this.ySize) / 2;
 		this.addButton(new Button(relX + 55, relY + 15, 50, 20, new TranslationTextComponent("gui.done"), (Button) -> {
 			try{
-				PacketHandler.instance.sendToServer(new MessageSetRobotLevel(tileEntity.getPos(),Integer.valueOf(numberText.getText())));
-				getMinecraft().displayGuiScreen(null);
+				PacketHandler.instance.sendToServer(new MessageSetRobotLevel(tileEntity.getBlockPos(),Integer.valueOf(numberText.getValue())));
+				getMinecraft().setScreen(null);
 			}catch (Exception e){
 			}
 		}));
 		numberText = new TextFieldWidget(font, relX + 7, relY + 15, 45, 10,
 				new StringTextComponent(""));
-		numberText.setText(String.valueOf(tileEntity.getBladerLevel()));
-		numberText.setMaxStringLength(Integer.MAX_VALUE);
+		numberText.setValue(String.valueOf(tileEntity.getBladerLevel()));
+		numberText.setMaxLength(Integer.MAX_VALUE);
 		children.add(numberText);
 	}
 
@@ -69,7 +69,7 @@ public class RobotGUI extends Screen {
 		int relY = (this.height - this.ySize) / 2;
 		this.renderBackground(p_230430_1_);
 		this.getMinecraft().getTextureManager()
-				.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/robot.png"));
+				.bind(new ResourceLocation(Reference.MODID, "textures/gui/container/robot.png"));
 		this.blit(p_230430_1_, relX, relY, 0, 0, this.xSize, this.ySize);
 		super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
 		numberText.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);

@@ -17,122 +17,122 @@ import net.minecraft.world.World;
 
 public class ItemBeyPackage extends Item {
 	public ItemBeyPackage(String name) {
-		super(new Item.Properties().group(BeyCraft.BEYCRAFTTAB).maxStackSize(1));
+		super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
 		this.setRegistryName(new ResourceLocation(Reference.MODID, name));
 		BeyRegistry.ITEMS.put(name,this);
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		if (!worldIn.isRemote) {
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		if (!worldIn.isClientSide) {
 			Random random = new Random();
 			int randomNumber = random.nextInt(BeyRegistry.ITEMSLAYER.size());
 			if (randomNumber != 0) {
-				ItemEntity itemLayer = new ItemEntity(worldIn, playerIn.getPosX(),
-						playerIn.getPosY(), playerIn.getPosZ(),
+				ItemEntity itemLayer = new ItemEntity(worldIn, playerIn.getX(),
+						playerIn.getY(), playerIn.getZ(),
 						new ItemStack(BeyRegistry.ITEMSLAYER.get(randomNumber - 1), 1));
-				worldIn.addEntity(itemLayer);
+				worldIn.addFreshEntity(itemLayer);
 				if(BeyRegistry.ITEMSLAYER.get(randomNumber-1) instanceof ItemBeyLayerGT){
 					randomNumber = random.nextInt(BeyRegistry.ITEMSGTWEIGHT.size());
 					if(randomNumber != 0){
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),
-								playerIn.getPosY(), playerIn.getPosZ(),
+						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getX(),
+								playerIn.getY(), playerIn.getZ(),
 								new ItemStack(BeyRegistry.ITEMSGTWEIGHT.get(randomNumber - 1), 1));
-						worldIn.addEntity(itemChip);
+						worldIn.addFreshEntity(itemChip);
 					} else{
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),
-								playerIn.getPosY(), playerIn.getPosZ(),
+						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getX(),
+								playerIn.getY(), playerIn.getZ(),
 								new ItemStack(BeyRegistry.ITEMSGTWEIGHT.get(randomNumber), 1));
-						worldIn.addEntity(itemChip);
+						worldIn.addFreshEntity(itemChip);
 					}
 					randomNumber = random.nextInt(BeyRegistry.ITEMSGTCHIP.size());
 					if(randomNumber != 0){
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),
-								playerIn.getPosY(), playerIn.getPosZ(),
+						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getX(),
+								playerIn.getY(), playerIn.getZ(),
 								new ItemStack(BeyRegistry.ITEMSGTCHIP.get(randomNumber - 1), 1));
-						worldIn.addEntity(itemChip);
+						worldIn.addFreshEntity(itemChip);
 					} else{
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),
-								playerIn.getPosY(), playerIn.getPosZ(),
+						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getX(),
+								playerIn.getY(), playerIn.getZ(),
 								new ItemStack(BeyRegistry.ITEMSGTCHIP.get(randomNumber), 1));
-						worldIn.addEntity(itemChip);
+						worldIn.addFreshEntity(itemChip);
 					}
 				}
 			} else {
-				ItemEntity itemLayer = new ItemEntity(worldIn, playerIn.getPosX(),
-						playerIn.getPosY(), playerIn.getPosZ(),
+				ItemEntity itemLayer = new ItemEntity(worldIn, playerIn.getX(),
+						playerIn.getY(), playerIn.getZ(),
 						new ItemStack(BeyRegistry.ITEMSLAYER.get(randomNumber), 1));
-				worldIn.addEntity(itemLayer);
+				worldIn.addFreshEntity(itemLayer);
 				if(BeyRegistry.ITEMSLAYER.get(randomNumber) instanceof ItemBeyLayerGT){
 					randomNumber = random.nextInt(BeyRegistry.ITEMSGTCHIP.size());
 					if(randomNumber != 0){
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),
-								playerIn.getPosY(), playerIn.getPosZ(),
+						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getX(),
+								playerIn.getY(), playerIn.getZ(),
 								new ItemStack(BeyRegistry.ITEMSGTCHIP.get(randomNumber - 1), 1));
-						worldIn.addEntity(itemChip);
+						worldIn.addFreshEntity(itemChip);
 					} else{
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getPosX(),
-								playerIn.getPosY(), playerIn.getPosZ(),
+						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getX(),
+								playerIn.getY(), playerIn.getZ(),
 								new ItemStack(BeyRegistry.ITEMSGTCHIP.get(randomNumber), 1));
-						worldIn.addEntity(itemChip);
+						worldIn.addFreshEntity(itemChip);
 					}
 				}
 			}
 			randomNumber = random.nextInt(BeyRegistry.ITEMSDISCLIST.size());
 			if (randomNumber != 0) {
-				ItemEntity itemDisk = new ItemEntity(worldIn, playerIn.getPosX(),
-						playerIn.getPosY(), playerIn.getPosZ(),
+				ItemEntity itemDisk = new ItemEntity(worldIn, playerIn.getX(),
+						playerIn.getY(), playerIn.getZ(),
 						new ItemStack(BeyRegistry.ITEMSDISCLIST.get(randomNumber - 1), 1));
-				worldIn.addEntity(itemDisk);
+				worldIn.addFreshEntity(itemDisk);
 				if(BeyRegistry.ITEMSDISCLIST.get(randomNumber-1) instanceof ItemBeyDiscFrame && random.nextInt(2) == 1){
 					randomNumber = random.nextInt(BeyRegistry.ITEMSFRAME.size());
 					if(randomNumber != 0) {
-						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getPosX(),
-								playerIn.getPosY(), playerIn.getPosZ(),
+						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getX(),
+								playerIn.getY(), playerIn.getZ(),
 								new ItemStack(BeyRegistry.ITEMSFRAME.get(randomNumber - 1), 1));
-						worldIn.addEntity(itemFrame);
+						worldIn.addFreshEntity(itemFrame);
 					}else{
-						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getPosX(),
-								playerIn.getPosY(), playerIn.getPosZ(),
+						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getX(),
+								playerIn.getY(), playerIn.getZ(),
 								new ItemStack(BeyRegistry.ITEMSFRAME.get(randomNumber), 1));
-						worldIn.addEntity(itemFrame);
+						worldIn.addFreshEntity(itemFrame);
 					}
 				}
 			} else {
-				ItemEntity itemDisk = new ItemEntity(worldIn, playerIn.getPosX(),
-						playerIn.getPosY(), playerIn.getPosZ(),
+				ItemEntity itemDisk = new ItemEntity(worldIn, playerIn.getX(),
+						playerIn.getY(), playerIn.getZ(),
 						new ItemStack(BeyRegistry.ITEMSDISCLIST.get(randomNumber), 1));
-				worldIn.addEntity(itemDisk);
+				worldIn.addFreshEntity(itemDisk);
 				if(BeyRegistry.ITEMSDISCLIST.get(randomNumber) instanceof ItemBeyDiscFrame && random.nextInt(2) == 1){
 					randomNumber = random.nextInt(BeyRegistry.ITEMSFRAME.size());
 					if(randomNumber != 0) {
-						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getPosX(),
-								playerIn.getPosY(), playerIn.getPosZ(),
+						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getX(),
+								playerIn.getY(), playerIn.getZ(),
 								new ItemStack(BeyRegistry.ITEMSFRAME.get(randomNumber - 1), 1));
-						worldIn.addEntity(itemFrame);
+						worldIn.addFreshEntity(itemFrame);
 					}else{
-						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getPosX(),
-								playerIn.getPosY(), playerIn.getPosZ(),
+						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getX(),
+								playerIn.getY(), playerIn.getZ(),
 								new ItemStack(BeyRegistry.ITEMSFRAME.get(randomNumber), 1));
-						worldIn.addEntity(itemFrame);
+						worldIn.addFreshEntity(itemFrame);
 					}
 				}
 			}
 			randomNumber = random.nextInt(BeyRegistry.ITEMSDRIVER.size());
 			if (randomNumber != 0) {
-				ItemEntity itemDriver = new ItemEntity(worldIn, playerIn.getPosX(),
-						playerIn.getPosY(), playerIn.getPosZ(),
+				ItemEntity itemDriver = new ItemEntity(worldIn, playerIn.getX(),
+						playerIn.getY(), playerIn.getZ(),
 						new ItemStack(BeyRegistry.ITEMSDRIVER.get(randomNumber - 1), 1));
-				worldIn.addEntity(itemDriver);
+				worldIn.addFreshEntity(itemDriver);
 			} else {
-				ItemEntity itemDriver = new ItemEntity(worldIn, playerIn.getPosX(),
-						playerIn.getPosY(), playerIn.getPosZ(),
+				ItemEntity itemDriver = new ItemEntity(worldIn, playerIn.getX(),
+						playerIn.getY(), playerIn.getZ(),
 						new ItemStack(BeyRegistry.ITEMSDRIVER.get(randomNumber), 1));
-				worldIn.addEntity(itemDriver);
+				worldIn.addFreshEntity(itemDriver);
 			}
-			playerIn.getHeldItem(handIn).shrink(1);
+			playerIn.getItemInHand(handIn).shrink(1);
 		}
-		return super.onItemRightClick(worldIn, playerIn, handIn);
+		return super.use(worldIn, playerIn, handIn);
 	}
 
 

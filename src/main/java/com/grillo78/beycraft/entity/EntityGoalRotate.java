@@ -20,26 +20,26 @@ public class EntityGoalRotate extends Goal {
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		return true;
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean canContinueToUse() {
 		if (!bey.isStoped()) {
 			if (!bey.isStoped() && !bey.isDescending() && bey.isRotationStarted()) {
 				if(bey.isOnGround()){
 					if (((ItemBeyDriver) bey.getDriver().getItem()).getType(bey.getDriver()) == BeyTypes.ATTACK) {
 						if (count < 6) {
 							count++;
-							if(count%2 == 0)bey.rotationYaw += bey.getRotationSpeed() * -bey.getRotationDirection() * 2
+							if(count%2 == 0)bey.yRot += bey.getRotationSpeed() * -bey.getRotationDirection() * 2
 									/ (-bey.getMaxRotationSpeed() * 0.1);
 						} else {
 							count = 0;
-							bey.rotationYaw += 160 * bey.getRotationDirection();
+							bey.yRot += 160 * bey.getRotationDirection();
 						}
 					} else {
-						bey.rotationYaw += bey.getRotationSpeed() * -bey.getRotationDirection() * 2
+						bey.yRot += bey.getRotationSpeed() * -bey.getRotationDirection() * 2
 								/ (-bey.getMaxRotationSpeed() * 0.1);
 					}
 				}
@@ -67,11 +67,11 @@ public class EntityGoalRotate extends Goal {
 
 			if (bey.getRadius() != 0) {
 				if(((ItemBeyDriver)bey.getDriver().getItem()).getType(bey.getDriver()) != BeyTypes.ATTACK){
-					bey.move(MoverType.SELF, new Vector3d(bey.getLookVec().x * bey.getRadius() / 2.1, 0,
-							bey.getLookVec().z * bey.getRadius() / 2.1));
+					bey.move(MoverType.SELF, new Vector3d(bey.getLookAngle().x * bey.getRadius() / 2.1, 0,
+							bey.getLookAngle().z * bey.getRadius() / 2.1));
 				} else {
-					bey.move(MoverType.SELF, new Vector3d(bey.getLookVec().x * bey.getRadius() / 2.1, 0,
-							bey.getLookVec().z * bey.getRadius() / 2.1));
+					bey.move(MoverType.SELF, new Vector3d(bey.getLookAngle().x * bey.getRadius() / 2.1, 0,
+							bey.getLookAngle().z * bey.getRadius() / 2.1));
 				}
 			}
 
@@ -80,11 +80,11 @@ public class EntityGoalRotate extends Goal {
 	}
 
 	private void moveToCenter() {
-		if (bey.world.getBlockState(
-				new BlockPos(bey.getPositionVec().x, bey.getPositionVec().y + 1 - 0.0625 * 7, bey.getPositionVec().z))
+		if (bey.level.getBlockState(
+				new BlockPos(bey.position().x, bey.position().y + 1 - 0.0625 * 7, bey.position().z))
 				.getBlock() instanceof StadiumBlock) {
-			switch (bey.world.getBlockState(new BlockPos(bey.getPositionVec().x, bey.getPositionVec().y + 1 - 0.0625 * 7, bey.getPositionVec().z))
-					.get(StadiumBlock.PART).getID()) {
+			switch (bey.level.getBlockState(new BlockPos(bey.position().x, bey.position().y + 1 - 0.0625 * 7, bey.position().z))
+					.getValue(StadiumBlock.PART).getID()) {
 			case 0:
 				if (bey.getRadius() == 0)
 					bey.move(MoverType.SELF, new Vector3d(0.1, 0, 0.1));
@@ -104,10 +104,10 @@ public class EntityGoalRotate extends Goal {
 			case 4:
 				bey.move(MoverType.SELF,
 						new Vector3d(
-								(new BlockPos(bey.getPosX(), bey.getPosY(), bey.getPosZ()).getX() + 0.5
-										- bey.getPositionVec().x) / 4,
-								0, (new BlockPos(bey.getPosX(), bey.getPosY(), bey.getPosZ()).getZ() + 0.5
-										- bey.getPositionVec().z) / 4));
+								(new BlockPos(bey.getX(), bey.getY(), bey.getZ()).getX() + 0.5
+										- bey.position().x) / 4,
+								0, (new BlockPos(bey.getX(), bey.getY(), bey.getZ()).getZ() + 0.5
+										- bey.position().z) / 4));
 				break;
 			case 5:
 				bey.move(MoverType.SELF, new Vector3d(0, 0,

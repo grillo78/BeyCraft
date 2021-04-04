@@ -51,35 +51,32 @@ import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.network.NetworkDirection;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.SlotTypePreset;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonEvents {
 
 	@SubscribeEvent
 	public static void registerEntityType(final RegistryEvent.Register<EntityType<?>> event) {
-		EntityType<?> type = EntityType.Builder.<EntityBey>create(EntityBey::new, EntityClassification.MISC)
-				.disableSummoning().size(0.19F, 0.25F).build(Reference.MODID + ":bey");
+		EntityType<?> type = EntityType.Builder.<EntityBey>of(EntityBey::new, EntityClassification.MISC)
+				.noSummon().sized(0.19F, 0.25F).build(Reference.MODID + ":bey");
 		type.setRegistryName(Reference.MODID, "bey");
 		event.getRegistry().register(type);
 
 		GlobalEntityTypeAttributes.put((EntityType<? extends EntityBey>) type,
-				EntityBey.registerAttributes().create());
+				EntityBey.registerAttributes().build());
 
 	}
 
 	@SubscribeEvent
 	public static void registerTileEntityType(final RegistryEvent.Register<TileEntityType<?>> event) {
-		event.getRegistry().register(TileEntityType.Builder.create(ExpositoryTileEntity::new, BeyRegistry.EXPOSITORY)
+		event.getRegistry().register(TileEntityType.Builder.of(ExpositoryTileEntity::new, BeyRegistry.EXPOSITORY)
 				.build(null).setRegistryName(new ResourceLocation(Reference.MODID, "expositorytileentity")));
 		event.getRegistry()
-				.register(TileEntityType.Builder.create(BeyCreatorTileEntity::new, BeyRegistry.BEYCREATORBLOCK)
+				.register(TileEntityType.Builder.of(BeyCreatorTileEntity::new, BeyRegistry.BEYCREATORBLOCK)
 						.build(null).setRegistryName(new ResourceLocation(Reference.MODID, "beycreatortileentity")));
-		event.getRegistry().register(TileEntityType.Builder.create(RobotTileEntity::new, BeyRegistry.ROBOT).build(null)
+		event.getRegistry().register(TileEntityType.Builder.of(RobotTileEntity::new, BeyRegistry.ROBOT).build(null)
 				.setRegistryName(new ResourceLocation(Reference.MODID, "robottileentity")));
-		event.getRegistry().register(TileEntityType.Builder.create(StadiumTileEntity::new, BeyRegistry.STADIUM)
+		event.getRegistry().register(TileEntityType.Builder.of(StadiumTileEntity::new, BeyRegistry.STADIUM)
 				.build(null).setRegistryName(new ResourceLocation(Reference.MODID, "stadiumtileentity")));
 	}
 
@@ -159,12 +156,6 @@ public class CommonEvents {
 	}
 
 	@SubscribeEvent
-	public static void enqueueIMC(final InterModEnqueueEvent event) {
-		InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE,
-				() -> SlotTypePreset.BELT.getMessageBuilder().build());
-	}
-
-	@SubscribeEvent
 	public static void registerItem(final RegistryEvent.Register<Item> event) {
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
 			ClientEvents.injectResources();
@@ -225,7 +216,7 @@ public class CommonEvents {
 		public static void onPlayerRespawn(final PlayerEvent.PlayerRespawnEvent event) {
 			event.getPlayer().getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
 				PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(), h.getExperience()),
-						((ServerPlayerEntity) event.getPlayer()).connection.getNetworkManager(),
+						((ServerPlayerEntity) event.getPlayer()).connection.getConnection(),
 						NetworkDirection.PLAY_TO_CLIENT);
 			});
 		}
@@ -254,13 +245,13 @@ public class CommonEvents {
 		public static void playerEnterWorld(final PlayerEvent.PlayerLoggedInEvent event) {
 			StringTextComponent prefix = new StringTextComponent("[BeyCraft] -> Join to my Discord server: ");
 			StringTextComponent url = new StringTextComponent("https://discord.gg/2PpbtFr");
-			prefix.mergeStyle(TextFormatting.GOLD);
-			url.mergeStyle(TextFormatting.GOLD);
-			event.getPlayer().sendMessage(prefix, Util.DUMMY_UUID);
-			event.getPlayer().sendMessage(url, Util.DUMMY_UUID);
+			prefix.withStyle(TextFormatting.GOLD);
+			url.withStyle(TextFormatting.GOLD);
+			event.getPlayer().sendMessage(prefix, Util.NIL_UUID);
+			event.getPlayer().sendMessage(url, Util.NIL_UUID);
 			event.getPlayer().getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
 				PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(), h.getExperience()),
-						((ServerPlayerEntity) event.getPlayer()).connection.getNetworkManager(),
+						((ServerPlayerEntity) event.getPlayer()).connection.getConnection(),
 						NetworkDirection.PLAY_TO_CLIENT);
 			});
 		}

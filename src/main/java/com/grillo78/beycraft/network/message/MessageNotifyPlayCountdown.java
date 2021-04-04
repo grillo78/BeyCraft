@@ -22,8 +22,8 @@ public class MessageNotifyPlayCountdown implements IMessage<MessageNotifyPlayCou
 	@Override
 	public void handle(MessageNotifyPlayCountdown message, Supplier<NetworkEvent.Context> supplier) {
 		supplier.get().enqueueWork(() -> {
-			for (ServerPlayerEntity player: supplier.get().getSender().getServerWorld().getPlayers()) {
-				PacketHandler.instance.sendTo(new MessagePlayCountdown(supplier.get().getSender().getPosition()),player.connection.getNetworkManager(),
+			for (ServerPlayerEntity player: supplier.get().getSender().getLevel().players()) {
+				PacketHandler.instance.sendTo(new MessagePlayCountdown(supplier.get().getSender().blockPosition()),player.connection.getConnection(),
 						NetworkDirection.PLAY_TO_CLIENT);
 			}
 		});

@@ -28,11 +28,11 @@ public class BeyDiscFrameContainer extends Container {
 			stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			.ifPresent(h -> this.addSlot(new SlotBeyFrame(h, 0, 10, 15)));
 		}
-        addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);
+        addPlayerSlots(new InvWrapper(playerInventory), playerInventory.selected);
 	}
 
     @Override
-    public void onContainerClosed(PlayerEntity player) {
+    public void removed(PlayerEntity player) {
         if(player instanceof ServerPlayerEntity){
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 if(!stack.hasTag()){
@@ -40,7 +40,7 @@ public class BeyDiscFrameContainer extends Container {
                     stack.setTag(nbt);
                 }
                 CompoundNBT nbt = stack.getTag();
-                nbt.put("frame", h.getStackInSlot(0).write(new CompoundNBT()));
+                nbt.put("frame", h.getStackInSlot(0).save(new CompoundNBT()));
             });
         }
     }
@@ -66,33 +66,33 @@ public class BeyDiscFrameContainer extends Container {
     }
 
 	@Override
-	public boolean canInteractWith(PlayerEntity playerIn) {
+	public boolean stillValid(PlayerEntity playerIn) {
 		return true;
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+	public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
 		ItemStack transferred = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
+        Slot slot = this.slots.get(index);
 
-        int otherSlots = this.inventorySlots.size() - 36;
+        int otherSlots = this.slots.size() - 36;
 
-        if (slot != null && slot.getHasStack()) {
-            ItemStack current = slot.getStack();
+        if (slot != null && slot.hasItem()) {
+            ItemStack current = slot.getItem();
             transferred = current.copy();
 
             if (index < otherSlots) {
-                if (!this.mergeItemStack(current, otherSlots, this.inventorySlots.size(), true)) {
+                if (!this.moveItemStackTo(current, otherSlots, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(current, 0, otherSlots, false)) {
+            } else if (!this.moveItemStackTo(current, 0, otherSlots, false)) {
                 return ItemStack.EMPTY;
             }
 
             if (current.getCount() == 0) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
         }
 

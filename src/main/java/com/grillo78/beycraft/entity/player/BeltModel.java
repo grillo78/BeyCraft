@@ -21,10 +21,10 @@ public class BeltModel<T extends LivingEntity> extends BipedModel<T> {
 
     public BeltModel() {
         super(0);
-        this.textureWidth = 32;
-        this.textureHeight = 32;
+        this.texWidth = 32;
+        this.texHeight = 32;
         this.belt = new ModelRenderer(this, 0, 0);
-        this.belt.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.belt.setPos(0.0F, 0.0F, 0.0F);
         this.belt.addBox(-4.1F, 11.0F, -2.0F, 0.1F, 1.0F, 4.1F, 0.0F, 0.0F, 0.0F);
         this.belt.addBox(-4.1F, 11.0F, -2.1F, 8.2F, 1.0F, 0.1F, 0.0F, 0.0F, 0.0F);
         this.belt.addBox(-4.0F, 11.0F, 2.0F, 8.1F, 1.0F, 0.1F, 0.0F, 0.0F, 0.0F);
@@ -34,13 +34,13 @@ public class BeltModel<T extends LivingEntity> extends BipedModel<T> {
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         ImmutableList.of(this.belt).forEach((modelRenderer) -> {
             modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         });
     }
 
     @Override
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+    public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 
 }

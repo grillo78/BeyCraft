@@ -31,16 +31,16 @@ public class BeyLoggerItemStackRendererTileEntity extends ItemStackTileEntityRen
 	private Random random = new Random();
 
 	@Override
-	public void func_239207_a_(ItemStack stack, TransformType transformType, MatrixStack matrixStack,
+	public void renderByItem(ItemStack stack, TransformType transformType, MatrixStack matrixStack,
 			IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
-		super.func_239207_a_(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
-		matrixStack.push();
+		super.renderByItem(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
+		matrixStack.pushPose();
 
 		IBakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft",
-				"beyloggers/" + stack.getItem().getTranslationKey().replace("item.beycraft.", "") + ""));
+				"beyloggers/" + stack.getItem().getDescriptionId().replace("item.beycraft.", "") + ""));
 		IVertexBuilder vertexBuilder = buffer
-				.getBuffer(RenderType.getEntityTranslucent(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
-		MatrixStack.Entry entry = matrixStack.getLast();
+				.getBuffer(RenderType.entityTranslucent(AtlasTexture.LOCATION_BLOCKS));
+		MatrixStack.Entry entry = matrixStack.last();
 		for (int i = 0; i < model.getQuads(null, null, random, EmptyModelData.INSTANCE).size(); i++) {
 			vertexBuilder.addVertexData(entry, model.getQuads(null, null, random, EmptyModelData.INSTANCE).get(i), 1, 1, 1, 1, combinedLightIn,combinedOverlayIn, true);
 		}
@@ -62,33 +62,33 @@ public class BeyLoggerItemStackRendererTileEntity extends ItemStackTileEntityRen
 		}
 
 		if (stack.hasTag() && stack.getTag().contains("url") && textures.containsKey(stack.getTag().getString("url"))) {
-			matrixStack.rotate(new Quaternion(0, -90, 0, true));
+			matrixStack.mulPose(new Quaternion(0, -90, 0, true));
 			matrixStack.translate(-0.865, 0.47, -0.15);
 			DynamicTexture texture = textures.get(stack.getTag().getString("url"));
-			texture.bindTexture();
+			texture.bind();
 			IVertexBuilder builder = buffer
-					.getBuffer(RenderType.getEntityTranslucent(textureLocations.get(stack.getTag().getString("url"))));
-			Matrix4f posMatrix = matrixStack.getLast().getMatrix();
-			Matrix3f normalMatrix = matrixStack.getLast().getNormal();
-			builder.pos(posMatrix, 0, 0, 0).color(255, 255, 255, 255).tex(0, 0).overlay(combinedOverlayIn)
-					.lightmap(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
-			builder.pos(posMatrix, 0, 0, 0.29f).color(255, 255, 255, 255).tex(0, 0.79f).overlay(combinedOverlayIn)
-					.lightmap(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
-			builder.pos(posMatrix, 0.55f, 0, 0.29f).color(255, 255, 255, 255).tex(1, 0.79f).overlay(combinedOverlayIn)
-					.lightmap(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
-			builder.pos(posMatrix, 0.55f, 0, 0).color(255, 255, 255, 255).tex(1, 0).overlay(combinedOverlayIn)
-					.lightmap(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
+					.getBuffer(RenderType.entityTranslucent(textureLocations.get(stack.getTag().getString("url"))));
+			Matrix4f posMatrix = matrixStack.last().pose();
+			Matrix3f normalMatrix = matrixStack.last().normal();
+			builder.vertex(posMatrix, 0, 0, 0).color(255, 255, 255, 255).uv(0, 0).overlayCoords(combinedOverlayIn)
+					.uv2(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
+			builder.vertex(posMatrix, 0, 0, 0.29f).color(255, 255, 255, 255).uv(0, 0.79f).overlayCoords(combinedOverlayIn)
+					.uv2(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
+			builder.vertex(posMatrix, 0.55f, 0, 0.29f).color(255, 255, 255, 255).uv(1, 0.79f).overlayCoords(combinedOverlayIn)
+					.uv2(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
+			builder.vertex(posMatrix, 0.55f, 0, 0).color(255, 255, 255, 255).uv(1, 0).overlayCoords(combinedOverlayIn)
+					.uv2(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
 
-			builder.pos(posMatrix, 0, 0, 0.29f).color(255, 255, 255, 255).tex(0, 0.79f).overlay(combinedOverlayIn)
-					.lightmap(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
-			builder.pos(posMatrix, 0, -0.04f, 0.339f).color(255, 255, 255, 255).tex(0, 1).overlay(combinedOverlayIn)
-					.lightmap(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
-			builder.pos(posMatrix, 0.55f, -0.04f, 0.339f).color(255, 255, 255, 255).tex(1, 1).overlay(combinedOverlayIn)
-					.lightmap(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
-			builder.pos(posMatrix, 0.55f, 0, 0.29f).color(255, 255, 255, 255).tex(1, 0.79f).overlay(combinedOverlayIn)
-					.lightmap(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
+			builder.vertex(posMatrix, 0, 0, 0.29f).color(255, 255, 255, 255).uv(0, 0.79f).overlayCoords(combinedOverlayIn)
+					.uv2(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
+			builder.vertex(posMatrix, 0, -0.04f, 0.339f).color(255, 255, 255, 255).uv(0, 1).overlayCoords(combinedOverlayIn)
+					.uv2(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
+			builder.vertex(posMatrix, 0.55f, -0.04f, 0.339f).color(255, 255, 255, 255).uv(1, 1).overlayCoords(combinedOverlayIn)
+					.uv2(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
+			builder.vertex(posMatrix, 0.55f, 0, 0.29f).color(255, 255, 255, 255).uv(1, 0.79f).overlayCoords(combinedOverlayIn)
+					.uv2(combinedLightIn).normal(normalMatrix, 0, 1, 0).endVertex();
 		}
-		matrixStack.pop();
+		matrixStack.popPose();
 	}
 
 	private void downloadTexture(String urlS){
@@ -110,7 +110,7 @@ public class BeyLoggerItemStackRendererTileEntity extends ItemStackTileEntityRen
 			NativeImage beyloggerImages = textureImages.get(urlS);
 			DynamicTexture texture = new DynamicTexture(beyloggerImages);
 			textureLocations.put(urlS, new ResourceLocation("dynamic_texture_" + textureLocations.size()));
-			Minecraft.getInstance().textureManager.loadTexture(textureLocations.get(urlS), texture);
+			Minecraft.getInstance().textureManager.register(textureLocations.get(urlS), texture);
 			textures.put(urlS, texture);
 		} catch (Exception e) {
 			if (textures.containsKey(urlS)) {

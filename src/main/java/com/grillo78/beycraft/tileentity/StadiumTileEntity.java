@@ -35,8 +35,8 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
 
     @Override
     public void tick() {
-        List<EntityBey> beys = world.getEntitiesWithinAABB(EntityBey.class,
-                new AxisAlignedBB(getPos().north().east(2), getPos().south(2).west().up()));
+        List<EntityBey> beys = level.getEntitiesOfClass(EntityBey.class,
+                new AxisAlignedBB(getBlockPos().north().east(2), getBlockPos().south(2).west().above()));
         int beysSpinning = 0;
         if (beysInBattle < beys.size()) {
             beysInBattle = beys.size();
@@ -47,8 +47,8 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
             }
         }
         if (inBattle) {
-            if (beysSpinning == 1 && !world.isRemote) {
-                for (ServerPlayerEntity player : ((ServerWorld) world).getServer().getPlayerList().getPlayers()) {
+            if (beysSpinning == 1 && !level.isClientSide) {
+                for (ServerPlayerEntity player : ((ServerWorld) level).getServer().getPlayerList().getPlayers()) {
                     for (EntityBey bey : beys) {
                         if (player.getName().getString().equals(bey.getPlayerName())) {
                             if (bey.hasBeylogger()) {
@@ -67,7 +67,7 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
                                             rand.nextInt(50 * (beysInBattle - 1)) * beys.get(0).getBladerLevel() + rand.nextFloat(), 2));
                                 }
 
-                                PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(), h.getExperience()), player.connection.getNetworkManager(),
+                                PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(), h.getExperience()), player.connection.getConnection(),
                                         NetworkDirection.PLAY_TO_CLIENT);
                             });
                         }

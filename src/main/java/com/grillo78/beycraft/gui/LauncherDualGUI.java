@@ -44,13 +44,13 @@ public class LauncherDualGUI extends ContainerScreen<LauncherContainer> {
 	@Override
 	protected void init() {
 		super.init();
-		if (Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemDualLauncher) {
-			launcher = Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND);
+		if (Minecraft.getInstance().player.getItemInHand(Hand.MAIN_HAND).getItem() instanceof ItemDualLauncher) {
+			launcher = Minecraft.getInstance().player.getItemInHand(Hand.MAIN_HAND);
 		} else {
-			launcher = Minecraft.getInstance().player.getHeldItem(Hand.OFF_HAND);
+			launcher = Minecraft.getInstance().player.getItemInHand(Hand.OFF_HAND);
 		}
-		int relX = (this.width - this.xSize) / 2;
-		int relY = (this.height - this.ySize) / 2;
+		int relX = (this.width - this.imageWidth) / 2;
+		int relY = (this.height - this.imageHeight) / 2;
 		if (!launcher.hasTag() || !launcher.getTag().contains("rotation")) {
 			PacketHandler.instance.sendToServer(new MessageUpdateDualLauncher(-1));
 		}
@@ -101,8 +101,8 @@ public class LauncherDualGUI extends ContainerScreen<LauncherContainer> {
 		setColorBtn = new Button(relX + 5, relY + 53, 50, 20, new StringTextComponent("Set color"), (Button) -> {
 			try {
 				PacketHandler.instance
-						.sendToServer(new MessageUpdateColorLauncher(Float.valueOf(redText.getText()) / 255f,
-								Float.valueOf(greenText.getText()) / 255f, Float.valueOf(blueText.getText()) / 255f));
+						.sendToServer(new MessageUpdateColorLauncher(Float.valueOf(redText.getValue()) / 255f,
+								Float.valueOf(greenText.getValue()) / 255f, Float.valueOf(blueText.getValue()) / 255f));
 			} catch (NumberFormatException e) {
 
 			}
@@ -115,23 +115,23 @@ public class LauncherDualGUI extends ContainerScreen<LauncherContainer> {
 		children.add(greenText);
 		blueText = new TextFieldWidget(font, relX + 100, relY + 45, 50, 10, new StringTextComponent(""));
 		if (!launcher.getTag().contains("color")) {
-			redText.setText("255.0");
-			greenText.setText("255.0");
-			blueText.setText("255.0");
+			redText.setValue("255.0");
+			greenText.setValue("255.0");
+			blueText.setValue("255.0");
 		} else {
-			redText.setText(String.valueOf(launcher.getTag().getCompound("color").getFloat("red") * 255));
-			greenText.setText(String.valueOf(launcher.getTag().getCompound("color").getFloat("green") * 255));
-			blueText.setText(String.valueOf(launcher.getTag().getCompound("color").getFloat("blue") * 255));
+			redText.setValue(String.valueOf(launcher.getTag().getCompound("color").getFloat("red") * 255));
+			greenText.setValue(String.valueOf(launcher.getTag().getCompound("color").getFloat("green") * 255));
+			blueText.setValue(String.valueOf(launcher.getTag().getCompound("color").getFloat("blue") * 255));
 		}
 		children.add(blueText);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
-		this.font.func_238422_b_(p_230451_1_, this.playerInventory.getDisplayName().func_241878_f(), (float)this.playerInventoryTitleX, (float)this.playerInventoryTitleY, 4210752);
-		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("R:").func_241878_f(), xSize/2, ySize-155.0F, 4210752);
-		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("G:").func_241878_f(), xSize/2, ySize-140.0F, 4210752);
-		this.font.func_238422_b_(p_230451_1_, new StringTextComponent("B:").func_241878_f(), xSize/2, ySize-125.0F, 4210752);
+	protected void renderLabels(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
+		this.font.draw(p_230451_1_, this.inventory.getDisplayName().getVisualOrderText(), (float)this.inventoryLabelX, (float)this.inventoryLabelY, 4210752);
+		this.font.draw(p_230451_1_, new StringTextComponent("R:").getVisualOrderText(), imageWidth/2, imageHeight-155.0F, 4210752);
+		this.font.draw(p_230451_1_, new StringTextComponent("G:").getVisualOrderText(), imageWidth/2, imageHeight-140.0F, 4210752);
+		this.font.draw(p_230451_1_, new StringTextComponent("B:").getVisualOrderText(), imageWidth/2, imageHeight-125.0F, 4210752);
 	}
 
 	@Override
@@ -146,19 +146,19 @@ public class LauncherDualGUI extends ContainerScreen<LauncherContainer> {
 	public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
 		this.renderBackground(p_230430_1_);
 		super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
-		this.func_230459_a_(p_230430_1_, p_230430_2_, p_230430_3_);
+		this.renderTooltip(p_230430_1_, p_230430_2_, p_230430_3_);
 		redText.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
 		greenText.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
 		blueText.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
 		this.getMinecraft().getTextureManager()
-				.bindTexture(new ResourceLocation(Reference.MODID, "textures/gui/container/launcher.png"));
-		int relX = (this.width - this.xSize) / 2;
-		int relY = (this.height - this.ySize) / 2;
-		this.blit(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
+				.bind(new ResourceLocation(Reference.MODID, "textures/gui/container/launcher.png"));
+		int relX = (this.width - this.imageWidth) / 2;
+		int relY = (this.height - this.imageHeight) / 2;
+		this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
 	}
 }

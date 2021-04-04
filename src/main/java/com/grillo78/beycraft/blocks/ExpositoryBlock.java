@@ -35,20 +35,22 @@ import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.AbstractBlock;
+
 /**
  * @author grillo78
  */
 public class ExpositoryBlock extends Block implements IWaterLoggable {
 
-    private VoxelShape collisionBox = VoxelShapes.create(0,0,0,1,0.5,1);
+    private VoxelShape collisionBox = VoxelShapes.box(0,0,0,1,0.5,1);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public ExpositoryBlock(Material materialIn, String name) {
-        super(Block.Properties.create(materialIn).hardnessAndResistance(0.6F).notSolid());
+        super(AbstractBlock.Properties.of(materialIn).strength(0.6F).noOcclusion());
         setRegistryName(new ResourceLocation(Reference.MODID, name));
 
         BeyRegistry.BLOCKS.add(this);
-        BeyRegistry.ITEMS.put(name,new BlockItem(this, new Item.Properties().group(BeyCraft.BEYCRAFTTAB))
+        BeyRegistry.ITEMS.put(name,new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))
                 .setRegistryName(this.getRegistryName()));
     }
 
@@ -69,37 +71,37 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (worldIn.getTileEntity(pos) instanceof ExpositoryTileEntity) {
-            ExpositoryTileEntity tileEntity = (ExpositoryTileEntity) worldIn.getTileEntity(pos);
+    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (worldIn.getBlockEntity(pos) instanceof ExpositoryTileEntity) {
+            ExpositoryTileEntity tileEntity = (ExpositoryTileEntity) worldIn.getBlockEntity(pos);
             tileEntity.getInventory().ifPresent(h -> {
-                worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0)));
+                worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0)));
             });
         }
-        worldIn.addEntity(new ItemEntity(worldIn,pos.getX(),pos.getY(),pos.getZ(), new ItemStack(this)));
-        super.onBlockHarvested(worldIn, pos, state, player);
+        worldIn.addFreshEntity(new ItemEntity(worldIn,pos.getX(),pos.getY(),pos.getZ(), new ItemStack(this)));
+        super.playerWillDestroy(worldIn, pos, state, player);
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
                                              Hand hand, BlockRayTraceResult p_225533_6_) {
-        if(playerIn.getHeldItem(hand).getItem() == Items.WATER_BUCKET||playerIn.getHeldItem(hand).getItem() == Items.BUCKET){
-            return super.onBlockActivated(state,worldIn,pos,playerIn,hand,p_225533_6_);
+        if(playerIn.getItemInHand(hand).getItem() == Items.WATER_BUCKET||playerIn.getItemInHand(hand).getItem() == Items.BUCKET){
+            return super.use(state,worldIn,pos,playerIn,hand,p_225533_6_);
         }
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        if(!worldIn.isRemote){
+        TileEntity tileentity = worldIn.getBlockEntity(pos);
+        if(!worldIn.isClientSide){
             if (tileentity instanceof ExpositoryTileEntity) {
                 ((ExpositoryTileEntity) tileentity).getInventory().ifPresent(h -> {
                     if(h.getStackInSlot(0)!=ItemStack.EMPTY){
-                        worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
+                        worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
                         h.extractItem(0,1,false);
                     }
-                    if (playerIn.getHeldItem(hand).getItem() instanceof ItemBeyLayer || playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDisc || playerIn.getHeldItem(hand).getItem() instanceof ItemBeyDriver) {
-                        h.insertItem(0,playerIn.getHeldItem(hand).copy(),false);
-                        playerIn.getHeldItem(hand).shrink(1);
+                    if (playerIn.getItemInHand(hand).getItem() instanceof ItemBeyLayer || playerIn.getItemInHand(hand).getItem() instanceof ItemBeyDisc || playerIn.getItemInHand(hand).getItem() instanceof ItemBeyDriver) {
+                        h.insertItem(0,playerIn.getItemInHand(hand).copy(),false);
+                        playerIn.getItemInHand(hand).shrink(1);
                     }
                 });
-                worldIn.notifyBlockUpdate(pos, state, state, 0);
+                worldIn.sendBlockUpdated(pos, state, state, 0);
             }
         }
         return ActionResultType.SUCCESS;
@@ -108,17 +110,17 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return getDefaultState().with(WATERLOGGED, Boolean.valueOf(context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER));
+        return defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER));
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override

@@ -61,14 +61,14 @@ public class ItemBeyDiscFrame extends ItemBeyDisc {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand handIn) {
-		if (!world.isRemote) {
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand handIn) {
+		if (!world.isClientSide) {
 			NetworkHooks.openGui((ServerPlayerEntity) player,
 					new SimpleNamedContainerProvider(
 							(id, playerInventory, playerEntity) -> new BeyDiscFrameContainer(id,
-									player.getHeldItem(handIn), playerInventory),
+									player.getItemInHand(handIn), playerInventory),
 							new StringTextComponent(getRegistryName().getPath())));
 		}
-		return super.onItemRightClick(world, player, handIn);
+		return super.use(world, player, handIn);
 	}
 }

@@ -31,7 +31,7 @@ public class RobotTileEntity extends TileEntity  {
 
 	@OnlyIn(Dist.CLIENT)
 	public void openGUI(){
-		Minecraft.getInstance().displayGuiScreen(new RobotGUI(new StringTextComponent(""), this));
+		Minecraft.getInstance().setScreen(new RobotGUI(new StringTextComponent(""), this));
 	}
 
 	/**
@@ -50,28 +50,28 @@ public class RobotTileEntity extends TileEntity  {
 	}
 
 	@Override
-	public void read(BlockState p_230337_1_, CompoundNBT p_230337_2_) {
-		super.read(p_230337_1_, p_230337_2_);
+	public void load(BlockState p_230337_1_, CompoundNBT p_230337_2_) {
+		super.load(p_230337_1_, p_230337_2_);
 		readNetwork(p_230337_2_);
 	}
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		if(renderBox == null){
-			renderBox = new AxisAlignedBB(pos.down().getX(),pos.down().getY(),pos.down().getZ(),pos.getX()+1,pos.getY()+1,pos.getZ()+1);
+			renderBox = new AxisAlignedBB(worldPosition.below().getX(),worldPosition.below().getY(),worldPosition.below().getZ(),worldPosition.getX()+1,worldPosition.getY()+1,worldPosition.getZ()+1);
 		}
 		return renderBox;
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
+	public CompoundNBT save(CompoundNBT compound) {
 		writeNetwork(compound);
-		return super.write(compound);
+		return super.save(compound);
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(this.pos, 1, this.writeNetwork(new CompoundNBT()));
+		return new SUpdateTileEntityPacket(this.worldPosition, 1, this.writeNetwork(new CompoundNBT()));
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class RobotTileEntity extends TileEntity  {
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		this.readNetwork(pkt.getNbtCompound());
+		this.readNetwork(pkt.getTag());
 	}
 
 	@Override

@@ -24,29 +24,29 @@ public class MessageBeyCreatorUpdate implements IMessage<MessageBeyCreatorUpdate
 
 	@Override
 	public void encode(MessageBeyCreatorUpdate message, PacketBuffer buffer) {
-		buffer.writeItemStack(message.stack);
+		buffer.writeItem(message.stack);
 		buffer.writeBlockPos(message.pos);
 	}
 
 	@Override
 	public MessageBeyCreatorUpdate decode(PacketBuffer buffer) {
-		return new MessageBeyCreatorUpdate(buffer.readItemStack(), buffer.readBlockPos());
+		return new MessageBeyCreatorUpdate(buffer.readItem(), buffer.readBlockPos());
 	}
 
 	@Override
 	public void handle(MessageBeyCreatorUpdate message, Supplier<NetworkEvent.Context> supplier) {
 		supplier.get().enqueueWork(() -> {
-			if (supplier.get().getSender().world.getTileEntity(message.pos) instanceof BeyCreatorTileEntity) {
-				BeyCreatorTileEntity tileEntity = (BeyCreatorTileEntity) supplier.get().getSender().world
-						.getTileEntity(message.pos);
+			if (supplier.get().getSender().level.getBlockEntity(message.pos) instanceof BeyCreatorTileEntity) {
+				BeyCreatorTileEntity tileEntity = (BeyCreatorTileEntity) supplier.get().getSender().level
+						.getBlockEntity(message.pos);
 				tileEntity.getInventory().ifPresent(h -> {
 					if (!h.getStackInSlot(1).isEmpty()) {
 						h.getStackInSlot(1).shrink(1);
 					}
 					h.insertItem(1, message.stack, false);
-					supplier.get().getSender().world.notifyBlockUpdate(message.pos,
-							supplier.get().getSender().world.getBlockState(message.pos),
-							supplier.get().getSender().world.getBlockState(message.pos), 0);
+					supplier.get().getSender().level.sendBlockUpdated(message.pos,
+							supplier.get().getSender().level.getBlockState(message.pos),
+							supplier.get().getSender().level.getBlockState(message.pos), 0);
 				});
 			}
 		});

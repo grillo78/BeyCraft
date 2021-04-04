@@ -13,7 +13,7 @@ public class SlotBeyDriver extends SlotItemHandler{
 	}
 
 	@Override
-	public boolean isItemValid(ItemStack stack) {
+	public boolean mayPlace(ItemStack stack) {
 		return stack.getItem() instanceof ItemBeyDriver;
 	}
 }

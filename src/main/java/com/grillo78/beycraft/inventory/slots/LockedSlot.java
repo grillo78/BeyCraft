@@ -10,7 +10,7 @@ public class LockedSlot extends SlotItemHandler {
     }
 
     @Override
-    public boolean canTakeStack(PlayerEntity playerIn) {
+    public boolean mayPickup(PlayerEntity playerIn) {
         return false;
     }
 }

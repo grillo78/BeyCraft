@@ -36,7 +36,7 @@ public class HandleContainer extends Container {
 				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 1, 10, 35)));
 		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 2, 10, 55)));
-		addPlayerSlots(new InvWrapper(playerInventory), playerInventory.currentItem);
+		addPlayerSlots(new InvWrapper(playerInventory), playerInventory.selected);
 	}
 
 	protected void addPlayerSlots(InvWrapper playerinventory, int locked) {
@@ -60,7 +60,7 @@ public class HandleContainer extends Container {
 	}
 
 	@Override
-	public void onContainerClosed(PlayerEntity player) {
+	public void removed(PlayerEntity player) {
 		if(player instanceof ServerPlayerEntity){
 			if (player instanceof ServerPlayerEntity) {
 				stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
@@ -69,42 +69,42 @@ public class HandleContainer extends Container {
 						stack.setTag(nbt);
 					}
 					CompoundNBT nbt = stack.getTag();
-					nbt.put("accesory1", h.getStackInSlot(0).write(new CompoundNBT()));
-					nbt.put("accesory2", h.getStackInSlot(1).write(new CompoundNBT()));
-					nbt.put("accesory3", h.getStackInSlot(2).write(new CompoundNBT()));
+					nbt.put("accesory1", h.getStackInSlot(0).save(new CompoundNBT()));
+					nbt.put("accesory2", h.getStackInSlot(1).save(new CompoundNBT()));
+					nbt.put("accesory3", h.getStackInSlot(2).save(new CompoundNBT()));
 				});
 			}
 		}
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity playerIn) {
+	public boolean stillValid(PlayerEntity playerIn) {
 		return true;
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+	public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
 		ItemStack transferred = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
+        Slot slot = this.slots.get(index);
 
-        int otherSlots = this.inventorySlots.size() - 36;
+        int otherSlots = this.slots.size() - 36;
 
-        if (slot != null && slot.getHasStack()) {
-            ItemStack current = slot.getStack();
+        if (slot != null && slot.hasItem()) {
+            ItemStack current = slot.getItem();
             transferred = current.copy();
 
             if (index < otherSlots) {
-                if (!this.mergeItemStack(current, otherSlots, this.inventorySlots.size(), true)) {
+                if (!this.moveItemStackTo(current, otherSlots, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(current, 0, otherSlots, false)) {
+            } else if (!this.moveItemStackTo(current, 0, otherSlots, false)) {
                 return ItemStack.EMPTY;
             }
 
             if (current.getCount() == 0) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
         }
 

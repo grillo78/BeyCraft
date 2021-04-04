@@ -34,33 +34,33 @@ public class DiscFrameItemStackRendererTileEntity extends ItemStackTileEntityRen
 	}
 
 	@Override
-	public void func_239207_a_(ItemStack stack, TransformType transformType, MatrixStack matrixStack,
+	public void renderByItem(ItemStack stack, TransformType transformType, MatrixStack matrixStack,
 			IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
-		matrixStack.push();
+		matrixStack.pushPose();
 
 		IBakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft",
 				"discsframe/" + stack.getItem().getRegistryName().getPath()));
 		IVertexBuilder vertexBuilder = buffer
-				.getBuffer(RenderType.getEntityTranslucent(AtlasTexture.LOCATION_BLOCKS_TEXTURE));
-		MatrixStack.Entry entry = matrixStack.getLast();
+				.getBuffer(RenderType.entityTranslucent(AtlasTexture.LOCATION_BLOCKS));
+		MatrixStack.Entry entry = matrixStack.last();
 		for (BakedQuad quad : model.getQuads(null, null, random, EmptyModelData.INSTANCE)) {
 			vertexBuilder.addVertexData(entry, quad, 1, 1, 1, 1, combinedLightIn,combinedOverlayIn, true);
 		}
 		if (stack.hasTag()) {
 			matrixStack.scale(2F, 2F, 2F);
-			matrixStack.rotate(new Quaternion(
+			matrixStack.mulPose(new Quaternion(
 					new Vector3f(0, ((ItemBeyDiscFrame) stack.getItem()).getFrameRotation(), 0), -15, true));
 			matrixStack.translate(0F, 0.01F, 0.25F);
 			if (!stacks.containsKey(stack.getTag().get("frame"))) {
 				stacks.put((CompoundNBT) stack.getTag().get("frame"),
-						ItemStack.read((CompoundNBT) stack.getTag().get("frame")));
+						ItemStack.of((CompoundNBT) stack.getTag().get("frame")));
 			}
-			Minecraft.getInstance().getItemRenderer().renderItem(stacks.get(stack.getTag().get("frame")),
+			Minecraft.getInstance().getItemRenderer().renderStatic(stacks.get(stack.getTag().get("frame")),
 					TransformType.FIRST_PERSON_LEFT_HAND, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
 
 		}
 
-		matrixStack.pop();
-		super.func_239207_a_(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
+		matrixStack.popPose();
+		super.renderByItem(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
 	}
 }

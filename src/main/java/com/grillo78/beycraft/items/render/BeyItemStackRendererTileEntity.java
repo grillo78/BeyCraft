@@ -35,16 +35,16 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
 	}
 
 	@Override
-	public void func_239207_a_(ItemStack stack, TransformType transformType, MatrixStack matrixStack,
+	public void renderByItem(ItemStack stack, TransformType transformType, MatrixStack matrixStack,
 			IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
-		super.func_239207_a_(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
-		matrixStack.push();
+		super.renderByItem(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
+		matrixStack.pushPose();
 
 		IBakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft",
 				"layers/" + stack.getItem().getRegistryName().getPath()));
 		IVertexBuilder vertexBuilder = buffer
-				.getBuffer(RenderType.getEntityTranslucentCull(PlayerContainer.LOCATION_BLOCKS_TEXTURE));
-		MatrixStack.Entry entry = matrixStack.getLast();
+				.getBuffer(RenderType.entityTranslucentCull(PlayerContainer.BLOCK_ATLAS));
+		MatrixStack.Entry entry = matrixStack.last();
 		for (int i = 0; i < model.getQuads(null, null, random, EmptyModelData.INSTANCE).size(); i++) {
 			vertexBuilder.addVertexData(entry, model.getQuads(null, null, random, EmptyModelData.INSTANCE).get(i), 1, 1, 1, 1, combinedLightIn,combinedOverlayIn, true);
 		}
@@ -55,49 +55,49 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
 
 				if (!stacks.containsKey(stack.getTag().get("chip"))) {
 					stacks.put((CompoundNBT) stack.getTag().get("chip"),
-							ItemStack.read((CompoundNBT) stack.getTag().get("chip")));
+							ItemStack.of((CompoundNBT) stack.getTag().get("chip")));
 				}
-				Minecraft.getInstance().getItemRenderer().renderItem(stacks.get(stack.getTag().get("chip")),
+				Minecraft.getInstance().getItemRenderer().renderStatic(stacks.get(stack.getTag().get("chip")),
 						TransformType.FIRST_PERSON_LEFT_HAND, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
 
 				
 			}
 			if (stack.hasTag() && stack.getTag().contains("weight")) {
-				matrixStack.rotate(new Quaternion(new Vector3f(0, 0, 1), 180, true));
-				matrixStack.rotate(new Quaternion(new Vector3f(0, 1, 0), 45, true));
+				matrixStack.mulPose(new Quaternion(new Vector3f(0, 0, 1), 180, true));
+				matrixStack.mulPose(new Quaternion(new Vector3f(0, 1, 0), 45, true));
 				matrixStack.translate(0.18, -0.05, 0.07);
 				if (!stacks.containsKey(stack.getTag().get("weight"))) {
 					stacks.put((CompoundNBT) stack.getTag().get("weight"),
-							ItemStack.read((CompoundNBT) stack.getTag().get("weight")));
+							ItemStack.of((CompoundNBT) stack.getTag().get("weight")));
 				}
-				Minecraft.getInstance().getItemRenderer().renderItem(stacks.get(stack.getTag().get("weight")),
+				Minecraft.getInstance().getItemRenderer().renderStatic(stacks.get(stack.getTag().get("weight")),
 						TransformType.FIRST_PERSON_LEFT_HAND, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
 				
 			}
-			matrixStack.pop();
-			matrixStack.push();
+			matrixStack.popPose();
+			matrixStack.pushPose();
 			if (stack.hasTag() && stack.getTag().contains("isEntity") && !stack.getTag().getBoolean("isEntity")) {
 				matrixStack.scale(2F, 2F, 2F);
-				matrixStack.rotate(new Quaternion(new Vector3f(0, 1, 0), -15, true));
+				matrixStack.mulPose(new Quaternion(new Vector3f(0, 1, 0), -15, true));
 				matrixStack.translate(0F, -0.04F, 0.25F);
 				if (!stacks.containsKey(stack.getTag().get("disc"))) {
 					stacks.put((CompoundNBT) stack.getTag().get("disc"),
-							ItemStack.read((CompoundNBT) stack.getTag().get("disc")));
+							ItemStack.of((CompoundNBT) stack.getTag().get("disc")));
 				}
-				Minecraft.getInstance().getItemRenderer().renderItem(stacks.get(stack.getTag().get("disc")),
+				Minecraft.getInstance().getItemRenderer().renderStatic(stacks.get(stack.getTag().get("disc")),
 						TransformType.FIRST_PERSON_LEFT_HAND, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
-				matrixStack.rotate(new Quaternion(new Vector3f(0, 1, 0), 90, true));
+				matrixStack.mulPose(new Quaternion(new Vector3f(0, 1, 0), 90, true));
 				matrixStack.translate(0.25, -0.07, 0.25);
 				if (!stacks.containsKey(stack.getTag().get("driver"))) {
 					stacks.put((CompoundNBT) stack.getTag().get("driver"),
-							ItemStack.read((CompoundNBT) stack.getTag().get("driver")));
+							ItemStack.of((CompoundNBT) stack.getTag().get("driver")));
 				}
-				Minecraft.getInstance().getItemRenderer().renderItem(stacks.get(stack.getTag().get("driver")),
+				Minecraft.getInstance().getItemRenderer().renderStatic(stacks.get(stack.getTag().get("driver")),
 						TransformType.FIRST_PERSON_LEFT_HAND, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
 			}
 		});
 
-		matrixStack.pop();
+		matrixStack.popPose();
 	}
 
 }

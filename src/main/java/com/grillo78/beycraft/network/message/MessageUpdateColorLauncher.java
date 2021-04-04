@@ -41,10 +41,10 @@ public class MessageUpdateColorLauncher implements IMessage<MessageUpdateColorLa
     public void handle(MessageUpdateColorLauncher message, Supplier<NetworkEvent.Context> supplier) {
         supplier.get().enqueueWork(() -> {
             ItemStack launcher;
-            if (supplier.get().getSender().getHeldItem(Hand.MAIN_HAND).getItem() instanceof ItemLauncher) {
-                launcher = supplier.get().getSender().getHeldItem(Hand.MAIN_HAND);
+            if (supplier.get().getSender().getItemInHand(Hand.MAIN_HAND).getItem() instanceof ItemLauncher) {
+                launcher = supplier.get().getSender().getItemInHand(Hand.MAIN_HAND);
             } else {
-                launcher = supplier.get().getSender().getHeldItem(Hand.OFF_HAND);
+                launcher = supplier.get().getSender().getItemInHand(Hand.OFF_HAND);
             }
             if (!launcher.hasTag()) {
                 CompoundNBT compound = new CompoundNBT();

@@ -35,11 +35,11 @@ public class MessageOpenRobotGUI implements IMessage<MessageOpenRobotGUI>{
             if (message.valid) {
                 RobotTileEntity tileEntity;
                 RayTraceResult rayTraceBlock = Minecraft.getInstance().player.pick(20.0D, 0.0F, false);
-                BlockPos pos = ((BlockRayTraceResult) rayTraceBlock).getPos();
-                if (Minecraft.getInstance().world.getBlockState(pos).get(RobotBlock.PART).equals(RobotBlock.EnumPartType.TOP)) {
-                    tileEntity = (RobotTileEntity) Minecraft.getInstance().world.getTileEntity(pos);
+                BlockPos pos = ((BlockRayTraceResult) rayTraceBlock).getBlockPos();
+                if (Minecraft.getInstance().level.getBlockState(pos).getValue(RobotBlock.PART).equals(RobotBlock.EnumPartType.TOP)) {
+                    tileEntity = (RobotTileEntity) Minecraft.getInstance().level.getBlockEntity(pos);
                 } else {
-                    tileEntity = (RobotTileEntity) Minecraft.getInstance().world.getTileEntity(pos.up());
+                    tileEntity = (RobotTileEntity) Minecraft.getInstance().level.getBlockEntity(pos.above());
                 }
                 tileEntity.openGUI();
             }
