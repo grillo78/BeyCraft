@@ -116,15 +116,15 @@ public class BeyRegistry {
     /**
      * Armors
      */
-	public static final AccessoryItem VARUTO_JACKET = new AccessoryItem( "varuto_jacket",
+	public static final AccessoryItem BARUTO_JACKET = new AccessoryItem( "baruto_jacket",
 			EquipmentAccessoriesSlot.JACKET);
-	public static final AccessoryItem VARUTO_PANTS = new AccessoryItem( "varuto_pants",
+	public static final AccessoryItem BARUTO_PANTS = new AccessoryItem( "baruto_pants",
             EquipmentAccessoriesSlot.PANTS);
-	public static final AccessoryItem VARUTO_BOOTS = new AccessoryItem( "varuto_boots",
+	public static final AccessoryItem BARUTO_BOOTS = new AccessoryItem( "baruto_boots",
             EquipmentAccessoriesSlot.SHOES);
-    public static final AccessoryItem VARUTO_CHEST = new AccessoryItem( "varuto_chest",
+    public static final AccessoryItem BARUTO_CHEST = new AccessoryItem( "baruto_chest",
             EquipmentAccessoriesSlot.TSHIRT);
-    public static final AccessoryItem VARUTO_GLOVES = new AccessoryItem( "varuto_gloves",
+    public static final AccessoryItem BARUTO_GLOVES = new AccessoryItem( "baruto_gloves",
             EquipmentAccessoriesSlot.GLOVES);
 
     /* Blocks */

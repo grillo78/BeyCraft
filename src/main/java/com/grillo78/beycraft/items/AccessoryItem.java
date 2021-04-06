@@ -36,4 +36,13 @@ public class AccessoryItem extends Item implements IAccessory {
     public EquipmentAccessoriesSlot getSlot() {
         return this.slot;
     }
+
+
+    @Override
+    public float getScale(ItemStack stack) {
+        if (this.slot == EquipmentAccessoriesSlot.JACKET) {
+            return 0.33F;
+        }
+        return IAccessory.super.getScale(stack);
+    }
 }
