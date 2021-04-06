@@ -29,7 +29,7 @@ public class AccessoryItem extends Item implements IAccessory {
 
     @Override
     public ResourceLocation getTexture(ItemStack stack, PlayerEntity entity, EquipmentAccessoriesSlot slot) {
-        return HUPlayerUtil.haveSmallArms(entity) && slot == EquipmentAccessoriesSlot.TSHIRT? this.textureSlim: this.texture;
+        return HUPlayerUtil.haveSmallArms(entity) && (slot == EquipmentAccessoriesSlot.TSHIRT || slot == EquipmentAccessoriesSlot.JACKET || slot == EquipmentAccessoriesSlot.GLOVES)? this.textureSlim: this.texture;
     }
 
     @Override
@@ -42,6 +42,9 @@ public class AccessoryItem extends Item implements IAccessory {
     public float getScale(ItemStack stack) {
         if (this.slot == EquipmentAccessoriesSlot.JACKET) {
             return 0.33F;
+        }
+        if (this.slot == EquipmentAccessoriesSlot.GLOVES) {
+            return 0.09F;
         }
         return IAccessory.super.getScale(stack);
     }
