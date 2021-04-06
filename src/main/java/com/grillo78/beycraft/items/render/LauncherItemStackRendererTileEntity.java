@@ -66,7 +66,7 @@ public class LauncherItemStackRendererTileEntity extends ItemStackTileEntityRend
 						ItemStack.of((CompoundNBT) stack.getTag().get("beylogger")));
 			}
 			Minecraft.getInstance().getItemRenderer().renderStatic(stacks.get(stack.getTag().get("beylogger")),
-					TransformType.FIXED, Integer.MAX_VALUE, combinedOverlayIn, matrixStack, buffer);
+					TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
 			matrixStack.translate(-0.09, 0.37, 0.08);
 			matrixStack.mulPose(new Quaternion(new Vector3f(1, 0, 0), -90, true));
 			matrixStack.scale(0.5f, 0.5f, 0.5f);

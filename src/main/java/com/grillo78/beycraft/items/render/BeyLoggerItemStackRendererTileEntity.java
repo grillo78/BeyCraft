@@ -39,7 +39,7 @@ public class BeyLoggerItemStackRendererTileEntity extends ItemStackTileEntityRen
 		IBakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("beycraft",
 				"beyloggers/" + stack.getItem().getDescriptionId().replace("item.beycraft.", "") + ""));
 		IVertexBuilder vertexBuilder = buffer
-				.getBuffer(RenderType.entityTranslucent(AtlasTexture.LOCATION_BLOCKS));
+				.getBuffer(RenderType.entitySolid(AtlasTexture.LOCATION_BLOCKS));
 		MatrixStack.Entry entry = matrixStack.last();
 		for (int i = 0; i < model.getQuads(null, null, random, EmptyModelData.INSTANCE).size(); i++) {
 			vertexBuilder.addVertexData(entry, model.getQuads(null, null, random, EmptyModelData.INSTANCE).get(i), 1, 1, 1, 1, combinedLightIn,combinedOverlayIn, true);
