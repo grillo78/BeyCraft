@@ -52,12 +52,7 @@ public class SparkleParticle extends SpriteTexturedParticle {
 		@Override
 		public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z,
 				double xSpeed, double ySpeed, double zSpeed) {
-				SparkleParticle sparkleParticle;
-				if (xSpeed == 0 && ySpeed == 0 && zSpeed == 0) {
-					sparkleParticle = new SparkleParticle((ClientWorld) worldIn, x, y, z);
-				} else {
-					sparkleParticle = new SparkleParticle((ClientWorld) worldIn, x, y, z, 0, 0, 0);
-				}
+				SparkleParticle sparkleParticle = new SparkleParticle((ClientWorld) worldIn, x, y, z, xSpeed,ySpeed,zSpeed);
 				sparkleParticle.pickSprite(this.spriteSet);
 				return sparkleParticle;
 		}

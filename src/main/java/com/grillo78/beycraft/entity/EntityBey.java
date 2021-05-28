@@ -1,16 +1,9 @@
 package com.grillo78.beycraft.entity;
 
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.abilities.Absorb;
-import com.grillo78.beycraft.blocks.StadiumBlock;
-import com.grillo78.beycraft.capabilities.BladerCapProvider;
 import com.grillo78.beycraft.items.*;
 import com.grillo78.beycraft.util.ConfigManager;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -39,6 +32,9 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 /**
  * @author grillo78
@@ -96,7 +92,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		}
 		maxRadius = 1.6F * getMaxRotationSpeed() / 15;
 		this.setRadius(maxRadius);
-		maxUpStep = 0;
+		maxUpStep = 0.1F;
 	}
 
 	public boolean hasBeylogger(){
@@ -303,7 +299,8 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 					&& (level.getBlockState(this.getOnPos().below()).getBlock() == BeyRegistry.STADIUM
 							|| level.getBlockState(this.getOnPos().below()).getBlock() == Blocks.AIR
 							|| level.getBlockState(this.getOnPos()).getBlock() == Blocks.AIR
-							|| (level.getBlockState(getOnPos()).getBlock() == BeyRegistry.STADIUM
+							|| (level.getBlockState(new BlockPos(position().x,
+					position().y - 0.1, position().z)).getBlock() == BeyRegistry.STADIUM
 									|| (!ConfigManager.isOnlyStadium() && (!ConfigManager.getBlockBlackList()
 											.contains(level
 													.getBlockState(new BlockPos(position().x,

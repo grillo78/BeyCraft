@@ -131,6 +131,7 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onParticleFactorieRegistry(final ParticleFactoryRegisterEvent event) {
         Minecraft.getInstance().particleEngine.register(BeyRegistry.SPARKLE, SparkleParticle.Factory::new);
+        Minecraft.getInstance().particleEngine.register(BeyRegistry.AURA, SparkleParticle.Factory::new);
     }
 
     @SubscribeEvent

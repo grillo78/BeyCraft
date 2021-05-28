@@ -45,6 +45,8 @@ public class BeyRegistry {
 
     @ObjectHolder(Reference.MODID + ":sparkle")
     public static BasicParticleType SPARKLE;
+    @ObjectHolder(Reference.MODID + ":aura")
+    public static BasicParticleType AURA;
 
     /* Entity */
     @ObjectHolder(Reference.MODID + ":bey")

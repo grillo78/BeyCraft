@@ -83,6 +83,7 @@ public class CommonEvents {
 	@SubscribeEvent
 	public static void onParticleTypeRegistry(final RegistryEvent.Register<ParticleType<?>> event) {
 		event.getRegistry().register(new BasicParticleType(false).setRegistryName("sparkle"));
+		event.getRegistry().register(new BasicParticleType(false).setRegistryName("aura"));
 	}
 
 	@SubscribeEvent
