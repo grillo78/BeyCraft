@@ -114,7 +114,7 @@ public class BeyRegistry {
     public static final ItemBeyLogger BEYLOGGERPLUS = new ItemBeyLogger("beylogger_plus");
 
     /**
-     * Armors
+     * Accessories
      */
 	public static final AccessoryItem BARUTO_JACKET = new AccessoryItem( "baruto_jacket",
 			EquipmentAccessoriesSlot.JACKET);
