@@ -42,6 +42,7 @@ import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -62,9 +63,11 @@ public class CommonEvents {
 		type.setRegistryName(Reference.MODID, "bey");
 		event.getRegistry().register(type);
 
-		GlobalEntityTypeAttributes.put((EntityType<? extends EntityBey>) type,
-				EntityBey.registerAttributes().build());
+	}
 
+	@SubscribeEvent
+	public static void registerEntityAttributes(final EntityAttributeCreationEvent event){
+		event.put(BeyRegistry.BEY_ENTITY_TYPE,EntityBey.registerAttributes().build());
 	}
 
 	@SubscribeEvent

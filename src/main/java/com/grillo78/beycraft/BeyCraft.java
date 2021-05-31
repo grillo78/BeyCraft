@@ -7,17 +7,24 @@ import com.grillo78.beycraft.tab.BeyCraftDriversTab;
 import com.grillo78.beycraft.tab.BeyCraftLayersTab;
 import com.grillo78.beycraft.tab.BeyCraftTab;
 import com.grillo78.beycraft.util.ConfigManager;
+import friedrichlp.renderlib.RenderLibSettings;
+import friedrichlp.renderlib.model.ModelLoaderProperty;
+import friedrichlp.renderlib.render.ViewBoxes;
+import friedrichlp.renderlib.tracking.*;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.minecraft.item.ItemGroup;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.sql.Timestamp;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -42,6 +49,11 @@ public class BeyCraft {
         ConfigManager.load();
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
+            new File(".\\beycraft_cached_models\\").delete();
+            RenderLibSettings.Caching.CACHE_LOCATION = "beycraft_cached_models";
+            RenderLibSettings.Caching.CACHE_VERSION = "1";
+        });
     }
 
     private void setup(final FMLCommonSetupEvent event) {

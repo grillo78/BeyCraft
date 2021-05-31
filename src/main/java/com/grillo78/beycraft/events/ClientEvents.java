@@ -1,14 +1,25 @@
 package com.grillo78.beycraft.events;
 
 import java.io.*;
+import java.nio.FloatBuffer;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.Random;
 import java.util.function.Consumer;
 
 import com.grillo78.beycraft.BeyCraft;
+import com.grillo78.beycraft.entity.BeyRender;
 import com.grillo78.beycraft.items.ItemLauncher;
 import com.grillo78.beycraft.items.ItemLauncherHandle;
+import com.grillo78.beycraft.items.render.BeyItemStackRendererTileEntity;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import friedrichlp.renderlib.RenderLibRegistry;
+import friedrichlp.renderlib.library.RenderMode;
+import friedrichlp.renderlib.math.Matrix4f;
+import friedrichlp.renderlib.math.Vector3;
+import friedrichlp.renderlib.tracking.RenderManager;
+import friedrichlp.renderlib.tracking.RenderObject;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
@@ -20,6 +31,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -52,6 +64,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import org.lwjgl.system.MemoryUtil;
 import xyz.heroesunited.heroesunited.client.events.HUSetRotationAnglesEvent;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -205,6 +218,23 @@ public class ClientEvents {
     public static class SpecialClientEvents {
 
         @SubscribeEvent
+        public static void onRenderWorldLast(RenderWorldLastEvent event){
+
+            RenderSystem.enableBlend();
+            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            Vector3d cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+            RenderManager.setCameraPos(new Vector3((float) cameraPos.x, (float) cameraPos.y, (float) cameraPos.z));
+            RenderManager.setRenderDistance(Minecraft.getInstance().options.renderDistance * 16);
+            RenderManager.update();
+            for (Runnable runnable : BeyRender.getRunnables()) {
+                runnable.run();
+            }
+            BeyRender.getRunnables().clear();
+            RenderSystem.disableBlend();
+            RenderSystem.defaultBlendFunc();
+        }
+
+        @SubscribeEvent
         public static void onScreenOpen(final GuiOpenEvent event) {
             if (event.getGui() instanceof MainMenuScreen && firstScreenMenuOpen) {
                 firstScreenMenuOpen = false;
@@ -216,23 +246,17 @@ public class ClientEvents {
                             }).build(), true);
                     BeyCraft.TIME_STAMP = new Timestamp(System.currentTimeMillis()).getTime();
                     setDiscordRPC();
-                    Runtime.getRuntime().addShutdownHook(new Thread() {
-                        @Override
-                        public void run() {
-                            DiscordRPC.discordShutdown();
-                        }
-                    });
                 } catch (Exception e) {
                     BeyCraft.logger.error("Error during Discord RPC start");
                 }
-                File[] zipFiles = new File("BeyParts").listFiles(new FilenameFilter() {
+                File[] propertiesFiles = new File("BeyParts").listFiles(new FilenameFilter() {
 
                     @Override
                     public boolean accept(File dir, String name) {
-                        return name.endsWith(".zip");
+                        return name.endsWith(".properties");
                     }
                 });
-                if (zipFiles.length == 0) {
+                if (propertiesFiles.length == 0) {
                     event.setCanceled(true);
                     Minecraft.getInstance()
                             .setScreen(new MissingContentPacksScreen(new StringTextComponent("")));

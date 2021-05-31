@@ -102,12 +102,11 @@ public class EntityGoalRotate extends Goal {
 						0.01 * ((ItemBeyDriver) bey.getDriver().getItem()).getRadiusReduction(bey.getDriver())));
 				break;
 			case 4:
-
 					bey.setDeltaMovement(new Vector3d(
 								(bey.blockPosition().getX() + 0.5
-										- bey.position().x) / 100,
+										- bey.position().x) / 20,
 								bey.getDeltaMovement().y, (bey.blockPosition().getZ() + 0.5
-										- bey.position().z) / 100));
+										- bey.position().z) / 20));
 				break;
 			case 5:
 					bey.move(MoverType.SELF, new Vector3d(0, 0,
