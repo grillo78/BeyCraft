@@ -25,10 +25,6 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
 public class BeyRender extends EntityRenderer<EntityBey> {
-
-//    private ModelInfo valtryek = ModelManager.registerModel(new File("BeyParts\\models\\valtryekv2.obj"), new ModelLoaderProperty(0.0f));
-//    private ModelInfo boostDisk = ModelManager.registerModel(new File("BeyParts\\models\\boostdisk.obj"), new ModelLoaderProperty(0.0f));
-//    private ModelInfo variableDriver = ModelManager.registerModel(new File("BeyParts\\models\\variable_driver.obj"), new ModelLoaderProperty(0.0f));
     private RenderLayer layer = RenderManager.addRenderLayer(ViewBoxes.ALWAYS);
     private static ArrayList<Runnable> runnables = new ArrayList<>();
 
@@ -38,12 +34,6 @@ public class BeyRender extends EntityRenderer<EntityBey> {
 
     public BeyRender(EntityRendererManager renderManager) {
         super(renderManager);
-//        valtryek.addRenderEffect(RenderEffect.NORMAL_LIGHTING);
-//        boostDisk.addRenderEffect(RenderEffect.NORMAL_LIGHTING);
-//        variableDriver.addRenderEffect(RenderEffect.NORMAL_LIGHTING);
-//        valtryek.addRenderEffect(RenderEffect.AMBIENT_OCCLUSION);
-//        boostDisk.addRenderEffect(RenderEffect.AMBIENT_OCCLUSION);
-//        variableDriver.addRenderEffect(RenderEffect.AMBIENT_OCCLUSION);
     }
 
     @Override
@@ -72,7 +62,6 @@ public class BeyRender extends EntityRenderer<EntityBey> {
             RenderObject sceneDriver = sceneDisc.addChild(ItemCreator.models.get(entity.getDriver().getItem()));
 
             sceneLayer.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
-//            sceneLayer.transform.setPosition((float) entity.getPosition(partialTicks).x, (float) entity.getPosition(partialTicks).y, (float) entity.getPosition(partialTicks).z);
             sceneLayer.transform.scale(0.5F, 0.5F, 0.5F);
             sceneLayer.forceTransformUpdate();
             RenderManager.render(layer, RenderMode.USE_CUSTOM_MATS);
