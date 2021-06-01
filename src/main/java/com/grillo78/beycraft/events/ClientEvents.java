@@ -79,72 +79,6 @@ public class ClientEvents {
     private static boolean firstScreenMenuOpen = true;
     private static Random random = new Random();
 
-    public static void injectResources() {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc == null)
-            return;
-
-        File itemsFolder = new File(Minecraft.getInstance().gameDirectory, "BeyParts");
-        if (!itemsFolder.exists()) {
-            itemsFolder.mkdir();
-        }
-        File[] zipFiles = itemsFolder.listFiles(new FilenameFilter() {
-
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".zip");
-            }
-        });
-        for (File file : zipFiles) {
-            try {
-                final String id = file.getName().replace(".zip", "").replace(" ", "_") + "_addon_resources";
-                final String name = file.getName().replace(".zip", "") + " Resources";
-                final String description = "Beycraft addon resources.";
-
-                final IResourcePack pack = new FilePack(file) {
-                    String prefix = "assets/beycraft";
-
-                    @Override
-                    protected InputStream getResource(String resourcePath) throws IOException {
-                        if ("pack.mcmeta".equals(resourcePath))
-                            return new ByteArrayInputStream(
-                                    ("{\"pack\":{\"description\": \"" + description + "\",\"pack_format\": 5}}")
-                                            .getBytes(StandardCharsets.UTF_8));
-                        if (!resourcePath.startsWith(prefix))
-                            throw new FileNotFoundException(resourcePath);
-
-                        return super.getResource(resourcePath);
-                    }
-
-                    @Override
-                    public boolean hasResource(String resourcePath) {
-                        if ("pack.mcmeta".equals(resourcePath))
-                            return true;
-                        if (!resourcePath.startsWith(prefix))
-                            return false;
-
-                        return super.hasResource(resourcePath);
-                    }
-                };
-
-                Minecraft.getInstance().getResourcePackRepository().addPackFinder(new IPackFinder() {
-                    @Override
-                    public void loadPacks(Consumer<ResourcePackInfo> p_230230_1_,
-                                          ResourcePackInfo.IFactory p_230230_2_) {
-                        ResourcePackInfo t = ResourcePackInfo.create(name, true, () -> pack, p_230230_2_,
-                                ResourcePackInfo.Priority.TOP, IPackNameDecorator.DEFAULT);
-                        if (t != null) {
-                            p_230230_1_.accept(t);
-                        }
-                    }
-                });
-            } catch (Exception e) {
-
-            }
-        }
-
-    }
-
     @SubscribeEvent
     public static void onParticleFactorieRegistry(final ParticleFactoryRegisterEvent event) {
         Minecraft.getInstance().particleEngine.register(BeyRegistry.SPARKLE, SparkleParticle.Factory::new);
@@ -191,7 +125,8 @@ public class ClientEvents {
     @SubscribeEvent
     public static void modelBake(ModelBakeEvent event){
         for (Item item : BeyRegistry.ITEMSLAYER) {
-            event.getModelRegistry().put(new ModelResourceLocation(new ResourceLocation(Reference.MODID,"item/"+item.getRegistryName().getPath()), "inventory"), new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS),0,10,10,0,0), true));
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(),"inventory");
+            event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS),0,10,10,0,0), true));
         }
     }
 

@@ -161,9 +161,6 @@ public class CommonEvents {
 
 	@SubscribeEvent
 	public static void registerItem(final RegistryEvent.Register<Item> event) {
-		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-			ClientEvents.injectResources();
-		});
 
 		event.getRegistry().register(BeyRegistry.LAYERICON);
 		event.getRegistry().register(BeyRegistry.DISCICON);

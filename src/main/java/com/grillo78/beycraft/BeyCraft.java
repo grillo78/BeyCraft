@@ -50,7 +50,6 @@ public class BeyCraft {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
-            new File(".\\beycraft_cached_models\\").delete();
             RenderLibSettings.Caching.CACHE_LOCATION = "beycraft_cached_models";
             RenderLibSettings.Caching.CACHE_VERSION = "1";
         });
