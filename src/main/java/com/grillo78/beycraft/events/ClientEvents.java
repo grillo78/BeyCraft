@@ -12,6 +12,7 @@ import com.grillo78.beycraft.entity.BeyRender;
 import com.grillo78.beycraft.items.ItemLauncher;
 import com.grillo78.beycraft.items.ItemLauncherHandle;
 import com.grillo78.beycraft.items.render.BeyItemStackRendererTileEntity;
+import com.grillo78.beycraft.util.BeyPartModel;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import friedrichlp.renderlib.RenderLibRegistry;
@@ -175,9 +176,8 @@ public class ClientEvents {
             for (Runnable runnable : BeyRender.getRunnables()) {
                 runnable.run();
             }
-//            for (Runnable runnable : BeyItemStackRendererTileEntity.getRunnables()) {
-//                runnable.run();
-//            }
+            BeyPartModel.worldModels.forEach(h -> h.render());
+            BeyPartModel.worldModels.clear();
             BeyRender.getRunnables().clear();
             RenderSystem.disableBlend();
             RenderSystem.defaultBlendFunc();
