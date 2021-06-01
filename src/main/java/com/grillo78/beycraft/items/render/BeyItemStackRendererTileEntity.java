@@ -72,6 +72,12 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
                 break;
             case FIRST_PERSON_LEFT_HAND:
             case FIRST_PERSON_RIGHT_HAND:
+                vector4f = new Vector4f(0,0,0, 1/16);
+                vector4f.transform(matrix);
+                matrixStack.scale(0.5F,0.5F,0.5F);
+                matrixStack.translate(0.5F,0.75F,0.5F);
+                modelView = new net.minecraft.util.math.vector.Matrix4f(matrixStack.last().pose());
+                pos = cameraPos.add(vector4f.x(), vector4f.y(), vector4f.z());
                 BeyPartModel.handModels.add(new BeyPartModel(modelView,pos,ItemCreator.models.get(stack.getItem())));
                 break;
             case GROUND:
