@@ -292,9 +292,9 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
 	@Override
 	public void tick() {
-		if (!onGround || inventory.getStackInSlot(0).getItem() instanceof ItemBeyLayer
-				&& inventory.getStackInSlot(1).getItem() instanceof ItemBeyDisc
-				&& inventory.getStackInSlot(2).getItem() instanceof ItemBeyDriver) {
+		if (!onGround || (getLayer().getItem() instanceof ItemBeyLayer
+				&& getDisc().getItem() instanceof ItemBeyDisc
+				&& getDriver().getItem() instanceof ItemBeyDriver)) {
 			if (this.getRotationSpeed() > 0
 					&& (level.getBlockState(this.getOnPos().below()).getBlock() == BeyRegistry.STADIUM
 							|| level.getBlockState(this.getOnPos().below()).getBlock() == Blocks.AIR

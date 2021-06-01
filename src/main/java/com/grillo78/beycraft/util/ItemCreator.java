@@ -22,18 +22,6 @@ public class ItemCreator {
     
     public static HashMap<Item, ModelInfo> models = new HashMap<>();
 
-    public static void removeFolder(File folder) {
-        String[] entries = folder.list();
-        for (String s : entries) {
-            File currentFile = new File(folder.getPath(), s);
-            if (currentFile.isDirectory()) {
-                removeFolder(currentFile);
-            }
-            currentFile.delete();
-        }
-        folder.delete();
-    }
-
     public static void getItemsFromFolder() {
         File itemsFolder = new File("BeyParts");
         if (!itemsFolder.exists()) {
@@ -175,6 +163,7 @@ public class ItemCreator {
                         }
                         models.put(item, ModelManager.registerModel(new File("BeyParts\\models\\"+file.getName().replace(".properties",".obj")), new ModelLoaderProperty(0.0f)));
                         models.get(item).addRenderEffect(RenderEffect.NORMAL_LIGHTING);
+                        models.get(item).addRenderEffect(RenderEffect.AMBIENT_OCCLUSION);
                     }
             }
         } catch (IOException e) {

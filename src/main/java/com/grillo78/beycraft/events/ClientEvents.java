@@ -27,7 +27,14 @@ import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
+import net.minecraft.client.renderer.model.BuiltInModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ItemOverrideList;
+import net.minecraft.client.renderer.model.ItemTransformVec3f;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.MissingTextureSprite;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
@@ -185,15 +192,14 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void registerModel(final ModelRegistryEvent event) {
+    public static void modelBake(ModelBakeEvent event){
         for (Item item : BeyRegistry.ITEMSLAYER) {
-            ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
-                    "layers/" + item.getRegistryName().getPath()));
+            event.getModelRegistry().put(new ResourceLocation(Reference.MODID,"item/"+item.getRegistryName().getPath()), new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS),0,10,10,0,0), true));
         }
-        for (Item item : BeyRegistry.ITEMSDISCFRAME) {
-            ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
-                    "discsframe/" + item.getRegistryName().getPath()));
-        }
+    }
+
+    @SubscribeEvent
+    public static void registerModel(final ModelRegistryEvent event) {
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
                 + BeyRegistry.DUALLAUNCHER.getRegistryName().getPath() + "/launcher_body"));
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
