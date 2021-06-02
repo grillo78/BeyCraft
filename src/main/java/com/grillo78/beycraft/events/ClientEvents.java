@@ -16,6 +16,7 @@ import com.grillo78.beycraft.util.BeyPartModel;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import friedrichlp.renderlib.RenderLibRegistry;
+import friedrichlp.renderlib.RenderLibSettings;
 import friedrichlp.renderlib.library.RenderMode;
 import friedrichlp.renderlib.math.Matrix4f;
 import friedrichlp.renderlib.math.Vector3;
@@ -163,6 +164,16 @@ public class ClientEvents {
 
     @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class SpecialClientEvents {
+        @SubscribeEvent
+        public static void postDrawScreen(GuiScreenEvent.DrawScreenEvent.Post event){
+            RenderSystem.enableBlend();
+            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            BeyPartModel.interfaceModels.forEach(h -> h.render());
+            BeyPartModel.interfaceModels.clear();
+            BeyRender.getRunnables().clear();
+            RenderSystem.disableBlend();
+            RenderSystem.defaultBlendFunc();
+        }
 
         @SubscribeEvent
         public static void onRenderWorldLast(RenderWorldLastEvent event){
@@ -170,6 +181,7 @@ public class ClientEvents {
             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             Vector3d cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
             RenderManager.setCameraPos(new Vector3((float) cameraPos.x, (float) cameraPos.y, (float) cameraPos.z));
+            RenderLibSettings.Rendering.CAMERA_HEIGHT_OFFSET = (float) (cameraPos.y-Minecraft.getInstance().player.getPosition(event.getPartialTicks()).y);
             RenderManager.setRenderDistance(Minecraft.getInstance().options.renderDistance * 16);
             RenderManager.update();
             for (Runnable runnable : BeyRender.getRunnables()) {
@@ -186,10 +198,6 @@ public class ClientEvents {
         public static void renderHand(RenderHandEvent event) {
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            Vector3d cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-            RenderManager.setCameraPos(new Vector3((float) cameraPos.x, (float) cameraPos.y, (float) cameraPos.z));
-            RenderManager.setRenderDistance(Minecraft.getInstance().options.renderDistance * 16);
-            RenderManager.update();
             BeyPartModel.handModels.forEach(h -> h.render());
             BeyPartModel.handModels.clear();
             BeyRender.getRunnables().clear();

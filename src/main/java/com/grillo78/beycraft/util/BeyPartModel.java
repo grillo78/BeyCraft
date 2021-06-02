@@ -3,6 +3,7 @@ package com.grillo78.beycraft.util;
 import friedrichlp.renderlib.RenderLibRegistry;
 import friedrichlp.renderlib.library.RenderMode;
 import friedrichlp.renderlib.math.Matrix4f;
+import friedrichlp.renderlib.math.Vector3;
 import friedrichlp.renderlib.render.ViewBoxes;
 import friedrichlp.renderlib.tracking.ModelInfo;
 import friedrichlp.renderlib.tracking.RenderLayer;
@@ -39,6 +40,7 @@ public class BeyPartModel {
         };
 
         RenderObject sceneLayer = layer.addRenderObject(model);
+        RenderManager.setLightPos(new Vector3((float) pos.x+0.5F, (float) pos.y+1, (float) pos.z+0.5F));
         sceneLayer.transform.setPosition((float) pos.x+0.5F, (float) pos.y+0.5F, (float) pos.z+0.5F);
         sceneLayer.forceTransformUpdate();
         RenderManager.render(layer, RenderMode.USE_CUSTOM_MATS);

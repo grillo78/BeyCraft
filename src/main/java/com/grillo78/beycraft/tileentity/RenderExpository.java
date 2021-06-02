@@ -32,7 +32,6 @@ import java.nio.FloatBuffer;
 @OnlyIn(value = Dist.CLIENT)
 public class RenderExpository extends TileEntityRenderer<ExpositoryTileEntity> {
 
-    private float beyRotation = 0;
     private RenderLayer layer = RenderManager.addRenderLayer(ViewBoxes.ALWAYS);
 
 
@@ -64,13 +63,13 @@ public class RenderExpository extends TileEntityRenderer<ExpositoryTileEntity> {
 
                         return new friedrichlp.renderlib.math.Matrix4f(floatBuffer);
                     };
-                    RenderObject sceneLayer = layer.addRenderObject(ItemCreator.models.get(h.getStackInSlot(0).getItem()));
+                    RenderObject scenePart = layer.addRenderObject(ItemCreator.models.get(h.getStackInSlot(0).getItem()));
 
-                    sceneLayer.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
-                    sceneLayer.transform.scale(0.5F, 0.5F, 0.5F);
-                    sceneLayer.forceTransformUpdate();
+                    scenePart.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
+                    scenePart.transform.scale(0.5F, 0.5F, 0.5F);
+                    scenePart.forceTransformUpdate();
                     RenderManager.render(layer, RenderMode.USE_CUSTOM_MATS);
-                    layer.removeRenderObject(sceneLayer);
+                    layer.removeRenderObject(scenePart);
 
                 });
             }
