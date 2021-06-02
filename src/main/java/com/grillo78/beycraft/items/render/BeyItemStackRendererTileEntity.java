@@ -45,9 +45,6 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
     private HashMap<CompoundNBT, ItemStack> stacks;
     private static ArrayList<Runnable> runnables = new ArrayList<>();
 
-    public static ArrayList<Runnable> getRunnables() {
-        return runnables;
-    }
 
     public BeyItemStackRendererTileEntity() {
         stacks = CachedStacks.INSTANCE.getStacks();

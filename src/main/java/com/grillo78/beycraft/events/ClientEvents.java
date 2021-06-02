@@ -183,6 +183,21 @@ public class ClientEvents {
         }
 
         @SubscribeEvent
+        public static void renderHand(RenderHandEvent event) {
+            RenderSystem.enableBlend();
+            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            Vector3d cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+            RenderManager.setCameraPos(new Vector3((float) cameraPos.x, (float) cameraPos.y, (float) cameraPos.z));
+            RenderManager.setRenderDistance(Minecraft.getInstance().options.renderDistance * 16);
+            RenderManager.update();
+            BeyPartModel.handModels.forEach(h -> h.render());
+            BeyPartModel.handModels.clear();
+            BeyRender.getRunnables().clear();
+            RenderSystem.disableBlend();
+            RenderSystem.defaultBlendFunc();
+        }
+
+        @SubscribeEvent
         public static void onScreenOpen(final GuiOpenEvent event) {
             if (event.getGui() instanceof MainMenuScreen && firstScreenMenuOpen) {
                 firstScreenMenuOpen = false;
@@ -216,21 +231,6 @@ public class ClientEvents {
             DiscordRichPresence rich = new DiscordRichPresence.Builder("In the menus").setBigImage("beycraft", "")
                     .setStartTimestamps(BeyCraft.TIME_STAMP).build();
             DiscordRPC.discordUpdatePresence(rich);
-        }
-
-        @SubscribeEvent
-        public static void renderHand(RenderHandEvent event) {
-            RenderSystem.enableBlend();
-            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            Vector3d cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-            RenderManager.setCameraPos(new Vector3((float) cameraPos.x, (float) cameraPos.y, (float) cameraPos.z));
-            RenderManager.setRenderDistance(Minecraft.getInstance().options.renderDistance * 16);
-            RenderManager.update();
-            BeyPartModel.handModels.forEach(h -> h.render());
-            BeyPartModel.handModels.clear();
-            BeyRender.getRunnables().clear();
-            RenderSystem.disableBlend();
-            RenderSystem.defaultBlendFunc();
         }
 
         @SubscribeEvent

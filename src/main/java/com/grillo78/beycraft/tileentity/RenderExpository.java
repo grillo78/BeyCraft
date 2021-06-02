@@ -1,21 +1,39 @@
 package com.grillo78.beycraft.tileentity;
 
 import com.grillo78.beycraft.BeyRegistry;
+import com.grillo78.beycraft.entity.BeyRender;
+import com.grillo78.beycraft.items.ItemBeyPart;
+import com.grillo78.beycraft.items.render.BeyItemStackRendererTileEntity;
+import com.grillo78.beycraft.util.BeyPartModel;
+import com.grillo78.beycraft.util.ItemCreator;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import friedrichlp.renderlib.RenderLibRegistry;
+import friedrichlp.renderlib.library.RenderMode;
+import friedrichlp.renderlib.render.ViewBoxes;
+import friedrichlp.renderlib.tracking.RenderLayer;
+import friedrichlp.renderlib.tracking.RenderManager;
+import friedrichlp.renderlib.tracking.RenderObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.lwjgl.system.MemoryUtil;
+
+import java.nio.FloatBuffer;
 
 @OnlyIn(value = Dist.CLIENT)
 public class RenderExpository extends TileEntityRenderer<ExpositoryTileEntity> {
 
     private float beyRotation = 0;
+    private RenderLayer layer = RenderManager.addRenderLayer(ViewBoxes.ALWAYS);
 
 
     public RenderExpository(TileEntityRendererDispatcher p_i226006_1_) {
@@ -29,17 +47,33 @@ public class RenderExpository extends TileEntityRenderer<ExpositoryTileEntity> {
         matrixStack.scale(2, 2, 2);
         matrixStack.translate(0.25, 0.25, 0.25);
         Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyRegistry.EXPOSITORY.asItem()), ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
-        matrixStack.translate(0, 0.15, 0);
         matrixStack.scale(0.5f, 0.5f, 0.5f);
-        matrixStack.mulPose(new Quaternion(90, 0, 0, true));
-        if(!Minecraft.getInstance().isPaused()){
-            if (beyRotation < 360) {
-                beyRotation += 5;
-            }
-            matrixStack.mulPose(new Quaternion(0, 0, beyRotation, true));
-        }
         tileEntity.getInventory().ifPresent(h -> {
-            Minecraft.getInstance().getItemRenderer().renderStatic(h.getStackInSlot(0), ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
+            if (h.getStackInSlot(0).getItem() instanceof ItemBeyPart) {
+                net.minecraft.util.math.vector.Matrix4f matrix = new net.minecraft.util.math.vector.Matrix4f(matrixStack.last().pose());
+                net.minecraft.util.math.vector.Matrix4f modelView = new net.minecraft.util.math.vector.Matrix4f(matrixStack.last().pose());
+                Vector3d cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+                matrix.invert();
+                Vector4f vector4f = new Vector4f(0, 0, 0, 1/16);
+                vector4f.transform(matrix);
+                Vector3d pos = cameraPos.add(-vector4f.x(), -vector4f.y(), -vector4f.z());
+                BeyRender.getRunnables().add(() -> {
+                    RenderLibRegistry.Compatibility.MODEL_VIEW_PROVIDER = () -> {
+                        FloatBuffer floatBuffer = MemoryUtil.memAllocFloat(16);
+                        modelView.store(floatBuffer);
+
+                        return new friedrichlp.renderlib.math.Matrix4f(floatBuffer);
+                    };
+                    RenderObject sceneLayer = layer.addRenderObject(ItemCreator.models.get(h.getStackInSlot(0).getItem()));
+
+                    sceneLayer.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
+                    sceneLayer.transform.scale(0.5F, 0.5F, 0.5F);
+                    sceneLayer.forceTransformUpdate();
+                    RenderManager.render(layer, RenderMode.USE_CUSTOM_MATS);
+                    layer.removeRenderObject(sceneLayer);
+
+                });
+            }
         });
         matrixStack.popPose();
     }
