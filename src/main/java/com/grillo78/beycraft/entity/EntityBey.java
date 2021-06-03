@@ -78,7 +78,6 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 		super(type, world);
 		this.beylogger = beylogger;
 		this.rotationDirection = rotationDirection;
-		this.inventory = new ItemStackHandler(3);
 		if (layer.hasTag()) {
 			this.inventory.setStackInSlot(0, layer);
 			this.inventory.setStackInSlot(1, ItemStack.of(layer.getTag().getCompound("disc")));

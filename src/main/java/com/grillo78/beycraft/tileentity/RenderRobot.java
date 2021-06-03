@@ -79,12 +79,12 @@ public class RenderRobot extends TileEntityRenderer<RobotTileEntity> {
 		matrixStack.mulPose(new Quaternion(90, 0, 90, true));
 		tileEntity.getInventory().ifPresent(h -> {
 			matrixStack.scale(0.5f, 0.5f, 0.5f);
-			matrixStack.translate(0, -0.075, 0.05);
-			matrixStack.mulPose(new Quaternion(0, 0, 50, true));
+			matrixStack.translate(0.02, -0.09, 0.3);
+			matrixStack.mulPose(new Quaternion(-90, 0, 0, true));
 			Minecraft.getInstance().getItemRenderer().renderStatic(h.getStackInSlot(0),
 					ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
-			matrixStack.mulPose(new Quaternion(0, 0, -50, true));
-			matrixStack.translate(0, 0.075, -0.05);
+			matrixStack.mulPose(new Quaternion(90, 0, 0, true));
+			matrixStack.translate(-0.02, 0.09, -0.3);
 			matrixStack.scale(2f, 2f, 2f);
 		});
 

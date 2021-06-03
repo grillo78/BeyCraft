@@ -164,16 +164,6 @@ public class ClientEvents {
 
     @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class SpecialClientEvents {
-        @SubscribeEvent
-        public static void postDrawScreen(GuiScreenEvent.DrawScreenEvent.Post event){
-            RenderSystem.enableBlend();
-            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            BeyPartModel.interfaceModels.forEach(h -> h.render());
-            BeyPartModel.interfaceModels.clear();
-            BeyRender.getRunnables().clear();
-            RenderSystem.disableBlend();
-            RenderSystem.defaultBlendFunc();
-        }
 
         @SubscribeEvent
         public static void onRenderWorldLast(RenderWorldLastEvent event){
