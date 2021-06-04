@@ -20,7 +20,6 @@ public class BeyPartModel {
     private static final RenderLayer layer = RenderManager.addRenderLayer(ViewBoxes.ALWAYS);
     public static final ArrayList<BeyPartModel> worldModels = new ArrayList<>();
     public static final ArrayList<BeyPartModel> handModels = new ArrayList<>();
-    public static final ArrayList<BeyPartModel> interfaceModels = new ArrayList<>();
     private final ArrayList<RenderObject> childs = new ArrayList<>();
     private final Vector3d pos;
     private final ModelInfo model;
