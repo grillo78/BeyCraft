@@ -5,9 +5,11 @@ import com.grillo78.beycraft.items.*;
 import com.grillo78.beycraft.util.CachedStacks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class SlotBeyLayer extends SlotItemHandler {
 
@@ -29,19 +31,19 @@ public class SlotBeyLayer extends SlotItemHandler {
 					if (stack.hasTag()) {
 						switch (h.getSlots()) {
 						case 2:
-							if (CachedStacks.INSTANCE.getStacks().get(stack.getTag().get("disc"))
-									.getItem() instanceof ItemBeyDisc
-									&& CachedStacks.INSTANCE.getStacks().get(stack.getTag().get("driver"))
+							if (ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("disc")).getString("id")))
+									 instanceof ItemBeyDisc
+									&& ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("driver")).getString("id")))
 											.getItem() instanceof ItemBeyDriver) {
 								isValid[0] = true;
 							}
 							break;
 						case 4:
-							if (CachedStacks.INSTANCE.getStacks().get(stack.getTag().get("disc"))
-									.getItem() instanceof ItemBeyDisc
-									&& CachedStacks.INSTANCE.getStacks().get(stack.getTag().get("driver"))
+							if (ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("disc")).getString("id")))
+									instanceof ItemBeyDisc
+									&& ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("driver")).getString("id")))
 											.getItem() instanceof ItemBeyDriver
-									&& CachedStacks.INSTANCE.getStacks().get(stack.getTag().get("chip"))
+									&& ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("chip")).getString("id")))
 											.getItem() instanceof ItemBeyGTChip) {
 								isValid[0] = true;
 							}

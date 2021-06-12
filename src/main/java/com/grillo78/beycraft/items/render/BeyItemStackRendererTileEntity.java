@@ -94,7 +94,7 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
             if (stack.hasTag() && stack.getTag().contains("weight")) {
 
             }
-            if (stack.getTag().contains("disc")) {
+            if (stack.hasTag() && stack.getTag().contains("disc")) {
                 Item discItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("disc")).getString("id")));
                 if (ItemCreator.models.containsKey(discItem)) {
                     RenderObject sceneDisc = model.addChild(ItemCreator.models.get(discItem));
@@ -111,8 +111,8 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
                 }
             }
         } else {
-            GL11.glRotatef(20, 1, 0, 0);
-            GL11.glTranslated(0, -0.25, 0);
+            GL11.glRotatef(50, 1, 0, 0);
+            GL11.glTranslated(0, -0.5, 0);
             GL11.glScaled(2, 2, 2);
             vector4f = new Vector4f(0, 0, 0, 16);
             vector4f.transform(matrix);

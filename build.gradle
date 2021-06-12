@@ -45,7 +45,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-            args '-mixin.config=beycraft.mixins.json', "-mixin.config=heroesunited.mixins.json"
+            args '-mixin.config=beycraft.mixins.json'
 
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
@@ -141,7 +141,7 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.16.5-36.0.58'
 
-    compile 'xyz.heroesunited:hu-core:2.5.2-8.8a'
+    compile 'xyz.heroesunited:hu-core:2.5.2-8.96a'
     implementation 'io.gitlab.friedrichlp:renderlib:1.0.0-pre2'
     implementation 'com.github.Vatuu:discord-rpc:1.6.2'
 
