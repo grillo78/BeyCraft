@@ -37,11 +37,9 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
 
     private Random random = new Random();
     private RenderLayer layer = RenderManager.addRenderLayer(ViewBoxes.ALWAYS);
-    private HashMap<CompoundNBT, ItemStack> stacks;
 
 
     public BeyItemStackRendererTileEntity() {
-        stacks = CachedStacks.INSTANCE.getStacks();
     }
 
     @Override

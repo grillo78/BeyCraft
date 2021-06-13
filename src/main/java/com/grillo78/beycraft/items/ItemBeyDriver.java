@@ -5,6 +5,7 @@ import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.abilities.Ability;
 import com.grillo78.beycraft.abilities.MultiMode;
 import com.grillo78.beycraft.abilities.MultiType;
+import com.grillo78.beycraft.items.render.GenericPartItemStackRendererTileEntity;
 import com.grillo78.beycraft.util.BeyTypes;
 
 import net.minecraft.item.Item;
@@ -17,7 +18,7 @@ public class ItemBeyDriver extends ItemBeyPart {
 
 	public ItemBeyDriver(String name, float friction, float radiusReduction, Ability primaryAbility,
 			Ability secundaryAbility, BeyTypes type) {
-		super(name, type, primaryAbility, secundaryAbility, BeyCraft.BEYCRAFTDRIVERS, new Item.Properties());
+		super(name, type, primaryAbility, secundaryAbility, BeyCraft.BEYCRAFTDRIVERS, new Item.Properties().setISTER(() -> GenericPartItemStackRendererTileEntity::new));
 		this.radiusReduction = radiusReduction;
 		this.friction = friction;
 		BeyRegistry.ITEMSDRIVER.add(this);

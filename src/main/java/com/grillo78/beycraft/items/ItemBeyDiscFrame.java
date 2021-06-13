@@ -6,7 +6,6 @@ import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.abilities.Ability;
 import com.grillo78.beycraft.inventory.BeyDiscFrameContainer;
 import com.grillo78.beycraft.inventory.ItemBeyDiscFrameProvider;
-import com.grillo78.beycraft.items.render.DiscFrameItemStackRendererTileEntity;
 
 import com.grillo78.beycraft.util.BeyTypes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,7 +29,7 @@ public class ItemBeyDiscFrame extends ItemBeyDisc {
 	public ItemBeyDiscFrame(String name, float attack, float defense, float weight, float frameRotation, Ability primaryAbility,
 							Ability secundaryAbility, BeyTypes type) {
 		super(name, attack, defense, weight, primaryAbility, secundaryAbility, type,
-				new Item.Properties().setISTER(() -> DiscFrameItemStackRendererTileEntity::new));
+				new Item.Properties());
 		this.frameRotation = frameRotation;
 		BeyRegistry.ITEMSDISCFRAME.add(this);
 	}
