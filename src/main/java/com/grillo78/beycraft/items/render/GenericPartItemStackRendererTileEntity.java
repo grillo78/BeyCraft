@@ -40,89 +40,79 @@ import java.util.Random;
 
 public class GenericPartItemStackRendererTileEntity extends ItemStackTileEntityRenderer {
 
-	private Random random = new Random();
-	private RenderLayer layer = RenderManager.addRenderLayer(ViewBoxes.ALWAYS);
+    private Random random = new Random();
+    private RenderLayer layer = RenderManager.addRenderLayer(ViewBoxes.ALWAYS);
 
-	public GenericPartItemStackRendererTileEntity() {
-	}
+    public GenericPartItemStackRendererTileEntity() {
+    }
 
-	@Override
-	public void renderByItem(ItemStack stack, TransformType transformType, MatrixStack matrixStack,
-			IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+    @Override
+    public void renderByItem(ItemStack stack, TransformType transformType, MatrixStack matrixStack,
+                             IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
 
-			matrixStack.pushPose();
-			net.minecraft.util.math.vector.Matrix4f matrix = new net.minecraft.util.math.vector.Matrix4f(matrixStack.last().pose());
-			net.minecraft.util.math.vector.Matrix4f modelView = new net.minecraft.util.math.vector.Matrix4f(matrixStack.last().pose());
-			Vector3d cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-			matrix.invert();
-			Vector4f vector4f = new Vector4f(0, 0, 0, 1);
-			vector4f.transform(matrix);
-			Vector3d pos = cameraPos.add(vector4f.x(), vector4f.y(), vector4f.z());
-			RenderObject sceneLayer;
-			BeyPartModel model = null;
-			switch (transformType) {
-				case GUI:
-					sceneLayer = layer.addRenderObject(ItemCreator.models.get(stack.getItem()));
-					break;
-				case FIRST_PERSON_LEFT_HAND:
-				case FIRST_PERSON_RIGHT_HAND:
-					vector4f = new Vector4f(0, 0, 0, 1 / 16);
-					vector4f.transform(matrix);
-					pos = cameraPos.add(vector4f.x(), vector4f.y() + 0.2, vector4f.z());
-					model = new BeyPartModel(modelView, pos, ItemCreator.models.get(stack.getItem()), 20, 180, 0, 0.5F, 0.5F, 0.5F);
-					sceneLayer = model.getSceneLayer();
-					BeyPartModel.handModels.add(model);
-					break;
-				case GROUND:
-				case THIRD_PERSON_RIGHT_HAND:
-				case THIRD_PERSON_LEFT_HAND:
-					vector4f = new Vector4f(0, 0, 0, 1 / 16);
-					vector4f.transform(matrix);
-					matrixStack.scale(0.5F, 0.5F, 0.5F);
-					matrixStack.translate(0.5F, 0.5F, 0.5F);
-					modelView = new net.minecraft.util.math.vector.Matrix4f(matrixStack.last().pose());
-					pos = cameraPos.add(vector4f.x(), vector4f.y(), vector4f.z());
-				default:
-					model = new BeyPartModel(modelView, pos, ItemCreator.models.get(stack.getItem()), 0, 0, 0, 1, 1, 1);
-					sceneLayer = model.getSceneLayer();
-					BeyPartModel.worldModels.add(model);
-					break;
-			}
-			if(model != null && transformType == TransformType.GUI) {
-				GL11.glRotatef(50, 1, 0, 0);
-				GL11.glTranslated(0, -0.5, 0);
-				GL11.glScaled(2, 2, 2);
-				vector4f = new Vector4f(0, 0, 0, 16);
-				vector4f.transform(matrix);
-				pos = cameraPos.add(vector4f.x(), vector4f.y(), vector4f.z());
+        matrixStack.pushPose();
+        net.minecraft.util.math.vector.Matrix4f matrix = new net.minecraft.util.math.vector.Matrix4f(matrixStack.last().pose());
+        net.minecraft.util.math.vector.Matrix4f modelView = new net.minecraft.util.math.vector.Matrix4f(matrixStack.last().pose());
+        Vector3d cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        matrix.invert();
+        Vector4f vector4f = new Vector4f(0, 0, 0, 1);
+        vector4f.transform(matrix);
+        Vector3d pos = cameraPos.add(vector4f.x(), vector4f.y(), vector4f.z());
+        RenderObject sceneLayer;
+        BeyPartModel model = null;
+        switch (transformType) {
+            case GUI:
+                sceneLayer = layer.addRenderObject(ItemCreator.models.get(stack.getItem()));
+                break;
+            case FIRST_PERSON_LEFT_HAND:
+            case FIRST_PERSON_RIGHT_HAND:
+                vector4f = new Vector4f(0, 0, 0, 1 / 16);
+                vector4f.transform(matrix);
+                pos = cameraPos.add(vector4f.x(), vector4f.y() + 0.2, vector4f.z());
+                model = new BeyPartModel(modelView, pos, ItemCreator.models.get(stack.getItem()), 20, 180, 0, 0.5F, 0.5F, 0.5F);
+                sceneLayer = model.getSceneLayer();
+                BeyPartModel.handModels.add(model);
+                break;
+            case GROUND:
+            case THIRD_PERSON_RIGHT_HAND:
+            case THIRD_PERSON_LEFT_HAND:
+                vector4f = new Vector4f(0, 0, 0, 1 / 16);
+                vector4f.transform(matrix);
+                matrixStack.scale(0.5F, 0.5F, 0.5F);
+                matrixStack.translate(0.5F, 0.5F, 0.5F);
+                modelView = new net.minecraft.util.math.vector.Matrix4f(matrixStack.last().pose());
+                pos = cameraPos.add(vector4f.x(), vector4f.y(), vector4f.z());
+            default:
+                model = new BeyPartModel(modelView, pos, ItemCreator.models.get(stack.getItem()), 0, 0, 0, 1, 1, 1);
+                sceneLayer = model.getSceneLayer();
+                BeyPartModel.worldModels.add(model);
+                break;
+        }
+        if (model != null) {
+            if (stack.hasTag() && stack.getTag().contains("frame")) {
+                Item discItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("frame")).getString("id")));
+                if (ItemCreator.models.containsKey(discItem)) {
+                    RenderObject sceneDisc = model.addChild(ItemCreator.models.get(discItem));
+                }
+            }
+        } else {
+            GL11.glRotatef(50, 1, 0, 0);
+            GL11.glTranslated(0, -0.5, 0);
+            GL11.glScaled(2, 2, 2);
+            vector4f = new Vector4f(0, 0, 0, 16);
+            vector4f.transform(matrix);
+            pos = cameraPos.add(vector4f.x(), vector4f.y(), vector4f.z());
 
-				RenderSystem.enableBlend();
-				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            RenderSystem.enableBlend();
+            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
-				sceneLayer.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
-				sceneLayer.forceTransformUpdate();
-				RenderManager.render(layer, RenderMode.USE_FFP_MATS);
-				layer.removeRenderObject(sceneLayer);
-				RenderSystem.disableBlend();
-				RenderSystem.defaultBlendFunc();
-			}
-			matrixStack.popPose();
-		}
-//		if (stack.hasTag()) {
-//			matrixStack.scale(2F, 2F, 2F);
-//			matrixStack.mulPose(new Quaternion(
-//					new Vector3f(0, ((ItemBeyDiscFrame) stack.getItem()).getFrameRotation(), 0), -15, true));
-//			matrixStack.translate(0F, 0.01F, 0.25F);
-//			if (!stacks.containsKey(stack.getTag().get("frame"))) {
-//				stacks.put((CompoundNBT) stack.getTag().get("frame"),
-//						ItemStack.of((CompoundNBT) stack.getTag().get("frame")));
-//			}
-//			Minecraft.getInstance().getItemRenderer().renderStatic(stacks.get(stack.getTag().get("frame")),
-//					TransformType.FIRST_PERSON_LEFT_HAND, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
-//
-//		}
-//
-//		matrixStack.popPose();
-//		super.renderByItem(stack, transformType, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
-//	}
+            sceneLayer.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
+            sceneLayer.forceTransformUpdate();
+            RenderManager.render(layer, RenderMode.USE_FFP_MATS);
+            layer.removeRenderObject(sceneLayer);
+            RenderSystem.disableBlend();
+            RenderSystem.defaultBlendFunc();
+        }
+        matrixStack.popPose();
+    }
 }
