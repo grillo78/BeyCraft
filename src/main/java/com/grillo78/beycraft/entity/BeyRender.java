@@ -68,10 +68,10 @@ public class BeyRender extends EntityRenderer<EntityBey> {
             sceneDriver.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
             sceneDriver.transform.scale(0.5F, 0.5F, 0.5F);
             Vector3d vector = entity.getLookAngle().yRot(90);
-        if (entity.getRotationSpeed() > 1) {
-                sceneDriver.transform.rotate( (float) vector.x*30*entity.getRadius()*entity.getRotationDirection(),-entity.angle*1.5f, (float) vector.z*30*entity.getRadius()*entity.getRotationDirection());
-            }else {
-                sceneDriver.transform.rotate( (float) vector.x*50*entity.getRotationDirection(),-entity.angle*1.5f, (float) vector.z*50*entity.getRotationDirection());
+            if (entity.getRotationSpeed() > 1) {
+                sceneDriver.transform.rotate((float) vector.x * 30 * entity.getRadius() * entity.getRotationDirection(), -entity.angle * 1.5f, (float) vector.z * 30 * entity.getRadius() * entity.getRotationDirection());
+            } else {
+                sceneDriver.transform.rotate((float) vector.x * 30 * entity.getRotationDirection(), -entity.angle * 1.5f, (float) vector.z * 30 * entity.getRotationDirection());
             }
             sceneDriver.forceTransformUpdate();
 

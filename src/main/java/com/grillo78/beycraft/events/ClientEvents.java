@@ -125,18 +125,22 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void modelBake(ModelBakeEvent event){
+    public static void modelBake(ModelBakeEvent event) {
         for (Item item : BeyRegistry.ITEMSLAYER) {
-            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(),"inventory");
-            event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS),0,10,10,0,0), true));
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
+            event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS), 0, 10, 10, 0, 0), true));
+        }
+        for (Item item : BeyRegistry.ITEMSFRAME) {
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
+            event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS), 0, 10, 10, 0, 0), true));
         }
         for (Item item : BeyRegistry.ITEMSDISCLIST) {
-            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(),"inventory");
-            event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS),0,10,10,0,0), true));
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
+            event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS), 0, 10, 10, 0, 0), true));
         }
         for (Item item : BeyRegistry.ITEMSDRIVER) {
-            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(),"inventory");
-            event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS),0,10,10,0,0), true));
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
+            event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS), 0, 10, 10, 0, 0), true));
         }
     }
 
@@ -166,12 +170,12 @@ public class ClientEvents {
     public static class SpecialClientEvents {
 
         @SubscribeEvent
-        public static void onRenderWorldLast(RenderWorldLastEvent event){
+        public static void onRenderWorldLast(RenderWorldLastEvent event) {
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             Vector3d cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
             RenderManager.setCameraPos(new Vector3((float) cameraPos.x, (float) cameraPos.y, (float) cameraPos.z));
-            RenderLibSettings.Rendering.CAMERA_HEIGHT_OFFSET = (float) (cameraPos.y-Minecraft.getInstance().player.getPosition(event.getPartialTicks()).y);
+            RenderLibSettings.Rendering.CAMERA_HEIGHT_OFFSET = (float) (cameraPos.y - Minecraft.getInstance().player.getPosition(event.getPartialTicks()).y);
             RenderManager.setRenderDistance(Minecraft.getInstance().options.renderDistance * 16);
             RenderManager.update();
             for (Runnable runnable : BeyRender.getRunnables()) {
@@ -278,99 +282,100 @@ public class ClientEvents {
 
         @SubscribeEvent
         public static void setPlayerRotations(final HUSetRotationAnglesEvent event) {
-            PlayerEntity player = event.getPlayer();
-            if (player.getItemInHand(Hand.MAIN_HAND).getItem() instanceof ItemLauncher
-                    || player.getItemInHand(Hand.OFF_HAND).getItem() instanceof ItemLauncher) {
-                PlayerModel model = (PlayerModel) event.getPlayerModel();
-                model.leftArm.xRot = (float) Math.toRadians(player.xRot - 90);
-                model.rightArm.xRot = (float) Math.toRadians(player.xRot - 90);
+            if (!(event.getPlayer() == Minecraft.getInstance().player && !Minecraft.getInstance().gameRenderer.getMainCamera().isDetached())) {
+                PlayerEntity player = event.getPlayer();
+                if (player.getItemInHand(Hand.MAIN_HAND).getItem() instanceof ItemLauncher
+                        || player.getItemInHand(Hand.OFF_HAND).getItem() instanceof ItemLauncher) {
+                    PlayerModel model = (PlayerModel) event.getPlayerModel();
+                    model.leftArm.xRot = (float) Math.toRadians(player.xRot - 90);
+                    model.rightArm.xRot = (float) Math.toRadians(player.xRot - 90);
 
-                model.leftSleeve.xRot = (float) Math.toRadians(player.xRot - 90);
-                model.rightSleeve.xRot = (float) Math.toRadians(player.xRot - 90);
+                    model.leftSleeve.xRot = (float) Math.toRadians(player.xRot - 90);
+                    model.rightSleeve.xRot = (float) Math.toRadians(player.xRot - 90);
 
-                model.leftArm.yRot = (float) Math.toRadians(25);
-                model.rightArm.yRot = (float) Math.toRadians(-25);
-                model.rightArm.zRot = (float) Math
-                        .toRadians(25 * (1 - ((90 - (-player.xRot)) / 90)));
-                model.leftArm.zRot = (float) Math.toRadians(25 * (1 - ((90 - player.xRot) / 90)));
+                    model.leftArm.yRot = (float) Math.toRadians(20);
+                    model.rightArm.yRot = (float) Math.toRadians(-20);
+                    model.rightArm.zRot = (float) Math
+                            .toRadians(25 * (1 - ((90 - (-player.xRot)) / 90)));
+                    model.leftArm.zRot = (float) Math.toRadians(25 * (1 - ((90 - player.xRot) / 90)));
 
-                model.leftSleeve.yRot = (float) Math.toRadians(25);
-                model.rightSleeve.yRot = (float) Math.toRadians(-25);
-                model.rightSleeve.zRot = (float) Math
-                        .toRadians(25 * (1 - ((90 - (-player.xRot)) / 90)));
-                model.leftSleeve.zRot = (float) Math
-                        .toRadians(25 * (1 - ((90 - player.xRot) / 90)));
+                    model.leftSleeve.yRot = (float) Math.toRadians(20);
+                    model.rightSleeve.yRot = (float) Math.toRadians(-20);
+                    model.rightSleeve.zRot = (float) Math
+                            .toRadians(25 * (1 - ((90 - (-player.xRot)) / 90)));
+                    model.leftSleeve.zRot = (float) Math
+                            .toRadians(25 * (1 - ((90 - player.xRot) / 90)));
 
-                if (player.getItemInHand(Hand.MAIN_HAND).getItem() instanceof ItemLauncher) {
-                    if (player.getItemInHand(Hand.MAIN_HAND).hasTag()
-                            && (player.getItemInHand(Hand.MAIN_HAND).getTag().contains("handle")
-                            && ItemStack.of(player.getItemInHand(Hand.MAIN_HAND).getTag().getCompound("handle"))
-                            .getItem() instanceof ItemLauncherHandle)) {
-                        if (player.getMainArm() == HandSide.RIGHT) {
-                            model.rightArm.yRot = (float) Math.toRadians(0);
-                            model.rightArm.zRot = (float) Math.toRadians(0);
-                            model.rightSleeve.yRot = (float) Math.toRadians(0);
-                            model.rightSleeve.zRot = (float) Math.toRadians(0);
-                        } else {
-                            model.leftArm.yRot = (float) Math.toRadians(0);
-                            model.leftArm.zRot = (float) Math.toRadians(0);
-                            model.leftSleeve.yRot = (float) Math.toRadians(0);
-                            model.leftSleeve.zRot = (float) Math.toRadians(0);
+                    if (player.getItemInHand(Hand.MAIN_HAND).getItem() instanceof ItemLauncher) {
+                        if (player.getItemInHand(Hand.MAIN_HAND).hasTag()
+                                && (player.getItemInHand(Hand.MAIN_HAND).getTag().contains("handle")
+                                && ItemStack.of(player.getItemInHand(Hand.MAIN_HAND).getTag().getCompound("handle"))
+                                .getItem() instanceof ItemLauncherHandle)) {
+                            if (player.getMainArm() == HandSide.RIGHT) {
+                                model.rightArm.yRot = (float) Math.toRadians(0);
+                                model.rightArm.zRot = (float) Math.toRadians(0);
+                                model.rightSleeve.yRot = (float) Math.toRadians(0);
+                                model.rightSleeve.zRot = (float) Math.toRadians(0);
+                            } else {
+                                model.leftArm.yRot = (float) Math.toRadians(0);
+                                model.leftArm.zRot = (float) Math.toRadians(0);
+                                model.leftSleeve.yRot = (float) Math.toRadians(0);
+                                model.leftSleeve.zRot = (float) Math.toRadians(0);
+                            }
                         }
-                    }
-                    if (player.getCooldowns().isOnCooldown(player.getItemInHand(Hand.MAIN_HAND).getItem())) {
-                        if (player.getMainArm() == HandSide.RIGHT) {
-                            model.leftArm.yRot = (float) Math.toRadians(-25);
-                            model.leftArm.zRot = (float) Math
-                                    .toRadians(-25 * (1 - ((90 - player.xRot) / 90)));
-                            model.leftSleeve.yRot = (float) Math.toRadians(-25);
-                            model.leftSleeve.zRot = (float) Math
-                                    .toRadians(-25 * (1 - ((90 - player.xRot) / 90)));
-                        } else {
-                            model.rightArm.yRot = (float) Math.toRadians(25);
-                            model.rightArm.zRot = (float) Math
-                                    .toRadians(-25 * (1 - ((90 - (-player.xRot)) / 90)));
-                            model.rightSleeve.yRot = (float) Math.toRadians(25);
-                            model.rightSleeve.zRot = (float) Math
-                                    .toRadians(-25 * (1 - ((90 - (-player.xRot)) / 90)));
+                        if (player.getCooldowns().isOnCooldown(player.getItemInHand(Hand.MAIN_HAND).getItem())) {
+                            if (player.getMainArm() == HandSide.RIGHT) {
+                                model.leftArm.yRot = (float) Math.toRadians(-25);
+                                model.leftArm.zRot = (float) Math
+                                        .toRadians(-25 * (1 - ((90 - player.xRot) / 90)));
+                                model.leftSleeve.yRot = (float) Math.toRadians(-25);
+                                model.leftSleeve.zRot = (float) Math
+                                        .toRadians(-25 * (1 - ((90 - player.xRot) / 90)));
+                            } else {
+                                model.rightArm.yRot = (float) Math.toRadians(25);
+                                model.rightArm.zRot = (float) Math
+                                        .toRadians(-25 * (1 - ((90 - (-player.xRot)) / 90)));
+                                model.rightSleeve.yRot = (float) Math.toRadians(25);
+                                model.rightSleeve.zRot = (float) Math
+                                        .toRadians(-25 * (1 - ((90 - (-player.xRot)) / 90)));
+                            }
                         }
-                    }
-                } else {
-                    if (player.getItemInHand(Hand.OFF_HAND).hasTag()
-                            && (player.getItemInHand(Hand.OFF_HAND).getTag().contains("handle")
-                            && ItemStack.of(player.getItemInHand(Hand.OFF_HAND).getTag().getCompound("handle"))
-                            .getItem() instanceof ItemLauncherHandle)) {
-                        if (player.getMainArm() == HandSide.RIGHT) {
-                            model.leftArm.yRot = (float) Math.toRadians(0);
-                            model.leftArm.zRot = (float) Math.toRadians(0);
-                            model.leftSleeve.yRot = (float) Math.toRadians(0);
-                            model.leftSleeve.zRot = (float) Math.toRadians(0);
-                        } else {
-                            model.rightArm.yRot = (float) Math.toRadians(0);
-                            model.rightArm.zRot = (float) Math.toRadians(0);
-                            model.rightSleeve.yRot = (float) Math.toRadians(0);
-                            model.rightSleeve.zRot = (float) Math.toRadians(0);
+                    } else {
+                        if (player.getItemInHand(Hand.OFF_HAND).hasTag()
+                                && (player.getItemInHand(Hand.OFF_HAND).getTag().contains("handle")
+                                && ItemStack.of(player.getItemInHand(Hand.OFF_HAND).getTag().getCompound("handle"))
+                                .getItem() instanceof ItemLauncherHandle)) {
+                            if (player.getMainArm() == HandSide.RIGHT) {
+                                model.leftArm.yRot = (float) Math.toRadians(0);
+                                model.leftArm.zRot = (float) Math.toRadians(0);
+                                model.leftSleeve.yRot = (float) Math.toRadians(0);
+                                model.leftSleeve.zRot = (float) Math.toRadians(0);
+                            } else {
+                                model.rightArm.yRot = (float) Math.toRadians(0);
+                                model.rightArm.zRot = (float) Math.toRadians(0);
+                                model.rightSleeve.yRot = (float) Math.toRadians(0);
+                                model.rightSleeve.zRot = (float) Math.toRadians(0);
+                            }
                         }
-                    }
-                    if (player.getCooldowns().isOnCooldown(player.getItemInHand(Hand.OFF_HAND).getItem())) {
-                        if (player.getMainArm() == HandSide.RIGHT) {
-                            model.rightArm.yRot = (float) Math.toRadians(25);
-                            model.rightArm.zRot = (float) Math
-                                    .toRadians(-25 * (1 - ((90 - (-player.xRot)) / 90)));
-                            model.rightSleeve.yRot = (float) Math.toRadians(25);
-                            model.rightSleeve.zRot = (float) Math
-                                    .toRadians(-25 * (1 - ((90 - (-player.xRot)) / 90)));
-                        } else {
-                            model.leftArm.yRot = (float) Math.toRadians(-25);
-                            model.leftArm.zRot = (float) Math
-                                    .toRadians(-25 * (1 - ((90 - player.xRot) / 90)));
-                            model.leftSleeve.yRot = (float) Math.toRadians(-25);
-                            model.leftSleeve.zRot = (float) Math
-                                    .toRadians(-25 * (1 - ((90 - player.xRot) / 90)));
+                        if (player.getCooldowns().isOnCooldown(player.getItemInHand(Hand.OFF_HAND).getItem())) {
+                            if (player.getMainArm() == HandSide.RIGHT) {
+                                model.rightArm.yRot = (float) Math.toRadians(25);
+                                model.rightArm.zRot = (float) Math
+                                        .toRadians(-25 * (1 - ((90 - (-player.xRot)) / 90)));
+                                model.rightSleeve.yRot = (float) Math.toRadians(25);
+                                model.rightSleeve.zRot = (float) Math
+                                        .toRadians(-25 * (1 - ((90 - (-player.xRot)) / 90)));
+                            } else {
+                                model.leftArm.yRot = (float) Math.toRadians(-25);
+                                model.leftArm.zRot = (float) Math
+                                        .toRadians(-25 * (1 - ((90 - player.xRot) / 90)));
+                                model.leftSleeve.yRot = (float) Math.toRadians(-25);
+                                model.leftSleeve.zRot = (float) Math
+                                        .toRadians(-25 * (1 - ((90 - player.xRot) / 90)));
+                            }
                         }
                     }
                 }
-
             }
         }
     }

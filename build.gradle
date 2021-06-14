@@ -45,6 +45,8 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             args '-mixin.config=beycraft.mixins.json'
 
             // Recommended logging data for a userdev environment
@@ -63,7 +65,9 @@ minecraft {
         clientWithCredentials {
             parent runs.client
 
-            args '-mixin.config=beycraft.mixins.json', "-mixin.config=heroesunited.mixins.json", '--username', 'grillo78', '--uuid', 'b8a6cebf-7221-4d53-b120-6e759f14fbfb'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            args '-mixin.config=beycraft.mixins.json', '--username', 'grillo78', '--uuid', 'b8a6cebf-7221-4d53-b120-6e759f14fbfb'
         }
 
         server {

@@ -119,14 +119,25 @@ public class BeyRegistry {
      * Accessories
      */
 	public static final AccessoryItem BARUTO_JACKET = new AccessoryItem( "baruto_jacket",
-			EquipmentAccessoriesSlot.JACKET);
-	public static final AccessoryItem BARUTO_PANTS = new AccessoryItem( "baruto_pants",
+            EquipmentAccessoriesSlot.JACKET);
+    public static final AccessoryItem BARUTO_PANTS = new AccessoryItem( "baruto_pants",
             EquipmentAccessoriesSlot.PANTS);
-	public static final AccessoryItem BARUTO_BOOTS = new AccessoryItem( "baruto_boots",
+    public static final AccessoryItem BARUTO_BOOTS = new AccessoryItem( "baruto_boots",
             EquipmentAccessoriesSlot.SHOES);
     public static final AccessoryItem BARUTO_CHEST = new AccessoryItem( "baruto_chest",
             EquipmentAccessoriesSlot.TSHIRT);
     public static final AccessoryItem BARUTO_GLOVES = new AccessoryItem( "baruto_gloves",
+            EquipmentAccessoriesSlot.GLOVES);
+
+    public static final AccessoryItem BARUTO_JACKET_CHO_Z = new AccessoryItem( "baruto_jacket_cho_z",
+            EquipmentAccessoriesSlot.JACKET);
+    public static final AccessoryItem BARUTO_PANTS_CHO_Z = new AccessoryItem( "baruto_pants_cho_z",
+            EquipmentAccessoriesSlot.PANTS);
+    public static final AccessoryItem BARUTO_BOOTS_CHO_Z = new AccessoryItem( "baruto_boots_cho_z",
+            EquipmentAccessoriesSlot.SHOES);
+    public static final AccessoryItem BARUTO_CHEST_CHO_Z = new AccessoryItem( "baruto_chest_cho_z",
+            EquipmentAccessoriesSlot.TSHIRT);
+    public static final AccessoryItem BARUTO_GLOVES_CHO_Z = new AccessoryItem( "baruto_gloves_cho_z",
             EquipmentAccessoriesSlot.GLOVES);
 
     /* Blocks */

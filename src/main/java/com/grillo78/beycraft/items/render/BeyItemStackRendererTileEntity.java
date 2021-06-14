@@ -87,10 +87,17 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
         }
         if (model != null) {
             if (stack.hasTag() && stack.getTag().contains("chip")) {
-
+                Item chipItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("chip")).getString("id")));
+                if (ItemCreator.models.containsKey(chipItem)) {
+                    RenderObject sceneChip = model.addChild(ItemCreator.models.get(chipItem));
+                }
             }
             if (stack.hasTag() && stack.getTag().contains("weight")) {
 
+                Item weightItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("weight")).getString("id")));
+                if (ItemCreator.models.containsKey(weightItem)) {
+                    RenderObject sceneWeight = model.addChild(ItemCreator.models.get(weightItem));
+                }
             }
             if (stack.hasTag() && stack.getTag().contains("disc")) {
                 Item discItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("disc")).getString("id")));

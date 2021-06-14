@@ -1,6 +1,7 @@
 package com.grillo78.beycraft.items;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.grillo78.beycraft.Reference;
 import com.grillo78.beycraft.abilities.Ability;
@@ -13,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -20,10 +22,12 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class ItemBeyPart extends Item {
 
 	protected BeyTypes type;
+	protected final String name;
 	protected final Ability PRIMARYABILITY;
 	protected final Ability SECUNDARYABILITY;
 
@@ -33,7 +37,8 @@ public class ItemBeyPart extends Item {
 		PRIMARYABILITY = primaryAbility;
 		SECUNDARYABILITY = secundaryAbility;
 		this.type = type;
-		setRegistryName(new ResourceLocation(Reference.MODID, name));
+		this.name = name;
+		setRegistryName(new ResourceLocation(Reference.MODID, name.replaceAll(" ","").toLowerCase()));
 	}
 
 	public Ability getPrimaryAbility() {
@@ -71,6 +76,19 @@ public class ItemBeyPart extends Item {
 			return super.use(world, player, handIn);
 		}
 		return ActionResult.fail(player.getItemInHand(handIn));
+	}
+
+	@Override
+	public ITextComponent getName(ItemStack stack) {
+		AtomicReference<String> text = new AtomicReference<>(name);
+		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+			for (int i = 0; i < h.getSlots(); i++) {
+				if (h.getStackInSlot(i).getItem() != Items.AIR) {
+					text.set(text.get() + " " + h.getStackInSlot(i).getHoverName().getString());
+				}
+			}
+		});
+		return new StringTextComponent(text.get());
 	}
 
 	@Override

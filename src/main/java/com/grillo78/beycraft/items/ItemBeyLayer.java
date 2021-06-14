@@ -93,19 +93,6 @@ public class ItemBeyLayer extends ItemBeyPart {
         return result;
     }
 
-    @Override
-    public ITextComponent getName(ItemStack stack) {
-        final String[] text = {super.getName(stack).getString()};
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            for (int i = 0; i < 2; i++) {
-                if (h.getStackInSlot(i).getItem() != Items.AIR) {
-                    text[0] = text[0] + " " + h.getStackInSlot(i).getHoverName().getString();
-                }
-            }
-        });
-        return new StringTextComponent(text[0]);
-    }
-
     public float getAttack(ItemStack stack) {
         if (PRIMARYABILITY instanceof MultiType) {
             if (stack.hasTag() && stack.getTag().contains("Type")) {
