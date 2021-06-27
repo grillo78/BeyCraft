@@ -144,10 +144,10 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.16.5-36.0.58'
+    annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
 
-    compile fg.deobf('xyz.heroesunited:hu-core:2.5.2-9a')
-    implementation 'io.gitlab.friedrichlp:renderlib:1.0.0-pre2'
-    implementation 'com.github.Vatuu:discord-rpc:1.6.2'
+    compile fg.deobf('xyz.heroesunited:hu-core:2.5.2-9.82a')
+    shade 'io.gitlab.friedrichlp:renderlib:1.0.0-pre2'
 
 }
 
