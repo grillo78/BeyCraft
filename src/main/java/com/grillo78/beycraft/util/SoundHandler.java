@@ -16,7 +16,7 @@ public class SoundHandler {
 	}
 	
 	public static SoundEvent register(String name) {
-		ResourceLocation location = new ResourceLocation(Reference.MODID, name);
+		ResourceLocation location = new ResourceLocation(Reference.MOD_ID, name);
 		SoundEvent e = new SoundEvent(location);
 		
 		e.setRegistryName(name);

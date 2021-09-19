@@ -233,7 +233,7 @@ public class BeyCreatorGUI extends Screen {
 	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
 		this.getMinecraft().getTextureManager()
-				.bind(new ResourceLocation(Reference.MODID, "textures/gui/container/empty_container.png"));
+				.bind(new ResourceLocation(Reference.MOD_ID, "textures/gui/container/empty_container.png"));
 		int relX = (this.width - this.xSize) / 2;
 		int relY = (this.height - this.ySize) / 2;
 		this.blit(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);

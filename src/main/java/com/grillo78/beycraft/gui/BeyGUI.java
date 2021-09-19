@@ -40,7 +40,7 @@ public class BeyGUI extends ContainerScreen<BeyContainer>{
 	@Override
 	protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1f, 1f, 1f, 1f);
-		this.getMinecraft().getTextureManager().bind(new ResourceLocation(Reference.MODID, "textures/gui/container/2_slots.png"));
+		this.getMinecraft().getTextureManager().bind(new ResourceLocation(Reference.MOD_ID, "textures/gui/container/2_slots.png"));
 		int relX = (this.width - this.imageWidth) / 2;
 		int relY = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, this.imageHeight);

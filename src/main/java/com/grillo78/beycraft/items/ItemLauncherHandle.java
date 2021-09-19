@@ -24,7 +24,7 @@ public class ItemLauncherHandle extends Item {
 
     public ItemLauncherHandle(String name) {
         super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
-        setRegistryName(new ResourceLocation(Reference.MODID, name));
+        setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
         BeyRegistry.ITEMS.put(name,this);
     }
 

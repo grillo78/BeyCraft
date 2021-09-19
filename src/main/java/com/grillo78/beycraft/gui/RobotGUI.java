@@ -69,7 +69,7 @@ public class RobotGUI extends Screen {
 		int relY = (this.height - this.ySize) / 2;
 		this.renderBackground(p_230430_1_);
 		this.getMinecraft().getTextureManager()
-				.bind(new ResourceLocation(Reference.MODID, "textures/gui/container/robot.png"));
+				.bind(new ResourceLocation(Reference.MOD_ID, "textures/gui/container/robot.png"));
 		this.blit(p_230430_1_, relX, relY, 0, 0, this.xSize, this.ySize);
 		super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
 		numberText.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);

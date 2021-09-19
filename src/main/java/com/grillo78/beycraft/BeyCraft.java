@@ -8,11 +8,6 @@ import com.grillo78.beycraft.tab.BeyCraftLayersTab;
 import com.grillo78.beycraft.tab.BeyCraftTab;
 import com.grillo78.beycraft.util.ConfigManager;
 import friedrichlp.renderlib.RenderLibSettings;
-import friedrichlp.renderlib.model.ModelLoaderProperty;
-import friedrichlp.renderlib.render.ViewBoxes;
-import friedrichlp.renderlib.tracking.*;
-import net.arikia.dev.drpc.DiscordEventHandlers;
-import net.arikia.dev.drpc.DiscordRPC;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,11 +19,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.sql.Timestamp;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(Reference.MODID)
+@Mod(Reference.MOD_ID)
 public class BeyCraft {
 
     // Directly reference a log4j logger.
@@ -52,6 +49,16 @@ public class BeyCraft {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
             RenderLibSettings.Caching.CACHE_LOCATION = "beycraft_cached_models";
             RenderLibSettings.Caching.CACHE_VERSION = "1";
+            try {
+                URL url = new URL("http://www.google.com");
+                URLConnection connection = url.openConnection();
+                connection.connect();
+                Reference.HAS_INTERNET = true;
+            } catch (MalformedURLException e) {
+                System.out.println("Internet is not connected");
+            } catch (IOException e) {
+                System.out.println("Internet is not connected");
+            }
         });
     }
 

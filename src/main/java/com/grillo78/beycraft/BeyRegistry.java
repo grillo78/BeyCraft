@@ -13,7 +13,6 @@ import com.grillo78.beycraft.tileentity.BeyCreatorTileEntity;
 import com.grillo78.beycraft.tileentity.ExpositoryTileEntity;
 import com.grillo78.beycraft.tileentity.RobotTileEntity;
 import com.grillo78.beycraft.tileentity.StadiumTileEntity;
-import com.grillo78.beycraft.util.BeyTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
@@ -43,24 +42,24 @@ public class BeyRegistry {
     public static List<Item> ITEMSDRIVER = Lists.newArrayList();
     public static List<Item> ITEMSGTCHIP = Lists.newArrayList();
 
-    @ObjectHolder(Reference.MODID + ":sparkle")
+    @ObjectHolder(Reference.MOD_ID + ":sparkle")
     public static BasicParticleType SPARKLE;
-    @ObjectHolder(Reference.MODID + ":aura")
+    @ObjectHolder(Reference.MOD_ID + ":aura")
     public static BasicParticleType AURA;
 
     /* Entity */
-    @ObjectHolder(Reference.MODID + ":bey")
+    @ObjectHolder(Reference.MOD_ID + ":bey")
     public static final EntityType<EntityBey> BEY_ENTITY_TYPE = null;
 
 
     /* TileEntity */
-    @ObjectHolder(Reference.MODID + ":expositorytileentity")
+    @ObjectHolder(Reference.MOD_ID + ":expositorytileentity")
     public static final TileEntityType<ExpositoryTileEntity> EXPOSITORYTILEENTITYTYPE = null;
-    @ObjectHolder(Reference.MODID + ":beycreatortileentity")
+    @ObjectHolder(Reference.MOD_ID + ":beycreatortileentity")
     public static final TileEntityType<BeyCreatorTileEntity> BEYCREATORTILEENTITYTYPE = null;
-    @ObjectHolder(Reference.MODID + ":robottileentity")
+    @ObjectHolder(Reference.MOD_ID + ":robottileentity")
     public static final TileEntityType<RobotTileEntity> ROBOTTILEENTITYTYPE = null;
-    @ObjectHolder(Reference.MODID + ":stadiumtileentity")
+    @ObjectHolder(Reference.MOD_ID + ":stadiumtileentity")
     public static final TileEntityType<StadiumTileEntity> STADIUMTILEENTITYTYPE = null;
 
     /* Container */
@@ -94,18 +93,18 @@ public class BeyRegistry {
 //			SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2.0F);
 
     /* Sounds */
-    public static final SoundEvent HITSOUND = new SoundEvent(new ResourceLocation(Reference.MODID, "bey.hit"));
-    public static final SoundEvent OPEN_CLOSE_BELT = new SoundEvent(new ResourceLocation(Reference.MODID, "open_close_belt"));
-    public static final SoundEvent COUNTDOWN = new SoundEvent(new ResourceLocation(Reference.MODID, "countdown"));
+    public static final SoundEvent HITSOUND = new SoundEvent(new ResourceLocation(Reference.MOD_ID, "bey.hit"));
+    public static final SoundEvent OPEN_CLOSE_BELT = new SoundEvent(new ResourceLocation(Reference.MOD_ID, "open_close_belt"));
+    public static final SoundEvent COUNTDOWN = new SoundEvent(new ResourceLocation(Reference.MOD_ID, "countdown"));
 
     /* Items */
     public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("package");
     public static final ItemBeyRubber BEYRUBBER = new ItemBeyRubber("rubber");
     public static final ItemPlastic PLASTIC = new ItemPlastic("plastic");
 
-    public static final Item LAYERICON = new Item(new Item.Properties()).setRegistryName(Reference.MODID, "layericon");
-    public static final Item DISCICON = new Item(new Item.Properties()).setRegistryName(Reference.MODID, "discicon");
-    public static final Item DRIVERICON = new Item(new Item.Properties()).setRegistryName(Reference.MODID, "drivericon");
+    public static final Item LAYERICON = new Item(new Item.Properties()).setRegistryName(Reference.MOD_ID, "layericon");
+    public static final Item DISCICON = new Item(new Item.Properties()).setRegistryName(Reference.MOD_ID, "discicon");
+    public static final Item DRIVERICON = new Item(new Item.Properties()).setRegistryName(Reference.MOD_ID, "drivericon");
 
 
     public static final ItemLauncher LAUNCHER = new ItemLauncher("launcher", 1);

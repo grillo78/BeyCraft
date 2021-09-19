@@ -16,7 +16,7 @@ public class ItemBladerArmor extends ArmorItem {
 
 	public ItemBladerArmor(ArmorMaterial materialIn, String name, EquipmentSlotType equipmentSlotIn, String setName) {
 		super(materialIn, equipmentSlotIn, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB));
-		setRegistryName(new ResourceLocation(Reference.MODID,name));
+		setRegistryName(new ResourceLocation(Reference.MOD_ID,name));
 		this.setName=setName;
 		BeyRegistry.ITEMS.put(name,this);
 	}

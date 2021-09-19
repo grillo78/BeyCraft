@@ -36,7 +36,7 @@ public class ItemLauncher extends Item {
 
     public ItemLauncher(String name, int rotation) {
         super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1).setISTER(() -> LauncherItemStackRendererTileEntity::new));
-        setRegistryName(new ResourceLocation(Reference.MODID, name));
+        setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
         this.rotation = rotation;
         BeyRegistry.ITEMS.put(name, this);
     }

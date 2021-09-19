@@ -15,7 +15,7 @@ public class PacketHandler {
     public static void init()
     {
         instance = NetworkRegistry.ChannelBuilder
-                .named(new ResourceLocation(Reference.MODID, "network"))
+                .named(new ResourceLocation(Reference.MOD_ID, "network"))
                 .networkProtocolVersion(() -> PROTOCOL_VERSION)
                 .clientAcceptedVersions(PROTOCOL_VERSION::equals)
                 .serverAcceptedVersions(PROTOCOL_VERSION::equals)

@@ -1,31 +1,22 @@
 package com.grillo78.beycraft.events;
 
 import java.io.*;
-import java.nio.FloatBuffer;
-import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.Random;
-import java.util.function.Consumer;
 
 import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.entity.BeyRender;
 import com.grillo78.beycraft.items.ItemLauncher;
 import com.grillo78.beycraft.items.ItemLauncherHandle;
-import com.grillo78.beycraft.items.render.BeyItemStackRendererTileEntity;
 import com.grillo78.beycraft.util.BeyPartModel;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import friedrichlp.renderlib.RenderLibRegistry;
 import friedrichlp.renderlib.RenderLibSettings;
-import friedrichlp.renderlib.library.RenderMode;
-import friedrichlp.renderlib.math.Matrix4f;
 import friedrichlp.renderlib.math.Vector3;
 import friedrichlp.renderlib.tracking.RenderManager;
-import friedrichlp.renderlib.tracking.RenderObject;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
@@ -61,7 +52,6 @@ import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
-import net.minecraft.resources.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.model.ModelLoader;
@@ -70,10 +60,9 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import org.lwjgl.system.MemoryUtil;
 import xyz.heroesunited.heroesunited.client.events.HUSetRotationAnglesEvent;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientEvents {
 
     public static KeyBinding BELTKEY;
@@ -166,7 +155,7 @@ public class ClientEvents {
                 "beyloggers/" + BeyRegistry.BEYLOGGER.getRegistryName().getPath()));
     }
 
-    @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class SpecialClientEvents {
 
         @SubscribeEvent
@@ -270,6 +259,10 @@ public class ClientEvents {
             }
             if (ClientEvents.COUNTDOWNKEY.consumeClick() && event.getAction() == GLFW.GLFW_PRESS) {
                 PacketHandler.instance.sendToServer(new MessageNotifyPlayCountdown());
+            }
+            if (Minecraft.getInstance().options.keyDrop.consumeClick()){
+                Minecraft.getInstance()
+                        .setScreen(new RankingScreen(new StringTextComponent("")));
             }
         }
 

@@ -47,7 +47,7 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
 
     public ExpositoryBlock(Material materialIn, String name) {
         super(AbstractBlock.Properties.of(materialIn).strength(0.6F).noOcclusion());
-        setRegistryName(new ResourceLocation(Reference.MODID, name));
+        setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
 
         BeyRegistry.BLOCKS.add(this);
         BeyRegistry.ITEMS.put(name,new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))

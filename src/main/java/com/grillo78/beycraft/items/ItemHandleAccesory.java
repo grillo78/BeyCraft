@@ -18,7 +18,7 @@ public class ItemHandleAccesory extends Item{
 	 */
 	public ItemHandleAccesory(String name) {
 		super(new Item.Properties().stacksTo(1).tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
-		setRegistryName(new ResourceLocation(Reference.MODID, name));
+		setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
 		BeyRegistry.ITEMS.put(name,this);
 	}
 

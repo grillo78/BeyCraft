@@ -42,11 +42,11 @@ public class ItemBladerBelt extends Item implements IAccessory {
 
     @OnlyIn(Dist.CLIENT)
     private BeltModel model = new BeltModel();
-    private final ResourceLocation TEXTURE = new ResourceLocation(Reference.MODID, "textures/entity/belt/belt.png");
+    private final ResourceLocation TEXTURE = new ResourceLocation(Reference.MOD_ID, "textures/entity/belt/belt.png");
 
     public ItemBladerBelt(String name) {
         super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
-        this.setRegistryName(new ResourceLocation(Reference.MODID, name));
+        this.setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
         BeyRegistry.ITEMS.put(name, this);
     }
 

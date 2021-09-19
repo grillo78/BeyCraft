@@ -7,7 +7,6 @@ import com.grillo78.beycraft.commands.BeyBoxCommand;
 import com.grillo78.beycraft.commands.BeyCoinsCommand;
 import com.grillo78.beycraft.commands.SetLevelCommand;
 import com.grillo78.beycraft.entity.EntityBey;
-import com.grillo78.beycraft.gui.BeyGTNoWeightGUI;
 import com.grillo78.beycraft.inventory.*;
 import com.grillo78.beycraft.inventory.slots.BeyLoggerContainer;
 import com.grillo78.beycraft.items.ItemBladerBelt;
@@ -22,7 +21,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
@@ -36,21 +34,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.*;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.network.NetworkDirection;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -59,8 +50,8 @@ public class CommonEvents {
 	@SubscribeEvent
 	public static void registerEntityType(final RegistryEvent.Register<EntityType<?>> event) {
 		EntityType<?> type = EntityType.Builder.<EntityBey>of(EntityBey::new, EntityClassification.MISC)
-				.noSummon().sized(0.19F, 0.25F).build(Reference.MODID + ":bey");
-		type.setRegistryName(Reference.MODID, "bey");
+				.noSummon().sized(0.19F, 0.25F).build(Reference.MOD_ID + ":bey");
+		type.setRegistryName(Reference.MOD_ID, "bey");
 		event.getRegistry().register(type);
 
 	}
@@ -73,14 +64,14 @@ public class CommonEvents {
 	@SubscribeEvent
 	public static void registerTileEntityType(final RegistryEvent.Register<TileEntityType<?>> event) {
 		event.getRegistry().register(TileEntityType.Builder.of(ExpositoryTileEntity::new, BeyRegistry.EXPOSITORY)
-				.build(null).setRegistryName(new ResourceLocation(Reference.MODID, "expositorytileentity")));
+				.build(null).setRegistryName(new ResourceLocation(Reference.MOD_ID, "expositorytileentity")));
 		event.getRegistry()
 				.register(TileEntityType.Builder.of(BeyCreatorTileEntity::new, BeyRegistry.BEYCREATORBLOCK)
-						.build(null).setRegistryName(new ResourceLocation(Reference.MODID, "beycreatortileentity")));
+						.build(null).setRegistryName(new ResourceLocation(Reference.MOD_ID, "beycreatortileentity")));
 		event.getRegistry().register(TileEntityType.Builder.of(RobotTileEntity::new, BeyRegistry.ROBOT).build(null)
-				.setRegistryName(new ResourceLocation(Reference.MODID, "robottileentity")));
+				.setRegistryName(new ResourceLocation(Reference.MOD_ID, "robottileentity")));
 		event.getRegistry().register(TileEntityType.Builder.of(StadiumTileEntity::new, BeyRegistry.STADIUM)
-				.build(null).setRegistryName(new ResourceLocation(Reference.MODID, "stadiumtileentity")));
+				.build(null).setRegistryName(new ResourceLocation(Reference.MOD_ID, "stadiumtileentity")));
 	}
 
 	@SubscribeEvent
@@ -238,7 +229,7 @@ public class CommonEvents {
 		@SubscribeEvent
 		public static void playerCapabilitiesInjection(final AttachCapabilitiesEvent<Entity> event) {
 			if (event.getObject() instanceof PlayerEntity) {
-				event.addCapability(new ResourceLocation(Reference.MODID, "bladerlevel"), new BladerCapProvider());
+				event.addCapability(new ResourceLocation(Reference.MOD_ID, "bladerlevel"), new BladerCapProvider());
 			}
 		}
 

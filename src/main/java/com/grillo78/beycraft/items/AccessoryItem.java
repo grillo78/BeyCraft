@@ -19,7 +19,7 @@ public class AccessoryItem extends Item implements IAccessory {
 
     public AccessoryItem(String name, EquipmentAccessoriesSlot slot) {
         super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
-        setRegistryName(new ResourceLocation(Reference.MODID, name));
+        setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
         texture = new ResourceLocation(this.getRegistryName().getNamespace(), "textures/accessories/" + this.getRegistryName().getPath() + ".png");
         if(slot == EquipmentAccessoriesSlot.TSHIRT)
             textureSlim = new ResourceLocation(this.getRegistryName().getNamespace(), "textures/accessories/" + this.getRegistryName().getPath() +  "_slim.png");

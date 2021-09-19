@@ -48,7 +48,7 @@ public class RobotBlock extends Block {
 	public RobotBlock(Material materialIn, String name) {
 		super(AbstractBlock.Properties.of(materialIn).strength(0.6F).noOcclusion());
 		registerDefaultState(this.stateDefinition.any().setValue(PART, EnumPartType.BOTTOM));
-		setRegistryName(new ResourceLocation(Reference.MODID, name));
+		setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
 
 		BeyRegistry.BLOCKS.add(this);
 		BeyRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))

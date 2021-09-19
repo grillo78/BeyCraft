@@ -44,7 +44,7 @@ public class BeyCreatorBlock extends Block {
 
     public BeyCreatorBlock(Material materialIn, String name) {
         super(AbstractBlock.Properties.of(materialIn).strength(0.6F).noOcclusion());
-        setRegistryName(new ResourceLocation(Reference.MODID, name));
+        setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
 
 
         BeyRegistry.BLOCKS.add(this);

@@ -1,7 +1,5 @@
 package com.grillo78.beycraft.blocks;
 
-import java.util.stream.Stream;
-
 import com.grillo78.beycraft.BeyCraft;
 import com.grillo78.beycraft.BeyRegistry;
 import com.grillo78.beycraft.Reference;
@@ -33,7 +31,6 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -62,7 +59,7 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 
 	public StadiumBlock(Material materialIn, String name) {
 		super(AbstractBlock.Properties.of(materialIn));
-		setRegistryName(new ResourceLocation(Reference.MODID, name));
+		setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
 		setVoxelShapes();
 		BeyRegistry.BLOCKS.add(this);
 		BeyRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))

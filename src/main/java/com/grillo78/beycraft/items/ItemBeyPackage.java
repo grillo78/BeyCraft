@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 public class ItemBeyPackage extends Item {
 	public ItemBeyPackage(String name) {
 		super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
-		this.setRegistryName(new ResourceLocation(Reference.MODID, name));
+		this.setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
 		BeyRegistry.ITEMS.put(name,this);
 	}
 

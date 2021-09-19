@@ -6,15 +6,13 @@ import com.grillo78.beycraft.Reference;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
-import net.minecraft.item.Item.Properties;
-
 public class ItemBeyGodChip extends Item {
 
     private float weight;
 
     public ItemBeyGodChip(String name, float weight){
         super(new Properties().tab(BeyCraft.BEYCRAFTLAYERS).stacksTo(1));
-        setRegistryName(new ResourceLocation(Reference.MODID, name));
+        setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
         BeyRegistry.ITEMSGTCHIP.add(this);
         this.weight = weight;
     }

@@ -38,7 +38,7 @@ public class ItemBeyPart extends Item {
 		SECUNDARYABILITY = secundaryAbility;
 		this.type = type;
 		this.name = name;
-		setRegistryName(new ResourceLocation(Reference.MODID, name.replaceAll(" ","").toLowerCase()));
+		setRegistryName(new ResourceLocation(Reference.MOD_ID, name.replaceAll(" ","").toLowerCase()));
 	}
 
 	public Ability getPrimaryAbility() {

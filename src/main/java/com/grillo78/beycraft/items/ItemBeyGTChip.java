@@ -13,7 +13,7 @@ public class ItemBeyGTChip extends Item {
 
     public ItemBeyGTChip(String name, float weight, float burst){
         super(new Item.Properties().tab(BeyCraft.BEYCRAFTLAYERS).stacksTo(1));
-        setRegistryName(new ResourceLocation(Reference.MODID, name));
+        setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
         BeyRegistry.ITEMSGTCHIP.add(this);
         this.burst = burst;
         this.weight = weight;

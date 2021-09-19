@@ -14,7 +14,7 @@ public class MissingContentPacksScreen extends Screen {
 
 	private ITextComponent text = new TranslationTextComponent("missing_packs.message");
 	private String[] textArray = text.getString().split("\n");
-	private static ResourceLocation BEYCRAFT_LOGO = new ResourceLocation(Reference.MODID, "textures/logo.png");
+	private static ResourceLocation BEYCRAFT_LOGO = new ResourceLocation(Reference.MOD_ID, "textures/logo.png");
 
 	private Button acceptButton;
 
