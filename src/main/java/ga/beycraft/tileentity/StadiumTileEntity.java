@@ -37,18 +37,20 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
                     }
                 }
                 List<PlayerEntity> bladers = new ArrayList<>();
-                boolean duplicatedBlader = false;
+                boolean isValidBattle = true;
                 for (EntityBey bey : beys) {
                     PlayerEntity player = PlayerUtils.getPlayerByName(bey.getPlayerName(), (ServerWorld) level);
                     if (player != null) {
                         if (!bladers.contains(player)) {
                             bladers.add(player);
                         } else {
-                            duplicatedBlader = true;
+                            isValidBattle = false;
                         }
-                    }
+                    } else {
+                            isValidBattle = false;
+                        }
                 }
-                if (!duplicatedBlader) {
+                if (isValidBattle) {
                     if (battle == null && beysSpinning > 1) {
                         battle = new Battle((ServerWorld) level, this);
                     }
