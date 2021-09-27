@@ -15,5 +15,5 @@
   "beycoins.command.message": "You have %s BeyCoins",
   "beybox.successful.command.message": "You bought a random bey box",
   "beybox.fail.command.message": "You don't have enough money to buy a random bey box",
-  "missing_packs.message": "You forgot to install Content Packs, without it you won't have beyblade parts\nso you can have a beyblade or do battles, only decorate,\nto get content packs go to official discord:\nhttps://discord.gg/2PpbtFr"
+  "missing_packs.message": "You forgot to install Content Packs, without it you won't have beyblade parts\nso you can have a beyblade or do battles, only decorate,\nto get content packs go to official discord:\nhttps://beycraft.ga/"
 }

@@ -1,0 +1,66 @@
+package ga.beycraft.util;
+
+import ga.beycraft.gui.LoginScreen;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Properties;
+
+public class ConfigManager {
+
+	private static final File CONFIG_FILE = new File("config/beycraft.properties");
+	private static final Properties CONFIG = new Properties();
+
+	public static void load() {
+	    try {
+            if (!CONFIG_FILE.exists()) {
+                CONFIG_FILE.createNewFile();
+            }
+            CONFIG.load(new FileReader(CONFIG_FILE));
+            if(CONFIG.isEmpty()){
+                CONFIG.setProperty("onlyStadium", "true");
+                CONFIG.setProperty("blockBlackList", "");
+            }
+        }catch (IOException e){
+
+        }
+	}
+
+	public static void checkLogIn(GuiOpenEvent event){
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
+            if(!CONFIG.containsKey("token")){
+                event.setCanceled(true);
+                Minecraft.getInstance().setScreen(new LoginScreen(new StringTextComponent(""),CONFIG, CONFIG_FILE));
+            }
+        });
+    }
+
+	public static boolean isOnlyStadium(){
+	    return Boolean.valueOf(CONFIG.getProperty("onlyStadium"));
+    }
+
+    public static ArrayList<Block> getBlockBlackList(){
+	    ArrayList<Block> blocks = new ArrayList<>();
+	    String[] blocksStr = CONFIG.getProperty("blockBlackList").split(",");
+	    if(!CONFIG.getProperty("blockBlackList").equals("")){
+	        for(String s : blocksStr){
+                blocks.add(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s.split(":")[0],s.split(":")[1])));
+            }
+        }
+	    return blocks;
+    }
+
+    public static String getToken(){
+	    return CONFIG.getProperty("token");
+    }
+}

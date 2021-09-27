@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.grillo78.beycraft.mixin",
+  "package": "ga.beycraft.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "beycraft.refmap.json",
   "mixins": [

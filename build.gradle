@@ -23,8 +23,8 @@ apply plugin: 'maven-publish'
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'java'
 
-version = '1.6'
-group = 'com.grillo78.beycraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = '1.7-beta-3'
+group = 'ga.beycraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'beycraft'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -38,7 +38,7 @@ minecraft {
     mappings channel: 'official', version: '1.16.5'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -109,7 +109,7 @@ minecraft {
 
 repositories {
     maven { url 'https://jitpack.io' }
-    maven { url 'https://repo.repsy.io/mvn/heroesunited/default' }
+    maven { url 'https://maven.explodingcreeper.me/' }
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
     maven { url 'http://harleyoconnor.com/maven' }
     maven {
@@ -128,6 +128,7 @@ configurations {
 
 shadowJar {
     configurations = [project.configurations.shade]
+    classifier ''
 }
 
 reobf {
@@ -143,8 +144,9 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.16.5-36.0.58'
 
-    compile fg.deobf('xyz.heroesunited:hu-core:2.5.2-9.88a')
+    compile fg.deobf('xyz.heroesunited:hu-core:2.5.38')
     shade 'io.gitlab.friedrichlp:renderlib:1.0.0-pre2'
+//    shade 'com.oneandone:composite-jks:1.0'
 
 }
 

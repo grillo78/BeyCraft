@@ -1,0 +1,72 @@
+package ga.beycraft.items;
+
+import ga.beycraft.BeyRegistry;
+import ga.beycraft.abilities.Ability;
+import ga.beycraft.inventory.BeyDiscFrameContainer;
+import ga.beycraft.inventory.ItemBeyDiscFrameProvider;
+import ga.beycraft.util.BeyTypes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
+
+import javax.annotation.Nullable;
+
+public class ItemBeyDiscFrame extends ItemBeyDisc {
+
+	private float frameRotation;
+
+	public ItemBeyDiscFrame(String name, float attack, float defense, float weight, float frameRotation, Ability primaryAbility,
+							Ability secundaryAbility, BeyTypes type) {
+		super(name, attack, defense, weight, primaryAbility, secundaryAbility, type,
+				new Item.Properties());
+		this.frameRotation = frameRotation;
+		BeyRegistry.ITEMSDISCFRAME.add(this);
+	}
+
+	public float getFrameRotation() {
+		return frameRotation;
+	}
+
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+		return new ItemBeyDiscFrameProvider();
+	}
+
+	@Override
+	public float getAttack(ItemStack stack) {
+		return super.getAttack(stack);
+	}
+
+	@Override
+	public float getDefense(ItemStack stack) {
+		float[] attack = {super.getDefense(stack)};
+		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h->{
+			if(h.getStackInSlot(0).getItem() instanceof ItemBeyFrame){
+				attack[0] += ((ItemBeyFrame) h.getStackInSlot(0).getItem()).getAttack();
+			}
+		});
+		return attack[0];
+	}
+
+	@Override
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand handIn) {
+		if (!world.isClientSide) {
+			NetworkHooks.openGui((ServerPlayerEntity) player,
+					new SimpleNamedContainerProvider(
+							(id, playerInventory, playerEntity) -> new BeyDiscFrameContainer(id,
+									player.getItemInHand(handIn), playerInventory),
+							new StringTextComponent(getRegistryName().getPath())));
+		}
+		return super.use(world, player, handIn);
+	}
+}
