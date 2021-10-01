@@ -12,6 +12,10 @@ import ga.beycraft.abilities.MultiMode;
 import ga.beycraft.abilities.MultiType;
 import ga.beycraft.items.*;
 import net.minecraft.item.Item;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.DistExecutor;
 
 import java.io.*;
 import java.util.HashMap;
@@ -27,13 +31,7 @@ public class ItemCreator {
         if (!itemsFolder.exists()) {
             itemsFolder.mkdir();
         }
-        File[] propertiesFiles = itemsFolder.listFiles(new FilenameFilter() {
-
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".properties");
-            }
-        });
+        File[] propertiesFiles = itemsFolder.listFiles((dir, name) -> name.endsWith(".properties"));
         BeyCraft.logger.info(propertiesFiles.length + " parts was found in BeyParts folder");
 
         try {
@@ -161,15 +159,18 @@ public class ItemCreator {
                                     Float.valueOf(properties.getProperty("weight")));
                             break;
                     }
+                    Item finalItem = item;
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
 //                    if (item instanceof ItemBeyLayerDual || item instanceof ItemBeyLayerGTDual || item instanceof ItemBeyLayerGTDualNoWeight) {
 //                        models.put(item, ModelManager.registerModel(new File("BeyParts\\models\\" + file.getName().replace(".properties", "_right.obj")), new ModelLoaderProperty(0.0f)));
 //                        models.put(item, ModelManager.registerModel(new File("BeyParts\\models\\" + file.getName().replace(".properties", "_left.obj")), new ModelLoaderProperty(0.0f)));
 //
 //                    } else {
-                        models.put(item, ModelManager.registerModel(new File("BeyParts\\models\\" + file.getName().replace(".properties", ".obj")), new ModelLoaderProperty(0.0f)));
+                        models.put(finalItem, ModelManager.registerModel(new File("BeyParts\\models\\" + file.getName().replace(".properties", ".obj")), new ModelLoaderProperty(0.0f)));
 //                    }
-                    models.get(item).addRenderEffect(RenderEffect.NORMAL_LIGHTING);
-                    models.get(item).addRenderEffect(RenderEffect.AMBIENT_OCCLUSION);
+                        models.get(finalItem).addRenderEffect(RenderEffect.NORMAL_LIGHTING);
+                        models.get(finalItem).addRenderEffect(RenderEffect.AMBIENT_OCCLUSION);
+                    });
                 }
             }
         } catch (IOException e) {

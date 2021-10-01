@@ -1,6 +1,6 @@
 package ga.beycraft.network.message;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
@@ -38,7 +38,7 @@ public class MessagePlayCountdown implements IMessage<MessagePlayCountdown> {
 	public void handle(MessagePlayCountdown message, Supplier<NetworkEvent.Context> supplier) {
 		supplier.get().enqueueWork(() -> {
 			if (message.isValid) {
-				Minecraft.getInstance().level.playLocalSound(message.pos, BeyRegistry.COUNTDOWN, SoundCategory.PLAYERS, 1, 1,
+				Minecraft.getInstance().level.playLocalSound(message.pos, BeyCraftRegistry.COUNTDOWN, SoundCategory.PLAYERS, 1, 1,
 						true);
 			}
 		});

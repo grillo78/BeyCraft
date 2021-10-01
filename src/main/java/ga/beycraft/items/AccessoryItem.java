@@ -1,7 +1,7 @@
 package ga.beycraft.items;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -21,10 +21,10 @@ public class AccessoryItem extends Item implements IAccessory {
         super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
         setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
         texture = new ResourceLocation(this.getRegistryName().getNamespace(), "textures/accessories/" + this.getRegistryName().getPath() + ".png");
-        if(slot == EquipmentAccessoriesSlot.TSHIRT)
+        if(slot == EquipmentAccessoriesSlot.TSHIRT || slot == EquipmentAccessoriesSlot.JACKET || slot == EquipmentAccessoriesSlot.GLOVES)
             textureSlim = new ResourceLocation(this.getRegistryName().getNamespace(), "textures/accessories/" + this.getRegistryName().getPath() +  "_slim.png");
         this.slot = slot;
-        BeyRegistry.ITEMS.put(name, this);
+        BeyCraftRegistry.ITEMS.put(name, this);
     }
 
     @Override

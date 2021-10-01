@@ -1,7 +1,7 @@
 package ga.beycraft.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.blocks.RobotBlock;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.client.Minecraft;
@@ -48,7 +48,7 @@ public class RenderRobot extends TileEntityRenderer<RobotTileEntity> {
 				break;
 		}
 
-		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyRegistry.ROBOT.asItem()),
+		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyCraftRegistry.ROBOT.asItem()),
 				ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
 		matrixStack.popPose();
 		matrixStack.pushPose();
@@ -87,13 +87,13 @@ public class RenderRobot extends TileEntityRenderer<RobotTileEntity> {
 			matrixStack.scale(2f, 2f, 2f);
 		});
 
-		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyRegistry.DUALLAUNCHER),
+		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyCraftRegistry.DUALLAUNCHER),
 				ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
 		matrixStack.translate(0.1, -0.44, -0.04);
-		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyRegistry.LAUNCHERHANDLE),
+		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyCraftRegistry.LAUNCHERHANDLE),
 				ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
 		matrixStack.translate(0, 0.03, 0.01);
-		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyRegistry.BEYLOGGERPLUS),
+		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyCraftRegistry.BEYLOGGERPLUS),
 				ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
 
 		matrixStack.popPose();

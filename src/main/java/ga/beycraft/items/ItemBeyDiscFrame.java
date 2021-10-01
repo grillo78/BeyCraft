@@ -1,6 +1,6 @@
 package ga.beycraft.items;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.abilities.Ability;
 import ga.beycraft.inventory.BeyDiscFrameContainer;
 import ga.beycraft.inventory.ItemBeyDiscFrameProvider;
@@ -30,7 +30,7 @@ public class ItemBeyDiscFrame extends ItemBeyDisc {
 		super(name, attack, defense, weight, primaryAbility, secundaryAbility, type,
 				new Item.Properties());
 		this.frameRotation = frameRotation;
-		BeyRegistry.ITEMSDISCFRAME.add(this);
+		BeyCraftRegistry.ITEMSDISCFRAME.add(this);
 	}
 
 	public float getFrameRotation() {

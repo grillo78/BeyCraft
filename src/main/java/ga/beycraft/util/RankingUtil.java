@@ -4,6 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import ga.beycraft.gui.LoginScreen;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -60,63 +64,70 @@ public class RankingUtil {
     }
 
     public static void winCombat() {
-        try {
-            HttpClient httpclient = HttpClients.custom().setSslcontext(ConnectionUtils.getDisabledSSLCheckContext()).build();
-            HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/win_battle/");
+        new Thread(() -> {
+            try {
+                HttpClient httpclient = HttpClients.custom().setSslcontext(ConnectionUtils.getDisabledSSLCheckContext()).build();
+                HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/win_battle/");
 
-            List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("token", ConfigManager.getToken()));
-            httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+                List<NameValuePair> params = new ArrayList<>();
+                params.add(new BasicNameValuePair("token", ConfigManager.getToken()));
+                httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
-            httpclient.execute(httppost);
-        } catch (MalformedURLException mue) {
-            mue.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                httpclient.execute(httppost);
+            } catch (MalformedURLException mue) {
+                mue.printStackTrace();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public static void loseCombat() {
-        try {
-            HttpClient httpclient = HttpClients.custom().setSslcontext(ConnectionUtils.getDisabledSSLCheckContext()).build();
-            HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/lose_battle/");
 
-            List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("token", ConfigManager.getToken()));
-            httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+        new Thread(() -> {
+            try {
+                HttpClient httpclient = HttpClients.custom().setSslcontext(ConnectionUtils.getDisabledSSLCheckContext()).build();
+                HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/lose_battle/");
 
-            httpclient.execute(httppost);
-        } catch (MalformedURLException mue) {
-            mue.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                List<NameValuePair> params = new ArrayList<>();
+                params.add(new BasicNameValuePair("token", ConfigManager.getToken()));
+                httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+
+                httpclient.execute(httppost);
+            } catch (MalformedURLException mue) {
+                mue.printStackTrace();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public static void updateExperience(float experience) {
-        try {
-            HttpClient httpclient = HttpClients.custom().setSslcontext(ConnectionUtils.getDisabledSSLCheckContext()).build();
-            HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/update_experience/");
+        new Thread(() -> {
+            try {
+                HttpClient httpclient = HttpClients.custom().setSslcontext(ConnectionUtils.getDisabledSSLCheckContext()).build();
+                HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/update_experience/");
 
-            List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("token", ConfigManager.getToken()));
-            params.add(new BasicNameValuePair("experience", String.valueOf(experience)));
-            httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+                List<NameValuePair> params = new ArrayList<>();
+                params.add(new BasicNameValuePair("token", ConfigManager.getToken()));
+                params.add(new BasicNameValuePair("experience", String.valueOf(experience)));
+                httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
-            System.out.println(new BufferedReader(new InputStreamReader(entity.getContent())).readLine());
-        } catch (MalformedURLException mue) {
-            mue.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+                System.out.println(new BufferedReader(new InputStreamReader(entity.getContent())).readLine());
+            } catch (MalformedURLException mue) {
+                mue.printStackTrace();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public static String getToken(String username, String password) {
@@ -152,6 +163,13 @@ public class RankingUtil {
             e.printStackTrace();
         }
         return token;
+    }
+
+    public static void checkLogIn(GuiOpenEvent event) {
+        if (!ConfigManager.getConfig().containsKey("token")) {
+            event.setCanceled(true);
+            Minecraft.getInstance().setScreen(new LoginScreen(new StringTextComponent(""), ConfigManager.getConfig(), ConfigManager.getConfigFile()));
+        }
     }
 
     public static float getExperience() {

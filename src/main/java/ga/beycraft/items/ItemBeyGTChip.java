@@ -1,7 +1,7 @@
 package ga.beycraft.items;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -14,7 +14,7 @@ public class ItemBeyGTChip extends Item {
     public ItemBeyGTChip(String name, float weight, float burst){
         super(new Item.Properties().tab(BeyCraft.BEYCRAFTLAYERS).stacksTo(1));
         setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
-        BeyRegistry.ITEMSGTCHIP.add(this);
+        BeyCraftRegistry.ITEMSGTCHIP.add(this);
         this.burst = burst;
         this.weight = weight;
     }

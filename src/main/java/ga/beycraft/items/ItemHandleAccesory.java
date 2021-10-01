@@ -1,7 +1,7 @@
 package ga.beycraft.items;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +18,7 @@ public class ItemHandleAccesory extends Item{
 	public ItemHandleAccesory(String name) {
 		super(new Item.Properties().stacksTo(1).tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
 		setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
-		BeyRegistry.ITEMS.put(name,this);
+		BeyCraftRegistry.ITEMS.put(name,this);
 	}
 
 }

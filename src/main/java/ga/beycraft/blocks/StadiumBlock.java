@@ -1,7 +1,7 @@
 package ga.beycraft.blocks;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.tileentity.StadiumTileEntity;
 import ga.beycraft.util.VoxelShapesUtil;
@@ -55,8 +55,8 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 		super(AbstractBlock.Properties.of(materialIn));
 		setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
 		setVoxelShapes();
-		BeyRegistry.BLOCKS.add(this);
-		BeyRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))
+		BeyCraftRegistry.BLOCKS.add(this);
+		BeyCraftRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))
 				.setRegistryName(getRegistryName()));
 		registerDefaultState(this.stateDefinition.any().setValue(PART, EnumPartType.MIDDLECENTER));
 	}

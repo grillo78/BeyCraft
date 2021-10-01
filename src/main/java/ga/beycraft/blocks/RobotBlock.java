@@ -1,7 +1,7 @@
 package ga.beycraft.blocks;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.entity.EntityBey;
 import ga.beycraft.items.*;
@@ -45,8 +45,8 @@ public class RobotBlock extends Block {
 		registerDefaultState(this.stateDefinition.any().setValue(PART, EnumPartType.BOTTOM));
 		setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
 
-		BeyRegistry.BLOCKS.add(this);
-		BeyRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))
+		BeyCraftRegistry.BLOCKS.add(this);
+		BeyCraftRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))
 				.setRegistryName(this.getRegistryName()));
 	}
 
@@ -70,7 +70,7 @@ public class RobotBlock extends Block {
 				if (!playerIn.isCrouching()) {
 					((RobotTileEntity) tileentity).getInventory().ifPresent(h -> {
 						if (h.getStackInSlot(0).getItem() instanceof ItemBeyLayer) {
-							EntityBey entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, worldIn,
+							EntityBey entity = new EntityBey(BeyCraftRegistry.BEY_ENTITY_TYPE, worldIn,
 									h.getStackInSlot(0).copy(),
 									(int) ((ItemBeyLayer) h.getStackInSlot(0).getItem()).getRotationDirection(),
 									"Training Robot", ((RobotTileEntity) tileentity).getBladerLevel(), false);

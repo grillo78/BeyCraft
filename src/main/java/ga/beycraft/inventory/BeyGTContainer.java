@@ -1,6 +1,6 @@
 package ga.beycraft.inventory;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.inventory.slots.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -30,7 +30,7 @@ public class BeyGTContainer extends Container {
         this.hand = hand;
         this.stack = stack;
 
-        if(!BeyRegistry.ITEMSLAYERGT.isEmpty()){
+        if(!BeyCraftRegistry.ITEMSLAYERGT.isEmpty()){
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 this.addSlot(new SlotBeyDisk(h, 0, 10, 15));
                 this.addSlot(new SlotBeyDriver(h, 1, 10, 35));

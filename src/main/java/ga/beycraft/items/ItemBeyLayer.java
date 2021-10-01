@@ -1,7 +1,7 @@
 package ga.beycraft.items;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.abilities.Ability;
 import ga.beycraft.abilities.MultiMode;
 import ga.beycraft.abilities.MultiType;
@@ -39,7 +39,7 @@ public class ItemBeyLayer extends ItemBeyPart {
         this.weight = weight;
         this.burst = burst;
         this.rotationDirection = rotationDirection;
-        BeyRegistry.ITEMSLAYER.add(this);
+        BeyCraftRegistry.ITEMSLAYER.add(this);
     }
 
     @Override
@@ -58,27 +58,27 @@ public class ItemBeyLayer extends ItemBeyPart {
                         if (stack.getItem() instanceof ItemBeyLayerGT) {
                             NetworkHooks.openGui((ServerPlayerEntity) player,
                                     new SimpleNamedContainerProvider(
-                                            (id, playerInventory, playerEntity) -> new BeyGTContainer(BeyRegistry.BEY_GT_CONTAINER, id,
+                                            (id, playerInventory, playerEntity) -> new BeyGTContainer(BeyCraftRegistry.BEY_GT_CONTAINER, id,
                                                     stack, playerInventory, playerEntity, handIn),
                                             new StringTextComponent(getDescriptionId())));
                         } else {
                             if (stack.getItem() instanceof ItemBeyLayerGTNoWeight) {
                                 NetworkHooks.openGui((ServerPlayerEntity) player,
                                         new SimpleNamedContainerProvider(
-                                                (id, playerInventory, playerEntity) -> new BeyGTNoWeightContainer(BeyRegistry.BEY_GT_CONTAINER_NO_WEIGHT, id,
+                                                (id, playerInventory, playerEntity) -> new BeyGTNoWeightContainer(BeyCraftRegistry.BEY_GT_CONTAINER_NO_WEIGHT, id,
                                                         stack, playerInventory),
                                                 new StringTextComponent(getDescriptionId())));
                             } else {
                                 if(stack.getItem() instanceof ItemBeyLayerGod){
                                     NetworkHooks.openGui((ServerPlayerEntity) player,
                                             new SimpleNamedContainerProvider(
-                                                    (id, playerInventory, playerEntity) -> new BeyGodContainer(BeyRegistry.BEY_GOD_CONTAINER, id,
+                                                    (id, playerInventory, playerEntity) -> new BeyGodContainer(BeyCraftRegistry.BEY_GOD_CONTAINER, id,
                                                             stack, playerInventory),
                                                     new StringTextComponent(getDescriptionId())));
                                 } else {
                                     NetworkHooks.openGui((ServerPlayerEntity) player,
                                             new SimpleNamedContainerProvider(
-                                                    (id, playerInventory, playerEntity) -> new BeyContainer(BeyRegistry.BEY_CONTAINER, id,
+                                                    (id, playerInventory, playerEntity) -> new BeyContainer(BeyCraftRegistry.BEY_CONTAINER, id,
                                                             stack, playerInventory),
                                                     new StringTextComponent(getDescriptionId())));
                                 }

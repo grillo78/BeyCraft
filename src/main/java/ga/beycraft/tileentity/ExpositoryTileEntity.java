@@ -1,6 +1,6 @@
 package ga.beycraft.tileentity;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -16,7 +16,7 @@ public class ExpositoryTileEntity extends TileEntity  {
 	private LazyOptional<IItemHandler> inventory =  LazyOptional.of(() -> new ItemStackHandler(1));
 	
 	public ExpositoryTileEntity() {
-		super(BeyRegistry.EXPOSITORYTILEENTITYTYPE);
+		super(BeyCraftRegistry.EXPOSITORYTILEENTITYTYPE);
 	}
 
 	/**

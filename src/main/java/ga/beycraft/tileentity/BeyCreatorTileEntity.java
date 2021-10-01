@@ -1,6 +1,6 @@
 package ga.beycraft.tileentity;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.items.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Items;
@@ -24,7 +24,7 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
     private Random rand = new Random();
 
     public BeyCreatorTileEntity() {
-        super(BeyRegistry.BEYCREATORTILEENTITYTYPE);
+        super(BeyCraftRegistry.BEYCREATORTILEENTITYTYPE);
     }
 
     public LazyOptional<IItemHandler> getInventory() {
@@ -84,7 +84,7 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
         if (!level.isClientSide) {
             inventory.ifPresent(h -> {
                 if (!h.getStackInSlot(1).isEmpty() && !h.getStackInSlot(0).isEmpty()) {
-                    if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver || h.getStackInSlot(1).getItem() instanceof ItemBeyGTChip) && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
+                    if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver || h.getStackInSlot(1).getItem() instanceof ItemBeyGTChip) && h.getStackInSlot(0).getItem() == BeyCraftRegistry.PLASTIC) {
                         updateProcess(h);
                     } else {
                         if ((h.getStackInSlot(1).getItem() instanceof ItemBeyDisc || h.getStackInSlot(1).getItem() instanceof ItemBeyGTWeight) && h.getStackInSlot(0).getItem() == Items.IRON_INGOT) {
@@ -98,12 +98,12 @@ public class BeyCreatorTileEntity extends TileEntity implements ITickableTileEnt
         } else {
             inventory.ifPresent(h -> {
                 if (!h.getStackInSlot(1).isEmpty() && !h.getStackInSlot(0).isEmpty()) {
-                    if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver || h.getStackInSlot(1).getItem() instanceof ItemBeyGTChip) && h.getStackInSlot(0).getItem() == BeyRegistry.PLASTIC) {
+                    if ((h.getStackInSlot(1).getItem() instanceof ItemBeyLayer || h.getStackInSlot(1).getItem() instanceof ItemBeyFrame || h.getStackInSlot(1).getItem() instanceof ItemBeyDriver || h.getStackInSlot(1).getItem() instanceof ItemBeyGTChip) && h.getStackInSlot(0).getItem() == BeyCraftRegistry.PLASTIC) {
 
-                        level.addParticle(BeyRegistry.SPARKLE, worldPosition.getX() + 0.5, worldPosition.getY() + 0.25, worldPosition.getZ() + 0.5, rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
+                        level.addParticle(BeyCraftRegistry.SPARKLE, worldPosition.getX() + 0.5, worldPosition.getY() + 0.25, worldPosition.getZ() + 0.5, rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
                     } else {
                         if ((h.getStackInSlot(1).getItem() instanceof ItemBeyDisc || h.getStackInSlot(1).getItem() instanceof ItemBeyGTWeight) && h.getStackInSlot(0).getItem() == Items.IRON_INGOT) {
-                            level.addParticle(BeyRegistry.SPARKLE, worldPosition.getX() + 0.5, worldPosition.getY() + 0.15, worldPosition.getZ() + 0.5, rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
+                            level.addParticle(BeyCraftRegistry.SPARKLE, worldPosition.getX() + 0.5, worldPosition.getY() + 0.15, worldPosition.getZ() + 0.5, rand.nextInt(5), rand.nextInt(5), rand.nextInt(5));
                         }
                     }
                 }

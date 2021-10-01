@@ -1,7 +1,7 @@
 package ga.beycraft.items;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +13,7 @@ public class ItemBeyGodChip extends Item {
     public ItemBeyGodChip(String name, float weight){
         super(new Properties().tab(BeyCraft.BEYCRAFTLAYERS).stacksTo(1));
         setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
-        BeyRegistry.ITEMSGTCHIP.add(this);
+        BeyCraftRegistry.ITEMSGTCHIP.add(this);
         this.weight = weight;
     }
 

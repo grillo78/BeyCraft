@@ -3,7 +3,7 @@ package ga.beycraft.items;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.entity.player.BeltModel;
 import ga.beycraft.inventory.BeltContainer;
@@ -40,14 +40,12 @@ import javax.annotation.Nullable;
 
 public class ItemBladerBelt extends Item implements IAccessory {
 
-    @OnlyIn(Dist.CLIENT)
-    private BeltModel model = new BeltModel();
     private final ResourceLocation TEXTURE = new ResourceLocation(Reference.MOD_ID, "textures/entity/belt/belt.png");
 
     public ItemBladerBelt(String name) {
         super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
         this.setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
-        BeyRegistry.ITEMS.put(name, this);
+        BeyCraftRegistry.ITEMS.put(name, this);
     }
 
     @Nullable
@@ -59,10 +57,10 @@ public class ItemBladerBelt extends Item implements IAccessory {
     @Override
     public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand handIn) {
         if (!world.isClientSide) {
-            player.playNotifySound(BeyRegistry.OPEN_CLOSE_BELT, SoundCategory.PLAYERS, 1, 1);
+            player.playNotifySound(BeyCraftRegistry.OPEN_CLOSE_BELT, SoundCategory.PLAYERS, 1, 1);
             NetworkHooks.openGui((ServerPlayerEntity) player,
                     new SimpleNamedContainerProvider(
-                            (id, playerInventory, playerEntity) -> new BeltContainer(BeyRegistry.BELT_CONTAINER, id,
+                            (id, playerInventory, playerEntity) -> new BeltContainer(BeyCraftRegistry.BELT_CONTAINER, id,
                                     player.getItemInHand(handIn), playerInventory, true),
                             new StringTextComponent(getRegistryName().getPath())));
         }
@@ -74,10 +72,12 @@ public class ItemBladerBelt extends Item implements IAccessory {
         return null;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void render(PlayerRenderer renderer, MatrixStack matrixStack, IRenderTypeBuffer bufferIn, int packedLightIn, AbstractClientPlayerEntity player, ItemStack stack, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, int slot) {
         matrixStack.pushPose();
         renderer.getModel().body.translateAndRotate(matrixStack);
+        BeltModel model = new BeltModel();
         IVertexBuilder vertexBuilder = ItemRenderer.getFoilBuffer(bufferIn, model.renderType(TEXTURE), false,
                 false);
         model.renderToBuffer(matrixStack, vertexBuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);

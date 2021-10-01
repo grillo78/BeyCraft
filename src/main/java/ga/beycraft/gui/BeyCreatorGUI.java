@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.brigadier.Message;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.network.PacketHandler;
 import ga.beycraft.network.message.MessageBeyCreatorUpdate;
@@ -53,51 +53,51 @@ public class BeyCreatorGUI extends Screen {
 		prevPart = new Button(relX + 5, relY + 5, 10, 20, new StringTextComponent("<"), (Button) -> {
 			switch (partType) {
 			case 0:
-				if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
+				if (!BeyCraftRegistry.ITEMSLAYER.isEmpty()) {
 					partCount--;
 					if (partCount == -1) {
-						partCount = BeyRegistry.ITEMSLAYER.size() - 1;
+						partCount = BeyCraftRegistry.ITEMSLAYER.size() - 1;
 					}
 				}
 				break;
 			case 1:
-				if (!BeyRegistry.ITEMSDISCLIST.isEmpty()) {
+				if (!BeyCraftRegistry.ITEMSDISCLIST.isEmpty()) {
 					partCount--;
 					if (partCount == -1) {
-						partCount = BeyRegistry.ITEMSDISCLIST.size() - 1;
+						partCount = BeyCraftRegistry.ITEMSDISCLIST.size() - 1;
 					}
 				}
 				break;
 			case 2:
-				if (!BeyRegistry.ITEMSDRIVER.isEmpty()) {
+				if (!BeyCraftRegistry.ITEMSDRIVER.isEmpty()) {
 					partCount--;
 					if (partCount == -1) {
-						partCount = BeyRegistry.ITEMSDRIVER.size() - 1;
+						partCount = BeyCraftRegistry.ITEMSDRIVER.size() - 1;
 					}
 				}
 				break;
 
 			case 3:
-				if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
+				if (!BeyCraftRegistry.ITEMSFRAME.isEmpty()) {
 					partCount--;
 					if (partCount == -1) {
-						partCount = BeyRegistry.ITEMSFRAME.size() - 1;
+						partCount = BeyCraftRegistry.ITEMSFRAME.size() - 1;
 					}
 				}
 				break;
 			case 4:
-				if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
+				if (!BeyCraftRegistry.ITEMSGTCHIP.isEmpty()) {
 					partCount--;
 					if (partCount == -1) {
-						partCount = BeyRegistry.ITEMSGTCHIP.size() - 1;
+						partCount = BeyCraftRegistry.ITEMSGTCHIP.size() - 1;
 					}
 				}
 				break;
 			case 5:
-				if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
+				if (!BeyCraftRegistry.ITEMSGTWEIGHT.isEmpty()) {
 					partCount--;
 					if (partCount == -1) {
-						partCount = BeyRegistry.ITEMSGTWEIGHT.size() - 1;
+						partCount = BeyCraftRegistry.ITEMSGTWEIGHT.size() - 1;
 					}
 				}
 				break;
@@ -106,51 +106,51 @@ public class BeyCreatorGUI extends Screen {
 		nextPart = new Button(relX + 71, relY + 5, 10, 20, new StringTextComponent(">"), (Button) -> {
 			switch (partType) {
 			case 0:
-				if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
+				if (!BeyCraftRegistry.ITEMSLAYER.isEmpty()) {
 					partCount++;
-					if (partCount == BeyRegistry.ITEMSLAYER.size()) {
+					if (partCount == BeyCraftRegistry.ITEMSLAYER.size()) {
 						partCount = 0;
 					}
 				}
 				break;
 			case 1:
-				if (!BeyRegistry.ITEMSDISCLIST.isEmpty()) {
+				if (!BeyCraftRegistry.ITEMSDISCLIST.isEmpty()) {
 					partCount++;
-					if (partCount == BeyRegistry.ITEMSDISCLIST.size()) {
+					if (partCount == BeyCraftRegistry.ITEMSDISCLIST.size()) {
 						partCount = 0;
 					}
 				}
 				break;
 			case 2:
-				if (!BeyRegistry.ITEMSDRIVER.isEmpty()) {
+				if (!BeyCraftRegistry.ITEMSDRIVER.isEmpty()) {
 					partCount++;
-					if (partCount == BeyRegistry.ITEMSDRIVER.size()) {
+					if (partCount == BeyCraftRegistry.ITEMSDRIVER.size()) {
 						partCount = 0;
 					}
 				}
 				break;
 
 			case 3:
-				if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
+				if (!BeyCraftRegistry.ITEMSFRAME.isEmpty()) {
 					partCount++;
-					if (partCount == BeyRegistry.ITEMSFRAME.size()) {
+					if (partCount == BeyCraftRegistry.ITEMSFRAME.size()) {
 						partCount = 0;
 					}
 				}
 				break;
 
 			case 4:
-				if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
+				if (!BeyCraftRegistry.ITEMSGTCHIP.isEmpty()) {
 					partCount++;
-					if (partCount == BeyRegistry.ITEMSGTCHIP.size()) {
+					if (partCount == BeyCraftRegistry.ITEMSGTCHIP.size()) {
 						partCount = 0;
 					}
 				}
 				break;
 			case 5:
-				if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
+				if (!BeyCraftRegistry.ITEMSGTWEIGHT.isEmpty()) {
 					partCount++;
-					if (partCount == BeyRegistry.ITEMSGTWEIGHT.size()) {
+					if (partCount == BeyCraftRegistry.ITEMSGTWEIGHT.size()) {
 						partCount = 0;
 					}
 				}
@@ -188,36 +188,36 @@ public class BeyCreatorGUI extends Screen {
 			ItemStack stack = null;
 			switch (partType) {
 			case 0:
-				if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
-					stack = new ItemStack(BeyRegistry.ITEMSLAYER.get(partCount));
+				if (!BeyCraftRegistry.ITEMSLAYER.isEmpty()) {
+					stack = new ItemStack(BeyCraftRegistry.ITEMSLAYER.get(partCount));
 				}
 				break;
 			case 1:
-				if (!BeyRegistry.ITEMSDISCLIST.isEmpty()) {
-					stack = new ItemStack(BeyRegistry.ITEMSDISCLIST.get(partCount));
+				if (!BeyCraftRegistry.ITEMSDISCLIST.isEmpty()) {
+					stack = new ItemStack(BeyCraftRegistry.ITEMSDISCLIST.get(partCount));
 				}
 				break;
 			case 2:
-				if (!BeyRegistry.ITEMSDRIVER.isEmpty()) {
-					stack = new ItemStack(BeyRegistry.ITEMSDRIVER.get(partCount));
+				if (!BeyCraftRegistry.ITEMSDRIVER.isEmpty()) {
+					stack = new ItemStack(BeyCraftRegistry.ITEMSDRIVER.get(partCount));
 				}
 				break;
 
 			case 3:
-				if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
-					stack = new ItemStack(BeyRegistry.ITEMSFRAME.get(partCount));
+				if (!BeyCraftRegistry.ITEMSFRAME.isEmpty()) {
+					stack = new ItemStack(BeyCraftRegistry.ITEMSFRAME.get(partCount));
 				}
 				break;
 
 			case 4:
-				if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
-					stack = new ItemStack(BeyRegistry.ITEMSGTCHIP.get(partCount));
+				if (!BeyCraftRegistry.ITEMSGTCHIP.isEmpty()) {
+					stack = new ItemStack(BeyCraftRegistry.ITEMSGTCHIP.get(partCount));
 				}
 				break;
 
 			case 5:
-				if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
-					stack = new ItemStack(BeyRegistry.ITEMSGTWEIGHT.get(partCount));
+				if (!BeyCraftRegistry.ITEMSGTWEIGHT.isEmpty()) {
+					stack = new ItemStack(BeyCraftRegistry.ITEMSGTWEIGHT.get(partCount));
 				}
 				break;
 			}
@@ -243,33 +243,33 @@ public class BeyCreatorGUI extends Screen {
 			public String getString() {
 				switch (partType) {
 				case 0:
-					if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
-						return BeyRegistry.ITEMSLAYER.get(partCount).getDescription().getString();
+					if (!BeyCraftRegistry.ITEMSLAYER.isEmpty()) {
+						return BeyCraftRegistry.ITEMSLAYER.get(partCount).getDescription().getString();
 					}
 					return "";
 				case 1:
-					if (!BeyRegistry.ITEMSDISCLIST.isEmpty()) {
-						return BeyRegistry.ITEMSDISCLIST.get(partCount).getDescription().getString();
+					if (!BeyCraftRegistry.ITEMSDISCLIST.isEmpty()) {
+						return BeyCraftRegistry.ITEMSDISCLIST.get(partCount).getDescription().getString();
 					}
 					return "";
 				case 2:
-					if (!BeyRegistry.ITEMSDRIVER.isEmpty()) {
-						return BeyRegistry.ITEMSDRIVER.get(partCount).getDescription().getString();
+					if (!BeyCraftRegistry.ITEMSDRIVER.isEmpty()) {
+						return BeyCraftRegistry.ITEMSDRIVER.get(partCount).getDescription().getString();
 					}
 					return "";
 				case 3:
-					if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
-						return BeyRegistry.ITEMSFRAME.get(partCount).getDescription().getString();
+					if (!BeyCraftRegistry.ITEMSFRAME.isEmpty()) {
+						return BeyCraftRegistry.ITEMSFRAME.get(partCount).getDescription().getString();
 					}
 					return "";
 				case 4:
-					if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
-						return BeyRegistry.ITEMSGTCHIP.get(partCount).getDescription().getString();
+					if (!BeyCraftRegistry.ITEMSGTCHIP.isEmpty()) {
+						return BeyCraftRegistry.ITEMSGTCHIP.get(partCount).getDescription().getString();
 					}
 					return "";
 				case 5:
-					if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
-						return BeyRegistry.ITEMSGTWEIGHT.get(partCount).getDescription().getString();
+					if (!BeyCraftRegistry.ITEMSGTWEIGHT.isEmpty()) {
+						return BeyCraftRegistry.ITEMSGTWEIGHT.get(partCount).getDescription().getString();
 					}
 					return "";
 				}
@@ -281,38 +281,38 @@ public class BeyCreatorGUI extends Screen {
 
 		switch (partType) {
 		case 0:
-			if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
-				ItemStack stack = new ItemStack(BeyRegistry.ITEMSLAYER.get(partCount));
+			if (!BeyCraftRegistry.ITEMSLAYER.isEmpty()) {
+				ItemStack stack = new ItemStack(BeyCraftRegistry.ITEMSLAYER.get(partCount));
 				renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15);
 			}
 			break;
 		case 1:
-			if (!BeyRegistry.ITEMSDISCLIST.isEmpty()) {
-				ItemStack stack = new ItemStack(BeyRegistry.ITEMSDISCLIST.get(partCount));
+			if (!BeyCraftRegistry.ITEMSDISCLIST.isEmpty()) {
+				ItemStack stack = new ItemStack(BeyCraftRegistry.ITEMSDISCLIST.get(partCount));
 				renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15);
 			}
 			break;
 		case 2:
-			if (!BeyRegistry.ITEMSDRIVER.isEmpty()) {
-				ItemStack stack = new ItemStack(BeyRegistry.ITEMSDRIVER.get(partCount));
+			if (!BeyCraftRegistry.ITEMSDRIVER.isEmpty()) {
+				ItemStack stack = new ItemStack(BeyCraftRegistry.ITEMSDRIVER.get(partCount));
 				renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15);
 			}
 			break;
 		case 3:
-			if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
-				ItemStack stack = new ItemStack(BeyRegistry.ITEMSFRAME.get(partCount));
+			if (!BeyCraftRegistry.ITEMSFRAME.isEmpty()) {
+				ItemStack stack = new ItemStack(BeyCraftRegistry.ITEMSFRAME.get(partCount));
 				renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15);
 			}
 			break;
 		case 4:
-			if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
-				ItemStack stack = new ItemStack(BeyRegistry.ITEMSGTCHIP.get(partCount));
+			if (!BeyCraftRegistry.ITEMSGTCHIP.isEmpty()) {
+				ItemStack stack = new ItemStack(BeyCraftRegistry.ITEMSGTCHIP.get(partCount));
 				renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15);
 			}
 			break;
 		case 5:
-			if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
-				ItemStack stack = new ItemStack(BeyRegistry.ITEMSGTWEIGHT.get(partCount));
+			if (!BeyCraftRegistry.ITEMSGTWEIGHT.isEmpty()) {
+				ItemStack stack = new ItemStack(BeyCraftRegistry.ITEMSGTWEIGHT.get(partCount));
 				renderItemIntoGUI(stack, relX + xSize / 2, relY + ySize / 2 - 15);
 			}
 			break;

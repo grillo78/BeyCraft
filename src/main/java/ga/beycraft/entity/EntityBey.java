@@ -1,6 +1,6 @@
 package ga.beycraft.entity;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.abilities.Absorb;
 import ga.beycraft.items.*;
 import ga.beycraft.util.ConfigManager;
@@ -106,7 +106,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 	@Nullable
 	@Override
 	protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
-		return BeyRegistry.HITSOUND;
+		return BeyCraftRegistry.HITSOUND;
 	}
 
 	@Override
@@ -296,11 +296,11 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 				&& getDisc().getItem() instanceof ItemBeyDisc
 				&& getDriver().getItem() instanceof ItemBeyDriver)) {
 			if (this.getRotationSpeed() > 0
-					&& (level.getBlockState(this.getOnPos().below()).getBlock() == BeyRegistry.STADIUM
+					&& (level.getBlockState(this.getOnPos().below()).getBlock() == BeyCraftRegistry.STADIUM
 							|| level.getBlockState(this.getOnPos().below()).getBlock() == Blocks.AIR
 							|| level.getBlockState(this.getOnPos()).getBlock() == Blocks.AIR
 							|| (level.getBlockState(new BlockPos(position().x,
-					position().y - 0.1, position().z)).getBlock() == BeyRegistry.STADIUM
+					position().y - 0.1, position().z)).getBlock() == BeyCraftRegistry.STADIUM
 									|| (!ConfigManager.isOnlyStadium() && (!ConfigManager.getBlockBlackList()
 											.contains(level
 													.getBlockState(new BlockPos(position().x,
@@ -336,7 +336,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 			}
 			if (isHorizontalCollision() && !isStoped()) {
 				for (int i = 0; i < 10; i++) {
-					level.addParticle(BeyRegistry.SPARKLE, getX(), getY() + 0.5, getZ(), random.nextInt(5),
+					level.addParticle(BeyCraftRegistry.SPARKLE, getX(), getY() + 0.5, getZ(), random.nextInt(5),
 							random.nextInt(5), random.nextInt(5));
 				}
 			}
@@ -366,7 +366,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 				double x = (getX() - entityIn.getX()) / 2;
 				double y = (getY() - entityIn.getY()) / 2;
 				double z = (getZ() - entityIn.getZ()) / 2;
-				((ServerWorld) level).sendParticles(BeyRegistry.SPARKLE, getX(), getY(), getZ(), 10, x, y, z,
+				((ServerWorld) level).sendParticles(BeyCraftRegistry.SPARKLE, getX(), getY(), getZ(), 10, x, y, z,
 						10);
 				((ServerWorld) level).sendParticles(ParticleTypes.SWEEP_ATTACK, getX(), getY(), getZ(), 10, x, y, z,
 						1);

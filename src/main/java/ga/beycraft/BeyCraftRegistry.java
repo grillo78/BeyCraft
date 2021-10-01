@@ -28,7 +28,7 @@ import xyz.heroesunited.heroesunited.common.objects.container.EquipmentAccessori
 import java.util.HashMap;
 import java.util.List;
 
-public class BeyRegistry {
+public class BeyCraftRegistry {
     public static List<Block> BLOCKS = Lists.newArrayList();
     public static HashMap<String,Item> ITEMS = new HashMap();
     public static List<Item> ITEMSLAYER = Lists.newArrayList();

@@ -1,6 +1,6 @@
 package ga.beycraft.network.message;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.inventory.BeltContainer;
 import ga.beycraft.items.ItemBladerBelt;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -38,10 +38,10 @@ public class MessageOpenBelt implements IMessage<MessageOpenBelt> {
 
                 ItemStack stack = h.getItem(EquipmentAccessoriesSlot.BELT.getSlot());
                 if (stack.getItem() instanceof ItemBladerBelt) {
-                    player.playNotifySound(BeyRegistry.OPEN_CLOSE_BELT, SoundCategory.PLAYERS, 1, 1);
+                    player.playNotifySound(BeyCraftRegistry.OPEN_CLOSE_BELT, SoundCategory.PLAYERS, 1, 1);
                     NetworkHooks.openGui(player,
                             new SimpleNamedContainerProvider(
-                                    (id, playerInventory, playerEntity) -> new BeltContainer(BeyRegistry.BELT_CONTAINER, id,
+                                    (id, playerInventory, playerEntity) -> new BeltContainer(BeyCraftRegistry.BELT_CONTAINER, id,
                                             stack, playerInventory, false),
                                     new StringTextComponent(stack.getItem().getRegistryName().getPath())));
                 }

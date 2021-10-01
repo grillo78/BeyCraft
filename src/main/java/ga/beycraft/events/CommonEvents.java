@@ -1,6 +1,6 @@
 package ga.beycraft.events;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.capabilities.BladerCapProvider;
 import ga.beycraft.commands.BeyBoxCommand;
@@ -59,19 +59,19 @@ public class CommonEvents {
 
 	@SubscribeEvent
 	public static void registerEntityAttributes(final EntityAttributeCreationEvent event){
-		event.put(BeyRegistry.BEY_ENTITY_TYPE,EntityBey.registerAttributes().build());
+		event.put(BeyCraftRegistry.BEY_ENTITY_TYPE,EntityBey.registerAttributes().build());
 	}
 
 	@SubscribeEvent
 	public static void registerTileEntityType(final RegistryEvent.Register<TileEntityType<?>> event) {
-		event.getRegistry().register(TileEntityType.Builder.of(ExpositoryTileEntity::new, BeyRegistry.EXPOSITORY)
+		event.getRegistry().register(TileEntityType.Builder.of(ExpositoryTileEntity::new, BeyCraftRegistry.EXPOSITORY)
 				.build(null).setRegistryName(new ResourceLocation(Reference.MOD_ID, "expositorytileentity")));
 		event.getRegistry()
-				.register(TileEntityType.Builder.of(BeyCreatorTileEntity::new, BeyRegistry.BEYCREATORBLOCK)
+				.register(TileEntityType.Builder.of(BeyCreatorTileEntity::new, BeyCraftRegistry.BEYCREATORBLOCK)
 						.build(null).setRegistryName(new ResourceLocation(Reference.MOD_ID, "beycreatortileentity")));
-		event.getRegistry().register(TileEntityType.Builder.of(RobotTileEntity::new, BeyRegistry.ROBOT).build(null)
+		event.getRegistry().register(TileEntityType.Builder.of(RobotTileEntity::new, BeyCraftRegistry.ROBOT).build(null)
 				.setRegistryName(new ResourceLocation(Reference.MOD_ID, "robottileentity")));
-		event.getRegistry().register(TileEntityType.Builder.of(StadiumTileEntity::new, BeyRegistry.STADIUM)
+		event.getRegistry().register(TileEntityType.Builder.of(StadiumTileEntity::new, BeyCraftRegistry.STADIUM)
 				.build(null).setRegistryName(new ResourceLocation(Reference.MOD_ID, "stadiumtileentity")));
 	}
 
@@ -83,70 +83,70 @@ public class CommonEvents {
 
 	@SubscribeEvent
 	public static void onSoundRegistry(final RegistryEvent.Register<SoundEvent> event) {
-		BeyRegistry.HITSOUND.setRegistryName("bey.hit");
-		event.getRegistry().register(BeyRegistry.HITSOUND);
-		BeyRegistry.OPEN_CLOSE_BELT.setRegistryName("open_close_belt");
-		event.getRegistry().register(BeyRegistry.OPEN_CLOSE_BELT);
+		BeyCraftRegistry.HITSOUND.setRegistryName("bey.hit");
+		event.getRegistry().register(BeyCraftRegistry.HITSOUND);
+		BeyCraftRegistry.OPEN_CLOSE_BELT.setRegistryName("open_close_belt");
+		event.getRegistry().register(BeyCraftRegistry.OPEN_CLOSE_BELT);
 	}
 
 	@SubscribeEvent
 	public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
-		if (!BeyRegistry.ITEMSDISCFRAME.isEmpty()) {
+		if (!BeyCraftRegistry.ITEMSDISCFRAME.isEmpty()) {
 			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-				return new BeyDiscFrameContainer(windowId, new ItemStack(BeyRegistry.LAUNCHER), inv);
+				return new BeyDiscFrameContainer(windowId, new ItemStack(BeyCraftRegistry.LAUNCHER), inv);
 			}).setRegistryName("discframe"));
 		}
-		if(!BeyRegistry.ITEMSLAYERGOD.isEmpty()){
+		if(!BeyCraftRegistry.ITEMSLAYERGOD.isEmpty()){
 			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-				return new BeyGodContainer(BeyRegistry.BEY_GOD_CONTAINER, windowId, new ItemStack(BeyRegistry.ITEMSLAYERGOD.get(0)), inv);
+				return new BeyGodContainer(BeyCraftRegistry.BEY_GOD_CONTAINER, windowId, new ItemStack(BeyCraftRegistry.ITEMSLAYERGOD.get(0)), inv);
 			}).setRegistryName("beygod"));
 		}
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-			return new LauncherContainer(BeyRegistry.LAUNCHER_RIGHT_CONTAINER, windowId,
-					new ItemStack(BeyRegistry.LAUNCHER), inv, Hand.MAIN_HAND);
+			return new LauncherContainer(BeyCraftRegistry.LAUNCHER_RIGHT_CONTAINER, windowId,
+					new ItemStack(BeyCraftRegistry.LAUNCHER), inv, Hand.MAIN_HAND);
 		}).setRegistryName("right_launcher"));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-			return new LauncherContainer(BeyRegistry.LAUNCHER_RIGHT_CONTAINER, windowId,
-					new ItemStack(BeyRegistry.LEFTLAUNCHER), inv, Hand.MAIN_HAND);
+			return new LauncherContainer(BeyCraftRegistry.LAUNCHER_RIGHT_CONTAINER, windowId,
+					new ItemStack(BeyCraftRegistry.LEFTLAUNCHER), inv, Hand.MAIN_HAND);
 		}).setRegistryName("left_launcher"));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-			return new LauncherContainer(BeyRegistry.LAUNCHER_DUAL_CONTAINER, windowId,
-					new ItemStack(BeyRegistry.DUALLAUNCHER), inv, Hand.MAIN_HAND);
+			return new LauncherContainer(BeyCraftRegistry.LAUNCHER_DUAL_CONTAINER, windowId,
+					new ItemStack(BeyCraftRegistry.DUALLAUNCHER), inv, Hand.MAIN_HAND);
 		}).setRegistryName("dual_launcher"));
-		if (!BeyRegistry.ITEMSLAYER.isEmpty() && BeyRegistry.ITEMSLAYERGT.size() != BeyRegistry.ITEMSLAYER.size()) {
+		if (!BeyCraftRegistry.ITEMSLAYER.isEmpty() && BeyCraftRegistry.ITEMSLAYERGT.size() != BeyCraftRegistry.ITEMSLAYER.size()) {
 			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-				return new BeyContainer(BeyRegistry.BEY_CONTAINER, windowId,
-						new ItemStack(BeyRegistry.ITEMSLAYER.get(0)), inv);
+				return new BeyContainer(BeyCraftRegistry.BEY_CONTAINER, windowId,
+						new ItemStack(BeyCraftRegistry.ITEMSLAYER.get(0)), inv);
 			}).setRegistryName("bey"));
 		}
-		if (!BeyRegistry.ITEMSLAYERGT.isEmpty()) {
+		if (!BeyCraftRegistry.ITEMSLAYERGT.isEmpty()) {
 			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-				return new BeyGTContainer(BeyRegistry.BEY_GT_CONTAINER, windowId,
-						new ItemStack(BeyRegistry.ITEMSLAYERGT.get(0)), inv, inv.player, Hand.MAIN_HAND);
+				return new BeyGTContainer(BeyCraftRegistry.BEY_GT_CONTAINER, windowId,
+						new ItemStack(BeyCraftRegistry.ITEMSLAYERGT.get(0)), inv, inv.player, Hand.MAIN_HAND);
 			}).setRegistryName("beygt"));
 		}
-		if (!BeyRegistry.ITEMSLAYERGTNOWEIGHT.isEmpty()) {
+		if (!BeyCraftRegistry.ITEMSLAYERGTNOWEIGHT.isEmpty()) {
 			event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-				return new BeyGTNoWeightContainer(BeyRegistry.BEY_GT_CONTAINER_NO_WEIGHT, windowId,
-						new ItemStack(BeyRegistry.ITEMSLAYERGTNOWEIGHT.get(0)), inv);
+				return new BeyGTNoWeightContainer(BeyCraftRegistry.BEY_GT_CONTAINER_NO_WEIGHT, windowId,
+						new ItemStack(BeyCraftRegistry.ITEMSLAYERGTNOWEIGHT.get(0)), inv);
 			}).setRegistryName("beygtnoweight"));
 		}
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-			return new BeltContainer(BeyRegistry.BELT_CONTAINER, windowId, new ItemStack(BeyRegistry.ITEMS.get("belt")),
+			return new BeltContainer(BeyCraftRegistry.BELT_CONTAINER, windowId, new ItemStack(BeyCraftRegistry.ITEMS.get("belt")),
 					inv, true);
 		}).setRegistryName("belt"));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-			return new BeyLoggerContainer(BeyRegistry.BEYLOGGER_CONTAINER, windowId);
+			return new BeyLoggerContainer(BeyCraftRegistry.BEYLOGGER_CONTAINER, windowId);
 		}).setRegistryName("beylogger"));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-			return new HandleContainer(BeyRegistry.HANDLE_CONTAINER, windowId, new ItemStack(BeyRegistry.LAUNCHER), inv,
+			return new HandleContainer(BeyCraftRegistry.HANDLE_CONTAINER, windowId, new ItemStack(BeyCraftRegistry.LAUNCHER), inv,
 					inv.player, Hand.MAIN_HAND);
 		}).setRegistryName("handle"));
 	}
 
 	@SubscribeEvent
 	public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
-		for (Block block : BeyRegistry.BLOCKS) {
+		for (Block block : BeyCraftRegistry.BLOCKS) {
 			event.getRegistry().register(block);
 		}
 	}
@@ -154,42 +154,42 @@ public class CommonEvents {
 	@SubscribeEvent
 	public static void registerItem(final RegistryEvent.Register<Item> event) {
 
-		event.getRegistry().register(BeyRegistry.LAYERICON);
-		event.getRegistry().register(BeyRegistry.DISCICON);
-		event.getRegistry().register(BeyRegistry.DRIVERICON);
+		event.getRegistry().register(BeyCraftRegistry.LAYERICON);
+		event.getRegistry().register(BeyCraftRegistry.DISCICON);
+		event.getRegistry().register(BeyCraftRegistry.DRIVERICON);
 
 		ItemCreator.getItemsFromFolder();
-		BeyRegistry.ITEMS.forEach((name, item) -> {
+		BeyCraftRegistry.ITEMS.forEach((name, item) -> {
 			event.getRegistry().register(item);
 		});
 		event.getRegistry().register(new ItemBladerBelt("belt"));
-		if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
-			for (Item item : BeyRegistry.ITEMSLAYER) {
+		if (!BeyCraftRegistry.ITEMSLAYER.isEmpty()) {
+			for (Item item : BeyCraftRegistry.ITEMSLAYER) {
 				event.getRegistry().register(item);
 			}
 		}
-		if (!BeyRegistry.ITEMSFRAME.isEmpty()) {
-			for (Item item : BeyRegistry.ITEMSFRAME) {
+		if (!BeyCraftRegistry.ITEMSFRAME.isEmpty()) {
+			for (Item item : BeyCraftRegistry.ITEMSFRAME) {
 				event.getRegistry().register(item);
 			}
 		}
-		if (!BeyRegistry.ITEMSDISCLIST.isEmpty()) {
-			for (Item item : BeyRegistry.ITEMSDISCLIST) {
+		if (!BeyCraftRegistry.ITEMSDISCLIST.isEmpty()) {
+			for (Item item : BeyCraftRegistry.ITEMSDISCLIST) {
 				event.getRegistry().register(item);
 			}
 		}
-		if (!BeyRegistry.ITEMSDRIVER.isEmpty()) {
-			for (Item item : BeyRegistry.ITEMSDRIVER) {
+		if (!BeyCraftRegistry.ITEMSDRIVER.isEmpty()) {
+			for (Item item : BeyCraftRegistry.ITEMSDRIVER) {
 				event.getRegistry().register(item);
 			}
 		}
-		if (!BeyRegistry.ITEMSGTCHIP.isEmpty()) {
-			for (Item item : BeyRegistry.ITEMSGTCHIP) {
+		if (!BeyCraftRegistry.ITEMSGTCHIP.isEmpty()) {
+			for (Item item : BeyCraftRegistry.ITEMSGTCHIP) {
 				event.getRegistry().register(item);
 			}
 		}
-		if (!BeyRegistry.ITEMSGTWEIGHT.isEmpty()) {
-			for (Item item : BeyRegistry.ITEMSGTWEIGHT) {
+		if (!BeyCraftRegistry.ITEMSGTWEIGHT.isEmpty()) {
+			for (Item item : BeyCraftRegistry.ITEMSGTWEIGHT) {
 				event.getRegistry().register(item);
 			}
 		}

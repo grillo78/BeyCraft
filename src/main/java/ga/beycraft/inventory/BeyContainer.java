@@ -1,6 +1,6 @@
 package ga.beycraft.inventory;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.inventory.slots.LockedSlot;
 import ga.beycraft.inventory.slots.SlotBeyDisk;
 import ga.beycraft.inventory.slots.SlotBeyDriver;
@@ -27,7 +27,7 @@ public class BeyContainer extends Container {
     public BeyContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory) {
         super(type, id);
         this.stack = stack;
-        if(!BeyRegistry.ITEMSLAYER.isEmpty()){
+        if(!BeyCraftRegistry.ITEMSLAYER.isEmpty()){
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 this.addSlot(new SlotBeyDisk(h, 0, 10, 15));
                 this.addSlot(new SlotBeyDriver(h, 1, 10, 35));

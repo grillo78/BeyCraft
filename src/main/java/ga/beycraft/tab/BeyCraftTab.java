@@ -1,6 +1,6 @@
 package ga.beycraft.tab;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
@@ -13,6 +13,6 @@ public class BeyCraftTab extends ItemGroup{
 
 	@Override
 	public ItemStack makeIcon() {
-		return new ItemStack(BeyRegistry.LAUNCHER);
+		return new ItemStack(BeyCraftRegistry.LAUNCHER);
 	}
 }

@@ -1,6 +1,6 @@
 package ga.beycraft.inventory;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.inventory.slots.LockedSlot;
 import ga.beycraft.inventory.slots.SlotBeyBothLayer;
 import ga.beycraft.inventory.slots.SlotBeyLauncher;
@@ -40,7 +40,7 @@ public class BeltContainer extends Container {
 	@Override
 	public void removed(PlayerEntity playerIn) {
 		super.removed(playerIn);
-		playerIn.playNotifySound(BeyRegistry.OPEN_CLOSE_BELT, SoundCategory.PLAYERS, 1, 1);
+		playerIn.playNotifySound(BeyCraftRegistry.OPEN_CLOSE_BELT, SoundCategory.PLAYERS, 1, 1);
 		if (playerIn instanceof ServerPlayerEntity) {
 			stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
 				if(!stack.hasTag()){

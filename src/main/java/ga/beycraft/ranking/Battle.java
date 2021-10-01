@@ -69,9 +69,11 @@ public class Battle {
             switch (type) {
                 case NORMAL_MATCH:
                     PlayerEntity winner = PlayerUtils.getPlayerByName(this.beys.get(lastSpinningBeyIndex).getPlayerName(), level);
-                    points.put(winner, points.get(winner) + 1);
-                    if (points.get(winner) >= stadium.getPointsToWin())
-                        setWinner((ServerPlayerEntity) winner);
+                    if(winner != null && points.containsKey(winner)){
+                        points.put(winner, points.get(winner) + 1);
+                        if (points.get(winner) >= stadium.getPointsToWin())
+                            setWinner((ServerPlayerEntity) winner);
+                    }
                     stadium.setAllowBattle(false);
                     break;
                 case BATTLE_ROYAL:
@@ -85,7 +87,7 @@ public class Battle {
         player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
             Random rand = new Random();
                 h.increaseExperience(round(
-                        rand.nextInt(100 * beys.size()) + rand.nextFloat(), 2));
+                        rand.nextInt(h.getBladerLevel() * beys.size()) + rand.nextFloat(), 2));
             PacketHandler.instance.sendTo(new MessageWinCombat(), player.connection.getConnection(),
                     NetworkDirection.PLAY_TO_CLIENT);
             PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getExperience()), player.connection.getConnection(),

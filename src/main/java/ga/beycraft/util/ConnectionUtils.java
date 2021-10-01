@@ -10,7 +10,7 @@ public class ConnectionUtils {
 
     public static SSLContext getDisabledSSLCheckContext(){
         String javaVersion = System.getProperty("java.version");
-        if(javaVersion.startsWith("1.8.0_") && Integer.valueOf(javaVersion.substring(0,6))<101){
+        if(javaVersion.startsWith("1.8.0_") && Integer.valueOf(javaVersion.substring(6))<101){
             try {
                 TrustManager[] trustAllCerts = new TrustManager[]{
                         new X509TrustManager() {

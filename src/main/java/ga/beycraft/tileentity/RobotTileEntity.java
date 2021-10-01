@@ -1,6 +1,6 @@
 package ga.beycraft.tileentity;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.gui.RobotGUI;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -25,7 +25,7 @@ public class RobotTileEntity extends TileEntity  {
 	private int bladerLevel = 0;
 
 	public RobotTileEntity() {
-		super(BeyRegistry.ROBOTTILEENTITYTYPE);
+		super(BeyCraftRegistry.ROBOTTILEENTITYTYPE);
 	}
 
 	@OnlyIn(Dist.CLIENT)

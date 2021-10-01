@@ -1,7 +1,7 @@
 package ga.beycraft.items;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.inventory.slots.BeyLoggerContainer;
 import ga.beycraft.items.render.BeyLoggerItemStackRendererTileEntity;
@@ -23,7 +23,7 @@ public class ItemBeyLogger extends Item {
 		super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1)
 				.setISTER(() -> BeyLoggerItemStackRendererTileEntity::new));
 		setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
-		BeyRegistry.ITEMS.put(name, this);
+		BeyCraftRegistry.ITEMS.put(name, this);
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class ItemBeyLogger extends Item {
 			if (!world.isClientSide) {
 				NetworkHooks.openGui((ServerPlayerEntity) player,
 						new SimpleNamedContainerProvider(
-								(id, playerInventory, playerEntity) -> new BeyLoggerContainer(BeyRegistry.BEYLOGGER_CONTAINER,
+								(id, playerInventory, playerEntity) -> new BeyLoggerContainer(BeyCraftRegistry.BEYLOGGER_CONTAINER,
 										id),
 								new StringTextComponent(getDescriptionId())));
 			}

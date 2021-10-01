@@ -1,6 +1,6 @@
 package ga.beycraft.tileentity;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.entity.EntityBey;
 import ga.beycraft.ranking.Battle;
 import ga.beycraft.util.PlayerUtils;
@@ -10,7 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.server.ServerWorld;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
     private int pointsToWin = 3;
 
     public StadiumTileEntity() {
-        super(BeyRegistry.STADIUMTILEENTITYTYPE);
+        super(BeyCraftRegistry.STADIUMTILEENTITYTYPE);
     }
 
     @Override

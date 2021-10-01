@@ -7,7 +7,7 @@ import friedrichlp.renderlib.render.ViewBoxes;
 import friedrichlp.renderlib.tracking.RenderLayer;
 import friedrichlp.renderlib.tracking.RenderManager;
 import friedrichlp.renderlib.tracking.RenderObject;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.entity.BeyRender;
 import ga.beycraft.items.ItemBeyPart;
 import ga.beycraft.util.ItemCreator;
@@ -41,7 +41,7 @@ public class RenderExpository extends TileEntityRenderer<ExpositoryTileEntity> {
 
         matrixStack.scale(2, 2, 2);
         matrixStack.translate(0.25, 0.25, 0.25);
-        Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyRegistry.EXPOSITORY.asItem()), ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
+        Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyCraftRegistry.EXPOSITORY.asItem()), ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
         matrixStack.scale(0.5f, 0.5f, 0.5f);
         tileEntity.getInventory().ifPresent(h -> {
             if (h.getStackInSlot(0).getItem() instanceof ItemBeyPart) {

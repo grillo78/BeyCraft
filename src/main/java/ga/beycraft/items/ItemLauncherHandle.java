@@ -1,7 +1,7 @@
 package ga.beycraft.items;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.inventory.HandleContainer;
 import ga.beycraft.inventory.ItemHandleProvider;
@@ -24,7 +24,7 @@ public class ItemLauncherHandle extends Item {
     public ItemLauncherHandle(String name) {
         super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
         setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
-        BeyRegistry.ITEMS.put(name,this);
+        BeyCraftRegistry.ITEMS.put(name,this);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ItemLauncherHandle extends Item {
         if (!world.isClientSide) {
             NetworkHooks.openGui((ServerPlayerEntity) player,
                     new SimpleNamedContainerProvider(
-                            (id, playerInventory, playerEntity) -> new HandleContainer(BeyRegistry.HANDLE_CONTAINER, id,
+                            (id, playerInventory, playerEntity) -> new HandleContainer(BeyCraftRegistry.HANDLE_CONTAINER, id,
                                     player.getItemInHand(handIn), playerInventory, playerEntity, handIn),
                             new StringTextComponent(getRegistryName().getPath())));
         }

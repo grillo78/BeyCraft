@@ -1,7 +1,7 @@
 package ga.beycraft.blocks;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.items.ItemBeyDisc;
 import ga.beycraft.items.ItemBeyDriver;
@@ -47,8 +47,8 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
         super(AbstractBlock.Properties.of(materialIn).strength(0.6F).noOcclusion());
         setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
 
-        BeyRegistry.BLOCKS.add(this);
-        BeyRegistry.ITEMS.put(name,new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))
+        BeyCraftRegistry.BLOCKS.add(this);
+        BeyCraftRegistry.ITEMS.put(name,new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))
                 .setRegistryName(this.getRegistryName()));
     }
 

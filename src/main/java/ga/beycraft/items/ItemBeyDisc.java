@@ -1,7 +1,7 @@
 package ga.beycraft.items;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.abilities.Ability;
 import ga.beycraft.items.render.GenericPartItemStackRendererTileEntity;
 import ga.beycraft.util.BeyTypes;
@@ -19,7 +19,7 @@ public class ItemBeyDisc extends ItemBeyPart{
 		this.weight = weight;
 		this.attack = attack;
 		this.defense = defense;
-		BeyRegistry.ITEMSDISCLIST.add(this);
+		BeyCraftRegistry.ITEMSDISCLIST.add(this);
 	}
 
 	public float getAttack(ItemStack stack) {

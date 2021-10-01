@@ -1,7 +1,7 @@
 package ga.beycraft.blocks;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.gui.BeyCreatorGUI;
 import ga.beycraft.tileentity.BeyCreatorTileEntity;
@@ -30,7 +30,10 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
@@ -45,8 +48,8 @@ public class BeyCreatorBlock extends Block {
         setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
 
 
-        BeyRegistry.BLOCKS.add(this);
-        BeyRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))
+        BeyCraftRegistry.BLOCKS.add(this);
+        BeyCraftRegistry.ITEMS.put(name, new BlockItem(this, new Item.Properties().tab(BeyCraft.BEYCRAFTTAB))
                 .setRegistryName(this.getRegistryName()));
     }
 
@@ -216,7 +219,7 @@ public class BeyCreatorBlock extends Block {
                                 worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
                                 h.extractItem(0, 1, false);
                             }
-                            if (playerIn.getItemInHand(hand).getItem() == BeyRegistry.PLASTIC || playerIn.getItemInHand(hand).getItem() == Items.IRON_INGOT) {
+                            if (playerIn.getItemInHand(hand).getItem() == BeyCraftRegistry.PLASTIC || playerIn.getItemInHand(hand).getItem() == Items.IRON_INGOT) {
                                 ItemStack newStack = playerIn.getItemInHand(hand).copy();
                                 newStack.setCount(1);
                                 h.insertItem(0, newStack, false);
@@ -227,12 +230,17 @@ public class BeyCreatorBlock extends Block {
                     }
                 } else {
                     if (worldIn.isClientSide) {
-                        Minecraft.getInstance().setScreen(new BeyCreatorGUI(new StringTextComponent("")));
+                        openGUI();
                     }
                 }
             }
 
         return ActionResultType.SUCCESS;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void openGUI(){
+        Minecraft.getInstance().setScreen(new BeyCreatorGUI(new StringTextComponent("")));
     }
 
     @Override

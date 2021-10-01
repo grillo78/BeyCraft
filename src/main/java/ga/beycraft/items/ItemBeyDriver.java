@@ -1,7 +1,7 @@
 package ga.beycraft.items;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.abilities.Ability;
 import ga.beycraft.abilities.MultiMode;
 import ga.beycraft.abilities.MultiType;
@@ -20,7 +20,7 @@ public class ItemBeyDriver extends ItemBeyPart {
 		super(name, type, primaryAbility, secundaryAbility, BeyCraft.BEYCRAFTDRIVERS, new Item.Properties().setISTER(() -> GenericPartItemStackRendererTileEntity::new));
 		this.radiusReduction = radiusReduction;
 		this.friction = friction;
-		BeyRegistry.ITEMSDRIVER.add(this);
+		BeyCraftRegistry.ITEMSDRIVER.add(this);
 	}
 
 	public float getRadiusReduction(ItemStack stack) {

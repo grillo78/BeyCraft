@@ -1,7 +1,7 @@
 package ga.beycraft.items;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.capabilities.BladerCapProvider;
 import ga.beycraft.entity.EntityBey;
@@ -37,7 +37,7 @@ public class ItemLauncher extends Item {
         super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1).setISTER(() -> LauncherItemStackRendererTileEntity::new));
         setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
         this.rotation = rotation;
-        BeyRegistry.ITEMS.put(name, this);
+        BeyCraftRegistry.ITEMS.put(name, this);
     }
 
     @Override
@@ -51,14 +51,14 @@ public class ItemLauncher extends Item {
         ItemStack launcher = player.getItemInHand(handIn);
         if (!player.isCrouching()) {
             if (!world.isClientSide) {
-                if (BeyRegistry.BEY_ENTITY_TYPE != null && launcher.hasTag()) {
+                if (BeyCraftRegistry.BEY_ENTITY_TYPE != null && launcher.hasTag()) {
                     launcher.getTag().put("bey", ItemStack.EMPTY.save(new CompoundNBT()));
                     launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                         if (h.getStackInSlot(0).getItem() instanceof ItemBeyLayer) {
 
                             player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(i->{
                                 h.getStackInSlot(0).getTag().putBoolean("isEntity", true);
-                                EntityBey entity = new EntityBey(BeyRegistry.BEY_ENTITY_TYPE, world,
+                                EntityBey entity = new EntityBey(BeyCraftRegistry.BEY_ENTITY_TYPE, world,
                                         h.getStackInSlot(0).copy(),
                                         getRotation(launcher), player.getName().getString(),i.getBladerLevel(), h.getStackInSlot(2).getItem() instanceof ItemBeyLogger);
                                 entity.moveTo(player.position().x + player.getLookAngle().x / 2,
@@ -84,20 +84,20 @@ public class ItemLauncher extends Item {
                 if (launcher.getItem() instanceof ItemDualLauncher) {
                     NetworkHooks.openGui((ServerPlayerEntity) player,
                             new SimpleNamedContainerProvider(
-                                    (id, playerventory, playerEntity) -> new LauncherContainer(BeyRegistry.LAUNCHER_DUAL_CONTAINER,
+                                    (id, playerventory, playerEntity) -> new LauncherContainer(BeyCraftRegistry.LAUNCHER_DUAL_CONTAINER,
                                             id, player.getItemInHand(handIn), playerventory, handIn),
                                     new StringTextComponent(getRegistryName().getPath())));
                 } else {
                     if (rotation == 1) {
                         NetworkHooks.openGui((ServerPlayerEntity) player,
                                 new SimpleNamedContainerProvider(
-                                        (id, playerventory, playerEntity) -> new LauncherContainer(BeyRegistry.LAUNCHER_RIGHT_CONTAINER,
+                                        (id, playerventory, playerEntity) -> new LauncherContainer(BeyCraftRegistry.LAUNCHER_RIGHT_CONTAINER,
                                                 id, player.getItemInHand(handIn), playerventory, handIn),
                                         new StringTextComponent(getRegistryName().getPath())));
                     } else {
                         NetworkHooks.openGui((ServerPlayerEntity) player,
                                 new SimpleNamedContainerProvider(
-                                        (id, playerventory, playerEntity) -> new LauncherContainer(BeyRegistry.LAUNCHER_LEFT_CONTAINER,
+                                        (id, playerventory, playerEntity) -> new LauncherContainer(BeyCraftRegistry.LAUNCHER_LEFT_CONTAINER,
                                                 id, player.getItemInHand(handIn), playerventory, handIn),
                                         new StringTextComponent(getRegistryName().getPath())));
                     }

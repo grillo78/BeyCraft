@@ -2,7 +2,7 @@ package ga.beycraft.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.capabilities.BladerCapProvider;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -25,7 +25,7 @@ public class BeyBoxCommand {
 				if(h.getCurrency()>1000){
 					h.increaseCurrency(-1000);
 					player.level.addFreshEntity(new ItemEntity(player.level,player.getX(),
-							player.getY(), player.getZ(), new ItemStack(BeyRegistry.BEYPACKAGE)));
+							player.getY(), player.getZ(), new ItemStack(BeyCraftRegistry.BEYPACKAGE)));
 					source.sendSuccess(new TranslationTextComponent("beybox.successful.command.message"),true);
 				} else {
 					source.sendFailure(new TranslationTextComponent("beybox.fail.command.message"));

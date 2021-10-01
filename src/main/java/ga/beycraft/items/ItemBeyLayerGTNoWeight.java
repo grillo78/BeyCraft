@@ -1,6 +1,6 @@
 package ga.beycraft.items;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.abilities.Ability;
 import ga.beycraft.util.BeyTypes;
 import net.minecraft.item.ItemStack;
@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 public class ItemBeyLayerGTNoWeight extends ItemBeyLayer {
     public ItemBeyLayerGTNoWeight(String name, float rotationDirection, float attack, float defense, float weight, Ability primaryAbility, Ability secundaryAbility, BeyTypes type) {
         super(name, rotationDirection, attack, defense, weight, 0, primaryAbility, secundaryAbility, type);
-        BeyRegistry.ITEMSLAYERGTNOWEIGHT.add(this);
+        BeyCraftRegistry.ITEMSLAYERGTNOWEIGHT.add(this);
     }
 
     @Override

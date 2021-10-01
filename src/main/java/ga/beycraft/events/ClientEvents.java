@@ -6,7 +6,7 @@ import friedrichlp.renderlib.RenderLibSettings;
 import friedrichlp.renderlib.math.Vector3;
 import friedrichlp.renderlib.tracking.RenderManager;
 import ga.beycraft.BeyCraft;
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.capabilities.BladerCapProvider;
 import ga.beycraft.entity.BeyEntityRenderFactory;
@@ -23,6 +23,7 @@ import ga.beycraft.tileentity.RenderExpository;
 import ga.beycraft.tileentity.RenderRobot;
 import ga.beycraft.util.BeyPartModel;
 import ga.beycraft.util.ConfigManager;
+import ga.beycraft.util.RankingUtil;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
@@ -74,62 +75,62 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onParticleFactorieRegistry(final ParticleFactoryRegisterEvent event) {
-        Minecraft.getInstance().particleEngine.register(BeyRegistry.SPARKLE, SparkleParticle.Factory::new);
-        Minecraft.getInstance().particleEngine.register(BeyRegistry.AURA, SparkleParticle.Factory::new);
+        Minecraft.getInstance().particleEngine.register(BeyCraftRegistry.SPARKLE, SparkleParticle.Factory::new);
+        Minecraft.getInstance().particleEngine.register(BeyCraftRegistry.AURA, SparkleParticle.Factory::new);
     }
 
     @SubscribeEvent
     public static void doClientStuff(final FMLClientSetupEvent event) {
 
-        RenderTypeLookup.setRenderLayer(BeyRegistry.STADIUM, RenderType.cutoutMipped());
-        RenderTypeLookup.setRenderLayer(BeyRegistry.EXPOSITORY, RenderType.cutoutMipped());
-        RenderTypeLookup.setRenderLayer(BeyRegistry.BEYCREATORBLOCK, RenderType.cutoutMipped());
+        RenderTypeLookup.setRenderLayer(BeyCraftRegistry.STADIUM, RenderType.cutoutMipped());
+        RenderTypeLookup.setRenderLayer(BeyCraftRegistry.EXPOSITORY, RenderType.cutoutMipped());
+        RenderTypeLookup.setRenderLayer(BeyCraftRegistry.BEYCREATORBLOCK, RenderType.cutoutMipped());
 
         ClientRegistry.registerKeyBinding(ClientEvents.COUNTDOWNKEY);
         ClientRegistry.registerKeyBinding(ClientEvents.BELTKEY);
         ClientRegistry.registerKeyBinding(ClientEvents.RANKINGKEY);
-        ScreenManager.register(BeyRegistry.LAUNCHER_RIGHT_CONTAINER, LauncherGUI::new);
-        ScreenManager.register(BeyRegistry.LAUNCHER_LEFT_CONTAINER, LauncherGUI::new);
-        ScreenManager.register(BeyRegistry.LAUNCHER_DUAL_CONTAINER, LauncherDualGUI::new);
-        ScreenManager.register(BeyRegistry.DISC_FRAME_CONTAINER, DiskFrameGUI::new);
-        ScreenManager.register(BeyRegistry.BELT_CONTAINER, BeltGUI::new);
-        ScreenManager.register(BeyRegistry.BEYLOGGER_CONTAINER, BeyloggerGUI::new);
-        if (!BeyRegistry.ITEMSLAYER.isEmpty()) {
-            if (BeyRegistry.ITEMSLAYER.size() != BeyRegistry.ITEMSLAYERGT.size()) {
-                ScreenManager.register(BeyRegistry.BEY_CONTAINER, BeyGUI::new);
+        ScreenManager.register(BeyCraftRegistry.LAUNCHER_RIGHT_CONTAINER, LauncherGUI::new);
+        ScreenManager.register(BeyCraftRegistry.LAUNCHER_LEFT_CONTAINER, LauncherGUI::new);
+        ScreenManager.register(BeyCraftRegistry.LAUNCHER_DUAL_CONTAINER, LauncherDualGUI::new);
+        ScreenManager.register(BeyCraftRegistry.DISC_FRAME_CONTAINER, DiskFrameGUI::new);
+        ScreenManager.register(BeyCraftRegistry.BELT_CONTAINER, BeltGUI::new);
+        ScreenManager.register(BeyCraftRegistry.BEYLOGGER_CONTAINER, BeyloggerGUI::new);
+        if (!BeyCraftRegistry.ITEMSLAYER.isEmpty()) {
+            if (BeyCraftRegistry.ITEMSLAYER.size() != BeyCraftRegistry.ITEMSLAYERGT.size()) {
+                ScreenManager.register(BeyCraftRegistry.BEY_CONTAINER, BeyGUI::new);
             }
-            if (!BeyRegistry.ITEMSLAYERGT.isEmpty()) {
-                ScreenManager.register(BeyRegistry.BEY_GT_CONTAINER, BeyGTGUI::new);
+            if (!BeyCraftRegistry.ITEMSLAYERGT.isEmpty()) {
+                ScreenManager.register(BeyCraftRegistry.BEY_GT_CONTAINER, BeyGTGUI::new);
             }
-            if (!BeyRegistry.ITEMSLAYERGTNOWEIGHT.isEmpty()) {
-                ScreenManager.register(BeyRegistry.BEY_GT_CONTAINER_NO_WEIGHT, BeyGTNoWeightGUI::new);
+            if (!BeyCraftRegistry.ITEMSLAYERGTNOWEIGHT.isEmpty()) {
+                ScreenManager.register(BeyCraftRegistry.BEY_GT_CONTAINER_NO_WEIGHT, BeyGTNoWeightGUI::new);
             }
-            if (!BeyRegistry.ITEMSLAYERGOD.isEmpty()) {
-                ScreenManager.register(BeyRegistry.BEY_GOD_CONTAINER, BeyGodGUI::new);
+            if (!BeyCraftRegistry.ITEMSLAYERGOD.isEmpty()) {
+                ScreenManager.register(BeyCraftRegistry.BEY_GOD_CONTAINER, BeyGodGUI::new);
             }
         }
-        ScreenManager.register(BeyRegistry.HANDLE_CONTAINER, HandleGUI::new);
-        RenderingRegistry.registerEntityRenderingHandler(BeyRegistry.BEY_ENTITY_TYPE, new BeyEntityRenderFactory());
-        ClientRegistry.bindTileEntityRenderer(BeyRegistry.EXPOSITORYTILEENTITYTYPE, RenderExpository::new);
-        ClientRegistry.bindTileEntityRenderer(BeyRegistry.BEYCREATORTILEENTITYTYPE, RenderBeyCreator::new);
-        ClientRegistry.bindTileEntityRenderer(BeyRegistry.ROBOTTILEENTITYTYPE, RenderRobot::new);
+        ScreenManager.register(BeyCraftRegistry.HANDLE_CONTAINER, HandleGUI::new);
+        RenderingRegistry.registerEntityRenderingHandler(BeyCraftRegistry.BEY_ENTITY_TYPE, new BeyEntityRenderFactory());
+        ClientRegistry.bindTileEntityRenderer(BeyCraftRegistry.EXPOSITORYTILEENTITYTYPE, RenderExpository::new);
+        ClientRegistry.bindTileEntityRenderer(BeyCraftRegistry.BEYCREATORTILEENTITYTYPE, RenderBeyCreator::new);
+        ClientRegistry.bindTileEntityRenderer(BeyCraftRegistry.ROBOTTILEENTITYTYPE, RenderRobot::new);
     }
 
     @SubscribeEvent
     public static void modelBake(ModelBakeEvent event) {
-        for (Item item : BeyRegistry.ITEMSLAYER) {
+        for (Item item : BeyCraftRegistry.ITEMSLAYER) {
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
             event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS), 0, 10, 10, 0, 0), true));
         }
-        for (Item item : BeyRegistry.ITEMSFRAME) {
+        for (Item item : BeyCraftRegistry.ITEMSFRAME) {
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
             event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS), 0, 10, 10, 0, 0), true));
         }
-        for (Item item : BeyRegistry.ITEMSDISCLIST) {
+        for (Item item : BeyCraftRegistry.ITEMSDISCLIST) {
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
             event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS), 0, 10, 10, 0, 0), true));
         }
-        for (Item item : BeyRegistry.ITEMSDRIVER) {
+        for (Item item : BeyCraftRegistry.ITEMSDRIVER) {
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
             event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS), 0, 10, 10, 0, 0), true));
         }
@@ -138,23 +139,23 @@ public class ClientEvents {
     @SubscribeEvent
     public static void registerModel(final ModelRegistryEvent event) {
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
-                + BeyRegistry.DUALLAUNCHER.getRegistryName().getPath() + "/launcher_body"));
+                + BeyCraftRegistry.DUALLAUNCHER.getRegistryName().getPath() + "/launcher_body"));
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
-                + BeyRegistry.DUALLAUNCHER.getRegistryName().getPath() + "/grab_part"));
+                + BeyCraftRegistry.DUALLAUNCHER.getRegistryName().getPath() + "/grab_part"));
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
-                + BeyRegistry.DUALLAUNCHER.getRegistryName().getPath() + "/launcher_lever"));
+                + BeyCraftRegistry.DUALLAUNCHER.getRegistryName().getPath() + "/launcher_lever"));
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
-                + BeyRegistry.LAUNCHER.getRegistryName().getPath() + "/launcher_body"));
+                + BeyCraftRegistry.LAUNCHER.getRegistryName().getPath() + "/launcher_body"));
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
-                "launchers/" + BeyRegistry.LAUNCHER.getRegistryName().getPath() + "/grab_part"));
+                "launchers/" + BeyCraftRegistry.LAUNCHER.getRegistryName().getPath() + "/grab_part"));
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
-                + BeyRegistry.LEFTLAUNCHER.getRegistryName().getPath() + "/launcher_body"));
+                + BeyCraftRegistry.LEFTLAUNCHER.getRegistryName().getPath() + "/launcher_body"));
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft", "launchers/"
-                + BeyRegistry.LEFTLAUNCHER.getRegistryName().getPath() + "/grab_part"));
+                + BeyCraftRegistry.LEFTLAUNCHER.getRegistryName().getPath() + "/grab_part"));
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
-                "beyloggers/" + BeyRegistry.BEYLOGGERPLUS.getRegistryName().getPath()));
+                "beyloggers/" + BeyCraftRegistry.BEYLOGGERPLUS.getRegistryName().getPath()));
         ModelLoader.addSpecialModel(new ResourceLocation("beycraft",
-                "beyloggers/" + BeyRegistry.BEYLOGGER.getRegistryName().getPath()));
+                "beyloggers/" + BeyCraftRegistry.BEYLOGGER.getRegistryName().getPath()));
     }
 
     @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -217,7 +218,7 @@ public class ClientEvents {
                     event.setCanceled(true);
                     Minecraft.getInstance()
                             .setScreen(new MissingContentPacksScreen(new StringTextComponent("")));
-                } else ConfigManager.checkLogIn(event);
+                } else RankingUtil.checkLogIn(event);
             }
         }
 

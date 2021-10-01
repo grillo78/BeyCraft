@@ -1,6 +1,6 @@
 package ga.beycraft.inventory;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.inventory.slots.LockedSlot;
 import ga.beycraft.inventory.slots.SlotBeyFrame;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,7 +20,7 @@ public class BeyDiscFrameContainer extends Container {
     private ItemStack stack;
 	
 	public BeyDiscFrameContainer(int id, ItemStack stack, PlayerInventory playerInventory) {
-		super(BeyRegistry.DISC_FRAME_CONTAINER, id);
+		super(BeyCraftRegistry.DISC_FRAME_CONTAINER, id);
         this.stack = stack;
 		if(stack!=null) {
 			stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)

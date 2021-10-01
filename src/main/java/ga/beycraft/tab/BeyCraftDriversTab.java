@@ -1,6 +1,6 @@
 package ga.beycraft.tab;
 
-import ga.beycraft.BeyRegistry;
+import ga.beycraft.BeyCraftRegistry;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
@@ -12,6 +12,6 @@ public class BeyCraftDriversTab extends ItemGroup{
 
 	@Override
 	public ItemStack makeIcon() {
-		return new ItemStack(BeyRegistry.DRIVERICON);
+		return new ItemStack(BeyCraftRegistry.DRIVERICON);
 	}
 }
