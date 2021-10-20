@@ -56,7 +56,7 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
                 } else {
                     battle = null;
                 }
-                if (battle != null) {
+                if (battle != null && allowBattle && beysSpinning > 1) {
                     battle.tick(beys);
                 }
             } else {

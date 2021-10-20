@@ -9,6 +9,7 @@ import ga.beycraft.tab.BeyCraftLayersTab;
 import ga.beycraft.tab.BeyCraftTab;
 import ga.beycraft.util.ConfigManager;
 import ga.beycraft.util.ConnectionUtils;
+import ga.beycraft.util.ZipUtils;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,7 +22,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,17 +46,10 @@ public class BeyCraft {
 
 
     public BeyCraft() {
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
+        // Load the config of the mod
+        ConfigManager.load();
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             ConnectionUtils.getDisabledSSLCheckContext();
-            try {
-                File folder = new File("beycraft_cached_models");
-                if(folder.exists())
-                    FileUtils.deleteDirectory(folder);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            RenderLibSettings.Caching.CACHE_LOCATION = "beycraft_cached_models";
-            RenderLibSettings.Caching.CACHE_VERSION = "1";
             try {
                 URL url = new URL("http://www.google.com");
                 URLConnection connection = url.openConnection();
@@ -64,11 +60,35 @@ public class BeyCraft {
             } catch (IOException e) {
                 System.out.println("Internet is not connected");
             }
+            try {
+                File folder = new File("beycraft_cached_models");
+                if (folder.exists())
+                    FileUtils.deleteDirectory(folder);
+                if(ConfigManager.downloadDefaultPack()){
+                    BufferedInputStream in = new BufferedInputStream(new URL("https://beycraft.ga/Starter%20Pack.zip").openStream());
+                    File itemsFolder = new File("BeyParts");
+                    if (!itemsFolder.exists()) {
+                        itemsFolder.mkdir();
+                    }
+                    File starterPackFile = new File("BeyParts/Starter Pack temp.zip");
+                    FileOutputStream fileOutputStream = new FileOutputStream(starterPackFile);
+                    byte dataBuffer[] = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                        fileOutputStream.write(dataBuffer, 0, bytesRead);
+                    }
+                    fileOutputStream.close();
+                    ZipUtils.unzip(starterPackFile,itemsFolder);
+                    starterPackFile.delete();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            RenderLibSettings.Caching.CACHE_LOCATION = "beycraft_cached_models";
+            RenderLibSettings.Caching.CACHE_VERSION = "1";
         });
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        // Load the config of the mod
-        ConfigManager.load();
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -78,7 +98,6 @@ public class BeyCraft {
         CapabilityManager.INSTANCE.register(IBladerLevel.class, new BladerLevelStorage(), new BladerLevelFactory());
         CapabilityManager.INSTANCE.register(ICurrency.class, new CurrencyStorage(), new CurrencyFactory());
     }
-
 
 
 }

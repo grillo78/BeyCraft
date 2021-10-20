@@ -28,9 +28,6 @@ public class ItemCreator {
 
     public static void getItemsFromFolder() {
         File itemsFolder = new File("BeyParts");
-        if (!itemsFolder.exists()) {
-            itemsFolder.mkdir();
-        }
         File[] propertiesFiles = itemsFolder.listFiles((dir, name) -> name.endsWith(".properties"));
         BeyCraft.logger.info(propertiesFiles.length + " parts was found in BeyParts folder");
 

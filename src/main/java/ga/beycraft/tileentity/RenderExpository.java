@@ -65,7 +65,7 @@ public class RenderExpository extends TileEntityRenderer<ExpositoryTileEntity> {
                     scenePart.transform.scale(0.5F, 0.5F, 0.5F);
                     scenePart.forceTransformUpdate();
                     RenderManager.render(layer, RenderMode.USE_CUSTOM_MATS);
-                    layer.removeRenderObject(scenePart);
+                    scenePart.remove();
 
                 });
             }

@@ -6,6 +6,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -32,7 +33,11 @@ public class ConfigManager {
             if(CONFIG.isEmpty()){
                 CONFIG.setProperty("onlyStadium", "true");
                 CONFIG.setProperty("blockBlackList", "");
+                CONFIG.setProperty("downloadDefaultPack", "true");
             }
+            if(!CONFIG.containsKey("downloadDefaultPack"))
+                CONFIG.setProperty("downloadDefaultPack", "true");
+            CONFIG.store(new FileWriter(CONFIG_FILE),"");
         }catch (IOException e){
 
         }
@@ -40,6 +45,10 @@ public class ConfigManager {
 
 	public static boolean isOnlyStadium(){
 	    return Boolean.valueOf(CONFIG.getProperty("onlyStadium"));
+    }
+
+    public static boolean downloadDefaultPack(){
+        return Boolean.valueOf(CONFIG.getProperty("downloadDefaultPack"));
     }
 
     public static ArrayList<Block> getBlockBlackList(){

@@ -109,6 +109,7 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
                 }
             }
         } else {
+            GlStateManager._enableDepthTest();
             GL11.glRotatef(50, 1, 0, 0);
             GL11.glTranslated(0, -0.5, 0);
             GL11.glScaled(2, 2, 2);
@@ -122,9 +123,10 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
             sceneLayer.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
             sceneLayer.forceTransformUpdate();
             RenderManager.render(layer, RenderMode.USE_FFP_MATS);
-            layer.removeRenderObject(sceneLayer);
-            RenderSystem.disableBlend();
+            sceneLayer.remove();
             RenderSystem.defaultBlendFunc();
+            RenderSystem.disableBlend();
+            GlStateManager._disableDepthTest();
         }
         matrixStack.popPose();
     }

@@ -117,12 +117,6 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 	}
 
 	@Override
-	public ActionResultType use(BlockState p_225533_1_, World p_225533_2_, BlockPos p_225533_3_, PlayerEntity p_225533_4_, Hand p_225533_5_, BlockRayTraceResult p_225533_6_) {
-//		setVoxelShapes();
-		return super.use(p_225533_1_, p_225533_2_, p_225533_3_, p_225533_4_, p_225533_5_, p_225533_6_);
-	}
-
-	@Override
 	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
 		return canReplace(worldIn, pos.north().west()) && canReplace(worldIn, pos.north())
 				&& canReplace(worldIn, pos.north().east()) && canReplace(worldIn, pos.west())
@@ -134,7 +128,8 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 	@Override
 	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
 		super.playerWillDestroy(worldIn, pos, state, player);
-		worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this)));
+		if(!player.isCreative())
+			worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this)));
 	}
 
 	@Override

@@ -71,7 +71,8 @@ public class BeyRender extends EntityRenderer<EntityBey> {
             RenderSystem.depthMask(true);
             if(stack.getItem() instanceof ItemBeyDiscFrame && stack.hasTag() && stack.getTag().contains("frame")){
                 Item discFrameItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("frame")).getString("id")));
-                sceneFrame = sceneDisc.addChild(ItemCreator.models.get(discFrameItem));
+                if(ItemCreator.models.get(discFrameItem) != null)
+                    sceneFrame = sceneDisc.addChild(ItemCreator.models.get(discFrameItem));
             }
             RenderObject sceneLayer = sceneDisc.addChild(ItemCreator.models.get(entity.getLayer().getItem()));
 
@@ -89,11 +90,10 @@ public class BeyRender extends EntityRenderer<EntityBey> {
             sceneLayer.forceTransformUpdate();
 
             RenderManager.render(layer, RenderMode.USE_CUSTOM_MATS);
-            RenderSystem.depthMask(false);
             sceneLayer.remove();
             if (sceneFrame != null) sceneFrame.remove();
             sceneDisc.remove();
-            layer.removeRenderObject(sceneDriver);
+            sceneDriver.remove();
         });
         if (this.entityRenderDispatcher.crosshairPickEntity == entity && !Minecraft.getInstance().player.isSpectator()
                 && Minecraft.renderNames()) {
@@ -110,10 +110,10 @@ public class BeyRender extends EntityRenderer<EntityBey> {
             net.minecraft.util.math.vector.Matrix4f matrix4f1 = matrixStack.last().pose();
             for (int i = 0; i < entity.getPoints().length; i++) {
                 if (entity.getPoints()[i] != null) {
+                    float x = (float) (entity.getPoints()[i].x - entity.position().x);
+                    float y = (float) (entity.getPoints()[i].y - entity.position().y);
+                    float z = (float) (entity.getPoints()[i].z - entity.position().z);
                     if (i != entity.getPoints().length - 1) {
-                        float x = (float) (entity.getPoints()[i].x - entity.position().x);
-                        float y = (float) (entity.getPoints()[i].y - entity.position().y);
-                        float z = (float) (entity.getPoints()[i].z - entity.position().z);
                         float x1 = (float) (entity.getPoints()[i + 1].x - entity.position().x);
                         float y1 = (float) (entity.getPoints()[i + 1].y - entity.position().y);
                         float z1 = (float) (entity.getPoints()[i + 1].z - entity.position().z);
@@ -124,9 +124,6 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                         wr.vertex(matrix4f1, x, y, z).color(255, 255, 0, 80).endVertex();
                         wr.vertex(matrix4f1, x1, y1, z1).color(255, 255, 0, 80).endVertex();
                     } else {
-                        float x = (float) (entity.getPoints()[i].x - entity.position().x);
-                        float y = (float) (entity.getPoints()[i].y - entity.position().y);
-                        float z = (float) (entity.getPoints()[i].z - entity.position().z);
                         IVertexBuilder wr2 = bufferIn.getBuffer(CustomRenderType.THINLINE);
                         wr2.vertex(matrix4f1, x, y, z).color(255, 255, 0, 255).endVertex();
                         wr2.vertex(matrix4f1, 0, 0, 0).color(255, 255, 0, 255).endVertex();
@@ -137,31 +134,6 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                 }
             }
         }
-//        matrixStack.scale(0.5F, 0.5F, 0.5F);
-//        matrixStack.mulPose(new Quaternion(90, 0, 0, true));
-//        matrixStack.translate(0, 0, -0.30);
-//        matrixStack.mulPose(new Quaternion(0, 0, -entity.angle*1.5f, true));
-//        if (entity.getRotationSpeed() < 1) {
-//            matrixStack.mulPose(
-//                    new Quaternion(new Vector3f((float) entity.getLookAngle().x, (float) entity.getLookAngle().z, 0),
-//                            40 * ((1 - entity.getRotationSpeed())), true));
-//        }
-//        Minecraft.getInstance().getItemRenderer().renderStatic(entity.getLayer(), TransformType.FIXED, Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(entity,partialTicks),
-//                OverlayTexture.NO_OVERLAY, matrixStack, bufferIn);
-//        if(entity.getRotationDirection()==1){
-//            matrixStack.mulPose(new Quaternion(0, 0,
-//                    entity.getRotationDirection() * -entity.getHealth() + 85, true));
-//        } else {
-//            matrixStack.mulPose(new Quaternion(0, 0,
-//                    entity.getRotationDirection() * -entity.getHealth() +11, true));
-//        }
-//        matrixStack.translate(0, 0, 0.078);
-//        Minecraft.getInstance().getItemRenderer().renderStatic(entity.getDisc(), TransformType.FIXED, Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(entity,partialTicks),
-//                OverlayTexture.NO_OVERLAY, matrixStack, bufferIn);
-//        matrixStack.translate(0, 0, 0.15);
-//        Minecraft.getInstance().getItemRenderer().renderStatic(entity.getDriver(), TransformType.FIXED, Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(entity,partialTicks),
-//                OverlayTexture.NO_OVERLAY, matrixStack, bufferIn);
-//        matrixStack.popPose();
     }
 
     public float round(float d, int decimalPlace) {

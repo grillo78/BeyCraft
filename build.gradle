@@ -23,7 +23,7 @@ apply plugin: 'maven-publish'
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'java'
 
-version = '1.7-beta-7'
+version = '1.7-beta-11'
 group = 'ga.beycraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'beycraft'
 
@@ -65,6 +65,7 @@ minecraft {
         clientWithCredentials {
             parent runs.client
 
+            workingDirectory project.file('runWithCredentials')
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             args '-mixin.config=beycraft.mixins.json', '--username', 'grillo78', '--uuid', 'b8a6cebf-7221-4d53-b120-6e759f14fbfb'
@@ -147,7 +148,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.0.58'
 
     compile fg.deobf('xyz.heroesunited:hu-core:2.5.38')
-    shade 'io.gitlab.friedrichlp:renderlib:1.0.0-pre2'
+    shade 'ga.beycraft:RenderLib:1.0.0-pre4'
 //    shade 'com.oneandone:composite-jks:1.0'
 
 }

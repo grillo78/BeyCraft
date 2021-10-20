@@ -62,7 +62,7 @@ public class RenderBeyCreator extends TileEntityRenderer<BeyCreatorTileEntity> {
                     scenePart.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
                     scenePart.forceTransformUpdate();
                     RenderManager.render(layer, RenderMode.USE_CUSTOM_MATS);
-                    layer.removeRenderObject(scenePart);
+                    scenePart.remove();
 
                 });
             }else

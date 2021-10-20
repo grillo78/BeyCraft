@@ -87,7 +87,7 @@ public class Battle {
         player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
             Random rand = new Random();
                 h.increaseExperience(round(
-                        rand.nextInt(h.getBladerLevel() * beys.size()) + rand.nextFloat(), 2));
+                        rand.nextInt(h.getBladerLevel() * beys.size())/5 + rand.nextFloat(), 2));
             PacketHandler.instance.sendTo(new MessageWinCombat(), player.connection.getConnection(),
                     NetworkDirection.PLAY_TO_CLIENT);
             PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getExperience()), player.connection.getConnection(),
@@ -95,10 +95,11 @@ public class Battle {
         });
         points.forEach((auxPlayer,points)->{
             if(auxPlayer != player){
-                PacketHandler.instance.sendTo(new MessageLoseCombat(), player.connection.getConnection(),
+                PacketHandler.instance.sendTo(new MessageLoseCombat(), ((ServerPlayerEntity)auxPlayer).connection.getConnection(),
                         NetworkDirection.PLAY_TO_CLIENT);
             }
         });
+        stadium.invalidateBattle();
     }
 
     public float round(float d, int decimalPlace) {

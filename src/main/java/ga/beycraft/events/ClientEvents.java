@@ -22,9 +22,7 @@ import ga.beycraft.tileentity.RenderBeyCreator;
 import ga.beycraft.tileentity.RenderExpository;
 import ga.beycraft.tileentity.RenderRobot;
 import ga.beycraft.util.BeyPartModel;
-import ga.beycraft.util.ConfigManager;
 import ga.beycraft.util.RankingUtil;
-import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import net.minecraft.client.Minecraft;
@@ -170,12 +168,12 @@ public class ClientEvents {
             RenderLibSettings.Rendering.CAMERA_HEIGHT_OFFSET = (float) (cameraPos.y - Minecraft.getInstance().player.getPosition(event.getPartialTicks()).y);
             RenderManager.setRenderDistance(Minecraft.getInstance().options.renderDistance * 16);
             try {
+                BeyPartModel.worldModels.forEach(h -> h.render());
                 RenderManager.update();
             } catch (NullPointerException e){}
             for (Runnable runnable : BeyRender.getRunnables()) {
                 runnable.run();
             }
-            BeyPartModel.worldModels.forEach(h -> h.render());
             BeyPartModel.worldModels.clear();
             BeyRender.getRunnables().clear();
             RenderSystem.disableBlend();
@@ -197,27 +195,14 @@ public class ClientEvents {
             if (event.getGui() instanceof MainMenuScreen && firstScreenMenuOpen) {
                 firstScreenMenuOpen = false;
                 try {
-                    DiscordRPC.discordInitialize("736594360149344267",
-                            new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
-                                BeyCraft.logger.info(
-                                        "Discord RPC is ready for user: " + user.username + "#" + user.discriminator);
-                            }).build(), true);
-                    BeyCraft.TIME_STAMP = new Timestamp(System.currentTimeMillis()).getTime();
                     setDiscordRPC();
                 } catch (Exception e) {
                     BeyCraft.logger.error("Error during Discord RPC start");
                 }
-                File[] propertiesFiles = new File("BeyParts").listFiles(new FilenameFilter() {
-
-                    @Override
-                    public boolean accept(File dir, String name) {
-                        return name.endsWith(".properties");
-                    }
-                });
-                if (propertiesFiles.length == 0) {
+                if (!Reference.HAS_INTERNET) {
                     event.setCanceled(true);
                     Minecraft.getInstance()
-                            .setScreen(new MissingContentPacksScreen(new StringTextComponent("")));
+                            .setScreen(new NoInternetConnectionScreen(new StringTextComponent("")));
                 } else RankingUtil.checkLogIn(event);
             }
         }

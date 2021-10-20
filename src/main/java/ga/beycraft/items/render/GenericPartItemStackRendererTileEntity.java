@@ -96,7 +96,7 @@ public class GenericPartItemStackRendererTileEntity extends ItemStackTileEntityR
             sceneLayer.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
             sceneLayer.forceTransformUpdate();
             RenderManager.render(layer, RenderMode.USE_FFP_MATS);
-            layer.removeRenderObject(sceneLayer);
+            sceneLayer.remove();
             RenderSystem.disableBlend();
             RenderSystem.defaultBlendFunc();
         }

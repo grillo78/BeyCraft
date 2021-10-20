@@ -149,7 +149,7 @@ public class LauncherItemStackRendererTileEntity extends ItemStackTileEntityRend
             matrixStack.mulPose(new Quaternion(0, 45, 0, true));
             if (transformType.firstPerson()) {
                 matrixStack.mulPose(new Quaternion(-20, 0, 0, true));
-                matrixStack.translate(0,-0.3,0);
+                matrixStack.translate(0,-0.375,0);
             }
             matrixStack.scale(1.5F, 1.5F, 1.5F);
             if (!stacks.containsKey(stack.getTag().get("bey"))) {
