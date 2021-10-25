@@ -73,7 +73,9 @@ public class RankingUtil {
                 params.add(new BasicNameValuePair("token", ConfigManager.getToken()));
                 httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
-                httpclient.execute(httppost);
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+                System.out.println(new BufferedReader(new InputStreamReader(entity.getContent())).readLine());
             } catch (MalformedURLException mue) {
                 mue.printStackTrace();
             } catch (IOException ioe) {
@@ -95,7 +97,9 @@ public class RankingUtil {
                 params.add(new BasicNameValuePair("token", ConfigManager.getToken()));
                 httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
-                httpclient.execute(httppost);
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+                System.out.println(new BufferedReader(new InputStreamReader(entity.getContent())).readLine());
             } catch (MalformedURLException mue) {
                 mue.printStackTrace();
             } catch (IOException ioe) {

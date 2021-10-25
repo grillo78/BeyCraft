@@ -22,10 +22,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -64,29 +61,20 @@ public class BeyCraft {
                 File folder = new File("beycraft_cached_models");
                 if (folder.exists())
                     FileUtils.deleteDirectory(folder);
-                if(ConfigManager.downloadDefaultPack()){
-                    BufferedInputStream in = new BufferedInputStream(new URL("https://beycraft.ga/Starter%20Pack.zip").openStream());
-                    File itemsFolder = new File("BeyParts");
-                    if (!itemsFolder.exists()) {
-                        itemsFolder.mkdir();
-                    }
-                    File starterPackFile = new File("BeyParts/Starter Pack temp.zip");
-                    FileOutputStream fileOutputStream = new FileOutputStream(starterPackFile);
-                    byte dataBuffer[] = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                        fileOutputStream.write(dataBuffer, 0, bytesRead);
-                    }
-                    fileOutputStream.close();
-                    ZipUtils.unzip(starterPackFile,itemsFolder);
-                    starterPackFile.delete();
-                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                downloadDefaultPack();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             RenderLibSettings.Caching.CACHE_LOCATION = "beycraft_cached_models";
             RenderLibSettings.Caching.CACHE_VERSION = "1";
         });
+
+
+
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         // Register ourselves for server and other game events we are interested in
@@ -99,5 +87,24 @@ public class BeyCraft {
         CapabilityManager.INSTANCE.register(ICurrency.class, new CurrencyStorage(), new CurrencyFactory());
     }
 
+    private void downloadDefaultPack() throws IOException {
+        if(ConfigManager.downloadDefaultPack()){
+            BufferedInputStream in = new BufferedInputStream(new URL("https://beycraft.ga/Starter%20Pack.zip").openStream());
+            File itemsFolder = new File("BeyParts");
+            if (!itemsFolder.exists()) {
+                itemsFolder.mkdir();
+            }
+            File starterPackFile = new File("BeyParts/Starter Pack temp.zip");
+            FileOutputStream fileOutputStream = new FileOutputStream(starterPackFile);
+            byte dataBuffer[] = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
+            }
+            fileOutputStream.close();
+            ZipUtils.unzip(starterPackFile,itemsFolder);
+            starterPackFile.delete();
+        }
+    }
 
 }

@@ -113,4 +113,8 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
     public void setAllowBattle(boolean allowBattle) {
         this.allowBattle = allowBattle;
     }
+
+    public Battle getBattle() {
+        return battle;
+    }
 }

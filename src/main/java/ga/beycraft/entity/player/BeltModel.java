@@ -3,7 +3,9 @@ package ga.beycraft.entity.player;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
@@ -14,11 +16,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class BeltModel<T extends LivingEntity> extends BipedModel<T> {
+public class BeltModel extends Model {
     public ModelRenderer belt;
 
     public BeltModel() {
-        super(0);
+        super(RenderType::entityTranslucent);
         this.texWidth = 32;
         this.texHeight = 32;
         this.belt = new ModelRenderer(this, 0, 0);
@@ -37,8 +39,5 @@ public class BeltModel<T extends LivingEntity> extends BipedModel<T> {
             modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         });
     }
-
-    @Override
-    public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 
 }

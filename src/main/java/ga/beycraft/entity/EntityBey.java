@@ -323,7 +323,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 					} else {
 						setRotationSpeed(getRotationSpeed()
 								- 0.005F * ((ItemBeyDriver) getDriver().getItem()).getFriction(getDriver())
-										/ (10 * ((ItemBeyDisc) getDisc().getItem()).getWeight()));
+										/ (10 * ((ItemBeyDisc) getDisc().getItem()).getWeight() *((ItemBeyLayer) getLayer().getItem()).getWeight(getLayer())));
 
 					}
 					angle += getRotationSpeed() * 30 * -rotationDirection;

@@ -33,6 +33,10 @@ public class Battle {
         this.stadium = stadium;
     }
 
+    public HashMap<PlayerEntity, Integer> getPoints() {
+        return points;
+    }
+
     public void tick(List<EntityBey> beys) {
         if (startCount < 20) {
             for (EntityBey bey : beys) {
