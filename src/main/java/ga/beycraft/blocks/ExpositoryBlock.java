@@ -40,7 +40,7 @@ import javax.annotation.Nullable;
  */
 public class ExpositoryBlock extends Block implements IWaterLoggable {
 
-    private VoxelShape collisionBox = VoxelShapes.box(0,0,0,1,0.5,1);
+    private VoxelShape collisionBox = VoxelShapes.box(0.3,0,0.3,0.7,0.5,0.7);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public ExpositoryBlock(Material materialIn, String name) {
@@ -76,7 +76,6 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
                 worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0)));
             });
         }
-        worldIn.addFreshEntity(new ItemEntity(worldIn,pos.getX(),pos.getY(),pos.getZ(), new ItemStack(this)));
         super.playerWillDestroy(worldIn, pos, state, player);
     }
 

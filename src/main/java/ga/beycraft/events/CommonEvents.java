@@ -12,10 +12,7 @@ import ga.beycraft.items.ItemBladerBelt;
 import ga.beycraft.network.PacketHandler;
 import ga.beycraft.network.message.MessageGetExperience;
 import ga.beycraft.network.message.MessageSyncBladerLevel;
-import ga.beycraft.tileentity.BeyCreatorTileEntity;
-import ga.beycraft.tileentity.ExpositoryTileEntity;
-import ga.beycraft.tileentity.RobotTileEntity;
-import ga.beycraft.tileentity.StadiumTileEntity;
+import ga.beycraft.tileentity.*;
 import ga.beycraft.util.ItemCreator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -73,6 +70,8 @@ public class CommonEvents {
 				.setRegistryName(new ResourceLocation(Reference.MOD_ID, "robottileentity")));
 		event.getRegistry().register(TileEntityType.Builder.of(StadiumTileEntity::new, BeyCraftRegistry.STADIUM)
 				.build(null).setRegistryName(new ResourceLocation(Reference.MOD_ID, "stadiumtileentity")));
+		event.getRegistry().register(TileEntityType.Builder.of(BattleInformerTileEntity::new, BeyCraftRegistry.BATTLE_INFORMER)
+				.build(null).setRegistryName(new ResourceLocation(Reference.MOD_ID, "battleinformer")));
 	}
 
 	@SubscribeEvent

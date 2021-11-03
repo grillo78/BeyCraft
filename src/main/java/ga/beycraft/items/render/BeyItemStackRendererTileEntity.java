@@ -9,6 +9,7 @@ import friedrichlp.renderlib.tracking.RenderLayer;
 import friedrichlp.renderlib.tracking.RenderManager;
 import friedrichlp.renderlib.tracking.RenderObject;
 import ga.beycraft.items.ItemBeyDiscFrame;
+import ga.beycraft.items.ItemBeyLayer;
 import ga.beycraft.util.BeyPartModel;
 import ga.beycraft.util.ItemCreator;
 import net.minecraft.client.Minecraft;
@@ -100,11 +101,20 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
                         Item discFrameItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) ((CompoundNBT) ((CompoundNBT) stack.getTag().get("disc")).get("tag")).get("frame")).getString("id")));
                         if (ItemCreator.models.containsKey(discFrameItem)) {
                             RenderObject sceneDiscFrame = model.addChild(ItemCreator.models.get(discFrameItem));
+                            if(((ItemBeyLayer)stack.getItem()).getRotationDirection() == -1){
+                                sceneDiscFrame.transform.rotate(0,70,0);
+                            }
                         }
+                    }
+                    if(((ItemBeyLayer)stack.getItem()).getRotationDirection() == -1){
+                        sceneDisc.transform.rotate(0,70,0);
                     }
                     Item driverItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("driver")).getString("id")));
                     if (ItemCreator.models.containsKey(driverItem)) {
                         RenderObject sceneDriver = model.addChild(ItemCreator.models.get(driverItem));
+                        if(((ItemBeyLayer)stack.getItem()).getRotationDirection() == -1){
+                            sceneDriver.transform.rotate(0,70,0);
+                        }
                     }
                 }
             }

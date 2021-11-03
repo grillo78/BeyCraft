@@ -1,18 +1,12 @@
 package ga.beycraft;
 
 import com.google.common.collect.Lists;
-import ga.beycraft.blocks.BeyCreatorBlock;
-import ga.beycraft.blocks.ExpositoryBlock;
-import ga.beycraft.blocks.RobotBlock;
-import ga.beycraft.blocks.StadiumBlock;
+import ga.beycraft.blocks.*;
 import ga.beycraft.entity.EntityBey;
 import ga.beycraft.inventory.*;
 import ga.beycraft.inventory.slots.BeyLoggerContainer;
 import ga.beycraft.items.*;
-import ga.beycraft.tileentity.BeyCreatorTileEntity;
-import ga.beycraft.tileentity.ExpositoryTileEntity;
-import ga.beycraft.tileentity.RobotTileEntity;
-import ga.beycraft.tileentity.StadiumTileEntity;
+import ga.beycraft.tileentity.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
@@ -61,6 +55,8 @@ public class BeyCraftRegistry {
     public static final TileEntityType<RobotTileEntity> ROBOTTILEENTITYTYPE = null;
     @ObjectHolder(Reference.MOD_ID + ":stadiumtileentity")
     public static final TileEntityType<StadiumTileEntity> STADIUMTILEENTITYTYPE = null;
+    @ObjectHolder(Reference.MOD_ID + ":battleinformer")
+    public static final TileEntityType<BattleInformerTileEntity> BATTLE_INFORMER_TILE_ENTITY_TYPE = null;
 
     /* Container */
     @ObjectHolder("beycraft:right_launcher")
@@ -144,5 +140,6 @@ public class BeyCraftRegistry {
     public static final ExpositoryBlock EXPOSITORY = new ExpositoryBlock(Material.HEAVY_METAL, "expository");
     public static final StadiumBlock STADIUM = new StadiumBlock(Material.METAL, "stadium");
     public static final RobotBlock ROBOT = new RobotBlock(Material.METAL, "robot");
+    public static final BattleInformerBlock BATTLE_INFORMER = new BattleInformerBlock(Material.METAL,"battle_informer");
 
 }

@@ -1,8 +1,3 @@
 {
-    "parent": "block/slab",
-    "textures": {
-        "bottom": "block/white_concrete",
-        "top": "block/white_concrete",
-        "side": "block/white_concrete"
-    }
+    "parent": "beycraft:block/expository"
 }

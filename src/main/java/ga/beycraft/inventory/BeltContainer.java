@@ -27,6 +27,10 @@ public class BeltContainer extends Container {
 		super(type, id);
 		this.stack = stack;
 		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+			if(stack.hasTag()){
+				h.insertItem(0, ItemStack.of(stack.getTag().getCompound("bey")),false);
+				h.insertItem(1, ItemStack.of(stack.getTag().getCompound("launcher")),false);
+			}
 			this.addSlot(new SlotBeyBothLayer(h, 0, 10, 15));
 			this.addSlot(new SlotBeyLauncher(h, 1, 10, 35));
 		});
@@ -48,7 +52,6 @@ public class BeltContainer extends Container {
 					stack.setTag(nbt);
 				}
 				CompoundNBT nbt = stack.getTag();
-				nbt.putBoolean("isEntity", false);
 				nbt.put("bey", h.getStackInSlot(0).save(new CompoundNBT()));
 				nbt.put("launcher", h.getStackInSlot(1).save(new CompoundNBT()));
 			});

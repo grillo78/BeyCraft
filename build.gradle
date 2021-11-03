@@ -23,7 +23,7 @@ apply plugin: 'maven-publish'
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'java'
 
-version = '1.7-beta-11'
+version = '1.7-beta-14'
 group = 'ga.beycraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'beycraft'
 
@@ -149,6 +149,7 @@ dependencies {
 
     compile fg.deobf('xyz.heroesunited:hu-core:2.5.38')
     shade 'ga.beycraft:RenderLib:1.0.0-pre4'
+    compile fg.deobf('curse.maven:furniture-55438:3346467')
 //    shade 'com.oneandone:composite-jks:1.0'
 
 }

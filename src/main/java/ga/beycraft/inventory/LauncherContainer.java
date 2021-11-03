@@ -33,9 +33,13 @@ public class LauncherContainer extends Container {
         this.stack = stack;
         this.hand = hand;
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                .ifPresent(h -> this.addSlot(new SlotBeyLayer(h, 0, 10, 15, stack)));
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .ifPresent(h -> {
+                    if(stack.hasTag()){
+                        h.insertItem(0, ItemStack.of(stack.getTag().getCompound("bey")),false);
+                        h.insertItem(1, ItemStack.of(stack.getTag().getCompound("handle")),false);
+                        h.insertItem(2, ItemStack.of(stack.getTag().getCompound("beylogger")),false);
+                    }
+                    this.addSlot(new SlotBeyLayer(h, 0, 10, 15, stack));
                     this.addSlot(new SlotHandle(h, 1, 62, 15));
                         });
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)

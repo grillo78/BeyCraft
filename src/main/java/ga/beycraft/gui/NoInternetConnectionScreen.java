@@ -33,6 +33,12 @@ public class NoInternetConnectionScreen extends Screen {
 	}
 
 	@Override
+	public void removed() {
+		super.removed();
+		Minecraft.getInstance().close();
+	}
+
+	@Override
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(matrixStack);
 
@@ -42,7 +48,6 @@ public class NoInternetConnectionScreen extends Screen {
 		this.blit(matrixStack, width / 2 - logoWidth / 2, 30, 0, 0, logoWidth, logoHeight, logoWidth, logoHeight);
 
 		for (int i = 0; i < textArray.length; i++) {
-
 			drawCenteredString(matrixStack, font, new StringTextComponent(textArray[i]), this.width / 2,
 					15 * i + height / 2, 16777215);
 		}

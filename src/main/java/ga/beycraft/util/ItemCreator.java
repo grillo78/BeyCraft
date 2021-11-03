@@ -1,23 +1,22 @@
 package ga.beycraft.util;
 
 import com.google.common.collect.Lists;
+import friedrichlp.renderlib.RenderLibSettings;
 import friedrichlp.renderlib.library.RenderEffect;
 import friedrichlp.renderlib.model.ModelLoaderProperty;
 import friedrichlp.renderlib.tracking.ModelInfo;
 import friedrichlp.renderlib.tracking.ModelManager;
 import ga.beycraft.BeyCraft;
-import ga.beycraft.abilities.Ability;
-import ga.beycraft.abilities.Absorb;
-import ga.beycraft.abilities.MultiMode;
-import ga.beycraft.abilities.MultiType;
+import ga.beycraft.abilities.*;
 import ga.beycraft.items.*;
 import net.minecraft.item.Item;
-import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -93,16 +92,16 @@ public class ItemCreator {
                                     getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
                                     properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
                             break;
-                        case "Godlayer":
-                            item = new ItemBeyLayerGod(file.getName().replace(".properties", ""),
-                                    new Float(properties.getProperty("rotationDirection")),
-                                    new Float(properties.getProperty("attack")),
-                                    new Float(properties.getProperty("defense")),
-                                    new Float(properties.getProperty("weight")),
-                                    getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-                                    getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
-                                    properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
-                            break;
+//                        case "Godlayer":
+//                            item = new ItemBeyLayerGod(file.getName().replace(".properties", ""),
+//                                    new Float(properties.getProperty("rotationDirection")),
+//                                    new Float(properties.getProperty("attack")),
+//                                    new Float(properties.getProperty("defense")),
+//                                    new Float(properties.getProperty("weight")),
+//                                    getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
+//                                    getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+//                                    properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
+//                            break;
                         case "GTlayer":
                             item = new ItemBeyLayerGT(file.getName().replace(".properties", ""),
                                     new Float(properties.getProperty("rotationDirection")),
@@ -163,6 +162,7 @@ public class ItemCreator {
 //                        models.put(item, ModelManager.registerModel(new File("BeyParts\\models\\" + file.getName().replace(".properties", "_left.obj")), new ModelLoaderProperty(0.0f)));
 //
 //                    } else {
+                        RenderLibSettings.General.MODEL_LOAD_LIMIT++;
                         models.put(finalItem, ModelManager.registerModel(new File("BeyParts\\models\\" + file.getName().replace(".properties", ".obj")), new ModelLoaderProperty(0.0f)));
 //                    }
                         models.get(finalItem).addRenderEffect(RenderEffect.NORMAL_LIGHTING);
@@ -181,6 +181,10 @@ public class ItemCreator {
         switch (name) {
             case "Absorb":
                 return new Absorb();
+            case "SpringAttack":
+                return new SpringAttack();
+            case "SpeedReboot":
+                return new SpeedReboot();
             case "MultiType":
                 return new MultiType(getTypes(properties.getProperty("types").split(" ")));
             case "MultiMode":
@@ -194,6 +198,10 @@ public class ItemCreator {
         switch (name) {
             case "Absorb":
                 return new Absorb();
+            case "SpringAttack":
+                return new SpringAttack();
+            case "SpeedReboot":
+                return new SpeedReboot();
             case "MultiType":
                 return new MultiType(getTypes(properties.getProperty("types").split(" ")));
             case "MultiMode":

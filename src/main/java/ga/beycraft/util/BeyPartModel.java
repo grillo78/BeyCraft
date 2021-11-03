@@ -1,5 +1,6 @@
 package ga.beycraft.util;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import friedrichlp.renderlib.RenderLibRegistry;
 import friedrichlp.renderlib.library.RenderMode;
 import friedrichlp.renderlib.math.Matrix4f;
@@ -9,6 +10,7 @@ import friedrichlp.renderlib.tracking.RenderLayer;
 import friedrichlp.renderlib.tracking.RenderManager;
 import friedrichlp.renderlib.tracking.RenderObject;
 import net.minecraft.util.math.vector.Vector3d;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;

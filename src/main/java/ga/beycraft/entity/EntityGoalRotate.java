@@ -1,5 +1,6 @@
 package ga.beycraft.entity;
 
+import ga.beycraft.abilities.SpeedReboot;
 import ga.beycraft.blocks.StadiumBlock;
 import ga.beycraft.items.ItemBeyDriver;
 import ga.beycraft.util.BeyTypes;
@@ -48,7 +49,7 @@ public class EntityGoalRotate extends Goal {
 									.getRadiusReduction(bey.getDriver())
 							/ (bey.getRotationSpeed() / bey.getMaxRotationSpeed()));
 				} else {
-					if (bey.isIncreaseRadius()) {
+					if (bey.isIncreaseRadius() || (bey.getRotationSpeed() < bey.getMaxRotationSpeed()/3 && ((ItemBeyDriver)bey.getDriver().getItem()).getPrimaryAbility() instanceof SpeedReboot|| ((ItemBeyDriver)bey.getDriver().getItem()).getPrimaryAbility() instanceof SpeedReboot)) {
 						bey.setRadius(bey.getRadius() + 0.001f
 								* ((ItemBeyDriver) bey.getInventory().getStackInSlot(2).getItem())
 										.getRadiusReduction(bey.getDriver())

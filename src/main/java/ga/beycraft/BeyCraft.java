@@ -22,7 +22,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -64,15 +67,15 @@ public class BeyCraft {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            try {
-                downloadDefaultPack();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             RenderLibSettings.Caching.CACHE_LOCATION = "beycraft_cached_models";
             RenderLibSettings.Caching.CACHE_VERSION = "1";
+            RenderLibSettings.General.MODEL_UNLOAD_DELAY_MS = Integer.MAX_VALUE;
         });
-
+        try {
+            downloadDefaultPack();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         // Register the setup method for modloading
@@ -88,7 +91,7 @@ public class BeyCraft {
     }
 
     private void downloadDefaultPack() throws IOException {
-        if(ConfigManager.downloadDefaultPack()){
+        if (ConfigManager.downloadDefaultPack()) {
             BufferedInputStream in = new BufferedInputStream(new URL("https://beycraft.ga/Starter%20Pack.zip").openStream());
             File itemsFolder = new File("BeyParts");
             if (!itemsFolder.exists()) {
@@ -102,7 +105,7 @@ public class BeyCraft {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
             fileOutputStream.close();
-            ZipUtils.unzip(starterPackFile,itemsFolder);
+            ZipUtils.unzip(starterPackFile, itemsFolder);
             starterPackFile.delete();
         }
     }

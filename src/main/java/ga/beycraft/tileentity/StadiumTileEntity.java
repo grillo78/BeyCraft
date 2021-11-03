@@ -8,9 +8,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class StadiumTileEntity extends TileEntity implements ITickableTileEntity {
@@ -63,42 +65,11 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
                 allowBattle = beys.size() == 0;
             }
         }
-//        if (battle != null) {
-//            if (beysSpinning == 1 && !level.isClientSide) {
-//                for (ServerPlayerEntity player : ((ServerWorld) level).getServer().getPlayerList().getPlayers()) {
-//                    for (EntityBey bey : beys) {
-//                        if (player.getName().getString().equals(bey.getPlayerName())) {
-//                            if (bey.hasBeylogger()) {
-//                                player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h -> {
-//                                    Random rand = new Random();
-//                                    h.increaseCurrency(round(rand.nextInt(100) + rand.nextFloat(), 2));
-//                                });
-//                            }
-//                            player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
-//                                Random rand = new Random();
-//                                if (beys.size() != beysInBattle) {
-//                                    h.increaseExperience(round(
-//                                            rand.nextInt(100 * (beysInBattle - beys.size())) + rand.nextFloat(), 2));
-//                                } else {
-//                                    h.increaseExperience(round(
-//                                            rand.nextInt(50 * (beysInBattle - 1)) * beys.get(0).getBladerLevel() + rand.nextFloat(), 2));
-//                                }
-//
-//                                PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getBladerLevel(), h.getExperience()), player.connection.getConnection(),
-//                                        NetworkDirection.PLAY_TO_CLIENT);
-//                            });
-//                        }
-//                    }
-//                }
-//
-//            }
-//            if (beysSpinning < 2) {
-//                inBattle = false;
-//                beysInBattle = 0;
-//            }
-//        } else {
-//            inBattle = beysSpinning > 1;
-//        }
+    }
+
+    public void updatePoints(BattleInformerTileEntity battleInformer){
+        battleInformer.setPoints(battle != null? battle.getPoints() : new HashMap<>());
+        level.setBlockAndUpdate(battleInformer.getBlockPos(),battleInformer.getBlockState());
     }
 
     public int getPointsToWin() {
@@ -108,6 +79,11 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
     public void invalidateBattle() {
         battle = null;
         allowBattle = false;
+        BlockPos.betweenClosedStream(getBlockPos().above().north(2).east(2),getBlockPos().above().south(2).west(2)).forEach(blockPos -> {
+            if(level.getBlockEntity(blockPos) instanceof BattleInformerTileEntity){
+                updatePoints((BattleInformerTileEntity) level.getBlockEntity(blockPos));
+            }
+        });
     }
 
     public void setAllowBattle(boolean allowBattle) {

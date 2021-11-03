@@ -29,6 +29,11 @@ public class BeyContainer extends Container {
         this.stack = stack;
         if(!BeyCraftRegistry.ITEMSLAYER.isEmpty()){
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+
+                if(stack.hasTag()){
+                    h.insertItem(0, ItemStack.of(stack.getTag().getCompound("disc")),false);
+                    h.insertItem(1, ItemStack.of(stack.getTag().getCompound("driver")),false);
+                }
                 this.addSlot(new SlotBeyDisk(h, 0, 10, 15));
                 this.addSlot(new SlotBeyDriver(h, 1, 10, 35));
             });

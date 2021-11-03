@@ -18,9 +18,7 @@ import ga.beycraft.network.PacketHandler;
 import ga.beycraft.network.message.MessageNotifyPlayCountdown;
 import ga.beycraft.network.message.MessageOpenBelt;
 import ga.beycraft.particles.SparkleParticle;
-import ga.beycraft.tileentity.RenderBeyCreator;
-import ga.beycraft.tileentity.RenderExpository;
-import ga.beycraft.tileentity.RenderRobot;
+import ga.beycraft.tileentity.*;
 import ga.beycraft.util.BeyPartModel;
 import ga.beycraft.util.RankingUtil;
 import net.arikia.dev.drpc.DiscordRPC;
@@ -57,9 +55,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
 import xyz.heroesunited.heroesunited.client.events.HUSetRotationAnglesEvent;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.sql.Timestamp;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -83,6 +78,7 @@ public class ClientEvents {
         RenderTypeLookup.setRenderLayer(BeyCraftRegistry.STADIUM, RenderType.cutoutMipped());
         RenderTypeLookup.setRenderLayer(BeyCraftRegistry.EXPOSITORY, RenderType.cutoutMipped());
         RenderTypeLookup.setRenderLayer(BeyCraftRegistry.BEYCREATORBLOCK, RenderType.cutoutMipped());
+        RenderTypeLookup.setRenderLayer(BeyCraftRegistry.BATTLE_INFORMER, RenderType.cutoutMipped());
 
         ClientRegistry.registerKeyBinding(ClientEvents.COUNTDOWNKEY);
         ClientRegistry.registerKeyBinding(ClientEvents.BELTKEY);
@@ -112,6 +108,7 @@ public class ClientEvents {
         ClientRegistry.bindTileEntityRenderer(BeyCraftRegistry.EXPOSITORYTILEENTITYTYPE, RenderExpository::new);
         ClientRegistry.bindTileEntityRenderer(BeyCraftRegistry.BEYCREATORTILEENTITYTYPE, RenderBeyCreator::new);
         ClientRegistry.bindTileEntityRenderer(BeyCraftRegistry.ROBOTTILEENTITYTYPE, RenderRobot::new);
+        ClientRegistry.bindTileEntityRenderer(BeyCraftRegistry.BATTLE_INFORMER_TILE_ENTITY_TYPE, RenderBattleInformer::new);
     }
 
     @SubscribeEvent
@@ -170,7 +167,8 @@ public class ClientEvents {
             try {
                 BeyPartModel.worldModels.forEach(h -> h.render());
                 RenderManager.update();
-            } catch (NullPointerException e){}
+            } catch (NullPointerException e) {
+            }
             for (Runnable runnable : BeyRender.getRunnables()) {
                 runnable.run();
             }
@@ -249,7 +247,7 @@ public class ClientEvents {
             if (ClientEvents.COUNTDOWNKEY.consumeClick() && event.getAction() == GLFW.GLFW_PRESS) {
                 PacketHandler.instance.sendToServer(new MessageNotifyPlayCountdown());
             }
-            if (ClientEvents.RANKINGKEY.consumeClick()){
+            if (ClientEvents.RANKINGKEY.consumeClick()) {
                 Minecraft.getInstance()
                         .setScreen(new RankingScreen(new StringTextComponent("")));
             }

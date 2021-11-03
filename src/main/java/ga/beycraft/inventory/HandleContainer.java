@@ -18,73 +18,78 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class HandleContainer extends Container {
 
-	private ItemStack stack;
-	private Hand hand;
+    private ItemStack stack;
+    private Hand hand;
 
-	/**
-	 * @param type
-	 * @param id
-	 */
-	public HandleContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory,
-			PlayerEntity player, Hand hand) {
-		super(type, id);
-		this.stack = stack;
-		this.hand = hand;
-		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 0, 10, 15)));
-		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 1, 10, 35)));
-		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.ifPresent(h -> this.addSlot(new SlotHandleAccesory(h, 2, 10, 55)));
-		addPlayerSlots(new InvWrapper(playerInventory), playerInventory.selected);
-	}
-
-	protected void addPlayerSlots(InvWrapper playerinventory, int locked) {
-		int yStart = 30 + 18 * 3;
-		for (int row = 0; row < 3; ++row) {
-			for (int col = 0; col < 9; ++col) {
-				int x = 8 + col * 18;
-				int y = row * 18 + yStart;
-				this.addSlot(new SlotItemHandler(playerinventory, col + row * 9 + 9, x, y));
-			}
-		}
-
-		for (int row = 0; row < 9; ++row) {
-			int x = 8 + row * 18;
-			int y = yStart + 58;
-			if (row != locked)
-				this.addSlot(new SlotItemHandler(playerinventory, row, x, y));
-			else
-				this.addSlot(new LockedSlot(playerinventory, row, x, y));
-		}
-	}
-
-	@Override
-	public void removed(PlayerEntity player) {
-		if(player instanceof ServerPlayerEntity){
-			if (player instanceof ServerPlayerEntity) {
-				stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-					if(!stack.hasTag()){
-						CompoundNBT nbt = new CompoundNBT();
-						stack.setTag(nbt);
+    /**
+     * @param type
+     * @param id
+     */
+    public HandleContainer(ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory,
+                           PlayerEntity player, Hand hand) {
+        super(type, id);
+        this.stack = stack;
+        this.hand = hand;
+        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .ifPresent(h -> {
+					if(stack.hasTag()){
+						h.insertItem(0, ItemStack.of(stack.getTag().getCompound("accesory1")),false);
+						h.insertItem(1, ItemStack.of(stack.getTag().getCompound("accesory2")),false);
+						h.insertItem(2, ItemStack.of(stack.getTag().getCompound("accesory3")),false);
 					}
-					CompoundNBT nbt = stack.getTag();
-					nbt.put("accesory1", h.getStackInSlot(0).save(new CompoundNBT()));
-					nbt.put("accesory2", h.getStackInSlot(1).save(new CompoundNBT()));
-					nbt.put("accesory3", h.getStackInSlot(2).save(new CompoundNBT()));
-				});
-			}
-		}
-	}
+                    this.addSlot(new SlotHandleAccesory(h, 0, 10, 15));
+                    this.addSlot(new SlotHandleAccesory(h, 1, 10, 35));
+                    this.addSlot(new SlotHandleAccesory(h, 2, 10, 55));
+                });
+        addPlayerSlots(new InvWrapper(playerInventory), playerInventory.selected);
+    }
 
-	@Override
-	public boolean stillValid(PlayerEntity playerIn) {
-		return true;
-	}
+    protected void addPlayerSlots(InvWrapper playerinventory, int locked) {
+        int yStart = 30 + 18 * 3;
+        for (int row = 0; row < 3; ++row) {
+            for (int col = 0; col < 9; ++col) {
+                int x = 8 + col * 18;
+                int y = row * 18 + yStart;
+                this.addSlot(new SlotItemHandler(playerinventory, col + row * 9 + 9, x, y));
+            }
+        }
 
-	@Override
-	public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
-		ItemStack transferred = ItemStack.EMPTY;
+        for (int row = 0; row < 9; ++row) {
+            int x = 8 + row * 18;
+            int y = yStart + 58;
+            if (row != locked)
+                this.addSlot(new SlotItemHandler(playerinventory, row, x, y));
+            else
+                this.addSlot(new LockedSlot(playerinventory, row, x, y));
+        }
+    }
+
+    @Override
+    public void removed(PlayerEntity player) {
+        if (player instanceof ServerPlayerEntity) {
+            if (player instanceof ServerPlayerEntity) {
+                stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                    if (!stack.hasTag()) {
+                        CompoundNBT nbt = new CompoundNBT();
+                        stack.setTag(nbt);
+                    }
+                    CompoundNBT nbt = stack.getTag();
+                    nbt.put("accesory1", h.getStackInSlot(0).save(new CompoundNBT()));
+                    nbt.put("accesory2", h.getStackInSlot(1).save(new CompoundNBT()));
+                    nbt.put("accesory3", h.getStackInSlot(2).save(new CompoundNBT()));
+                });
+            }
+        }
+    }
+
+    @Override
+    public boolean stillValid(PlayerEntity playerIn) {
+        return true;
+    }
+
+    @Override
+    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+        ItemStack transferred = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
 
         int otherSlots = this.slots.size() - 36;
@@ -109,6 +114,6 @@ public class HandleContainer extends Container {
         }
 
         return transferred;
-	}
-	
+    }
+
 }

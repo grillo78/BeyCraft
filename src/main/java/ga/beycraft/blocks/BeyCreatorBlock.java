@@ -62,7 +62,6 @@ public class BeyCreatorBlock extends Block {
     @Override
     public void playerWillDestroy(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         super.playerWillDestroy(world, pos, state, player);
-        world.addFreshEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this)));
         TileEntity tileentity = world.getBlockEntity(pos);
         if (tileentity instanceof BeyCreatorTileEntity) {
             ((BeyCreatorTileEntity) tileentity).getInventory().ifPresent(h -> {

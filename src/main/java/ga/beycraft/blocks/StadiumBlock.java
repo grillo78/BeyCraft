@@ -139,13 +139,6 @@ public class StadiumBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        super.playerWillDestroy(worldIn, pos, state, player);
-        if (!player.isCreative())
-            worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this)));
-    }
-
-    @Override
     public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         if (worldIn.getBlockState(pos.east().north()).getBlock() == Blocks.WATER
                 && worldIn.getBlockState(pos.east().north()).getFluidState().isSource()) {

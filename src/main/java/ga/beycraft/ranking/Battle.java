@@ -6,10 +6,14 @@ import ga.beycraft.network.PacketHandler;
 import ga.beycraft.network.message.MessageLoseCombat;
 import ga.beycraft.network.message.MessageSyncBladerLevel;
 import ga.beycraft.network.message.MessageWinCombat;
+import ga.beycraft.tileentity.BattleInformerTileEntity;
 import ga.beycraft.tileentity.StadiumTileEntity;
 import ga.beycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
 
@@ -24,7 +28,7 @@ public class Battle {
     private HashMap<PlayerEntity, Integer> points = new HashMap<>();
     private List<EntityBey> beys = new ArrayList<>();
     private int startCount = 0;
-    private final ServerWorld level;
+    private ServerWorld level;
     private BattleTypes type = BattleTypes.NORMAL_MATCH;
     private StadiumTileEntity stadium;
 
@@ -73,7 +77,7 @@ public class Battle {
             switch (type) {
                 case NORMAL_MATCH:
                     PlayerEntity winner = PlayerUtils.getPlayerByName(this.beys.get(lastSpinningBeyIndex).getPlayerName(), level);
-                    if(winner != null && points.containsKey(winner)){
+                    if (winner != null && points.containsKey(winner)) {
                         points.put(winner, points.get(winner) + 1);
                         if (points.get(winner) >= stadium.getPointsToWin())
                             setWinner((ServerPlayerEntity) winner);
@@ -88,18 +92,27 @@ public class Battle {
     }
 
     private void setWinner(ServerPlayerEntity player) {
+        BlockPos.betweenClosedStream(stadium.getBlockPos().above().north(2).east(2),stadium.getBlockPos().above().south(2).west(2)).forEach(blockPos -> {
+            if(level.getBlockEntity(blockPos) instanceof BattleInformerTileEntity){
+                stadium.updatePoints((BattleInformerTileEntity) level.getBlockEntity(blockPos));
+            }
+        });
         player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
             Random rand = new Random();
-                h.increaseExperience(round(
-                        rand.nextInt(h.getBladerLevel() * beys.size())/5 + rand.nextFloat(), 2));
+            h.increaseExperience(round(
+                    rand.nextInt(h.getBladerLevel() * beys.size()) / 5 + rand.nextFloat(), 2));
             PacketHandler.instance.sendTo(new MessageWinCombat(), player.connection.getConnection(),
                     NetworkDirection.PLAY_TO_CLIENT);
             PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getExperience()), player.connection.getConnection(),
                     NetworkDirection.PLAY_TO_CLIENT);
         });
-        points.forEach((auxPlayer,points)->{
-            if(auxPlayer != player){
-                PacketHandler.instance.sendTo(new MessageLoseCombat(), ((ServerPlayerEntity)auxPlayer).connection.getConnection(),
+        player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h -> {
+            Random rand = new Random();
+            h.increaseCurrency(round(rand.nextInt(100) + rand.nextFloat(), 2));
+        });
+        points.forEach((auxPlayer, points) -> {
+            if (auxPlayer != player) {
+                PacketHandler.instance.sendTo(new MessageLoseCombat(), ((ServerPlayerEntity) auxPlayer).connection.getConnection(),
                         NetworkDirection.PLAY_TO_CLIENT);
             }
         });

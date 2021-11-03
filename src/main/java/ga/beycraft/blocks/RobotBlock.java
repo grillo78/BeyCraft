@@ -148,7 +148,6 @@ public class RobotBlock extends Block {
 				worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0)));
 			});
 		}
-		worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this)));
 	}
 
 	@Override

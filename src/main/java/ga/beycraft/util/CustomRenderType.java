@@ -24,4 +24,8 @@ public class CustomRenderType extends RenderType {
                             Runnable clearTaskIn) {
         super(name, vertexFormat, drawMode, bufferSize, useDelegate, needsSorting, setupTaskIn, clearTaskIn);
     }
+
+    public static RenderType getHologram() {
+        return create("hologram", DefaultVertexFormats.POSITION_COLOR, 7, 256, false, true, RenderType.State.builder().setTransparencyState(TRANSLUCENT_TRANSPARENCY).setOutputState(WEATHER_TARGET).setShadeModelState(SMOOTH_SHADE).createCompositeState(false));
+    }
 }
