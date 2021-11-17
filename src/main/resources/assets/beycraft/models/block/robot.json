@@ -1,7 +1,9 @@
 {
     "parent": "builtin/entity",
+    "loader": "forge:obj",
+    "flip-v": true,
+    "model": "beycraft:models/block/robot.obj",
     "textures": {
         "particle": "beycraft:blocks/robot"
     }
 }
-

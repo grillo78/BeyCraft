@@ -11,23 +11,23 @@ import ga.beycraft.tileentity.StadiumTileEntity;
 import ga.beycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Battle {
 
     private HashMap<PlayerEntity, Integer> points = new HashMap<>();
-    private List<EntityBey> beys = new ArrayList<>();
+    private HashMap<PlayerEntity,EntityBey> beys = new HashMap<>();
     private int startCount = 0;
+    private int round = 1;
     private ServerWorld level;
     private BattleTypes type = BattleTypes.NORMAL_MATCH;
     private StadiumTileEntity stadium;
@@ -41,62 +41,84 @@ public class Battle {
         return points;
     }
 
-    public void tick(List<EntityBey> beys) {
+    public void tick(List<EntityBey> beysIn) {
         if (startCount < 20) {
-            for (EntityBey bey : beys) {
+            for (EntityBey bey : beysIn) {
                 PlayerEntity player = PlayerUtils.getPlayerByName(bey.getPlayerName(), level);
                 if (player != null) {
-                    if (!points.containsKey(player)) {
-                        points.put(player, 0);
-                        if (!this.beys.contains(bey)) {
-                            this.beys.add(bey);
+                    if(round == 1){
+                        if (!points.containsKey(player)) {
+                            points.put(player, 0);
+                            this.beys.put(player,bey);
+                        }
+                    } else {
+                        if (points.containsKey(player)) {
+                            this.beys.put(player,bey);
+                        } else {
+                            stadium.invalidateBattle();
                         }
                     }
                 }
             }
+            updateBattleInformersPoints();
             if (points.size() > 2) {
                 type = BattleTypes.BATTLE_ROYAL;
             }
             startCount++;
         } else {
-            if (beys.size() > points.size()) {
+            if (beysIn.size() > points.size()) {
                 stadium.invalidateBattle();
             }
         }
 
-        int beysSpinning = 0;
-        int lastSpinningBeyIndex = 0;
-        for (int i = 0; i < this.beys.size(); i++) {
-            if (!this.beys.get(i).isStoped()) {
-                beysSpinning++;
-                lastSpinningBeyIndex = i;
+        AtomicInteger beysSpinning = new AtomicInteger(0);
+        AtomicReference<PlayerEntity> lastSpinningBeyPlayer = new AtomicReference<>();
+        this.beys.forEach(((entity, entityBey) -> {
+            boolean isAlive = entityBey.isAlive();
+            boolean isStopped = entityBey.isStopped();
+            if (!isStopped && isAlive && beysIn.contains(entityBey)) {
+                beysSpinning.getAndIncrement();
+                lastSpinningBeyPlayer.set(entity);
             }
-        }
+        }));
 
-        if (beysSpinning == 1) {
+        if (beysSpinning.get() == 1 && this.beys.size() > 1) {
             switch (type) {
                 case NORMAL_MATCH:
-                    PlayerEntity winner = PlayerUtils.getPlayerByName(this.beys.get(lastSpinningBeyIndex).getPlayerName(), level);
+                    PlayerEntity winner = lastSpinningBeyPlayer.get();
                     if (winner != null && points.containsKey(winner)) {
-                        points.put(winner, points.get(winner) + 1);
+                        points.put(winner, points.get(winner) + beysIn.size()==1?2:1);
                         if (points.get(winner) >= stadium.getPointsToWin())
                             setWinner((ServerPlayerEntity) winner);
                     }
+                    updateBattleInformersPoints();
+                    round++;
                     stadium.setAllowBattle(false);
+                    startCount = 0;
+                    this.beys.clear();
                     break;
                 case BATTLE_ROYAL:
-                    setWinner((ServerPlayerEntity) PlayerUtils.getPlayerByName(this.beys.get(lastSpinningBeyIndex).getPlayerName(), level));
+                    setWinner((ServerPlayerEntity) lastSpinningBeyPlayer.get());
                     break;
+            }
+        } else {
+            if(beysSpinning.get() == 0 && beysIn.size() != 0){
+                startCount = 0;
+                stadium.setAllowBattle(false);
+                this.beys.clear();
             }
         }
     }
 
-    private void setWinner(ServerPlayerEntity player) {
+    private void updateBattleInformersPoints(){
         BlockPos.betweenClosedStream(stadium.getBlockPos().above().north(2).east(2),stadium.getBlockPos().above().south(2).west(2)).forEach(blockPos -> {
             if(level.getBlockEntity(blockPos) instanceof BattleInformerTileEntity){
                 stadium.updatePoints((BattleInformerTileEntity) level.getBlockEntity(blockPos));
             }
         });
+    }
+
+    private void setWinner(ServerPlayerEntity player) {
         player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
             Random rand = new Random();
             h.increaseExperience(round(
@@ -106,11 +128,10 @@ public class Battle {
             PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getExperience()), player.connection.getConnection(),
                     NetworkDirection.PLAY_TO_CLIENT);
         });
-        player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h -> {
-            Random rand = new Random();
-            h.increaseCurrency(round(rand.nextInt(100) + rand.nextFloat(), 2));
-        });
         points.forEach((auxPlayer, points) -> {
+            player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h -> {
+                h.increaseCurrency(points);
+            });
             if (auxPlayer != player) {
                 PacketHandler.instance.sendTo(new MessageLoseCombat(), ((ServerPlayerEntity) auxPlayer).connection.getConnection(),
                         NetworkDirection.PLAY_TO_CLIENT);

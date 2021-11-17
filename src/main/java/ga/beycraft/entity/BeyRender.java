@@ -21,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector4f;
 import net.minecraft.util.text.StringTextComponent;
@@ -69,18 +70,18 @@ public class BeyRender extends EntityRenderer<EntityBey> {
             RenderObject sceneFrame = null;
             ItemStack stack = entity.getDisc();
             RenderSystem.depthMask(true);
-            if(stack.getItem() instanceof ItemBeyDiscFrame && stack.hasTag() && stack.getTag().contains("frame")){
+            if (stack.getItem() instanceof ItemBeyDiscFrame && stack.hasTag() && stack.getTag().contains("frame")) {
                 Item discFrameItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("frame")).getString("id")));
-                if(ItemCreator.models.get(discFrameItem) != null)
+                if (ItemCreator.models.get(discFrameItem) != null)
                     sceneFrame = sceneDisc.addChild(ItemCreator.models.get(discFrameItem));
             }
             RenderObject sceneLayer = sceneDisc.addChild(ItemCreator.models.get(entity.getLayer().getItem()));
 
             sceneDriver.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
             sceneDriver.transform.scale(0.5F, 0.5F, 0.5F);
-            Vector3d vector = entity.getLookAngle().yRot(90);
+            Vector3d vector = new Vector3d(1,0,0).yRot((float) Math.toRadians(MathHelper.lerp(partialTicks,entity.angle0, entity.angle)));
             if (entity.getRotationSpeed() > 1) {
-                sceneDriver.transform.rotate((float) vector.x * 30 * entity.getRadius() * entity.getRotationDirection(), -entity.angle * 1.5f, (float) vector.z * 30 * entity.getRadius() * entity.getRotationDirection());
+                sceneDriver.transform.rotate((float) vector.x * (40 * MathHelper.lerp(partialTicks,entity.getRadius0(),entity.getRadius()) * -entity.getRotationDirection()), -MathHelper.lerp(partialTicks,entity.angle0, entity.angle) * 1.5f, (float) vector.z * (40 * MathHelper.lerp(partialTicks,entity.getRadius0(),entity.getRadius()) * -entity.getRotationDirection()));
             } else {
                 sceneDriver.transform.rotate((float) vector.x * 30 * entity.getRotationDirection(), -entity.angle * 1.5f, (float) vector.z * 30 * entity.getRotationDirection());
             }
@@ -106,7 +107,7 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                     packedLightIn);
             matrixStack.popPose();
         }
-        if (!entity.isDescending() && !entity.isStoped()) {
+        if (!entity.isDescending() && !entity.isStopped()) {
             net.minecraft.util.math.vector.Matrix4f matrix4f1 = matrixStack.last().pose();
             for (int i = 0; i < entity.getPoints().length; i++) {
                 if (entity.getPoints()[i] != null) {

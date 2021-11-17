@@ -1,6 +1,7 @@
 package ga.beycraft.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import ga.beycraft.capabilities.BladerCapProvider;
 import net.minecraft.command.CommandSource;

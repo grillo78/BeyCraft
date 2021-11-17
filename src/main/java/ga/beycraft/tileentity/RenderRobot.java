@@ -27,31 +27,6 @@ public class RenderRobot extends TileEntityRenderer<RobotTileEntity> {
 	public void render(RobotTileEntity tileEntity, float partialTicks, MatrixStack matrixStack,
 			IRenderTypeBuffer iRenderTypeBuffer, int light, int overlay) {
 		matrixStack.pushPose();
-
-		matrixStack.translate(0,-0.5,0);
-		matrixStack.scale(2,2,2);
-
-		switch (tileEntity.getBlockState().getValue(HorizontalBlock.FACING).get2DDataValue()){
-			case 0:
-				matrixStack.mulPose(new Quaternion(0,tileEntity.getBlockState().getValue(RobotBlock.FACING).getOpposite().toYRot(),0,true));
-				break;
-			case 1:
-				matrixStack.mulPose(new Quaternion(0,90,0,true));
-				matrixStack.translate(0,0,0.5);
-				break;
-			case 2:
-				matrixStack.translate(0.5,0,0.5);
-				break;
-			case 3:
-				matrixStack.mulPose(new Quaternion(0,-90,0,true));
-				matrixStack.translate(0.5,0,0);
-				break;
-		}
-
-		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyCraftRegistry.ROBOT.asItem()),
-				ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
-		matrixStack.popPose();
-		matrixStack.pushPose();
 		int i = (int) tileEntity.getBlockState().getValue(RobotBlock.FACING).toYRot();
 		matrixStack.mulPose(new Quaternion(0,tileEntity.getBlockState().getValue(RobotBlock.FACING).toYRot(),0,true));
 
@@ -86,7 +61,7 @@ public class RenderRobot extends TileEntityRenderer<RobotTileEntity> {
 			matrixStack.translate(-0.02, 0.09, -0.3);
 			matrixStack.scale(2f, 2f, 2f);
 		});
-
+//
 		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyCraftRegistry.DUALLAUNCHER),
 				ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
 		matrixStack.translate(0.1, -0.44, -0.04);
@@ -95,7 +70,7 @@ public class RenderRobot extends TileEntityRenderer<RobotTileEntity> {
 		matrixStack.translate(0, 0.03, 0.01);
 		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(BeyCraftRegistry.BEYLOGGERPLUS),
 				ItemCameraTransforms.TransformType.FIXED, light, overlay, matrixStack, iRenderTypeBuffer);
-
+//
 		matrixStack.popPose();
 	}
 }

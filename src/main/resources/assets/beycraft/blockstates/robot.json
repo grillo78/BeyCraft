@@ -1,7 +1,36 @@
 {
   "variants": {
-    "": {
-      "model": "beycraft:block/robot"
+    "facing=north,part=bottom": {
+      "model": "beycraft:block/robot",
+      "y": 0
+    },
+    "facing=east,part=bottom": {
+      "model": "beycraft:block/robot",
+      "y": 90
+    },
+    "facing=south,part=bottom": {
+      "model": "beycraft:block/robot",
+      "y": 180
+    },
+    "facing=west,part=bottom": {
+      "model": "beycraft:block/robot",
+      "y": 270
+    },
+    "facing=north,part=top": {
+      "model": "beycraft:block/robot_top",
+      "y": 0
+    },
+    "facing=east,part=top": {
+      "model": "beycraft:block/robot_top",
+      "y": 90
+    },
+    "facing=south,part=top": {
+      "model": "beycraft:block/robot_top",
+      "y": 180
+    },
+    "facing=west,part=top": {
+      "model": "beycraft:block/robot_top",
+      "y": 270
     }
   }
 }

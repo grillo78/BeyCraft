@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
@@ -46,6 +47,12 @@ public class ItemBladerBelt extends Item implements IAccessory {
         super(new Item.Properties().tab(BeyCraft.BEYCRAFTTAB).stacksTo(1));
         this.setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
         BeyCraftRegistry.ITEMS.put(name, this);
+    }
+
+    @Nullable
+    @Override
+    public Entity createEntity(World world, Entity location, ItemStack itemstack) {
+        return null;
     }
 
     @Nullable

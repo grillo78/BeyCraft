@@ -1,23 +1,23 @@
 {
   "variants": {
     "part=topleft": {
-        "model": "beycraft:block/stadiumaux"
+      "model": "beycraft:block/stadiumaux"
     },"part=topcenter": {
-        "model": "beycraft:block/stadiumaux"
+      "model": "beycraft:block/stadiumaux"
     },"part=topright": {
-        "model": "beycraft:block/stadiumaux"
+      "model": "beycraft:block/stadiumaux"
     },"part=middleleft": {
-        "model": "beycraft:block/stadiumaux"
+      "model": "beycraft:block/stadiumaux"
     },"part=middlecenter": {
-        "model": "beycraft:block/stadium"
+      "model": "beycraft:block/stadium"
     },"part=middleright": {
-        "model": "beycraft:block/stadiumaux"
+      "model": "beycraft:block/stadiumaux"
     },"part=bottomleft": {
-        "model": "beycraft:block/stadiumaux"
+      "model": "beycraft:block/stadiumaux"
     },"part=bottomcenter": {
-        "model": "beycraft:block/stadiumaux"
+      "model": "beycraft:block/stadiumaux"
     },"part=bottomright": {
-        "model": "beycraft:block/stadiumaux"
+      "model": "beycraft:block/stadiumaux"
     }
   }
 }

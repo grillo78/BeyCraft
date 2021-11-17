@@ -95,6 +95,7 @@ public class BeyCraftRegistry {
 
     /* Items */
     public static final ItemBeyPackage BEYPACKAGE = new ItemBeyPackage("package");
+    public static final ItemBeyCoin BEYCOIN = new ItemBeyCoin("beycoin");
     public static final ItemBeyRubber BEYRUBBER = new ItemBeyRubber("rubber");
     public static final ItemPlastic PLASTIC = new ItemPlastic("plastic");
 

@@ -89,19 +89,19 @@ public class RenderBattleInformer extends TileEntityRenderer<BattleInformerTileE
             FontRenderer fontRenderer = Minecraft.getInstance().font;
             float f2 = (float) (-fontRenderer.width(points.toString()) / 2);
             matrix4f.set(matrixStack.last().pose());
-            fontRenderer.drawInBatch("1", f2, 0, 16777215, false, matrix4f.get(), iRenderTypeBuffer, false, 255, light);
+            fontRenderer.drawInBatch(points.toString(), f2, 0, 16777215, false, matrix4f.get(), iRenderTypeBuffer, false, 255, light);
             matrixStack.popPose();
 
             matrixStack.mulPose(new Quaternion(0, i.get() % 2 == 0 ? 20 : -20, 0, true));
             matrixStack.pushPose();
             matrixStack.translate(i.get() % 2 == 0 ? 0.5 : -0.5, 0, -0.5);
-            matrixStack.mulPose(new Quaternion(0, Minecraft.getInstance().player.yBodyRot, 0, true));
-            Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(Minecraft.getInstance().player).render(Minecraft.getInstance().player, 0, partialTicks, matrixStack, iRenderTypeBuffer, light);
+            matrixStack.mulPose(new Quaternion(0, entity.yBodyRot, 0, true));
+            Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity).render(entity, 0, partialTicks, matrixStack, iRenderTypeBuffer, light);
             matrixStack.popPose();
             matrixStack.pushPose();
             matrixStack.translate(0, 0, 0.5);
-            matrixStack.mulPose(new Quaternion(0, Minecraft.getInstance().player.yBodyRot, 0, true));
-            Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(Minecraft.getInstance().player).render(Minecraft.getInstance().player, 0, partialTicks, matrixStack, iRenderTypeBuffer, light);
+            matrixStack.mulPose(new Quaternion(0, entity.yBodyRot, 0, true));
+            Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity).render(entity, 0, partialTicks, matrixStack, iRenderTypeBuffer, light);
             matrixStack.popPose();
 
             i.getAndIncrement();

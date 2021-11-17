@@ -33,7 +33,7 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
             if (allowBattle) {
                 int beysSpinning = 0;
                 for (EntityBey bey : beys) {
-                    if (!bey.isStoped()) {
+                    if (!bey.isStopped()) {
                         beysSpinning++;
                     }
                 }
@@ -58,7 +58,7 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
                 } else {
                     battle = null;
                 }
-                if (battle != null && allowBattle && beysSpinning > 1) {
+                if (battle != null && allowBattle && beysSpinning >= 1) {
                     battle.tick(beys);
                 }
             } else {
@@ -69,7 +69,7 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
 
     public void updatePoints(BattleInformerTileEntity battleInformer){
         battleInformer.setPoints(battle != null? battle.getPoints() : new HashMap<>());
-        level.setBlockAndUpdate(battleInformer.getBlockPos(),battleInformer.getBlockState());
+        level.sendBlockUpdated(battleInformer.getBlockPos(),battleInformer.getBlockState(),battleInformer.getBlockState(),0);
     }
 
     public int getPointsToWin() {

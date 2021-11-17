@@ -3,8 +3,8 @@ package ga.beycraft.events;
 import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.capabilities.BladerCapProvider;
-import ga.beycraft.commands.BeyBoxCommand;
 import ga.beycraft.commands.BeyCoinsCommand;
+import ga.beycraft.commands.GetBeyCoinsCommand;
 import ga.beycraft.entity.EntityBey;
 import ga.beycraft.inventory.*;
 import ga.beycraft.inventory.slots.BeyLoggerContainer;
@@ -86,6 +86,8 @@ public class CommonEvents {
 		event.getRegistry().register(BeyCraftRegistry.HITSOUND);
 		BeyCraftRegistry.OPEN_CLOSE_BELT.setRegistryName("open_close_belt");
 		event.getRegistry().register(BeyCraftRegistry.OPEN_CLOSE_BELT);
+		BeyCraftRegistry.COUNTDOWN.setRegistryName("countdown");
+		event.getRegistry().register(BeyCraftRegistry.COUNTDOWN);
 	}
 
 	@SubscribeEvent
@@ -200,7 +202,7 @@ public class CommonEvents {
 		@SubscribeEvent
 		public static void onCommandRegistry(final RegisterCommandsEvent event) {
 			BeyCoinsCommand.register(event.getDispatcher());
-			BeyBoxCommand.register(event.getDispatcher());
+			GetBeyCoinsCommand.register(event.getDispatcher());
 		}
 
 		@SubscribeEvent

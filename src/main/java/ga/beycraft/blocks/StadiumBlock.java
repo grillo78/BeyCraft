@@ -8,7 +8,6 @@ import ga.beycraft.util.VoxelShapesUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -125,17 +124,20 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 
     @Override
     public ActionResultType use(BlockState p_225533_1_, World world, BlockPos posIn, PlayerEntity player, Hand p_225533_5_, BlockRayTraceResult p_225533_6_) {
-        if (!world.isClientSide && player.isCrouching())
+        ActionResultType result = ActionResultType.PASS;
+        if (!world.isClientSide && player.isCrouching()) {
             BlockPos.betweenClosedStream(posIn.west().north(), posIn.south().east()).forEach((pos) -> {
                 TileEntity blockEntity = world.getBlockEntity(pos);
                 if (blockEntity != null && blockEntity instanceof StadiumTileEntity && ((StadiumTileEntity) blockEntity).getBattle() != null) {
                     ((StadiumTileEntity) blockEntity).getBattle().getPoints().forEach((blader, points) -> {
-                        player.sendMessage( blader.getDisplayName(), Util.NIL_UUID);
+                        player.sendMessage(blader.getDisplayName(), Util.NIL_UUID);
                         player.sendMessage(new StringTextComponent("Points: " + points), Util.NIL_UUID);
                     });
                 }
             });
-        return ActionResultType.SUCCESS;
+            result = ActionResultType.SUCCESS;
+        }
+        return result;
     }
 
     @Override
@@ -224,7 +226,7 @@ public class StadiumBlock extends Block implements IWaterLoggable {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    private void breackBlock(World worldIn, BlockPos pos) {
+    private void breakBlock(World worldIn, BlockPos pos) {
         if (worldIn.getBlockState(pos).getBlock() == this) {
             if (worldIn.getBlockState(pos).getFluidState().isEmpty()) {
                 worldIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
@@ -236,49 +238,50 @@ public class StadiumBlock extends Block implements IWaterLoggable {
 
     @Override
     public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        super.onRemove(state,worldIn,pos,state,isMoving);
         if (newState.getBlock() != this) {
             switch (state.getValue(PART).getSerializedName()) {
                 case "topleft":
-                    breackBlock(worldIn, pos.south());
-                    breackBlock(worldIn, pos.west());
+                    breakBlock(worldIn, pos.south());
+                    breakBlock(worldIn, pos.west());
                     break;
                 case "topcenter":
-                    breackBlock(worldIn, pos.north());
-                    breackBlock(worldIn, pos.south());
-                    breackBlock(worldIn, pos.west());
+                    breakBlock(worldIn, pos.north());
+                    breakBlock(worldIn, pos.south());
+                    breakBlock(worldIn, pos.west());
                     break;
                 case "topright":
-                    breackBlock(worldIn, pos.north());
-                    breackBlock(worldIn, pos.west());
+                    breakBlock(worldIn, pos.north());
+                    breakBlock(worldIn, pos.west());
                     break;
                 case "middleleft":
-                    breackBlock(worldIn, pos.south());
-                    breackBlock(worldIn, pos.west());
-                    breackBlock(worldIn, pos.east());
+                    breakBlock(worldIn, pos.south());
+                    breakBlock(worldIn, pos.west());
+                    breakBlock(worldIn, pos.east());
                     break;
                 case "middlecenter":
-                    breackBlock(worldIn, pos.north());
-                    breackBlock(worldIn, pos.south());
-                    breackBlock(worldIn, pos.east());
-                    breackBlock(worldIn, pos.west());
+                    breakBlock(worldIn, pos.north());
+                    breakBlock(worldIn, pos.south());
+                    breakBlock(worldIn, pos.east());
+                    breakBlock(worldIn, pos.west());
                     break;
                 case "middleright":
-                    breackBlock(worldIn, pos.north());
-                    breackBlock(worldIn, pos.east());
-                    breackBlock(worldIn, pos.west());
+                    breakBlock(worldIn, pos.north());
+                    breakBlock(worldIn, pos.east());
+                    breakBlock(worldIn, pos.west());
                     break;
                 case "bottomleft":
-                    breackBlock(worldIn, pos.south());
-                    breackBlock(worldIn, pos.east());
+                    breakBlock(worldIn, pos.south());
+                    breakBlock(worldIn, pos.east());
                     break;
                 case "bottomcenter":
-                    breackBlock(worldIn, pos.north());
-                    breackBlock(worldIn, pos.south());
-                    breackBlock(worldIn, pos.east());
+                    breakBlock(worldIn, pos.north());
+                    breakBlock(worldIn, pos.south());
+                    breakBlock(worldIn, pos.east());
                     break;
                 case "bottomright":
-                    breackBlock(worldIn, pos.north());
-                    breackBlock(worldIn, pos.east());
+                    breakBlock(worldIn, pos.north());
+                    breakBlock(worldIn, pos.east());
                     break;
             }
         }

@@ -26,6 +26,6 @@ This mod adds beyblades to minecraft, you can add content packs in the folder ca
 [[dependencies.beycraft]]
     modId="heroesunited"
     mandatory=true
-    versionRange="[2.5.1,)"
+    versionRange="[2.5.3,)"
     ordering="AFTER"
     side="BOTH"

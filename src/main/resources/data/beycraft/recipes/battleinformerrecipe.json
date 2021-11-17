@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IGI",
+    "III",
+    "   "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_nugget"
+    }, "G": {
+      "item": "minecraft:light_blue_stained_glass_pane"
+    }
+  },
+  "result": {
+    "item": "beycraft:battle_informer",
+    "count": 1
+  }
+}

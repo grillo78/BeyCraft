@@ -25,20 +25,20 @@ public class EntityGoalRotate extends Goal {
 
 	@Override
 	public boolean canContinueToUse() {
-		if (!bey.isStoped()) {
-			if (!bey.isStoped() && !bey.isDescending() && bey.isRotationStarted()) {
+		if (!bey.isStopped()) {
+			if (!bey.isStopped() && !bey.isDescending() && bey.isRotationStarted()) {
 				if(bey.isOnGround()){
 					if (((ItemBeyDriver) bey.getDriver().getItem()).getType(bey.getDriver()) == BeyTypes.ATTACK) {
 						if (count < 6) {
 							count++;
-							if(count%2 == 0)bey.yRot += bey.getRotationSpeed() * -bey.getRotationDirection() * 2
+							if(count%2 == 0)bey.yRot += bey.getRotationSpeed() * bey.getRotationDirection() * 2
 									/ (-bey.getMaxRotationSpeed() * 0.1);
 						} else {
 							count = 0;
-							bey.yRot += 160 * bey.getRotationDirection();
+							bey.yRot += 160 * -bey.getRotationDirection();
 						}
 					} else {
-						bey.yRot += bey.getRotationSpeed() * -bey.getRotationDirection() * 2
+						bey.yRot += bey.getRotationSpeed() * bey.getRotationDirection() * 2
 								/ (-bey.getMaxRotationSpeed() * 0.1);
 					}
 				}
@@ -65,17 +65,12 @@ public class EntityGoalRotate extends Goal {
 			}
 
 			if (bey.getRadius() != 0) {
-				if(((ItemBeyDriver)bey.getDriver().getItem()).getType(bey.getDriver()) != BeyTypes.ATTACK){
-					bey.move(MoverType.SELF, new Vector3d(bey.getLookAngle().x * bey.getRadius() / 2.1, 0,
-							bey.getLookAngle().z * bey.getRadius() / 2.1));
-				} else {
-					bey.move(MoverType.SELF, new Vector3d(bey.getLookAngle().x * bey.getRadius() / 2.1, 0,
-							bey.getLookAngle().z * bey.getRadius() / 2.1));
-				}
+				bey.move(MoverType.SELF, new Vector3d(bey.getLookAngle().x * bey.getRadius() / 2.1, 0,
+						bey.getLookAngle().z * bey.getRadius() / 2.1));
 			}
 
 		}
-		return !bey.isStoped();
+		return !bey.isStopped();
 	}
 
 	private void moveToCenter() {
