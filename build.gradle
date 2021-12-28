@@ -23,7 +23,7 @@ apply plugin: 'maven-publish'
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'java'
 
-version = '1.7.8'
+version = '1.7.19'
 group = 'ga.beycraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'beycraft'
 
@@ -117,9 +117,7 @@ repositories {
     maven { url 'http://harleyoconnor.com/maven' }
     maven { url 'https://maven.hypherionmc.me/releases' }
     maven { url 'https://maven.explodingcreeper.me/' }
-    maven {
-        url "https://www.cursemaven.com"
-    }
+    maven { url "https://www.cursemaven.com" }
     mavenCentral()
     flatDir {
         dirs 'libs'
@@ -150,7 +148,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.0.58'
 
     compile fg.deobf('xyz.heroesunited:hu-core:2.5.38')
-    shade 'ga.beycraft:RenderLib:1.0.0-pre4'
+    shade 'ga.beycraft:RenderLib:1.0.0-pre6'
     compile fg.deobf('curse.maven:furniture-55438:3346467')
     compileOnly fg.deobf('me.hypherionmc:RGBLib-moj:1.0')
 //    shade 'com.oneandone:composite-jks:1.0'

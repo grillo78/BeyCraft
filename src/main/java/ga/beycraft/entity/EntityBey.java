@@ -63,12 +63,14 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     private static final DataParameter<Boolean> HORIZONTALCOLLISION = EntityDataManager.defineId(EntityBey.class,
             DataSerializers.BOOLEAN);
     private String playerName;
-    public float angle = 0;
     public float angle0 = 0;
+    private static final DataParameter<Float> ANGLE = EntityDataManager.defineId(EntityBey.class,
+            DataSerializers.FLOAT);
     private boolean increaseRadius = false;
     private boolean stopped = false;
     private float maxRadius;
     private boolean beylogger;
+    private int tickCount = 0;
 
     private Vector3d[] points = new Vector3d[5];
 
@@ -109,6 +111,11 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 74.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.6D);
     }
 
+    @Override
+    public boolean shouldRenderAtSqrDistance(double p_70112_1_) {
+        return p_70112_1_<2000;
+    }
+
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
@@ -121,14 +128,6 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
     public float getMaxRadius() {
         return maxRadius;
-    }
-
-    public void setRotationStarted(boolean rotationStarted) {
-        this.rotationStarted = rotationStarted;
-    }
-
-    public boolean isRotationStarted() {
-        return rotationStarted;
     }
 
     private void dropItems() {
@@ -180,6 +179,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         this.entityData.define(HORIZONTALCOLLISION, false);
         this.entityData.define(RADIUS0, 1.6F);
         this.entityData.define(RADIUS, 1.6F);
+        this.entityData.define(ANGLE, 0F);
         super.defineSynchedData();
     }
 
@@ -263,7 +263,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
     @Override
     public ActionResultType interactAt(PlayerEntity player, Vector3d vec, Hand hand) {
-        if (!level.isClientSide && !player.isSpectator()) {
+        if (!level.isClientSide && !player.isSpectator() && isAlive()) {
             if (hand == Hand.MAIN_HAND) {
                 dropItem(player);
                 this.remove();
@@ -296,6 +296,15 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
     public Vector3d[] getPoints() {
         return points;
+    }
+
+
+    public void setRotationStarted(boolean rotationStarted) {
+        this.rotationStarted = rotationStarted;
+    }
+
+    public boolean isRotationStarted() {
+        return rotationStarted;
     }
 
     @Override
@@ -334,8 +343,24 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                                 / (10 * (((ItemBeyDisc) getDisc().getItem()).getWeight() + ((ItemBeyLayer) getLayer().getItem()).getWeight(getLayer()))));
 
                     }
-                    angle0 = angle;
-                    angle += getRotationSpeed() * 30 * -rotationDirection;
+                    if (!level.isClientSide) {
+                        tickCount++;
+                        setAngle(getAngle() + getRotationSpeed() * 30 * -rotationDirection);
+                        if (((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility() != null)
+                            ((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility().executeAbility(this);
+                        if (((ItemBeyLayer) getLayer().getItem()).getSecundaryAbility() != null)
+                            ((ItemBeyLayer) getLayer().getItem()).getSecundaryAbility().executeAbility(this);
+
+                        if (((ItemBeyDisc) getDisc().getItem()).getPrimaryAbility() != null)
+                            ((ItemBeyDisc) getDisc().getItem()).getPrimaryAbility().executeAbility(this);
+                        if (((ItemBeyDisc) getDisc().getItem()).getSecundaryAbility() != null)
+                            ((ItemBeyDisc) getDisc().getItem()).getSecundaryAbility().executeAbility(this);
+
+                        if (((ItemBeyDriver) getDriver().getItem()).getPrimaryAbility() != null)
+                            ((ItemBeyDriver) getDriver().getItem()).getPrimaryAbility().executeAbility(this);
+                        if (((ItemBeyDriver) getDriver().getItem()).getSecundaryAbility() != null)
+                            ((ItemBeyDriver) getDriver().getItem()).getSecundaryAbility().executeAbility(this);
+                    }
                 }
             } else {
                 if (!stopped) {
@@ -343,13 +368,12 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                     setRotationSpeed(0);
                 }
             }
-            if (isHorizontalCollision() && !isStopped()) {
-                for (int i = 0; i < 10; i++) {
-                    level.addParticle(BeyCraftRegistry.SPARKLE, getX(), getY() + 0.5, getZ(), random.nextInt(5),
-                            random.nextInt(5), random.nextInt(5));
-                }
+        }
+        if (isHorizontalCollision() && !isStopped()) {
+            for (int i = 0; i < 10; i++) {
+                level.addParticle(BeyCraftRegistry.SPARKLE, getX()+getDimensions(Pose.STANDING).width/2, getY() + 0.5, getZ()+getDimensions(Pose.STANDING).width/2, random.nextInt(5),
+                        random.nextInt(5), random.nextInt(5));
             }
-
         }
         if (level.isClientSide) {
             updatePoints(this);
@@ -357,11 +381,15 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         super.tick();
     }
 
+    public int getTickCount() {
+        return tickCount;
+    }
+
     @Override
     public void travel(Vector3d p_213352_1_) {
         super.travel(p_213352_1_);
         if (horizontalCollision) {
-            yRot += 170 * rotationDirection;
+            yRot += -90 * rotationDirection;
         }
         setHorizontalCollision(horizontalCollision);
     }
@@ -377,13 +405,17 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                 double z = (getZ() - entityIn.getZ()) / 2;
                 ((ServerWorld) level).sendParticles(BeyCraftRegistry.SPARKLE, getX(), getY(), getZ(), 10, x, y, z,
                         10);
-                ((ServerWorld) level).sendParticles(ParticleTypes.SWEEP_ATTACK, getX(), getY(), getZ(), 10, x, y, z,
+                ((ServerWorld) level).sendParticles(ParticleTypes.SWEEP_ATTACK, getX(), getY(), getZ(), 1, x, y, z,
                         1);
                 if (!((EntityBey) entityIn).isStopped()) {
-                    if (((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility() instanceof Absorb
+                    if ((((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility() instanceof Absorb
                             || ((ItemBeyLayer) getLayer().getItem()).getSecundaryAbility() instanceof Absorb
                             || ((ItemBeyDisc) getDisc().getItem()).getPrimaryAbility() instanceof Absorb
-                            || ((ItemBeyDisc) getDisc().getItem()).getSecundaryAbility() instanceof Absorb) {
+                            || ((ItemBeyDisc) getDisc().getItem()).getSecundaryAbility() instanceof Absorb) &&
+                            !(((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getPrimaryAbility() instanceof Absorb
+                                    || ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getSecundaryAbility() instanceof Absorb
+                                    || ((ItemBeyDisc) ((EntityBey) entityIn).getDisc().getItem()).getPrimaryAbility() instanceof Absorb
+                                    || ((ItemBeyDisc) ((EntityBey) entityIn).getDisc().getItem()).getSecundaryAbility() instanceof Absorb)) {
                         setRotationSpeed(getRotationSpeed()
                                 + (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack(getLayer())
                                 + ((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer())) / 100);
@@ -535,6 +567,15 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     public void setRadius(float radius) {
         this.entityData.set(RADIUS0, getRadius());
         this.entityData.set(RADIUS, radius);
+    }
+
+    public final float getAngle() {
+        return (Float) this.entityData.get(ANGLE);
+    }
+
+    public void setAngle(float angle) {
+        angle0 = getAngle();
+        this.entityData.set(ANGLE, angle);
     }
 
     public final float getBladerLevel() {

@@ -42,7 +42,7 @@ public class Battle {
     }
 
     public void tick(List<EntityBey> beysIn) {
-        if (startCount < 20) {
+        if (startCount < 60) {
             for (EntityBey bey : beysIn) {
                 PlayerEntity player = PlayerUtils.getPlayerByName(bey.getPlayerName(), level);
                 if (player != null) {
@@ -87,7 +87,12 @@ public class Battle {
                 case NORMAL_MATCH:
                     PlayerEntity winner = lastSpinningBeyPlayer.get();
                     if (winner != null && points.containsKey(winner)) {
-                        points.put(winner, points.get(winner) + beysIn.size()==1?2:1);
+                        AtomicInteger beysAlive = new AtomicInteger();
+                        beys.forEach(((entity, entityBey) -> {
+                            if (entityBey.isAlive())
+                                beysAlive.getAndIncrement();
+                        }));
+                        points.put(winner, points.get(winner) + (beysAlive.get()==1?2:1));
                         if (points.get(winner) >= stadium.getPointsToWin())
                             setWinner((ServerPlayerEntity) winner);
                     }
@@ -128,10 +133,10 @@ public class Battle {
             PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getExperience()), player.connection.getConnection(),
                     NetworkDirection.PLAY_TO_CLIENT);
         });
+        player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h -> {
+            h.increaseCurrency(points.get(player));
+        });
         points.forEach((auxPlayer, points) -> {
-            player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h -> {
-                h.increaseCurrency(points);
-            });
             if (auxPlayer != player) {
                 PacketHandler.instance.sendTo(new MessageLoseCombat(), ((ServerPlayerEntity) auxPlayer).connection.getConnection(),
                         NetworkDirection.PLAY_TO_CLIENT);

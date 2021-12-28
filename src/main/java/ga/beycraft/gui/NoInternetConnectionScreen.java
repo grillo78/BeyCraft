@@ -43,8 +43,8 @@ public class NoInternetConnectionScreen extends Screen {
 		this.renderBackground(matrixStack);
 
 		minecraft.getTextureManager().bind(BEYCRAFT_LOGO);
-		int logoWidth = 256;
-		int logoHeight = 64;
+		int logoWidth = 100;
+		int logoHeight = 40;
 		this.blit(matrixStack, width / 2 - logoWidth / 2, 30, 0, 0, logoWidth, logoHeight, logoWidth, logoHeight);
 
 		for (int i = 0; i < textArray.length; i++) {

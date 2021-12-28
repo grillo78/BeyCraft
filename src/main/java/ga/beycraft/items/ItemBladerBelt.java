@@ -88,17 +88,6 @@ public class ItemBladerBelt extends Item implements IAccessory {
         IVertexBuilder vertexBuilder = ItemRenderer.getFoilBuffer(bufferIn, model.renderType(TEXTURE), false,
                 false);
         model.renderToBuffer(matrixStack, vertexBuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-
-        if (stack.hasTag() && stack.getTag().contains("launcher")) {
-            matrixStack.translate(0.4, 0.6, -0.1);
-            matrixStack.mulPose(new Quaternion(new Vector3f(0, 0, 1), -90, true));
-            matrixStack.mulPose(new Quaternion(new Vector3f(0, 1, 0), 180, true));
-            matrixStack.scale(0.2f, 0.2f, 0.2f);
-            Minecraft.getInstance().getItemRenderer().renderStatic(
-                    ItemStack.of((CompoundNBT) stack.getTag().get("launcher")),
-                    ItemCameraTransforms.TransformType.NONE, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStack,
-                    bufferIn);
-        }
         matrixStack.popPose();
     }
 

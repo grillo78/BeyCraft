@@ -31,7 +31,7 @@ public class RankingScreen extends Screen {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack);
         minecraft.getTextureManager().bind(BEYCRAFT_LOGO);
-        int logoWidth = 256;
+        int logoWidth = 100;
         int logoHeight = 40;
         this.blit(matrixStack, width / 2 - logoWidth / 2, 10, 0, 0, logoWidth, logoHeight, logoWidth, logoHeight);
         ranking.render(matrixStack, mouseX, mouseY, partialTicks);

@@ -52,7 +52,7 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
                         }
                 }
                 if (isValidBattle) {
-                    if (battle == null && beysSpinning > 1) {
+                    if (battle == null && beysSpinning > 1 && bladers.size() == beysSpinning) {
                         battle = new Battle((ServerWorld) level, this);
                     }
                 } else {

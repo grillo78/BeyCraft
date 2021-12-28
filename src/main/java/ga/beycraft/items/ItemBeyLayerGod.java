@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 public class ItemBeyLayerGod extends ItemBeyLayer {
     public ItemBeyLayerGod(String name, float rotationDirection, float attack, float defense, float weight, Ability primaryAbility, Ability secundaryAbility, BeyTypes type) {
         super(name, rotationDirection, attack, defense, weight, 0, primaryAbility, secundaryAbility, type);
-        BeyCraftRegistry.ITEMSLAYERGT.add(this);
+        BeyCraftRegistry.ITEMSLAYERGOD.add(this);
     }
 
     @Override

@@ -8,6 +8,8 @@ import friedrichlp.renderlib.render.ViewBoxes;
 import friedrichlp.renderlib.tracking.RenderLayer;
 import friedrichlp.renderlib.tracking.RenderManager;
 import friedrichlp.renderlib.tracking.RenderObject;
+import ga.beycraft.items.ItemBeyDiscFrame;
+import ga.beycraft.items.ItemBeyFrame;
 import ga.beycraft.util.BeyPartModel;
 import ga.beycraft.util.ItemCreator;
 import net.minecraft.client.Minecraft;
@@ -15,6 +17,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFrameItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -77,9 +80,10 @@ public class GenericPartItemStackRendererTileEntity extends ItemStackTileEntityR
         }
         if (model != null) {
             if (stack.hasTag() && stack.getTag().contains("frame")) {
-                Item discItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("frame")).getString("id")));
-                if (ItemCreator.models.containsKey(discItem)) {
-                    RenderObject sceneDisc = model.addChild(ItemCreator.models.get(discItem));
+                Item frameItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("frame")).getString("id")));
+                if (ItemCreator.models.containsKey(frameItem) && stack.getItem() instanceof ItemBeyDiscFrame) {
+                    RenderObject sceneFrame = model.addChild(ItemCreator.models.get(frameItem));
+                    sceneFrame.transform.rotate(0,((ItemBeyDiscFrame)stack.getItem()).getFrameRotation(),0);
                 }
             }
         } else {

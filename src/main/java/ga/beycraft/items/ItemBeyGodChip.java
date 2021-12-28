@@ -13,7 +13,7 @@ public class ItemBeyGodChip extends Item {
     public ItemBeyGodChip(String name, float weight){
         super(new Properties().tab(BeyCraft.BEYCRAFTLAYERS).stacksTo(1));
         setRegistryName(new ResourceLocation(Reference.MOD_ID, name));
-        BeyCraftRegistry.ITEMSGTCHIP.add(this);
+        BeyCraftRegistry.ITEMSGODCHIP.add(this);
         this.weight = weight;
     }
 

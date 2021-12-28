@@ -1,5 +1,6 @@
 package ga.beycraft.particles;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
@@ -15,7 +16,10 @@ public class SparkleParticle extends SpriteTexturedParticle {
 	public SparkleParticle(ClientWorld worldIn, double posXIn, double posYIn, double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		gravity = 1;
-		setColor(Color.orange.getRed() / 255F, Color.orange.getGreen() / 255F, Color.orange.getBlue() / 255F);
+		if(new Random().nextBoolean())
+			setColor(Color.ORANGE.getRed() / 255F, Color.ORANGE.getGreen() / 255F, Color.ORANGE.getBlue() / 255F);
+		else
+			setColor(Color.YELLOW.getRed() / 255F, Color.YELLOW.getGreen() / 255F, Color.YELLOW.getBlue() / 255F);
 		quadSize = new Random().nextInt(25) / 100;
 	}
 
@@ -23,7 +27,10 @@ public class SparkleParticle extends SpriteTexturedParticle {
 			double speedY, double speedZ) {
 		super(worldIn, posXIn, posYIn, posZIn, speedX, speedY, speedZ);
 		gravity = 0;
-		setColor(Color.orange.getRed() / 255F, Color.orange.getGreen() / 255F, Color.orange.getBlue() / 255F);
+		if(new Random().nextBoolean())
+			setColor(Color.ORANGE.getRed() / 255F, Color.ORANGE.getGreen() / 255F, Color.ORANGE.getBlue() / 255F);
+		else
+			setColor(Color.YELLOW.getRed() / 255F, Color.YELLOW.getGreen() / 255F, Color.YELLOW.getBlue() / 255F);
 		quadSize = new Random().nextFloat() / 50;
 	}
 

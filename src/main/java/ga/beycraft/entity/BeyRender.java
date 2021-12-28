@@ -33,6 +33,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
 public class BeyRender extends EntityRenderer<EntityBey> {
+
     private RenderLayer layer = RenderManager.addRenderLayer(ViewBoxes.ALWAYS);
     private static ArrayList<Runnable> runnables = new ArrayList<>();
 
@@ -65,26 +66,40 @@ public class BeyRender extends EntityRenderer<EntityBey> {
 
                 return new Matrix4f(floatBuffer);
             };
-            RenderObject sceneDriver = layer.addRenderObject(ItemCreator.models.get(entity.getDriver().getItem()));
+            RenderObject mainScene = layer.addRenderObject(ItemCreator.models.get(entity.getDriver().getItem()));
+            try {
+                mainScene.setHidden(true);
+            } catch (NullPointerException e) {
+            }
+            RenderObject sceneDriver = mainScene.addChild(ItemCreator.models.get(entity.getDriver().getItem()));
             RenderObject sceneDisc = sceneDriver.addChild(ItemCreator.models.get(entity.getDisc().getItem()));
             RenderObject sceneFrame = null;
             ItemStack stack = entity.getDisc();
             RenderSystem.depthMask(true);
             if (stack.getItem() instanceof ItemBeyDiscFrame && stack.hasTag() && stack.getTag().contains("frame")) {
                 Item discFrameItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("frame")).getString("id")));
-                if (ItemCreator.models.get(discFrameItem) != null)
+                if (ItemCreator.models.get(discFrameItem) != null){
                     sceneFrame = sceneDisc.addChild(ItemCreator.models.get(discFrameItem));
+                    sceneFrame.transform.rotate(0,((ItemBeyDiscFrame)stack.getItem()).getFrameRotation(),0);
+                }
             }
             RenderObject sceneLayer = sceneDisc.addChild(ItemCreator.models.get(entity.getLayer().getItem()));
 
-            sceneDriver.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
-            sceneDriver.transform.scale(0.5F, 0.5F, 0.5F);
-            Vector3d vector = new Vector3d(1,0,0).yRot((float) Math.toRadians(MathHelper.lerp(partialTicks,entity.angle0, entity.angle)));
+            mainScene.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
+            mainScene.transform.scale(0.5F, 0.5F, 0.5F);
+            float angle = entity.isStopped() ? entity.getAngle() : MathHelper.lerp(partialTicks, entity.angle0, entity.getAngle());
+            sceneDriver.transform.rotate(0,
+                    -angle * 1.5f,
+                    0);
+
+            Vector3d vector = new Vector3d(1, 0, 0).yRot((float) Math.toRadians(entityYaw - 45));
             if (entity.getRotationSpeed() > 1) {
-                sceneDriver.transform.rotate((float) vector.x * (40 * MathHelper.lerp(partialTicks,entity.getRadius0(),entity.getRadius()) * -entity.getRotationDirection()), -MathHelper.lerp(partialTicks,entity.angle0, entity.angle) * 1.5f, (float) vector.z * (40 * MathHelper.lerp(partialTicks,entity.getRadius0(),entity.getRadius()) * -entity.getRotationDirection()));
+                float inclination = 40 * MathHelper.lerp(partialTicks, entity.getRadius0(), entity.getRadius());
+                mainScene.transform.rotate((float) -vector.x * inclination, 0, (float) vector.z * inclination);
             } else {
-                sceneDriver.transform.rotate((float) vector.x * 30 * entity.getRotationDirection(), -entity.angle * 1.5f, (float) vector.z * 30 * entity.getRotationDirection());
+                mainScene.transform.rotate((float) vector.x * 30 * entity.getRotationDirection(), 0, (float) vector.z * 30 * entity.getRotationDirection());
             }
+            mainScene.forceTransformUpdate();
             sceneDriver.forceTransformUpdate();
             sceneDisc.forceTransformUpdate();
             if (sceneFrame != null) sceneFrame.forceTransformUpdate();
@@ -95,6 +110,7 @@ public class BeyRender extends EntityRenderer<EntityBey> {
             if (sceneFrame != null) sceneFrame.remove();
             sceneDisc.remove();
             sceneDriver.remove();
+            mainScene.remove();
         });
         if (this.entityRenderDispatcher.crosshairPickEntity == entity && !Minecraft.getInstance().player.isSpectator()
                 && Minecraft.renderNames()) {
@@ -107,31 +123,29 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                     packedLightIn);
             matrixStack.popPose();
         }
-        if (!entity.isDescending() && !entity.isStopped()) {
-            net.minecraft.util.math.vector.Matrix4f matrix4f1 = matrixStack.last().pose();
-            for (int i = 0; i < entity.getPoints().length; i++) {
-                if (entity.getPoints()[i] != null) {
-                    float x = (float) (entity.getPoints()[i].x - entity.position().x);
-                    float y = (float) (entity.getPoints()[i].y - entity.position().y);
-                    float z = (float) (entity.getPoints()[i].z - entity.position().z);
-                    if (i != entity.getPoints().length - 1) {
-                        float x1 = (float) (entity.getPoints()[i + 1].x - entity.position().x);
-                        float y1 = (float) (entity.getPoints()[i + 1].y - entity.position().y);
-                        float z1 = (float) (entity.getPoints()[i + 1].z - entity.position().z);
-                        IVertexBuilder wr2 = bufferIn.getBuffer(CustomRenderType.THINLINE);
-                        wr2.vertex(matrix4f1, x, y, z).color(255, 255, 0, 255).endVertex();
-                        wr2.vertex(matrix4f1, x1, y1, z1).color(255, 255, 0, 255).endVertex();
-                        IVertexBuilder wr = bufferIn.getBuffer(CustomRenderType.THICKLINE);
-                        wr.vertex(matrix4f1, x, y, z).color(255, 255, 0, 80).endVertex();
-                        wr.vertex(matrix4f1, x1, y1, z1).color(255, 255, 0, 80).endVertex();
-                    } else {
-                        IVertexBuilder wr2 = bufferIn.getBuffer(CustomRenderType.THINLINE);
-                        wr2.vertex(matrix4f1, x, y, z).color(255, 255, 0, 255).endVertex();
-                        wr2.vertex(matrix4f1, 0, 0, 0).color(255, 255, 0, 255).endVertex();
-                        IVertexBuilder wr = bufferIn.getBuffer(CustomRenderType.THICKLINE);
-                        wr.vertex(matrix4f1, x, y, z).color(255, 255, 0, 80).endVertex();
-                        wr.vertex(matrix4f1, 0, 0, 0).color(255, 255, 0, 80).endVertex();
-                    }
+        net.minecraft.util.math.vector.Matrix4f matrix4f1 = matrixStack.last().pose();
+        for (int i = 0; i < entity.getPoints().length; i++) {
+            if (entity.getPoints()[i] != null) {
+                float x = (float) (entity.getPoints()[i].x - entity.getPosition(partialTicks).x);
+                float y = (float) (entity.getPoints()[i].y - entity.getPosition(partialTicks).y);
+                float z = (float) (entity.getPoints()[i].z - entity.getPosition(partialTicks).z);
+                if (i != entity.getPoints().length - 1) {
+                    float x1 = (float) (entity.getPoints()[i + 1].x - entity.getPosition(partialTicks).x);
+                    float y1 = (float) (entity.getPoints()[i + 1].y - entity.getPosition(partialTicks).y);
+                    float z1 = (float) (entity.getPoints()[i + 1].z - entity.getPosition(partialTicks).z);
+                    IVertexBuilder wr2 = bufferIn.getBuffer(CustomRenderType.THINLINE);
+                    wr2.vertex(matrix4f1, x, y, z).color(255, 255, 0, 255).endVertex();
+                    wr2.vertex(matrix4f1, x1, y1, z1).color(255, 255, 0, 255).endVertex();
+                    IVertexBuilder wr = bufferIn.getBuffer(CustomRenderType.THICKLINE);
+                    wr.vertex(matrix4f1, x, y, z).color(255, 255, 0, 80).endVertex();
+                    wr.vertex(matrix4f1, x1, y1, z1).color(255, 255, 0, 80).endVertex();
+                } else {
+                    IVertexBuilder wr2 = bufferIn.getBuffer(CustomRenderType.THINLINE);
+                    wr2.vertex(matrix4f1, x, y, z).color(255, 255, 0, 255).endVertex();
+                    wr2.vertex(matrix4f1, 0, 0, 0).color(255, 255, 0, 255).endVertex();
+                    IVertexBuilder wr = bufferIn.getBuffer(CustomRenderType.THICKLINE);
+                    wr.vertex(matrix4f1, x, y, z).color(255, 255, 0, 80).endVertex();
+                    wr.vertex(matrix4f1, 0, 0, 0).color(255, 255, 0, 80).endVertex();
                 }
             }
         }

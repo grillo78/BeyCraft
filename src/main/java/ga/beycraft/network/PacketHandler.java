@@ -33,6 +33,7 @@ public class PacketHandler {
         register(MessageLoseCombat.class, new MessageLoseCombat());
         register(MessageSetBladerExperience.class, new MessageSetBladerExperience());
         register(MessageGetExperience.class, new MessageGetExperience());
+        register(MessageSpawnSpark.class, new MessageSpawnSpark());
     }
 
     private static <T> void register(Class<T> clazz, IMessage<T> message)

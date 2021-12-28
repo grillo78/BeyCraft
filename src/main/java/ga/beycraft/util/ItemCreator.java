@@ -25,6 +25,7 @@ public class ItemCreator {
 
     public static HashMap<Item, ModelInfo> models = new HashMap<>();
 
+
     public static void getItemsFromFolder() {
         File itemsFolder = new File("BeyParts");
         File[] propertiesFiles = itemsFolder.listFiles((dir, name) -> name.endsWith(".properties"));
@@ -189,6 +190,8 @@ public class ItemCreator {
                 return new MultiType(getTypes(properties.getProperty("types").split(" ")));
             case "MultiMode":
                 return new MultiMode(getModes(properties.getProperty("modes").split(" ")));
+            case "CounterStrike":
+                return new CounterStrike();
             default:
                 return null;
         }

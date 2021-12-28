@@ -25,114 +25,45 @@ public class ItemBeyPackage extends Item {
 	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		if (!worldIn.isClientSide) {
 			Random random = new Random();
-			int randomNumber = random.nextInt(BeyCraftRegistry.ITEMSLAYER.size());
-			if (randomNumber != 0) {
-				ItemEntity itemLayer = new ItemEntity(worldIn, playerIn.getX(),
-						playerIn.getY(), playerIn.getZ(),
-						new ItemStack(BeyCraftRegistry.ITEMSLAYER.get(randomNumber - 1), 1));
-				worldIn.addFreshEntity(itemLayer);
-				if(BeyCraftRegistry.ITEMSLAYER.get(randomNumber-1) instanceof ItemBeyLayerGT){
-					randomNumber = random.nextInt(BeyCraftRegistry.ITEMSGTWEIGHT.size());
-					if(randomNumber != 0){
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getX(),
-								playerIn.getY(), playerIn.getZ(),
-								new ItemStack(BeyCraftRegistry.ITEMSGTWEIGHT.get(randomNumber - 1), 1));
-						worldIn.addFreshEntity(itemChip);
-					} else{
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getX(),
-								playerIn.getY(), playerIn.getZ(),
-								new ItemStack(BeyCraftRegistry.ITEMSGTWEIGHT.get(randomNumber), 1));
-						worldIn.addFreshEntity(itemChip);
-					}
-					randomNumber = random.nextInt(BeyCraftRegistry.ITEMSGTCHIP.size());
-					if(randomNumber != 0){
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getX(),
-								playerIn.getY(), playerIn.getZ(),
-								new ItemStack(BeyCraftRegistry.ITEMSGTCHIP.get(randomNumber - 1), 1));
-						worldIn.addFreshEntity(itemChip);
-					} else{
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getX(),
-								playerIn.getY(), playerIn.getZ(),
-								new ItemStack(BeyCraftRegistry.ITEMSGTCHIP.get(randomNumber), 1));
-						worldIn.addFreshEntity(itemChip);
-					}
-				}
-			} else {
-				ItemEntity itemLayer = new ItemEntity(worldIn, playerIn.getX(),
-						playerIn.getY(), playerIn.getZ(),
-						new ItemStack(BeyCraftRegistry.ITEMSLAYER.get(randomNumber), 1));
-				worldIn.addFreshEntity(itemLayer);
-				if(BeyCraftRegistry.ITEMSLAYER.get(randomNumber) instanceof ItemBeyLayerGT){
-					randomNumber = random.nextInt(BeyCraftRegistry.ITEMSGTCHIP.size());
-					if(randomNumber != 0){
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getX(),
-								playerIn.getY(), playerIn.getZ(),
-								new ItemStack(BeyCraftRegistry.ITEMSGTCHIP.get(randomNumber - 1), 1));
-						worldIn.addFreshEntity(itemChip);
-					} else{
-						ItemEntity itemChip = new ItemEntity(worldIn, playerIn.getX(),
-								playerIn.getY(), playerIn.getZ(),
-								new ItemStack(BeyCraftRegistry.ITEMSGTCHIP.get(randomNumber), 1));
-						worldIn.addFreshEntity(itemChip);
-					}
+			Item layer = BeyCraftRegistry.ITEMSLAYER.get(random.nextInt(BeyCraftRegistry.ITEMSLAYER.size()));
+			Item disc = BeyCraftRegistry.ITEMSDISCLIST.get(random.nextInt(BeyCraftRegistry.ITEMSDISCLIST.size()));
+			Item driver = BeyCraftRegistry.ITEMSDRIVER.get(random.nextInt(BeyCraftRegistry.ITEMSDRIVER.size()));
+			summonItem(worldIn,playerIn,layer);
+			summonItem(worldIn,playerIn,disc);
+			summonItem(worldIn,playerIn,driver);
+			if(layer instanceof ItemBeyLayerGT || layer instanceof ItemBeyLayerGTNoWeight){
+				Item chip = BeyCraftRegistry.ITEMSGTCHIP.get(random.nextInt(BeyCraftRegistry.ITEMSGTCHIP.size()));
+				summonItem(worldIn,playerIn, chip);
+				if (layer instanceof ItemBeyLayerGT){
+					Item weight = BeyCraftRegistry.ITEMSGTWEIGHT.get(random.nextInt(BeyCraftRegistry.ITEMSGTWEIGHT.size()));
+					summonItem(worldIn,playerIn, weight);
 				}
 			}
-			randomNumber = random.nextInt(BeyCraftRegistry.ITEMSDISCLIST.size());
-			if (randomNumber != 0) {
-				ItemEntity itemDisk = new ItemEntity(worldIn, playerIn.getX(),
-						playerIn.getY(), playerIn.getZ(),
-						new ItemStack(BeyCraftRegistry.ITEMSDISCLIST.get(randomNumber - 1), 1));
-				worldIn.addFreshEntity(itemDisk);
-				if(BeyCraftRegistry.ITEMSDISCLIST.get(randomNumber-1) instanceof ItemBeyDiscFrame && random.nextInt(2) == 1){
-					randomNumber = random.nextInt(BeyCraftRegistry.ITEMSFRAME.size());
-					if(randomNumber != 0) {
-						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getX(),
-								playerIn.getY(), playerIn.getZ(),
-								new ItemStack(BeyCraftRegistry.ITEMSFRAME.get(randomNumber - 1), 1));
-						worldIn.addFreshEntity(itemFrame);
-					}else{
-						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getX(),
-								playerIn.getY(), playerIn.getZ(),
-								new ItemStack(BeyCraftRegistry.ITEMSFRAME.get(randomNumber), 1));
-						worldIn.addFreshEntity(itemFrame);
-					}
-				}
-			} else {
-				ItemEntity itemDisk = new ItemEntity(worldIn, playerIn.getX(),
-						playerIn.getY(), playerIn.getZ(),
-						new ItemStack(BeyCraftRegistry.ITEMSDISCLIST.get(randomNumber), 1));
-				worldIn.addFreshEntity(itemDisk);
-				if(BeyCraftRegistry.ITEMSDISCLIST.get(randomNumber) instanceof ItemBeyDiscFrame && random.nextInt(2) == 1){
-					randomNumber = random.nextInt(BeyCraftRegistry.ITEMSFRAME.size());
-					if(randomNumber != 0) {
-						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getX(),
-								playerIn.getY(), playerIn.getZ(),
-								new ItemStack(BeyCraftRegistry.ITEMSFRAME.get(randomNumber - 1), 1));
-						worldIn.addFreshEntity(itemFrame);
-					}else{
-						ItemEntity itemFrame = new ItemEntity(worldIn, playerIn.getX(),
-								playerIn.getY(), playerIn.getZ(),
-								new ItemStack(BeyCraftRegistry.ITEMSFRAME.get(randomNumber), 1));
-						worldIn.addFreshEntity(itemFrame);
-					}
-				}
+			if(layer instanceof ItemBeyLayerGod){
+				Item chip = BeyCraftRegistry.ITEMSGODCHIP.get(random.nextInt(BeyCraftRegistry.ITEMSGODCHIP.size()));
+				summonItem(worldIn,playerIn, chip);
 			}
-			randomNumber = random.nextInt(BeyCraftRegistry.ITEMSDRIVER.size());
-			if (randomNumber != 0) {
-				ItemEntity itemDriver = new ItemEntity(worldIn, playerIn.getX(),
-						playerIn.getY(), playerIn.getZ(),
-						new ItemStack(BeyCraftRegistry.ITEMSDRIVER.get(randomNumber - 1), 1));
-				worldIn.addFreshEntity(itemDriver);
-			} else {
-				ItemEntity itemDriver = new ItemEntity(worldIn, playerIn.getX(),
-						playerIn.getY(), playerIn.getZ(),
-						new ItemStack(BeyCraftRegistry.ITEMSDRIVER.get(randomNumber), 1));
-				worldIn.addFreshEntity(itemDriver);
+			if(disc instanceof ItemBeyDiscFrame){
+				Item frame = BeyCraftRegistry.ITEMSFRAME.get(random.nextInt(BeyCraftRegistry.ITEMSFRAME.size()));
+				summonItem(worldIn,playerIn, frame);
+			}
+			if(playerIn.getItemInHand(handIn).hasTag() && playerIn.getItemInHand(handIn).getTag().contains("launcher") && playerIn.getItemInHand(handIn).getTag().getBoolean("launcher")){
+				if(layer instanceof ItemBeyLayerDual || layer instanceof ItemBeyLayerGTDual || layer instanceof ItemBeyLayerGTDualNoWeight){
+					summonItem(worldIn, playerIn, BeyCraftRegistry.DUALLAUNCHER);
+				} else {
+					summonItem(worldIn, playerIn, ((ItemBeyLayer)layer).getRotationDirection() == 1? BeyCraftRegistry.LAUNCHER: BeyCraftRegistry.LEFTLAUNCHER);
+				}
 			}
 			playerIn.getItemInHand(handIn).shrink(1);
 		}
 		return super.use(worldIn, playerIn, handIn);
 	}
 
+	private void summonItem(World worldIn, PlayerEntity playerIn, Item item){
+		ItemEntity entity = new ItemEntity(worldIn, playerIn.getX(),
+				playerIn.getY(), playerIn.getZ(),
+				new ItemStack(item, 1));
+		worldIn.addFreshEntity(entity);
+	}
 
 }

@@ -35,6 +35,7 @@ public class BeyCraftRegistry {
     public static final List<Item> ITEMSDISCLIST = Lists.newArrayList();
     public static List<Item> ITEMSDRIVER = Lists.newArrayList();
     public static List<Item> ITEMSGTCHIP = Lists.newArrayList();
+    public static List<Item> ITEMSGODCHIP = Lists.newArrayList();
 
     @ObjectHolder(Reference.MOD_ID + ":sparkle")
     public static BasicParticleType SPARKLE;

@@ -52,14 +52,14 @@ public class ItemLauncher extends Item {
         if (!player.isCrouching()) {
             if (!world.isClientSide) {
                 if (BeyCraftRegistry.BEY_ENTITY_TYPE != null && launcher.hasTag()) {
-                    launcher.getTag().put("bey", ItemStack.EMPTY.save(new CompoundNBT()));
+                    ItemStack bey = ItemStack.of(launcher.getTag().getCompound("bey"));
                     launcher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                        if (h.getStackInSlot(0).getItem() instanceof ItemBeyLayer) {
-
+                        if (bey.getItem() instanceof ItemBeyLayer) {
+                            launcher.getTag().put("bey", ItemStack.EMPTY.save(new CompoundNBT()));
                             player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(i->{
-                                h.getStackInSlot(0).getTag().putBoolean("isEntity", true);
+                                bey.getTag().putBoolean("isEntity", true);
                                 EntityBey entity = new EntityBey(BeyCraftRegistry.BEY_ENTITY_TYPE, world,
-                                        h.getStackInSlot(0).copy(),
+                                        bey,
                                         getRotation(launcher), player.getName().getString(),i.getBladerLevel(), h.getStackInSlot(2).getItem() instanceof ItemBeyLogger);
                                 entity.moveTo(player.position().x + player.getLookAngle().x / 2,
                                         player.position().y + 1 + player.getLookAngle().y/2,

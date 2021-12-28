@@ -16,13 +16,12 @@ public class BeyCoinsCommand {
 	}
 
 	private static int messageBeyCoins(CommandSource source) {
-		int i = 0;
 		if(source.getEntity() != null && source.getEntity() instanceof ServerPlayerEntity){
 			ServerPlayerEntity player = (ServerPlayerEntity) source.getEntity();
 			player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h->{
 				source.sendSuccess(new TranslationTextComponent("beycoins.command.message",h.getCurrency()),true);
 			});
 		}
-		return i;
+		return 0;
 	}
 }
