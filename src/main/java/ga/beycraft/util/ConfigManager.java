@@ -37,6 +37,8 @@ public class ConfigManager {
             }
             if(!CONFIG.containsKey("downloadDefaultPack"))
                 CONFIG.setProperty("downloadDefaultPack", "true");
+            if(CONFIG.containsKey("token"))
+                CONFIG.remove("token");
             CONFIG.store(new FileWriter(CONFIG_FILE),"");
         }catch (IOException e){
 
@@ -60,9 +62,5 @@ public class ConfigManager {
             }
         }
 	    return blocks;
-    }
-
-    public static String getToken(){
-	    return CONFIG.getProperty("token");
     }
 }

@@ -33,7 +33,7 @@ public class MessageSetBladerExperience implements IMessage<MessageSetBladerExpe
         supplier.get().enqueueWork(()->{
             supplier.get().getSender().getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h->{
                 h.setExperience(message.experience);
-                PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getExperience()),
+                PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getExperience(), h.isInResonance(), true, supplier.get().getSender().getId()),
                         supplier.get().getSender().connection.getConnection(),
                         NetworkDirection.PLAY_TO_CLIENT);
             });

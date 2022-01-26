@@ -25,16 +25,18 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Battle {
 
     private HashMap<PlayerEntity, Integer> points = new HashMap<>();
-    private HashMap<PlayerEntity,EntityBey> beys = new HashMap<>();
+    private HashMap<PlayerEntity, EntityBey> beys = new HashMap<>();
     private int startCount = 0;
     private int round = 1;
     private ServerWorld level;
     private BattleTypes type = BattleTypes.NORMAL_MATCH;
     private StadiumTileEntity stadium;
+    private boolean battleForRanking;
 
-    public Battle(ServerWorld level, StadiumTileEntity stadium) {
+    public Battle(ServerWorld level, StadiumTileEntity stadium, boolean battleForRanking) {
         this.level = level;
         this.stadium = stadium;
+        this.battleForRanking = battleForRanking;
     }
 
     public HashMap<PlayerEntity, Integer> getPoints() {
@@ -46,14 +48,14 @@ public class Battle {
             for (EntityBey bey : beysIn) {
                 PlayerEntity player = PlayerUtils.getPlayerByName(bey.getPlayerName(), level);
                 if (player != null) {
-                    if(round == 1){
+                    if (round == 1) {
                         if (!points.containsKey(player)) {
                             points.put(player, 0);
-                            this.beys.put(player,bey);
+                            this.beys.put(player, bey);
                         }
                     } else {
                         if (points.containsKey(player)) {
-                            this.beys.put(player,bey);
+                            this.beys.put(player, bey);
                         } else {
                             stadium.invalidateBattle();
                         }
@@ -77,22 +79,25 @@ public class Battle {
             boolean isAlive = entityBey.isAlive();
             boolean isStopped = entityBey.isStopped();
             if (!isStopped && isAlive && beysIn.contains(entityBey)) {
+                if (entityBey.isPickedUp())
+                    cancelRound();
                 beysSpinning.getAndIncrement();
                 lastSpinningBeyPlayer.set(entity);
             }
         }));
 
-        if (beysSpinning.get() == 1 && this.beys.size() > 1) {
+        if (beysSpinning.get() == 1 && this.beys.size() > 1 && stadium.isAllowBattle()) {
             switch (type) {
                 case NORMAL_MATCH:
                     PlayerEntity winner = lastSpinningBeyPlayer.get();
                     if (winner != null && points.containsKey(winner)) {
                         AtomicInteger beysAlive = new AtomicInteger();
                         beys.forEach(((entity, entityBey) -> {
+                            increaseXP((ServerPlayerEntity) entity, entity == winner);
                             if (entityBey.isAlive())
                                 beysAlive.getAndIncrement();
                         }));
-                        points.put(winner, points.get(winner) + (beysAlive.get()==1?2:1));
+                        points.put(winner, points.get(winner) + (beysAlive.get() == 1 ? 2 : 1));
                         if (points.get(winner) >= stadium.getPointsToWin())
                             setWinner((ServerPlayerEntity) winner);
                     }
@@ -107,41 +112,63 @@ public class Battle {
                     break;
             }
         } else {
-            if(beysSpinning.get() == 0 && beysIn.size() != 0){
-                startCount = 0;
-                stadium.setAllowBattle(false);
-                this.beys.clear();
+            if (beysSpinning.get() == 0 && beysIn.size() != 0) {
+                cancelRound();
             }
         }
     }
 
-    private void updateBattleInformersPoints(){
-        BlockPos.betweenClosedStream(stadium.getBlockPos().above().north(2).east(2),stadium.getBlockPos().above().south(2).west(2)).forEach(blockPos -> {
-            if(level.getBlockEntity(blockPos) instanceof BattleInformerTileEntity){
+    private void cancelRound() {
+        startCount = 0;
+        stadium.setAllowBattle(false);
+        this.beys.clear();
+    }
+
+    private void updateBattleInformersPoints() {
+        BlockPos.betweenClosedStream(stadium.getBlockPos().above().north(2).east(2), stadium.getBlockPos().above().south(2).west(2)).forEach(blockPos -> {
+            if (level.getBlockEntity(blockPos) instanceof BattleInformerTileEntity) {
                 stadium.updatePoints((BattleInformerTileEntity) level.getBlockEntity(blockPos));
             }
         });
     }
 
-    private void setWinner(ServerPlayerEntity player) {
+    private void increaseXP(ServerPlayerEntity player, boolean winning){
         player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
             Random rand = new Random();
+            AtomicInteger averageLevel = new AtomicInteger();
+            beys.forEach((auxPlayer, bey) -> {
+                if (auxPlayer != player)
+                    auxPlayer.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(bladerLevel -> {
+                        averageLevel.addAndGet(averageLevel.get() + bladerLevel.getBladerLevel());
+                    });
+            });
+            averageLevel.set(averageLevel.get()/beys.size());
             h.increaseExperience(round(
-                    rand.nextInt(h.getBladerLevel() * beys.size()) / 5 + rand.nextFloat(), 2));
+                    (averageLevel.get() * 0.025F)/(winning?1:25), 2));
+            PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getExperience(), h.isInResonance(), true, player.getId()), player.connection.getConnection(),
+                    NetworkDirection.PLAY_TO_CLIENT);
+        });
+    }
+
+    private void setWinner(ServerPlayerEntity player) {
+        if(battleForRanking){
+            player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h -> {
+                h.increaseCurrency(points.get(player));
+            });
+
             PacketHandler.instance.sendTo(new MessageWinCombat(), player.connection.getConnection(),
                     NetworkDirection.PLAY_TO_CLIENT);
-            PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getExperience()), player.connection.getConnection(),
-                    NetworkDirection.PLAY_TO_CLIENT);
-        });
-        player.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h -> {
-            h.increaseCurrency(points.get(player));
-        });
-        points.forEach((auxPlayer, points) -> {
-            if (auxPlayer != player) {
-                PacketHandler.instance.sendTo(new MessageLoseCombat(), ((ServerPlayerEntity) auxPlayer).connection.getConnection(),
-                        NetworkDirection.PLAY_TO_CLIENT);
-            }
-        });
+            points.forEach((auxPlayer, points) -> {
+                if (auxPlayer != player) {
+                    PacketHandler.instance.sendTo(new MessageLoseCombat(), ((ServerPlayerEntity) auxPlayer).connection.getConnection(),
+                            NetworkDirection.PLAY_TO_CLIENT);
+
+                    auxPlayer.getCapability(BladerCapProvider.BLADERCURRENCY_CAP).ifPresent(h -> {
+                        h.increaseCurrency(this.points.get(auxPlayer));
+                    });
+                }
+            });
+        }
         stadium.invalidateBattle();
     }
 

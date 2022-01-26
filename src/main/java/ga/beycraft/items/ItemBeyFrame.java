@@ -11,8 +11,8 @@ public class ItemBeyFrame extends ItemBeyPart{
 	private float attack;
 	private float defense;
 
-	public ItemBeyFrame(String name, float attack, float defense, BeyTypes type) {
-		super(name, type, null, null, BeyCraft.BEYCRAFTDISKS,new Item.Properties().setISTER(()-> GenericPartItemStackRendererTileEntity::new));
+	public ItemBeyFrame(String name, String displayName, float attack, float defense, BeyTypes type) {
+		super(name, displayName, type, null, null, BeyCraft.BEYCRAFTDISKS,new Item.Properties().setISTER(()-> GenericPartItemStackRendererTileEntity::new));
 		BeyCraftRegistry.ITEMSFRAME.add(this);
 	}
 

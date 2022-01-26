@@ -20,7 +20,7 @@ This mod adds beyblades to minecraft, you can add content packs in the folder ca
 [[dependencies.beycraft]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.2,1.16.3]"
+    versionRange="[1.16.2,1.16.5]"
     ordering="NONE"
     side="BOTH"
 [[dependencies.beycraft]]

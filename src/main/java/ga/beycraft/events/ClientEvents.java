@@ -9,16 +9,22 @@ import ga.beycraft.BeyCraft;
 import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.Reference;
 import ga.beycraft.capabilities.BladerCapProvider;
+import ga.beycraft.capabilities.BladerLevel;
 import ga.beycraft.entity.BeyEntityRenderFactory;
 import ga.beycraft.entity.BeyRender;
 import ga.beycraft.gui.*;
 import ga.beycraft.items.ItemLauncher;
 import ga.beycraft.items.ItemLauncherHandle;
 import ga.beycraft.network.PacketHandler;
+import ga.beycraft.network.message.MessageEnableResonance;
 import ga.beycraft.network.message.MessageNotifyPlayCountdown;
 import ga.beycraft.network.message.MessageOpenBelt;
+import ga.beycraft.particles.ResonanceParticle;
 import ga.beycraft.particles.SparkleParticle;
-import ga.beycraft.tileentity.*;
+import ga.beycraft.tileentity.RenderBattleInformer;
+import ga.beycraft.tileentity.RenderBeyCreator;
+import ga.beycraft.tileentity.RenderExpository;
+import ga.beycraft.tileentity.RenderRobot;
 import ga.beycraft.util.BeyPartModel;
 import ga.beycraft.util.RankingUtil;
 import net.arikia.dev.drpc.DiscordRPC;
@@ -62,6 +68,7 @@ import java.util.Random;
 public class ClientEvents {
 
     public static KeyBinding BELTKEY = new KeyBinding("key.beycraft.belt", 66, "key.beycraft.category");
+    public static KeyBinding RESONANCE = new KeyBinding("key.beycraft.resonance", 93, "key.beycraft.category");
     public static final KeyBinding COUNTDOWNKEY = new KeyBinding("key.beycraft.countdown", 67, "key.beycraft.category");
     public static final KeyBinding RANKINGKEY = new KeyBinding("key.beycraft.ranking", 82, "key.beycraft.category");
     private static boolean firstScreenMenuOpen = true;
@@ -70,7 +77,8 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onParticleFactorieRegistry(final ParticleFactoryRegisterEvent event) {
         Minecraft.getInstance().particleEngine.register(BeyCraftRegistry.SPARKLE, SparkleParticle.Factory::new);
-        Minecraft.getInstance().particleEngine.register(BeyCraftRegistry.AURA, SparkleParticle.Factory::new);
+        Minecraft.getInstance().particleEngine.register(BeyCraftRegistry.RESONANCE_BEY, ResonanceParticle.Factory::new);
+        Minecraft.getInstance().particleEngine.register(BeyCraftRegistry.RESONANCE_PLAYER, ResonanceParticle.Factory::new);
     }
 
     @SubscribeEvent
@@ -83,6 +91,7 @@ public class ClientEvents {
 
         ClientRegistry.registerKeyBinding(ClientEvents.COUNTDOWNKEY);
         ClientRegistry.registerKeyBinding(ClientEvents.BELTKEY);
+        ClientRegistry.registerKeyBinding(ClientEvents.RESONANCE);
         ClientRegistry.registerKeyBinding(ClientEvents.RANKINGKEY);
         ScreenManager.register(BeyCraftRegistry.LAUNCHER_RIGHT_CONTAINER, LauncherGUI::new);
         ScreenManager.register(BeyCraftRegistry.LAUNCHER_LEFT_CONTAINER, LauncherGUI::new);
@@ -230,9 +239,9 @@ public class ClientEvents {
                                 (float) j1, 8453920);
                         Minecraft.getInstance().getEntityRenderDispatcher().textureManager
                                 .bind(AbstractGui.GUI_ICONS_LOCATION);
-                        float i = h.getExperience() / (h.getExpForNextLevel() + h.getExperience());
+                        float i = (h.getExpForNextLevel() - h.getExperience()) / (BladerLevel.calcExpForNextLevel(h.getBladerLevel()+1)-BladerLevel.calcExpForNextLevel(h.getBladerLevel()));
                         AbstractGui.blit(event.getMatrixStack(), 1, 27, 0, 74, 75, 5, 105, 256);
-                        AbstractGui.blit(event.getMatrixStack(), 1, 27, 0, 79, (int) (i * 75), 5, 105, 256);
+                        AbstractGui.blit(event.getMatrixStack(), 1, 27, 0, 79, (int) (75 - 75 * i), 5, 105, 256);
                     });
                 }
             }
@@ -244,6 +253,9 @@ public class ClientEvents {
                 return;
             if (ClientEvents.BELTKEY.consumeClick()) {
                 PacketHandler.instance.sendToServer(new MessageOpenBelt());
+            }
+            if (ClientEvents.RESONANCE.consumeClick()) {
+                PacketHandler.instance.sendToServer(new MessageEnableResonance());
             }
             if (ClientEvents.COUNTDOWNKEY.consumeClick() && event.getAction() == GLFW.GLFW_PRESS) {
                 PacketHandler.instance.sendToServer(new MessageNotifyPlayCountdown());

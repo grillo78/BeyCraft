@@ -14,8 +14,8 @@ public class ItemBeyDisc extends ItemBeyPart{
 	private float attack;
 	private float defense;
 
-	public ItemBeyDisc(String name, float attack, float defense, float weight, Ability primaryAbility, Ability secondaryAbility, BeyTypes type, Item.Properties properties) {
-		super(name, type, primaryAbility, secondaryAbility, BeyCraft.BEYCRAFTDISKS,properties.setISTER(() -> GenericPartItemStackRendererTileEntity::new));
+	public ItemBeyDisc(String name, String displayName, float attack, float defense, float weight, Ability primaryAbility, Ability secondaryAbility, BeyTypes type, Item.Properties properties) {
+		super(name, displayName, type, primaryAbility, secondaryAbility, BeyCraft.BEYCRAFTDISKS,properties.setISTER(() -> GenericPartItemStackRendererTileEntity::new));
 		this.weight = weight;
 		this.attack = attack;
 		this.defense = defense;

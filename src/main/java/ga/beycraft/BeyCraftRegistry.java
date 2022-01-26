@@ -39,8 +39,10 @@ public class BeyCraftRegistry {
 
     @ObjectHolder(Reference.MOD_ID + ":sparkle")
     public static BasicParticleType SPARKLE;
-    @ObjectHolder(Reference.MOD_ID + ":aura")
-    public static BasicParticleType AURA;
+    @ObjectHolder(Reference.MOD_ID + ":resonance_bey")
+    public static BasicParticleType RESONANCE_BEY;
+    @ObjectHolder(Reference.MOD_ID + ":resonance_player")
+    public static BasicParticleType RESONANCE_PLAYER;
 
     /* Entity */
     @ObjectHolder(Reference.MOD_ID + ":bey")
@@ -82,12 +84,6 @@ public class BeyCraftRegistry {
     public static final ContainerType<BeyDiscFrameContainer> DISC_FRAME_CONTAINER = null;
     @ObjectHolder("beycraft:beylogger")
     public static final ContainerType<BeyLoggerContainer> BEYLOGGER_CONTAINER = null;
-
-
-    /* ArmorMaterials */
-//	public static final ArmorMaterial BLADER_MATERIAL = EnumHelper.addArmorMaterial("blader_model",
-//			Reference.MODID + ":blader_clothes", 1000, new int[] { 10, 10, 10, 10 }, 0,
-//			SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2.0F);
 
     /* Sounds */
     public static final SoundEvent HITSOUND = new SoundEvent(new ResourceLocation(Reference.MOD_ID, "bey.hit"));

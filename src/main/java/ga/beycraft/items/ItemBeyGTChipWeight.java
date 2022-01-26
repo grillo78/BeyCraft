@@ -5,8 +5,8 @@ public class ItemBeyGTChipWeight extends ItemBeyGTChip {
     private float weight;
     private float burst;
 
-    public ItemBeyGTChipWeight(String name, float weight, float burst){
-        super(name,weight,burst);
+    public ItemBeyGTChipWeight(String name, String displayName, float weight, float burst, ItemBeyLayer.Color resonanceColor, ItemBeyLayer.Color secondResonanceColor, ItemBeyLayer.Color thirdResonanceColor) {
+        super(name, displayName, weight, burst, resonanceColor, secondResonanceColor, thirdResonanceColor);
     }
 
     public float getWeight() {

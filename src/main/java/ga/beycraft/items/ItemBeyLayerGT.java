@@ -6,8 +6,8 @@ import ga.beycraft.util.BeyTypes;
 import net.minecraft.item.ItemStack;
 
 public class ItemBeyLayerGT extends ItemBeyLayer {
-    public ItemBeyLayerGT(String name, float rotationDirection, float attack, float defense, float weight, Ability primaryAbility, Ability secundaryAbility, BeyTypes type) {
-        super(name, rotationDirection, attack, defense, weight, 0, primaryAbility, secundaryAbility, type);
+    public ItemBeyLayerGT(String name, String displayName, float rotationDirection, float attack, float defense, float weight, Ability primaryAbility, Ability secundaryAbility, BeyTypes type) {
+        super(name, displayName, rotationDirection, attack, defense, weight, 0, primaryAbility, secundaryAbility, type, null, null, null);
         BeyCraftRegistry.ITEMSLAYERGT.add(this);
     }
 
@@ -19,5 +19,20 @@ public class ItemBeyLayerGT extends ItemBeyLayer {
     @Override
     public float getBurst(ItemStack stack) {
         return ((ItemBeyGTChip)ItemStack.of(stack.getTag().getCompound("chip")).getItem()).getBurst();
+    }
+
+    @Override
+    public Color getResonanceColor(ItemStack stack) {
+        return ((ItemBeyGTChip)ItemStack.of(stack.getTag().getCompound("chip")).getItem()).getResonanceColor();
+    }
+
+    @Override
+    public Color getSecondResonanceColor(ItemStack stack) {
+        return ((ItemBeyGTChip)ItemStack.of(stack.getTag().getCompound("chip")).getItem()).getSecondResonanceColor();
+    }
+
+    @Override
+    public Color getThirdResonanceColor(ItemStack stack) {
+        return ((ItemBeyGTChip)ItemStack.of(stack.getTag().getCompound("chip")).getItem()).getThirdResonanceColor();
     }
 }

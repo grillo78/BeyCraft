@@ -3,8 +3,14 @@ package ga.beycraft.entity;
 import ga.beycraft.BeyCraftRegistry;
 import ga.beycraft.abilities.Absorb;
 import ga.beycraft.abilities.SpringAttack;
-import ga.beycraft.items.*;
+import ga.beycraft.capabilities.BladerCapProvider;
+import ga.beycraft.items.ItemBeyDisc;
+import ga.beycraft.items.ItemBeyDriver;
+import ga.beycraft.items.ItemBeyLayer;
+import ga.beycraft.network.PacketHandler;
+import ga.beycraft.network.message.MessageSyncBladerLevel;
 import ga.beycraft.util.ConfigManager;
+import ga.beycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
@@ -15,6 +21,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -34,12 +41,14 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author grillo78
@@ -50,6 +59,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     private int rotationDirection;
     private int rotationStartedCount = 0;
     private boolean rotationStarted = false;
+    private boolean pickedUp = false;
     private static final DataParameter<Float> BLADERLEVEL = EntityDataManager.defineId(EntityBey.class,
             DataSerializers.FLOAT);
     private static final DataParameter<Float> ROTATIONSPEED = EntityDataManager.defineId(EntityBey.class,
@@ -63,14 +73,15 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     private static final DataParameter<Boolean> HORIZONTALCOLLISION = EntityDataManager.defineId(EntityBey.class,
             DataSerializers.BOOLEAN);
     private String playerName;
-    public float angle0 = 0;
     private static final DataParameter<Float> ANGLE = EntityDataManager.defineId(EntityBey.class,
+            DataSerializers.FLOAT);
+    private static final DataParameter<Float> ANGLE0 = EntityDataManager.defineId(EntityBey.class,
             DataSerializers.FLOAT);
     private boolean increaseRadius = false;
     private boolean stopped = false;
     private float maxRadius;
-    private boolean beylogger;
     private int tickCount = 0;
+    private Lightning[] lightnings;
 
     private Vector3d[] points = new Vector3d[5];
 
@@ -79,13 +90,12 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
      * @param world
      */
     public EntityBey(EntityType<? extends EntityBey> type, World world) {
-        this(type, world, ItemStack.EMPTY, 1, null, 0, false);
+        this(type, world, ItemStack.EMPTY, 1, null, 0);
     }
 
     public EntityBey(EntityType<? extends EntityBey> type, World world, ItemStack layer, int rotationDirection,
-                     String playerName, int bladerLevel, boolean beylogger) {
+                     String playerName, int bladerLevel) {
         super(type, world);
-        this.beylogger = beylogger;
         this.rotationDirection = rotationDirection;
         if (layer.hasTag()) {
             this.inventory.setStackInSlot(0, layer);
@@ -101,10 +111,15 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         maxRadius = 1.6F * getMaxRotationSpeed() / 15;
         this.setRadius(maxRadius);
         maxUpStep = 0.1F;
+
     }
 
-    public boolean hasBeylogger() {
-        return beylogger;
+    public Lightning[] getLightnings() {
+        return lightnings;
+    }
+
+    public boolean isPickedUp() {
+        return pickedUp;
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -113,7 +128,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
     @Override
     public boolean shouldRenderAtSqrDistance(double p_70112_1_) {
-        return p_70112_1_<2000;
+        return p_70112_1_ < 4000;
     }
 
     @Nullable
@@ -161,6 +176,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
     }
 
     private void dropItem(PlayerEntity player) {
+        pickedUp = true;
         inventory.getStackInSlot(0).getTag().putBoolean("isEntity", false);
         level.addFreshEntity(new ItemEntity(level, player.getX(), player.getY(), player.getZ(),
                 inventory.getStackInSlot(0)));
@@ -180,6 +196,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         this.entityData.define(RADIUS0, 1.6F);
         this.entityData.define(RADIUS, 1.6F);
         this.entityData.define(ANGLE, 0F);
+        this.entityData.define(ANGLE0, 0F);
         super.defineSynchedData();
     }
 
@@ -235,6 +252,8 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         }
         rotationDirection = additionalData.readInt();
         playerName = additionalData.readUtf();
+        ItemBeyLayer layerItem = ((ItemBeyLayer) getLayer().getItem());
+        this.lightnings = new Lightning[]{new Lightning(layerItem.getResonanceColor(getLayer())), new Lightning(layerItem.getSecondResonanceColor(getLayer())), new Lightning(layerItem.getThirdResonanceColor(getLayer())), new Lightning(layerItem.getResonanceColor(getLayer())), new Lightning(layerItem.getSecondResonanceColor(getLayer())), new Lightning(layerItem.getThirdResonanceColor(getLayer()))};
     }
 
     @Override
@@ -313,9 +332,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                 && getDisc().getItem() instanceof ItemBeyDisc
                 && getDriver().getItem() instanceof ItemBeyDriver)) {
             if (this.getRotationSpeed() > 0
-                    && (level.getBlockState(this.getOnPos().below()).getBlock() == BeyCraftRegistry.STADIUM
-                    || level.getBlockState(this.getOnPos().below()).getBlock() == Blocks.AIR
-                    || level.getBlockState(this.getOnPos()).getBlock() == Blocks.AIR
+                    && (level.getBlockState(this.getOnPos()).getBlock() == Blocks.AIR
                     || (level.getBlockState(new BlockPos(position().x,
                     position().y - 0.1, position().z)).getBlock() == BeyCraftRegistry.STADIUM
                     || (!ConfigManager.isOnlyStadium() && (!ConfigManager.getBlockBlackList()
@@ -330,22 +347,12 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                         rotationStarted = true;
                     }
                 } else {
-                    if (this.getLayer().getItem() instanceof ItemBeyLayerGT && getLayer().getTag().contains("weight")
-                            && ItemStack.of(getLayer().getTag().getCompound("weight"))
-                            .getItem() instanceof ItemBeyGTWeight) {
-                        setRotationSpeed(getRotationSpeed() - 0.005F
-                                * ((ItemBeyDriver) getDriver().getItem()).getFriction(getDriver())
-                                / (10 * (((ItemBeyDisc) getDisc().getItem()).getWeight() + ((ItemBeyGTWeight) ItemStack
-                                .of(getLayer().getTag().getCompound("weight")).getItem()).getWeight())));
-                    } else {
-                        setRotationSpeed(getRotationSpeed()
-                                - 0.005F * ((ItemBeyDriver) getDriver().getItem()).getFriction(getDriver())
-                                / (10 * (((ItemBeyDisc) getDisc().getItem()).getWeight() + ((ItemBeyLayer) getLayer().getItem()).getWeight(getLayer()))));
-
-                    }
+                    setRotationSpeed(getRotationSpeed()
+                            - 0.005F * ((ItemBeyDriver) getDriver().getItem()).getFriction(getDriver())
+                            / (10 * (1 + ((ItemBeyDisc) getDisc().getItem()).getWeight() + ((ItemBeyLayer) getLayer().getItem()).getWeight(getLayer()))));
                     if (!level.isClientSide) {
-                        tickCount++;
-                        setAngle(getAngle() + getRotationSpeed() * 30 * -rotationDirection);
+                        float angleIncrementation = (getRotationSpeed() * 30 * -rotationDirection);
+                        setAngle(getAngle() + angleIncrementation);
                         if (((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility() != null)
                             ((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility().executeAbility(this);
                         if (((ItemBeyLayer) getLayer().getItem()).getSecundaryAbility() != null)
@@ -371,12 +378,45 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         }
         if (isHorizontalCollision() && !isStopped()) {
             for (int i = 0; i < 10; i++) {
-                level.addParticle(BeyCraftRegistry.SPARKLE, getX()+getDimensions(Pose.STANDING).width/2, getY() + 0.5, getZ()+getDimensions(Pose.STANDING).width/2, random.nextInt(5),
+                level.addParticle(BeyCraftRegistry.SPARKLE, getX() + getDimensions(Pose.STANDING).width / 2, getY() + 0.5, getZ() + getDimensions(Pose.STANDING).width / 2, random.nextInt(5),
                         random.nextInt(5), random.nextInt(5));
             }
         }
+        tickCount++;
         if (level.isClientSide) {
             updatePoints(this);
+            PlayerEntity player = PlayerUtils.getPlayerByName(playerName, level);
+            if (player != null && getRotationSpeed() != 0 && tickCount % 5 == 0)
+                player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
+                    if (h.isInResonance()) {
+                        if (lightnings != null) {
+                            for (int i = 0; i < lightnings.length; i++) {
+                                if (lightnings[i] != null)
+                                    lightnings[i].tick();
+                            }
+                        }
+                        for (int i = 0; i < 100; i++)
+                            level.addParticle(BeyCraftRegistry.RESONANCE_BEY, getX(), getY(), getZ(), 0,
+                                    0, 0);
+
+                        if (!player.isSpectator())
+                            for (int i = 0; i < 100; i++)
+                                level.addParticle(BeyCraftRegistry.RESONANCE_PLAYER, getX(), getY(), getZ(), 0,
+                                        0, 0);
+                    }
+                });
+        } else {
+            PlayerEntity player = PlayerUtils.getPlayerByName(playerName, level);
+            if (player != null && !isStopped())
+                player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
+                    boolean wasInResonance = h.isInResonance();
+                    h.increaseResonanceCount();
+                    if (wasInResonance && !h.isInResonance())
+                        PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getExperience(), h.isInResonance(), false, player.getId()),
+                                ((ServerPlayerEntity) PlayerUtils.getPlayerByName(playerName, level)).connection.getConnection(),
+                                NetworkDirection.PLAY_TO_CLIENT);
+                });
+
         }
         super.tick();
     }
@@ -408,72 +448,68 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                 ((ServerWorld) level).sendParticles(ParticleTypes.SWEEP_ATTACK, getX(), getY(), getZ(), 1, x, y, z,
                         1);
                 if (!((EntityBey) entityIn).isStopped()) {
-                    if ((((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility() instanceof Absorb
+                    if (((((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility() instanceof Absorb
                             || ((ItemBeyLayer) getLayer().getItem()).getSecundaryAbility() instanceof Absorb
                             || ((ItemBeyDisc) getDisc().getItem()).getPrimaryAbility() instanceof Absorb
                             || ((ItemBeyDisc) getDisc().getItem()).getSecundaryAbility() instanceof Absorb) &&
                             !(((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getPrimaryAbility() instanceof Absorb
                                     || ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getSecundaryAbility() instanceof Absorb
                                     || ((ItemBeyDisc) ((EntityBey) entityIn).getDisc().getItem()).getPrimaryAbility() instanceof Absorb
-                                    || ((ItemBeyDisc) ((EntityBey) entityIn).getDisc().getItem()).getSecundaryAbility() instanceof Absorb)) {
+                                    || ((ItemBeyDisc) ((EntityBey) entityIn).getDisc().getItem()).getSecundaryAbility() instanceof Absorb))
+                            && random.nextInt(3) == 1) {
                         setRotationSpeed(getRotationSpeed()
-                                + (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack(getLayer())
-                                + ((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer())) / 100);
+                                + (((EntityBey) entityIn).getPartsAttack()
+                                + getPartsDefense()) / 100);
                         bey.setRotationSpeed(bey.getRotationSpeed()
-                                - (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack(getLayer())
-                                + ((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer())
+                                - (((EntityBey) entityIn).getPartsAttack()
+                                + getPartsDefense()
                                 + ((EntityBey) entityIn).getBladerLevel()) / getBladerLevel());
                         if (getRotationSpeed() > getMaxRotationSpeed()) {
                             setRotationSpeed(getMaxRotationSpeed());
                         }
-                        if (new Random().nextInt(3) == 1 || ((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility() instanceof SpringAttack
+                        if (random.nextInt(3) == 1 || ((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility() instanceof SpringAttack
                                 || ((ItemBeyLayer) getLayer().getItem()).getSecundaryAbility() instanceof SpringAttack) {
-                            hurt(DamageSource.mobAttack((LivingEntity) entityIn),
-                                    (int) (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem())
-                                            .getAttack(getLayer())
-                                            + ((ItemBeyLayer) getLayer().getItem()).getBurst(getLayer())
-                                            - ((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer())
-                                            + ((EntityBey) entityIn).getBladerLevel() - getBladerLevel()));
+                            entityIn.hurt(DamageSource.mobAttack(this),
+                                    (int) (getPartsAttack()
+                                            + ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getBurst(((EntityBey) entityIn).getLayer())
+                                            - ((EntityBey) entityIn).getPartsDefense()
+                                            + getBladerLevel() - ((EntityBey) entityIn).getBladerLevel()));
                         }
                     } else {
                         setRotationSpeed(getRotationSpeed()
-                                - (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getAttack(getLayer())
-                                + ((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer())
+                                - (((EntityBey) entityIn).getPartsAttack()
+                                + getPartsDefense()
                                 + ((EntityBey) entityIn).getBladerLevel()) / getBladerLevel());
-                        if (new Random().nextInt(3) == 1 || ((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility() instanceof SpringAttack
+                        if (random.nextInt(3) == 1 || ((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility() instanceof SpringAttack
                                 || ((ItemBeyLayer) getLayer().getItem()).getSecundaryAbility() instanceof SpringAttack) {
-                            hurt(DamageSource.mobAttack((LivingEntity) entityIn),
-                                    (int) (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem())
-                                            .getAttack(getLayer())
-                                            + ((ItemBeyLayer) getLayer().getItem()).getBurst(getLayer())
-                                            - ((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer())
-                                            + ((EntityBey) entityIn).getBladerLevel() - getBladerLevel()));
+                            entityIn.hurt(DamageSource.mobAttack(this),
+                                    (int) (getPartsAttack()
+                                            + ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getBurst(((EntityBey) entityIn).getLayer())
+                                            - ((EntityBey) entityIn).getPartsDefense()
+                                            + getBladerLevel() - ((EntityBey) entityIn).getBladerLevel()));
                         }
                     }
-                    if (getRadius() == 0 && new Random().nextInt(5) == 1) {
+                    if (getRadius() == 0 && random.nextInt(5) == 1) {
                         increaseRadius = true;
-                        if (new Random().nextInt(50) == 1 || ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getPrimaryAbility() instanceof SpringAttack
+                        if (random.nextInt(50) == 1 || ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getPrimaryAbility() instanceof SpringAttack
                                 || ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getSecundaryAbility() instanceof SpringAttack) {
-                            hurt(DamageSource.mobAttack((LivingEntity) entityIn),
-                                    (int) (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem())
-                                            .getAttack(getLayer())
-                                            + ((ItemBeyLayer) getLayer().getItem()).getBurst(getLayer())
-                                            - ((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer())
-                                            + ((EntityBey) entityIn).getBladerLevel() - getBladerLevel()));
+                            entityIn.hurt(DamageSource.mobAttack(this),
+                                    (getPartsAttack()
+                                            + ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getBurst(((EntityBey) entityIn).getLayer())
+                                            - ((EntityBey) entityIn).getPartsDefense()
+                                            + getBladerLevel() - ((EntityBey) entityIn).getBladerLevel()));
                         } else {
-                            hurt(DamageSource.GENERIC,
-                                    (int) (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem())
-                                            .getAttack(getLayer())
-                                            + ((ItemBeyLayer) getLayer().getItem()).getBurst(getLayer())
-                                            - ((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer())
-                                            + ((EntityBey) entityIn).getBladerLevel() - getBladerLevel()));
+                            entityIn.hurt(DamageSource.GENERIC,
+                                    (getPartsAttack()
+                                            + ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getBurst(((EntityBey) entityIn).getLayer())
+                                            - ((EntityBey) entityIn).getPartsDefense()
+                                            + getBladerLevel() - ((EntityBey) entityIn).getBladerLevel()));
                         }
                     } else {
                         hurt(DamageSource.GENERIC,
-                                (int) (((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem())
-                                        .getAttack(getLayer())
-                                        + ((ItemBeyLayer) getLayer().getItem()).getBurst(getLayer()) * 4
-                                        - ((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer())
+                                (getPartsAttack()
+                                        + ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getBurst(((EntityBey) entityIn).getLayer()) * 4
+                                        - ((EntityBey) entityIn).getPartsDefense()
                                         + ((EntityBey) entityIn).getBladerLevel() - getBladerLevel()));
                     }
                 }
@@ -481,6 +517,25 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
             }
         }
         super.doPush(entityIn);
+    }
+
+    public float getResonanceMultiplier() {
+        AtomicReference<Float> resonanceMultiplier = new AtomicReference<>((float) 1);
+        PlayerEntity player = PlayerUtils.getPlayerByName(playerName, level);
+        if (player != null)
+            player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(bladerLevel -> {
+                if (bladerLevel.isInResonance())
+                    resonanceMultiplier.set((float) (bladerLevel.getBladerLevel()) / 10F);
+            });
+        return resonanceMultiplier.get();
+    }
+
+    public float getPartsAttack() {
+        return (((ItemBeyLayer) getLayer().getItem()).getAttack(getLayer()) + ((ItemBeyDisc) getDisc().getItem()).getAttack(getDisc())) * getResonanceMultiplier();
+    }
+
+    public float getPartsDefense() {
+        return (((ItemBeyLayer) getLayer().getItem()).getDefense(getLayer()) + ((ItemBeyDisc) getDisc().getItem()).getDefense(getDisc())) * getResonanceMultiplier();
     }
 
     /**
@@ -573,8 +628,12 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
         return (Float) this.entityData.get(ANGLE);
     }
 
+    public final float getAngle0() {
+        return (Float) this.entityData.get(ANGLE0);
+    }
+
     public void setAngle(float angle) {
-        angle0 = getAngle();
+        this.entityData.set(ANGLE0, getAngle());
         this.entityData.set(ANGLE, angle);
     }
 
@@ -604,5 +663,38 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
 
     public boolean isStopped() {
         return stopped;
+    }
+
+    public static class Lightning {
+        private int seed = new Random().nextInt(100);
+        private float red;
+        private float green;
+        private float blue;
+
+        public Lightning(ItemBeyLayer.Color color) {
+            this.red = color.getRed();
+            this.green = color.getGreen();
+            this.blue = color.getBlue();
+        }
+
+        public int getSeed() {
+            return seed;
+        }
+
+        public float getRed() {
+            return red;
+        }
+
+        public float getGreen() {
+            return green;
+        }
+
+        public float getBlue() {
+            return blue;
+        }
+
+        public void tick() {
+            seed++;
+        }
     }
 }

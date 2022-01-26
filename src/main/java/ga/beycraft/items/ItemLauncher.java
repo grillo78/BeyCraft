@@ -60,7 +60,7 @@ public class ItemLauncher extends Item {
                                 bey.getTag().putBoolean("isEntity", true);
                                 EntityBey entity = new EntityBey(BeyCraftRegistry.BEY_ENTITY_TYPE, world,
                                         bey,
-                                        getRotation(launcher), player.getName().getString(),i.getBladerLevel(), h.getStackInSlot(2).getItem() instanceof ItemBeyLogger);
+                                        getRotation(launcher), player.getName().getString(),i.getBladerLevel());
                                 entity.moveTo(player.position().x + player.getLookAngle().x / 2,
                                         player.position().y + 1 + player.getLookAngle().y/2,
                                         player.position().z + player.getLookAngle().z/2, player.yRot , 0);
@@ -72,8 +72,8 @@ public class ItemLauncher extends Item {
                             player.awardStat(Stats.ITEM_USED.get(this));
                             player.getCooldowns().addCooldown(this, 20);
                             player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(i->{
-                                i.increaseExperience(0.5f);
-                                PacketHandler.instance.sendTo(new MessageSyncBladerLevel(i.getExperience()), ((ServerPlayerEntity)player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+                                i.increaseExperience(0.025F);
+                                PacketHandler.instance.sendTo(new MessageSyncBladerLevel(i.getExperience(), i.isInResonance(), true, player.getId()), ((ServerPlayerEntity)player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
                             });
                         }
                     });

@@ -16,8 +16,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Properties;
 
 public class LoginScreen extends Screen {
@@ -48,15 +46,10 @@ public class LoginScreen extends Screen {
         children.add(usernameField);
         children.add(passwordField);
         loginButton = new Button(relX + 55, relY + 15, 50, 20, new TranslationTextComponent("gui.done"), (Button) -> {
-            try {
-                String token = RankingUtil.getToken(usernameField.getValue(), passwordField.getValue());
-                if (token != null) {
-                    config.setProperty("token", token);
-                    config.store(new FileWriter(config_file), "");
-                    Minecraft.getInstance().setScreen(null);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            String token = RankingUtil.getToken(usernameField.getValue(), passwordField.getValue());
+            if (token != null) {
+                RankingUtil.storeToken(token);
+                Minecraft.getInstance().setScreen(null);
             }
         });
         this.addButton(loginButton);
@@ -79,7 +72,7 @@ public class LoginScreen extends Screen {
         passwordField.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
-    private class PasswordTextFieldWidget extends TextFieldWidget{
+    private class PasswordTextFieldWidget extends TextFieldWidget {
 
         public PasswordTextFieldWidget(FontRenderer p_i232260_1_, int p_i232260_2_, int p_i232260_3_, int p_i232260_4_, int p_i232260_5_, ITextComponent p_i232260_6_) {
             super(p_i232260_1_, p_i232260_2_, p_i232260_3_, p_i232260_4_, p_i232260_5_, p_i232260_6_);
@@ -97,7 +90,7 @@ public class LoginScreen extends Screen {
                 int i2 = this.isEditable ? this.textColor : this.textColorUneditable;
                 int j = this.cursorPos - this.displayPos;
                 int k = this.highlightPos - this.displayPos;
-                String s = this.font.plainSubstrByWidth(StringUtils.repeat("*",this.getValue().length()), this.getInnerWidth());
+                String s = this.font.plainSubstrByWidth(StringUtils.repeat("*", this.getValue().length()), this.getInnerWidth());
                 boolean flag = j >= 0 && j <= s.length();
                 boolean flag1 = this.isFocused() && this.frame / 6 % 2 == 0 && flag;
                 int l = this.bordered ? this.x + 4 : this.x;
@@ -109,7 +102,7 @@ public class LoginScreen extends Screen {
 
                 if (!s.isEmpty()) {
                     String s1 = flag ? s.substring(0, j) : s;
-                    j1 = this.font.drawShadow(p_230431_1_, this.formatter.apply(s1, this.displayPos), (float)l, (float)i1, i2);
+                    j1 = this.font.drawShadow(p_230431_1_, this.formatter.apply(s1, this.displayPos), (float) l, (float) i1, i2);
                 }
 
                 boolean flag2 = this.cursorPos < this.getValue().length() || this.getValue().length() >= this.getMaxLength();
@@ -122,18 +115,18 @@ public class LoginScreen extends Screen {
                 }
 
                 if (!s.isEmpty() && flag && j < s.length()) {
-                    this.font.drawShadow(p_230431_1_, this.formatter.apply(s.substring(j), this.cursorPos), (float)j1, (float)i1, i2);
+                    this.font.drawShadow(p_230431_1_, this.formatter.apply(s.substring(j), this.cursorPos), (float) j1, (float) i1, i2);
                 }
 
                 if (!flag2 && this.suggestion != null) {
-                    this.font.drawShadow(p_230431_1_, this.suggestion, (float)(k1 - 1), (float)i1, -8355712);
+                    this.font.drawShadow(p_230431_1_, this.suggestion, (float) (k1 - 1), (float) i1, -8355712);
                 }
 
                 if (flag1) {
                     if (flag2) {
                         AbstractGui.fill(p_230431_1_, k1, i1 - 1, k1 + 1, i1 + 1 + 9, -3092272);
                     } else {
-                        this.font.drawShadow(p_230431_1_, "_", (float)k1, (float)i1, i2);
+                        this.font.drawShadow(p_230431_1_, "_", (float) k1, (float) i1, i2);
                     }
                 }
 

@@ -15,9 +15,9 @@ public class ItemBeyDriver extends ItemBeyPart {
 	private float friction;
 	private float radiusReduction;
 
-	public ItemBeyDriver(String name, float friction, float radiusReduction, Ability primaryAbility,
+	public ItemBeyDriver(String name, String displayName, float friction, float radiusReduction, Ability primaryAbility,
 			Ability secundaryAbility, BeyTypes type) {
-		super(name, type, primaryAbility, secundaryAbility, BeyCraft.BEYCRAFTDRIVERS, new Item.Properties().setISTER(() -> GenericPartItemStackRendererTileEntity::new));
+		super(name, displayName, type, primaryAbility, secundaryAbility, BeyCraft.BEYCRAFTDRIVERS, new Item.Properties().setISTER(() -> GenericPartItemStackRendererTileEntity::new));
 		this.radiusReduction = radiusReduction;
 		this.friction = friction;
 		BeyCraftRegistry.ITEMSDRIVER.add(this);

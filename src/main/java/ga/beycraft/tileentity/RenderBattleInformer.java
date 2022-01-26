@@ -84,8 +84,8 @@ public class RenderBattleInformer extends TileEntityRenderer<BattleInformerTileE
 
             matrixStack.pushPose();
             matrixStack.translate(i.get() % 2 == 0 ? 4.75F : -4.75F, 1.5, 0.1);
-            matrixStack.mulPose(new Quaternion(180,0,0,true));
-            matrixStack.scale(0.1F,0.1F,0.1F);
+            matrixStack.mulPose(new Quaternion(180, 0, 0, true));
+            matrixStack.scale(0.1F, 0.1F, 0.1F);
             FontRenderer fontRenderer = Minecraft.getInstance().font;
             float f2 = (float) (-fontRenderer.width(points.toString()) / 2);
             matrix4f.set(matrixStack.last().pose());
@@ -95,13 +95,17 @@ public class RenderBattleInformer extends TileEntityRenderer<BattleInformerTileE
             matrixStack.mulPose(new Quaternion(0, i.get() % 2 == 0 ? 20 : -20, 0, true));
             matrixStack.pushPose();
             matrixStack.translate(i.get() % 2 == 0 ? 0.5 : -0.5, 0, -0.5);
-            matrixStack.mulPose(new Quaternion(0, entity.yBodyRot, 0, true));
-            Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity).render(entity, 0, partialTicks, matrixStack, iRenderTypeBuffer, light);
+            if (entity != null) {
+                matrixStack.mulPose(new Quaternion(0, entity.yBodyRot, 0, true));
+                Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity).render(entity, 0, partialTicks, matrixStack, iRenderTypeBuffer, light);
+            }
             matrixStack.popPose();
             matrixStack.pushPose();
             matrixStack.translate(0, 0, 0.5);
-            matrixStack.mulPose(new Quaternion(0, entity.yBodyRot, 0, true));
-            Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity).render(entity, 0, partialTicks, matrixStack, iRenderTypeBuffer, light);
+            if (entity != null) {
+                matrixStack.mulPose(new Quaternion(0, entity.yBodyRot, 0, true));
+                Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity).render(entity, 0, partialTicks, matrixStack, iRenderTypeBuffer, light);
+            }
             matrixStack.popPose();
 
             i.getAndIncrement();

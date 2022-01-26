@@ -28,16 +28,18 @@ public class ItemBeyPart extends Item {
     private final static ArrayList<String> PART_NAMES = Lists.newArrayList("chip", "weight", "disc", "frame", "driver");
     protected BeyTypes type;
     protected final String name;
+    protected final String displayName;
     protected final Ability PRIMARYABILITY;
     protected final Ability SECUNDARYABILITY;
 
-    public ItemBeyPart(String name, BeyTypes type, Ability primaryAbility, Ability secundaryAbility, ItemGroup tab,
+    public ItemBeyPart(String name, String displayName, BeyTypes type, Ability primaryAbility, Ability secundaryAbility, ItemGroup tab,
                        Item.Properties properties) {
         super(properties.tab(tab).stacksTo(1));
         PRIMARYABILITY = primaryAbility;
         SECUNDARYABILITY = secundaryAbility;
         this.type = type;
         this.name = name;
+        this.displayName = displayName;
         setRegistryName(new ResourceLocation(Reference.MOD_ID, name.replaceAll(" ", "").replace("+", "plus").toLowerCase()));
     }
 
@@ -80,7 +82,7 @@ public class ItemBeyPart extends Item {
 
     @Override
     public ITextComponent getName(ItemStack stack) {
-        AtomicReference<String> text = new AtomicReference<>(name);
+        AtomicReference<String> text = new AtomicReference<>(displayName);
         if (stack.hasTag()) {
             PART_NAMES.forEach(s -> {
                 if (stack.getTag().contains(s)) {

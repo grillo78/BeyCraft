@@ -11,29 +11,40 @@ import java.util.function.Supplier;
 public class MessageSyncBladerLevel implements IMessage<MessageSyncBladerLevel> {
 
     private float experience;
+    private boolean inResonance = false;
+    private boolean syncWithWeb = false;
+    private int playerID;
 
     public MessageSyncBladerLevel(){}
 
-    public MessageSyncBladerLevel(float experience){
+    public MessageSyncBladerLevel(float experience, boolean inResonance, boolean syncWithWeb, int playerID){
         this.experience = experience;
+        this.inResonance = inResonance;
+        this.syncWithWeb = syncWithWeb;
+        this.playerID = playerID;
     }
 
     @Override
     public void encode(MessageSyncBladerLevel message, PacketBuffer buffer) {
         buffer.writeFloat(message.experience);
+        buffer.writeBoolean(message.inResonance);
+        buffer.writeBoolean(message.syncWithWeb);
+        buffer.writeInt(message.playerID);
     }
 
     @Override
     public MessageSyncBladerLevel decode(PacketBuffer buffer) {
-        return new MessageSyncBladerLevel(buffer.readFloat());
+        return new MessageSyncBladerLevel(buffer.readFloat(), buffer.readBoolean(), buffer.readBoolean(), buffer.readInt());
     }
 
     @Override
     public void handle(MessageSyncBladerLevel message, Supplier<NetworkEvent.Context> supplier) {
         supplier.get().enqueueWork(()->{
-            Minecraft.getInstance().player.getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h->{
+            Minecraft.getInstance().level.getEntity(message.playerID).getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h->{
                 h.setExperience(message.experience);
-                RankingUtil.updateExperience(message.experience);
+                h.setInResonance(message.inResonance);
+                if(message.syncWithWeb)
+                    RankingUtil.updateExperience(message.experience);
             });
         });
         supplier.get().setPacketHandled(true);

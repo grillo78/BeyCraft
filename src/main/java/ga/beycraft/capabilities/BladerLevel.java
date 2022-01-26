@@ -1,7 +1,6 @@
 package ga.beycraft.capabilities;
 
 import ga.beycraft.BeyCraft;
-import ga.beycraft.util.RankingUtil;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import net.minecraftforge.api.distmarker.Dist;
@@ -9,66 +8,90 @@ import net.minecraftforge.fml.DistExecutor;
 
 public class BladerLevel implements IBladerLevel {
 
-	private int bladerLevel = 1;
-	private float experience = 0;
-	private float expForNexLevel = (float) (Math.exp(bladerLevel / 3) * 100 / 5);
+    private int bladerLevel = 1;
+    private float experience = 0;
+    private float expForNextLevel = calcExpForNextLevel(bladerLevel);
+    private boolean inResonance = false;
+    private int resonanceCount = 0;
+    private int resonanceTimeoutCount = 0;
 
-	@Override
-	public void setBladerLevel(int level) {
-		bladerLevel = level;
-		expForNexLevel = (float) (Math.exp(bladerLevel / 3) * 100 / 5);
-		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-			DiscordRichPresence rich = new DiscordRichPresence.Builder("\nExperience: " + experience).setBigImage("beycraft", "")
-					.setDetails("Level: " + bladerLevel).setStartTimestamps(BeyCraft.TIME_STAMP)
-					.build();
-			DiscordRPC.discordUpdatePresence(rich);
-		});
-	}
+    @Override
+    public void increaseResonanceCount() {
+        resonanceCount++;
+        if (resonanceCount == 400) {
+            resonanceCount = 0;
+            inResonance = false;
+            resonanceTimeoutCount = 300;
+            increaseExperience(0.05F);
+        }
+    }
 
-	@Override
-	public int getBladerLevel() {
-		return bladerLevel;
-	}
+    @Override
+    public int getBladerLevel() {
+        return bladerLevel;
+    }
 
-	@Override
-	public void increaseExperience(float experience) {
-		this.experience += experience;
-		setExperience(this.experience + experience);
-	}
+    @Override
+    public void increaseExperience(float experience) {
+        setExperience(this.experience + experience);
+    }
 
-	@Override
-	public void setExpForNextLevel(float expForNexLevel) {
-		this.expForNexLevel = expForNexLevel;
-		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-			DiscordRichPresence rich = new DiscordRichPresence.Builder("\nExperience: " + experience).setBigImage("beycraft", "")
-					.setDetails("Level: " + bladerLevel).setStartTimestamps(BeyCraft.TIME_STAMP)
-					.build();
-			DiscordRPC.discordUpdatePresence(rich);
-		});
-	}
+    @Override
+    public boolean isInResonance() {
+        return inResonance;
+    }
 
-	@Override
-	public float getExpForNextLevel() {
-		return expForNexLevel;
-	}
+    @Override
+    public void setInResonance(boolean inResonance) {
+        if (resonanceTimeoutCount == 0) {
+            this.inResonance = inResonance;
+        }
+    }
 
-	@Override
-	public void setExperience(float experience) {
-		this.experience = experience;
-		while((expForNexLevel = (float) (Math.exp(bladerLevel / 3) * 100 / 5)) < this.experience){
-			bladerLevel++;
-		}
-		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-			DiscordRichPresence rich = new DiscordRichPresence.Builder("\nExperience: " + experience).setBigImage("beycraft", "")
-					.setDetails("Level: " + bladerLevel).setStartTimestamps(BeyCraft.TIME_STAMP)
-					.build();
-			DiscordRPC.discordUpdatePresence(rich);
-		});
-	}
+    @Override
+    public void tick() {
+        if (resonanceTimeoutCount != 0)
+            resonanceTimeoutCount--;
+    }
 
-	@Override
-	public float getExperience() {
-		return experience;
-	}
+    public static float calcExpForNextLevel(float bladerLevel) {
+        return (float) (Math.exp(bladerLevel / 50) * 20) - 20;
+    }
+
+    @Override
+    public void setExpForNextLevel(float expForNextLevel) {
+        this.expForNextLevel = expForNextLevel;
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+            DiscordRichPresence rich = new DiscordRichPresence.Builder("\nExperience: " + experience).setBigImage("beycraft", "")
+                    .setDetails("Level: " + bladerLevel).setStartTimestamps(BeyCraft.TIME_STAMP)
+                    .build();
+            DiscordRPC.discordUpdatePresence(rich);
+        });
+    }
+
+    @Override
+    public float getExpForNextLevel() {
+        return expForNextLevel;
+    }
+
+    @Override
+    public void setExperience(float experience) {
+        this.experience = experience;
+        bladerLevel = 1;
+        while ((expForNextLevel = calcExpForNextLevel(bladerLevel)) < this.experience) {
+            bladerLevel++;
+        }
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+            DiscordRichPresence rich = new DiscordRichPresence.Builder("\nExperience: " + experience).setBigImage("beycraft", "")
+                    .setDetails("Level: " + bladerLevel).setStartTimestamps(BeyCraft.TIME_STAMP)
+                    .build();
+            DiscordRPC.discordUpdatePresence(rich);
+        });
+    }
+
+    @Override
+    public float getExperience() {
+        return experience;
+    }
 
 }

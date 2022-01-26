@@ -38,9 +38,30 @@ public class ItemCreator {
                     Properties properties = new Properties();
                     properties.load(reader);
                     Item item = null;
+                    float[] rgb = new float[]{1,1,1};
+                    if (properties.containsKey("resonanceColor")) {
+                        String[] rgbStr = properties.getProperty("resonanceColor").split(",");
+                        for (int i = 0; i < rgb.length; i++) {
+                            rgb[i] = new Float(rgbStr[i]);
+                        }
+                    }
+                    float[] rgb2 = new float[]{1,1,1};
+                    if (properties.containsKey("secondResonanceColor")) {
+                        String[] rgbStr = properties.getProperty("secondResonanceColor").split(",");
+                        for (int i = 0; i < rgb.length; i++) {
+                            rgb2[i] = new Float(rgbStr[i]);
+                        }
+                    }
+                    float[] rgb3 = new float[]{1,1,1};
+                    if (properties.containsKey("thirdResonanceColor")) {
+                        String[] rgbStr = properties.getProperty("thirdResonanceColor").split(",");
+                        for (int i = 0; i < rgb.length; i++) {
+                            rgb3[i] = new Float(rgbStr[i]);
+                        }
+                    }
                     switch ((String) properties.get("part")) {
                         case "layer":
-                            item = new ItemBeyLayer(file.getName().replace(".properties", ""),
+                            item = new ItemBeyLayer(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     new Float(properties.getProperty("rotationDirection")),
                                     new Float(properties.getProperty("attack")),
                                     new Float(properties.getProperty("defense")),
@@ -48,20 +69,22 @@ public class ItemCreator {
                                     new Float(properties.getProperty("burst")),
                                     getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
                                     getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
-                                    properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
+                                    properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null, new ItemBeyLayer.Color(rgb[0],rgb[1], rgb[2]),
+                                    new ItemBeyLayer.Color(rgb2[0],rgb2[1], rgb2[2]), new ItemBeyLayer.Color(rgb3[0],rgb3[1], rgb3[2]));
                             break;
                         case "layerDual":
-                            item = new ItemBeyLayerDual(file.getName().replace(".properties", ""),
+                            item = new ItemBeyLayerDual(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     new Float(properties.getProperty("attack")),
                                     new Float(properties.getProperty("defense")),
                                     new Float(properties.getProperty("weight")),
                                     new Float(properties.getProperty("burst")),
                                     getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
                                     getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
-                                    properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
+                                    properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null, new ItemBeyLayer.Color(rgb[0],rgb[1], rgb[2]),
+                                    new ItemBeyLayer.Color(rgb2[0],rgb2[1], rgb2[2]), new ItemBeyLayer.Color(rgb3[0],rgb3[1], rgb3[2]));
                             break;
                         case "disc":
-                            item = new ItemBeyDisc(file.getName().replace(".properties", ""),
+                            item = new ItemBeyDisc(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     new Float(properties.getProperty("attack")),
                                     new Float(properties.getProperty("defense")),
                                     new Float(properties.getProperty("weight")),
@@ -70,13 +93,13 @@ public class ItemCreator {
                                     properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null, new Item.Properties());
                             break;
                         case "frame":
-                            item = new ItemBeyFrame(file.getName().replace(".properties", ""),
+                            item = new ItemBeyFrame(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     new Float(properties.getProperty("attack")),
                                     new Float(properties.getProperty("defense")),
                                     properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
                             break;
                         case "framedisc":
-                            item = new ItemBeyDiscFrame(file.getName().replace(".properties", ""),
+                            item = new ItemBeyDiscFrame(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     new Float(properties.getProperty("attack")),
                                     new Float(properties.getProperty("defense")),
                                     new Float(properties.getProperty("weight")),
@@ -86,7 +109,7 @@ public class ItemCreator {
                                     properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
                             break;
                         case "driver":
-                            item = new ItemBeyDriver(file.getName().replace(".properties", ""),
+                            item = new ItemBeyDriver(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     new Float(properties.getProperty("friction")),
                                     new Float(properties.getProperty("radiusReduction")),
                                     getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
@@ -94,7 +117,7 @@ public class ItemCreator {
                                     properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
                             break;
 //                        case "Godlayer":
-//                            item = new ItemBeyLayerGod(file.getName().replace(".properties", ""),
+//                            item = new ItemBeyLayerGod(file.getName().replace(".properties", ""),properties.getProperty("name"),
 //                                    new Float(properties.getProperty("rotationDirection")),
 //                                    new Float(properties.getProperty("attack")),
 //                                    new Float(properties.getProperty("defense")),
@@ -104,7 +127,7 @@ public class ItemCreator {
 //                                    properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
 //                            break;
                         case "GTlayer":
-                            item = new ItemBeyLayerGT(file.getName().replace(".properties", ""),
+                            item = new ItemBeyLayerGT(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     new Float(properties.getProperty("rotationDirection")),
                                     new Float(properties.getProperty("attack")),
                                     new Float(properties.getProperty("defense")),
@@ -114,7 +137,7 @@ public class ItemCreator {
                                     properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
                             break;
                         case "GTlayerDual":
-                            item = new ItemBeyLayerGTDual(file.getName().replace(".properties", ""),
+                            item = new ItemBeyLayerGTDual(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     new Float(properties.getProperty("attack")),
                                     new Float(properties.getProperty("defense")),
                                     new Float(properties.getProperty("weight")),
@@ -124,7 +147,7 @@ public class ItemCreator {
                             break;
 
                         case "GTlayerNoWeight":
-                            item = new ItemBeyLayerGTNoWeight(file.getName().replace(".properties", ""),
+                            item = new ItemBeyLayerGTNoWeight(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     new Float(properties.getProperty("rotationDirection")),
                                     new Float(properties.getProperty("attack")),
                                     new Float(properties.getProperty("defense")),
@@ -134,7 +157,7 @@ public class ItemCreator {
                                     properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
                             break;
                         case "GTlayerDualNoWeight":
-                            item = new ItemBeyLayerGTDualNoWeight(file.getName().replace(".properties", ""),
+                            item = new ItemBeyLayerGTDualNoWeight(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     new Float(properties.getProperty("attack")),
                                     new Float(properties.getProperty("defense")),
                                     new Float(properties.getProperty("weight")),
@@ -143,21 +166,28 @@ public class ItemCreator {
                                     properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
                             break;
                         case "GTchip":
-                            item = new ItemBeyGTChip(file.getName().replace(".properties", ""),
+                            item = new ItemBeyGTChip(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     properties.containsKey("weight") ? new Float(properties.getProperty("weight")) : 0,
-                                    properties.containsKey("burst") ? new Float(properties.getProperty("burst")) : 2);
+                                    properties.containsKey("burst") ? new Float(properties.getProperty("burst")) : 2, new ItemBeyLayer.Color(rgb[0],rgb[1], rgb[2]),
+                                    new ItemBeyLayer.Color(rgb2[0],rgb2[1], rgb2[2]), new ItemBeyLayer.Color(rgb3[0],rgb3[1], rgb3[2]));
+                            break;
+                        case "GTchipWeight":
+                            item = new ItemBeyGTChipWeight(file.getName().replace(".properties", ""),properties.getProperty("name"),
+                                    properties.containsKey("weight") ? new Float(properties.getProperty("weight")) : 0,
+                                    properties.containsKey("burst") ? new Float(properties.getProperty("burst")) : 2, new ItemBeyLayer.Color(rgb[0],rgb[1], rgb[2]),
+                                    new ItemBeyLayer.Color(rgb2[0],rgb2[1], rgb2[2]), new ItemBeyLayer.Color(rgb3[0],rgb3[1], rgb3[2]));
                             break;
                         case "GTWeight":
-                            item = new ItemBeyGTWeight(file.getName().replace(".properties", ""),
+                            item = new ItemBeyGTWeight(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     Float.valueOf(properties.getProperty("weight")));
                             break;
-                        case "GodChip":
-                            item = new ItemBeyGodChip(file.getName().replace(".properties", ""),
-                                    Float.valueOf(properties.getProperty("weight")));
-                            break;
+//                        case "GodChip":
+//                            item = new ItemBeyGodChip(file.getName().replace(".properties", ""),properties.getProperty("name"),
+//                                    Float.valueOf(properties.getProperty("weight")));
+//                            break;
                     }
                     Item finalItem = item;
-                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
 //                    if (item instanceof ItemBeyLayerDual || item instanceof ItemBeyLayerGTDual || item instanceof ItemBeyLayerGTDualNoWeight) {
 //                        models.put(item, ModelManager.registerModel(new File("BeyParts\\models\\" + file.getName().replace(".properties", "_right.obj")), new ModelLoaderProperty(0.0f)));
 //                        models.put(item, ModelManager.registerModel(new File("BeyParts\\models\\" + file.getName().replace(".properties", "_left.obj")), new ModelLoaderProperty(0.0f)));

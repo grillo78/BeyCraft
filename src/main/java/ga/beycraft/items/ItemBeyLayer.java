@@ -30,15 +30,21 @@ public class ItemBeyLayer extends ItemBeyPart {
     private final float defense;
     private final float weight;
     private final float burst;
+    private final Color resonanceColor;
+    private final Color secondResonanceColor;
+    private final Color thirdResonanceColor;
 
-    public ItemBeyLayer(String name, float rotationDirection, float attack, float defense, float weight,
-                        float burst, Ability primaryAbility, Ability secundaryAbility, BeyTypes type) {
-        super(name, type, primaryAbility, secundaryAbility, BeyCraft.BEYCRAFTLAYERS, new Item.Properties().setISTER(() -> BeyItemStackRendererTileEntity::new));
+    public ItemBeyLayer(String name, String displayName, float rotationDirection, float attack, float defense, float weight,
+                        float burst, Ability primaryAbility, Ability secundaryAbility, BeyTypes type, Color resonanceColor, Color secondResonanceColor, Color thirdResonanceColor) {
+        super(name, displayName, type, primaryAbility, secundaryAbility, BeyCraft.BEYCRAFTLAYERS, new Item.Properties().setISTER(() -> BeyItemStackRendererTileEntity::new));
         this.attack = attack;
         this.defense = defense;
         this.weight = weight;
         this.burst = burst;
         this.rotationDirection = rotationDirection;
+        this.resonanceColor = resonanceColor;
+        this.secondResonanceColor = secondResonanceColor;
+        this.thirdResonanceColor = thirdResonanceColor;
         BeyCraftRegistry.ITEMSLAYER.add(this);
     }
 
@@ -47,6 +53,17 @@ public class ItemBeyLayer extends ItemBeyPart {
         return new ItemBeyProvider(stack);
     }
 
+    public Color getResonanceColor(ItemStack stack) {
+        return resonanceColor;
+    }
+
+    public Color getSecondResonanceColor(ItemStack stack) {
+        return secondResonanceColor;
+    }
+
+    public Color getThirdResonanceColor(ItemStack stack) {
+        return thirdResonanceColor;
+    }
 
     @Override
     public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand handIn) {
@@ -187,6 +204,30 @@ public class ItemBeyLayer extends ItemBeyPart {
 
     public float getRotationDirection() {
         return rotationDirection;
+    }
+
+    public static class Color {
+        private final float red;
+        private final float green;
+        private final float blue;
+
+        public Color(float red, float green, float blue) {
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+        }
+
+        public float getRed() {
+            return red;
+        }
+
+        public float getGreen() {
+            return green;
+        }
+
+        public float getBlue() {
+            return blue;
+        }
     }
 
 }

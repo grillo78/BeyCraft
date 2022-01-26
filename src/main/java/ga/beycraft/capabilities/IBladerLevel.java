@@ -2,8 +2,6 @@ package ga.beycraft.capabilities;
 
 public interface IBladerLevel {
 
-    public void setBladerLevel(int level);
-
     public int getBladerLevel();
 
     public void increaseExperience(float experience);
@@ -15,4 +13,12 @@ public interface IBladerLevel {
     public void setExpForNextLevel(float expForNexLevel);
 
     public float getExpForNextLevel();
+
+    boolean isInResonance();
+
+    void setInResonance(boolean inResonance);
+
+    void increaseResonanceCount();
+
+    void tick();
 }

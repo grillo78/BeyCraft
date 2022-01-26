@@ -19,15 +19,13 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
 import javax.annotation.Nullable;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class RankingUtil {
 
@@ -70,7 +68,7 @@ public class RankingUtil {
                 HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/win_battle/");
 
                 List<NameValuePair> params = new ArrayList<>();
-                params.add(new BasicNameValuePair("token", ConfigManager.getToken()));
+                params.add(new BasicNameValuePair("token", getToken()));
                 httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
                 HttpResponse response = httpclient.execute(httppost);
@@ -94,7 +92,7 @@ public class RankingUtil {
                 HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/lose_battle/");
 
                 List<NameValuePair> params = new ArrayList<>();
-                params.add(new BasicNameValuePair("token", ConfigManager.getToken()));
+                params.add(new BasicNameValuePair("token", getToken()));
                 httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
                 HttpResponse response = httpclient.execute(httppost);
@@ -117,8 +115,9 @@ public class RankingUtil {
                 HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/update_experience/");
 
                 List<NameValuePair> params = new ArrayList<>();
-                params.add(new BasicNameValuePair("token", ConfigManager.getToken()));
+                params.add(new BasicNameValuePair("token", getToken()));
                 params.add(new BasicNameValuePair("experience", String.valueOf(experience)));
+                params.add(new BasicNameValuePair("xp_updated", String.valueOf(true)));
                 httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
                 HttpResponse response = httpclient.execute(httppost);
@@ -170,10 +169,27 @@ public class RankingUtil {
     }
 
     public static void checkLogIn(GuiOpenEvent event) {
-        if (!ConfigManager.getConfig().containsKey("token")) {
+        if (getToken() == null) {
             event.setCanceled(true);
             Minecraft.getInstance().setScreen(new LoginScreen(new StringTextComponent(""), ConfigManager.getConfig(), ConfigManager.getConfigFile()));
         }
+    }
+
+    private static String getToken() {
+        String tokenString = null;
+        try {
+            Properties token = new Properties();
+            File tokenFile = new File("token.properties");
+            if (!tokenFile.exists()) {
+                tokenFile.createNewFile();
+            }
+            token.load(new FileReader(tokenFile));
+                tokenString = token.getProperty("token");
+        } catch (IOException e) {
+
+        }
+
+        return tokenString;
     }
 
     public static float getExperience() {
@@ -185,7 +201,8 @@ public class RankingUtil {
             HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/get_experience/");
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("token", ConfigManager.getToken()));
+            params.add(new BasicNameValuePair("token", getToken()));
+            params.add(new BasicNameValuePair("xp_updated", String.valueOf(true)));
             httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
             HttpResponse response = httpclient.execute(httppost);
@@ -208,5 +225,16 @@ public class RankingUtil {
             e.printStackTrace();
         }
         return experience;
+    }
+
+    public static void storeToken(String tokenString) {
+        try{
+            Properties token = new Properties();
+            File tokenFile = new File("token.properties");
+            token.load(new FileReader(tokenFile));
+            token.setProperty("token", tokenString);
+            token.store(new FileWriter(tokenFile), "");
+        } catch (IOException e){
+        }
     }
 }

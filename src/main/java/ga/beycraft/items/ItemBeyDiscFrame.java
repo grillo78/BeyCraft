@@ -25,9 +25,9 @@ public class ItemBeyDiscFrame extends ItemBeyDisc {
 
 	private float frameRotation;
 
-	public ItemBeyDiscFrame(String name, float attack, float defense, float weight, float frameRotation, Ability primaryAbility,
+	public ItemBeyDiscFrame(String name, String displayName, float attack, float defense, float weight, float frameRotation, Ability primaryAbility,
 							Ability secundaryAbility, BeyTypes type) {
-		super(name, attack, defense, weight, primaryAbility, secundaryAbility, type,
+		super(name, displayName, attack, defense, weight, primaryAbility, secundaryAbility, type,
 				new Item.Properties());
 		this.frameRotation = frameRotation;
 		BeyCraftRegistry.ITEMSDISCFRAME.add(this);

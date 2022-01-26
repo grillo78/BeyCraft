@@ -14,6 +14,7 @@ import net.minecraft.world.server.ServerWorld;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class StadiumTileEntity extends TileEntity implements ITickableTileEntity {
 
@@ -53,7 +54,13 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
                 }
                 if (isValidBattle) {
                     if (battle == null && beysSpinning > 1 && bladers.size() == beysSpinning) {
-                        battle = new Battle((ServerWorld) level, this);
+                        AtomicBoolean battleForRanking = new AtomicBoolean(false);
+                        BlockPos.betweenClosedStream(getBlockPos().above().north(2).east(2),getBlockPos().above().south(2).west(2)).forEach(blockPos -> {
+                            if(level.getBlockEntity(blockPos) instanceof BattleInformerTileEntity){
+                                battleForRanking.set(true);
+                            }
+                        });
+                        battle = new Battle((ServerWorld) level, this, battleForRanking.get());
                     }
                 } else {
                     battle = null;
@@ -88,6 +95,10 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
 
     public void setAllowBattle(boolean allowBattle) {
         this.allowBattle = allowBattle;
+    }
+
+    public boolean isAllowBattle() {
+        return allowBattle;
     }
 
     public Battle getBattle() {
