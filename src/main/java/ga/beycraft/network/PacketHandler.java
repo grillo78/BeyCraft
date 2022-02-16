@@ -36,6 +36,7 @@ public class PacketHandler {
         register(MessageSpawnSpark.class, new MessageSpawnSpark());
         register(MessageEnableResonance.class, new MessageEnableResonance());
         register(MessageHandSpin.class, new MessageHandSpin());
+        register(MessageCloseGUI.class, new MessageCloseGUI());
     }
 
     private static <T> void register(Class<T> clazz, IMessage<T> message)

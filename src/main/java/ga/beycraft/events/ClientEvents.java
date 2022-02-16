@@ -177,10 +177,12 @@ public class ClientEvents {
 
         @SubscribeEvent
         public static void onMouseClick(InputEvent.ClickInputEvent event){
-            PlayerEntity player = Minecraft.getInstance().player;
-            if (player.getMainHandItem().getItem() instanceof ItemBeyLayer || player.getOffhandItem().getItem() instanceof ItemBeyLayer) {
-                PacketHandler.instance.sendToServer(new MessageHandSpin());
-                event.setCanceled(true);
+            if (event.isAttack()){
+                PlayerEntity player = Minecraft.getInstance().player;
+                if (player.getMainHandItem().getItem() instanceof ItemBeyLayer || player.getOffhandItem().getItem() instanceof ItemBeyLayer) {
+                    PacketHandler.instance.sendToServer(new MessageHandSpin());
+                    event.setCanceled(true);
+                }
             }
         }
 

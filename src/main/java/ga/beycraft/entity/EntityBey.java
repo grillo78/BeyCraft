@@ -455,17 +455,21 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                             !(((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getPrimaryAbility() instanceof Absorb
                                     || ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getSecundaryAbility() instanceof Absorb
                                     || ((ItemBeyDisc) ((EntityBey) entityIn).getDisc().getItem()).getPrimaryAbility() instanceof Absorb
-                                    || ((ItemBeyDisc) ((EntityBey) entityIn).getDisc().getItem()).getSecundaryAbility() instanceof Absorb))
-                            && random.nextInt(3) == 1) {
+                                    || ((ItemBeyDisc) ((EntityBey) entityIn).getDisc().getItem()).getSecundaryAbility() instanceof Absorb))) {
                         setRotationSpeed(getRotationSpeed()
                                 + (((EntityBey) entityIn).getPartsAttack()
                                 + getPartsDefense()) / 100);
                         bey.setRotationSpeed(bey.getRotationSpeed()
-                                - (((EntityBey) entityIn).getPartsAttack()
+                                - (bey.getPartsAttack()
                                 + getPartsDefense()
-                                + ((EntityBey) entityIn).getBladerLevel()) / getBladerLevel());
+                                + bey.getBladerLevel()) / getBladerLevel());
                         if (getRotationSpeed() > getMaxRotationSpeed()) {
                             setRotationSpeed(getMaxRotationSpeed());
+                        } else {
+                            if (bey.getRotationSpeed() > getRotationSpeed() && random.nextInt(5) == 1) {
+                                float damage = bey.getHealth();
+                                bey.hurt(DamageSource.mobAttack(this), damage);
+                            }
                         }
                         if (random.nextInt(3) == 1 || ((ItemBeyLayer) getLayer().getItem()).getPrimaryAbility() instanceof SpringAttack
                                 || ((ItemBeyLayer) getLayer().getItem()).getSecundaryAbility() instanceof SpringAttack) {
@@ -506,7 +510,7 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                                             + getBladerLevel() - ((EntityBey) entityIn).getBladerLevel()));
                         }
                     } else {
-                        hurt(DamageSource.GENERIC,
+                        entityIn.hurt(DamageSource.GENERIC,
                                 (getPartsAttack()
                                         + ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getBurst(((EntityBey) entityIn).getLayer()) * 4
                                         - ((EntityBey) entityIn).getPartsDefense()
