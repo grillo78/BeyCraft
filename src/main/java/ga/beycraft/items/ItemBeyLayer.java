@@ -25,7 +25,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 public class ItemBeyLayer extends ItemBeyPart {
 
-    protected final float rotationDirection;
+    protected final int rotationDirection;
     private final float attack;
     private final float defense;
     private final float weight;
@@ -34,7 +34,7 @@ public class ItemBeyLayer extends ItemBeyPart {
     private final Color secondResonanceColor;
     private final Color thirdResonanceColor;
 
-    public ItemBeyLayer(String name, String displayName, float rotationDirection, float attack, float defense, float weight,
+    public ItemBeyLayer(String name, String displayName, int rotationDirection, float attack, float defense, float weight,
                         float burst, Ability primaryAbility, Ability secundaryAbility, BeyTypes type, Color resonanceColor, Color secondResonanceColor, Color thirdResonanceColor) {
         super(name, displayName, type, primaryAbility, secundaryAbility, BeyCraft.BEYCRAFTLAYERS, new Item.Properties().setISTER(() -> BeyItemStackRendererTileEntity::new));
         this.attack = attack;
@@ -93,11 +93,21 @@ public class ItemBeyLayer extends ItemBeyPart {
                                                             stack, playerInventory),
                                                     new StringTextComponent(getDescriptionId())));
                                 } else {
-                                    NetworkHooks.openGui((ServerPlayerEntity) player,
-                                            new SimpleNamedContainerProvider(
-                                                    (id, playerInventory, playerEntity) -> new BeyContainer(BeyCraftRegistry.BEY_CONTAINER, id,
-                                                            stack, playerInventory),
-                                                    new StringTextComponent(getDescriptionId())));
+                                    if(stack.getItem() instanceof ItemClearWheel){
+                                        NetworkHooks.openGui((ServerPlayerEntity) player,
+                                                new SimpleNamedContainerProvider(
+                                                        (id, playerInventory, playerEntity) -> {
+                                                            return new BeyRemakeContainer(BeyCraftRegistry.BEY_REMAKE_CONTAINER, id,
+                                                                    stack, playerInventory);
+                                                        },
+                                                        new StringTextComponent(getDescriptionId())));
+                                    }else{
+                                        NetworkHooks.openGui((ServerPlayerEntity) player,
+                                                new SimpleNamedContainerProvider(
+                                                        (id, playerInventory, playerEntity) -> new BeyContainer(BeyCraftRegistry.BEY_CONTAINER, id,
+                                                                stack, playerInventory),
+                                                        new StringTextComponent(getDescriptionId())));
+                                    }
                                 }
                             }
                         }
@@ -202,8 +212,12 @@ public class ItemBeyLayer extends ItemBeyPart {
         return burst;
     }
 
-    public float getRotationDirection() {
+    public int getRotationDirection() {
         return rotationDirection;
+    }
+
+    public boolean isBeyAssembled(ItemStack stack) {
+        return ItemStack.of((CompoundNBT) stack.getTag().get("disc")).getItem() instanceof ItemBeyDisc && ItemStack.of((CompoundNBT) stack.getTag().get("driver")).getItem() instanceof ItemBeyDriver;
     }
 
     public static class Color {

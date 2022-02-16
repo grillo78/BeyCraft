@@ -6,6 +6,7 @@ import ga.beycraft.Reference;
 import ga.beycraft.items.ItemBeyDisc;
 import ga.beycraft.items.ItemBeyDriver;
 import ga.beycraft.items.ItemBeyLayer;
+import ga.beycraft.items.ItemBeyPart;
 import ga.beycraft.tileentity.ExpositoryTileEntity;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -93,7 +94,7 @@ public class ExpositoryBlock extends Block implements IWaterLoggable {
                         worldIn.addFreshEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(0).copy()));
                         h.extractItem(0,1,false);
                     }
-                    if (playerIn.getItemInHand(hand).getItem() instanceof ItemBeyLayer || playerIn.getItemInHand(hand).getItem() instanceof ItemBeyDisc || playerIn.getItemInHand(hand).getItem() instanceof ItemBeyDriver) {
+                    if (playerIn.getItemInHand(hand).getItem() instanceof ItemBeyPart) {
                         h.insertItem(0,playerIn.getItemInHand(hand).copy(),false);
                         playerIn.getItemInHand(hand).shrink(1);
                     }

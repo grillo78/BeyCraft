@@ -32,11 +32,11 @@ public class ItemBeyPart extends Item {
     protected final Ability PRIMARYABILITY;
     protected final Ability SECUNDARYABILITY;
 
-    public ItemBeyPart(String name, String displayName, BeyTypes type, Ability primaryAbility, Ability secundaryAbility, ItemGroup tab,
+    public ItemBeyPart(String name, String displayName, BeyTypes type, Ability primaryAbility, Ability secondaryAbility, ItemGroup tab,
                        Item.Properties properties) {
         super(properties.tab(tab).stacksTo(1));
         PRIMARYABILITY = primaryAbility;
-        SECUNDARYABILITY = secundaryAbility;
+        SECUNDARYABILITY = secondaryAbility;
         this.type = type;
         this.name = name;
         this.displayName = displayName;

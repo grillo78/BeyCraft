@@ -86,6 +86,12 @@ public class BeyItemStackRendererTileEntity extends ItemStackTileEntityRenderer 
                     RenderObject sceneChip = model.addChild(ItemCreator.models.get(chipItem));
                 }
             }
+            if (stack.hasTag() && stack.getTag().contains("FusionWheel")) {
+                Item fusionWheelItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("FusionWheel")).getString("id")));
+                if (ItemCreator.models.containsKey(fusionWheelItem)) {
+                    RenderObject sceneFusionWheel = model.addChild(ItemCreator.models.get(fusionWheelItem));
+                }
+            }
             if (stack.hasTag() && stack.getTag().contains("weight")) {
 
                 Item weightItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("weight")).getString("id")));

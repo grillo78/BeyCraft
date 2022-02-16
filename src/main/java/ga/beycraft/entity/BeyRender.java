@@ -12,6 +12,7 @@ import friedrichlp.renderlib.tracking.RenderManager;
 import friedrichlp.renderlib.tracking.RenderObject;
 import ga.beycraft.capabilities.BladerCapProvider;
 import ga.beycraft.items.ItemBeyDiscFrame;
+import ga.beycraft.items.ItemClearWheel;
 import ga.beycraft.util.CustomRenderType;
 import ga.beycraft.util.ItemCreator;
 import ga.beycraft.util.PlayerUtils;
@@ -90,6 +91,12 @@ public class BeyRender extends EntityRenderer<EntityBey> {
                 }
             }
             RenderObject sceneLayer = sceneDisc.addChild(ItemCreator.models.get(entity.getLayer().getItem()));
+            RenderObject sceneClearWheel = null;
+            stack = entity.getLayer();
+            if(stack.getItem() instanceof ItemClearWheel && stack.hasTag() && stack.getTag().contains("FusionWheel")) {
+                Item fusionWheelItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(((CompoundNBT) stack.getTag().get("FusionWheel")).getString("id")));
+                sceneClearWheel = sceneLayer.addChild(ItemCreator.models.get(fusionWheelItem));
+            }
 
             mainScene.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
             mainScene.transform.scale(0.5F, 0.5F, 0.5F);
@@ -112,6 +119,7 @@ public class BeyRender extends EntityRenderer<EntityBey> {
             sceneLayer.forceTransformUpdate();
 
             RenderManager.render(layer, RenderMode.USE_CUSTOM_MATS);
+            if (sceneClearWheel != null) sceneClearWheel.remove();
             sceneLayer.remove();
             if (sceneFrame != null) sceneFrame.remove();
             sceneDisc.remove();

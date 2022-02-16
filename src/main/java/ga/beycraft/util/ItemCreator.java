@@ -62,7 +62,7 @@ public class ItemCreator {
                     switch ((String) properties.get("part")) {
                         case "layer":
                             item = new ItemBeyLayer(file.getName().replace(".properties", ""),properties.getProperty("name"),
-                                    new Float(properties.getProperty("rotationDirection")),
+                                    new Integer(properties.getProperty("rotationDirection")),
                                     new Float(properties.getProperty("attack")),
                                     new Float(properties.getProperty("defense")),
                                     new Float(properties.getProperty("weight")),
@@ -118,7 +118,7 @@ public class ItemCreator {
                             break;
 //                        case "Godlayer":
 //                            item = new ItemBeyLayerGod(file.getName().replace(".properties", ""),properties.getProperty("name"),
-//                                    new Float(properties.getProperty("rotationDirection")),
+//                                    new Integer(properties.getProperty("rotationDirection")),
 //                                    new Float(properties.getProperty("attack")),
 //                                    new Float(properties.getProperty("defense")),
 //                                    new Float(properties.getProperty("weight")),
@@ -128,7 +128,7 @@ public class ItemCreator {
 //                            break;
                         case "GTlayer":
                             item = new ItemBeyLayerGT(file.getName().replace(".properties", ""),properties.getProperty("name"),
-                                    new Float(properties.getProperty("rotationDirection")),
+                                    new Integer(properties.getProperty("rotationDirection")),
                                     new Float(properties.getProperty("attack")),
                                     new Float(properties.getProperty("defense")),
                                     new Float(properties.getProperty("weight")),
@@ -148,7 +148,7 @@ public class ItemCreator {
 
                         case "GTlayerNoWeight":
                             item = new ItemBeyLayerGTNoWeight(file.getName().replace(".properties", ""),properties.getProperty("name"),
-                                    new Float(properties.getProperty("rotationDirection")),
+                                    new Integer(properties.getProperty("rotationDirection")),
                                     new Float(properties.getProperty("attack")),
                                     new Float(properties.getProperty("defense")),
                                     new Float(properties.getProperty("weight")),
@@ -181,6 +181,25 @@ public class ItemCreator {
                             item = new ItemBeyGTWeight(file.getName().replace(".properties", ""),properties.getProperty("name"),
                                     Float.valueOf(properties.getProperty("weight")));
                             break;
+                        case "FusionWheel":
+                            item = new ItemFusionWheel(file.getName().replace(".properties", ""),properties.getProperty("name"),
+                                    properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null,
+                                    new Float(properties.getProperty("attack")),
+                                    new Float(properties.getProperty("defense")),
+                                    new Float(properties.getProperty("weight")),
+                                    getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
+                                    getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties));
+                            break;
+                        case "ClearWheel":
+                            item = new ItemClearWheel(file.getName().replace(".properties", ""),properties.getProperty("name"),
+                                    new Integer(properties.getProperty("rotationDirection")),
+                                    new Float(properties.getProperty("weight")),
+                                    new Float(properties.getProperty("burst")),
+                                    getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
+                                    getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+                                    properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null, new ItemBeyLayer.Color(rgb[0],rgb[1], rgb[2]),
+                                    new ItemBeyLayer.Color(rgb2[0],rgb2[1], rgb2[2]), new ItemBeyLayer.Color(rgb3[0],rgb3[1], rgb3[2]));
+                            break;
 //                        case "GodChip":
 //                            item = new ItemBeyGodChip(file.getName().replace(".properties", ""),properties.getProperty("name"),
 //                                    Float.valueOf(properties.getProperty("weight")));
@@ -189,12 +208,12 @@ public class ItemCreator {
                     Item finalItem = item;
                     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
 //                    if (item instanceof ItemBeyLayerDual || item instanceof ItemBeyLayerGTDual || item instanceof ItemBeyLayerGTDualNoWeight) {
-//                        models.put(item, ModelManager.registerModel(new File("BeyParts\\models\\" + file.getName().replace(".properties", "_right.obj")), new ModelLoaderProperty(0.0f)));
-//                        models.put(item, ModelManager.registerModel(new File("BeyParts\\models\\" + file.getName().replace(".properties", "_left.obj")), new ModelLoaderProperty(0.0f)));
+//                        models.put(item, ModelManager.registerModel(new File("BeyParts/models/" + file.getName().replace(".properties", "_right.obj")), new ModelLoaderProperty(0.0f)));
+//                        models.put(item, ModelManager.registerModel(new File("BeyParts/models/" + file.getName().replace(".properties", "_left.obj")), new ModelLoaderProperty(0.0f)));
 //
 //                    } else {
                         RenderLibSettings.General.MODEL_LOAD_LIMIT++;
-                        models.put(finalItem, ModelManager.registerModel(new File("BeyParts\\models\\" + file.getName().replace(".properties", ".obj")), new ModelLoaderProperty(0.0f)));
+                        models.put(finalItem, ModelManager.registerModel(new File("BeyParts/models/" + file.getName().replace(".properties", ".obj")), new ModelLoaderProperty(0.0f)));
 //                    }
                         models.get(finalItem).addRenderEffect(RenderEffect.NORMAL_LIGHTING);
                         models.get(finalItem).addRenderEffect(RenderEffect.AMBIENT_OCCLUSION);

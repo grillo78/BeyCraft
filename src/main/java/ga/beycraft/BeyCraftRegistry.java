@@ -36,6 +36,8 @@ public class BeyCraftRegistry {
     public static List<Item> ITEMSDRIVER = Lists.newArrayList();
     public static List<Item> ITEMSGTCHIP = Lists.newArrayList();
     public static List<Item> ITEMSGODCHIP = Lists.newArrayList();
+    public static List<Item> ITEMSFUSIONWHEEL = Lists.newArrayList();
+    public static List<Item> ITEMSCLEARWHEEL = Lists.newArrayList();
 
     @ObjectHolder(Reference.MOD_ID + ":sparkle")
     public static BasicParticleType SPARKLE;
@@ -76,6 +78,8 @@ public class BeyCraftRegistry {
     public static final ContainerType<BeyGTNoWeightContainer> BEY_GT_CONTAINER_NO_WEIGHT = null;
     @ObjectHolder("beycraft:beygod")
     public static final ContainerType<BeyGodContainer> BEY_GOD_CONTAINER = null;
+    @ObjectHolder("beycraft:beyremake")
+    public static final ContainerType<BeyRemakeContainer> BEY_REMAKE_CONTAINER = null;
     @ObjectHolder("beycraft:belt")
     public static final ContainerType<BeltContainer> BELT_CONTAINER = null;
     @ObjectHolder("beycraft:handle")

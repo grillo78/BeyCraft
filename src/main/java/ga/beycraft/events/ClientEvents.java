@@ -13,10 +13,12 @@ import ga.beycraft.capabilities.BladerLevel;
 import ga.beycraft.entity.BeyEntityRenderFactory;
 import ga.beycraft.entity.BeyRender;
 import ga.beycraft.gui.*;
+import ga.beycraft.items.ItemBeyLayer;
 import ga.beycraft.items.ItemLauncher;
 import ga.beycraft.items.ItemLauncherHandle;
 import ga.beycraft.network.PacketHandler;
 import ga.beycraft.network.message.MessageEnableResonance;
+import ga.beycraft.network.message.MessageHandSpin;
 import ga.beycraft.network.message.MessageNotifyPlayCountdown;
 import ga.beycraft.network.message.MessageOpenBelt;
 import ga.beycraft.particles.ResonanceParticle;
@@ -112,6 +114,9 @@ public class ClientEvents {
             if (!BeyCraftRegistry.ITEMSLAYERGOD.isEmpty()) {
                 ScreenManager.register(BeyCraftRegistry.BEY_GOD_CONTAINER, BeyGodGUI::new);
             }
+            if (!BeyCraftRegistry.ITEMSCLEARWHEEL.isEmpty()) {
+                ScreenManager.register(BeyCraftRegistry.BEY_REMAKE_CONTAINER, BeyClearWheelGUI::new);
+            }
         }
         ScreenManager.register(BeyCraftRegistry.HANDLE_CONTAINER, HandleGUI::new);
         RenderingRegistry.registerEntityRenderingHandler(BeyCraftRegistry.BEY_ENTITY_TYPE, new BeyEntityRenderFactory());
@@ -136,6 +141,10 @@ public class ClientEvents {
             event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS), 0, 10, 10, 0, 0), true));
         }
         for (Item item : BeyCraftRegistry.ITEMSDRIVER) {
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
+            event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS), 0, 10, 10, 0, 0), true));
+        }
+        for (Item item : BeyCraftRegistry.ITEMSFUSIONWHEEL) {
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
             event.getModelRegistry().put(modelResourceLocation, new BuiltInModel(new ItemCameraTransforms(ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM, ItemTransformVec3f.NO_TRANSFORM), ItemOverrideList.EMPTY, MissingTextureSprite.newInstance(new AtlasTexture(PlayerContainer.BLOCK_ATLAS), 0, 10, 10, 0, 0), true));
         }
@@ -165,6 +174,15 @@ public class ClientEvents {
 
     @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class SpecialClientEvents {
+
+        @SubscribeEvent
+        public static void onMouseClick(InputEvent.ClickInputEvent event){
+            PlayerEntity player = Minecraft.getInstance().player;
+            if (player.getMainHandItem().getItem() instanceof ItemBeyLayer || player.getOffhandItem().getItem() instanceof ItemBeyLayer) {
+                PacketHandler.instance.sendToServer(new MessageHandSpin());
+                event.setCanceled(true);
+            }
+        }
 
         @SubscribeEvent(priority = EventPriority.LOWEST)
         public static void onRenderWorldLast(RenderWorldLastEvent event) {

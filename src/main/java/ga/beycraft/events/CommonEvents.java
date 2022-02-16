@@ -109,7 +109,7 @@ public class CommonEvents {
                     new ItemStack(BeyCraftRegistry.LAUNCHER), inv, Hand.MAIN_HAND);
         }).setRegistryName("right_launcher"));
         event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-            return new LauncherContainer(BeyCraftRegistry.LAUNCHER_RIGHT_CONTAINER, windowId,
+            return new LauncherContainer(BeyCraftRegistry.LAUNCHER_LEFT_CONTAINER, windowId,
                     new ItemStack(BeyCraftRegistry.LEFTLAUNCHER), inv, Hand.MAIN_HAND);
         }).setRegistryName("left_launcher"));
         event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
@@ -133,6 +133,11 @@ public class CommonEvents {
                 return new BeyGTNoWeightContainer(BeyCraftRegistry.BEY_GT_CONTAINER_NO_WEIGHT, windowId,
                         new ItemStack(BeyCraftRegistry.ITEMSLAYERGTNOWEIGHT.get(0)), inv);
             }).setRegistryName("beygtnoweight"));
+        }
+        if (!BeyCraftRegistry.ITEMSCLEARWHEEL.isEmpty()) {
+            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+                return new BeyRemakeContainer(BeyCraftRegistry.BEY_REMAKE_CONTAINER, windowId, new ItemStack(BeyCraftRegistry.ITEMSCLEARWHEEL.get(0)), inv);
+            }).setRegistryName("beyremake"));
         }
         event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
             return new BeltContainer(BeyCraftRegistry.BELT_CONTAINER, windowId, new ItemStack(BeyCraftRegistry.ITEMS.get("belt")),
@@ -193,6 +198,11 @@ public class CommonEvents {
         }
         if (!BeyCraftRegistry.ITEMSGTWEIGHT.isEmpty()) {
             for (Item item : BeyCraftRegistry.ITEMSGTWEIGHT) {
+                event.getRegistry().register(item);
+            }
+        }
+        if (!BeyCraftRegistry.ITEMSFUSIONWHEEL.isEmpty()) {
+            for (Item item : BeyCraftRegistry.ITEMSFUSIONWHEEL) {
                 event.getRegistry().register(item);
             }
         }
