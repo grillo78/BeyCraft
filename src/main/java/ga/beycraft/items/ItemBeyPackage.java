@@ -43,6 +43,10 @@ public class ItemBeyPackage extends Item {
 				Item chip = BeyCraftRegistry.ITEMSGODCHIP.get(random.nextInt(BeyCraftRegistry.ITEMSGODCHIP.size()));
 				summonItem(worldIn,playerIn, chip);
 			}
+			if(layer instanceof ItemClearWheel){
+				Item fusionWheel = BeyCraftRegistry.ITEMSFUSIONWHEEL.get(random.nextInt(BeyCraftRegistry.ITEMSFUSIONWHEEL.size()));
+				summonItem(worldIn,playerIn, fusionWheel);
+			}
 			if(disc instanceof ItemBeyDiscFrame){
 				Item frame = BeyCraftRegistry.ITEMSFRAME.get(random.nextInt(BeyCraftRegistry.ITEMSFRAME.size()));
 				summonItem(worldIn,playerIn, frame);
