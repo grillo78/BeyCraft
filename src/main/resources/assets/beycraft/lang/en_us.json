@@ -1,8 +1,8 @@
 {
-  "itemGroup.Layers": "Layers",
-  "itemGroup.Disks": "Discs",
-  "itemGroup.Drivers": "Drivers",
-  "itemGroup.Beycraft": "Beycraft",
+  "itemGroup.layers": "Layers",
+  "itemGroup.discs": "Discs",
+  "itemGroup.drivers": "Drivers",
+  "itemGroup.beycraft": "Beycraft",
   "item.beycraft.package": "Beyblade pack",
   "item.beycraft.launcher": "Launcher",
   "item.beycraft.left_launcher": "Left Launcher",

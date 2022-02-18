@@ -19,9 +19,8 @@ build
 
 # other
 eclipse
-runWithCredentials
 run
+runWithCredentials
 
 # Files from Forge MDK
 forge*changelog.txt
-/libs/

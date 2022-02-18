@@ -1,10 +1,13 @@
 modLoader="javafml"
-loaderVersion="[30,)"
+loaderVersion="[39,)"
 license="All rights reserved"
 [[mods]]
 modId="beycraft"
 version="${file.jarVersion}"
-displayName="Beycraft Mod"
+displayName="Beycraft Burst"
+# A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
+#updateJSONURL="https://change.me.example.invalid/updates.json"
+displayURL="https://beycraft.ga/"
 logoFile="logo.png"
 credits="Thanks to all the people that help with assets and the people of MCMC, MMD and Forge discord servers for the help."
 authors="grillo78, Marctron, Ángel, Pigiih"
@@ -12,20 +15,20 @@ description='''
 This mod adds beyblades to minecraft, you can add content packs in the folder called BeyParts inside of the minecraft folder
 '''
 [[dependencies.beycraft]]
-    modId="forge"
-    mandatory=true
-    versionRange="[33.0.21,)"
-    ordering="NONE"
-    side="BOTH"
+modId="forge"
+mandatory=true
+versionRange="[39.0.79,)"
+ordering="NONE"
+side="BOTH"
 [[dependencies.beycraft]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.16.2,1.16.5]"
-    ordering="NONE"
-    side="BOTH"
+modId="minecraft"
+mandatory=true
+versionRange="[1.18.1,)"
+ordering="NONE"
+side="BOTH"
 [[dependencies.beycraft]]
-    modId="heroesunited"
-    mandatory=true
-    versionRange="[2.5.3,)"
-    ordering="AFTER"
-    side="BOTH"
+modId="heroesunited"
+mandatory=true
+versionRange="[2.5.4-alpha62,)"
+ordering="AFTER"
+side="BOTH"

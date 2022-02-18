@@ -1,8 +1,8 @@
 {
-  "itemGroup.Layers": "Layers",
-  "itemGroup.Disks": "Discos",
-  "itemGroup.Drivers": "Drivers",
-  "itemGroup.Beycraft": "Beycraft",
+  "itemGroup.layers": "Layers",
+  "itemGroup.discs": "Discos",
+  "itemGroup.drivers": "Drivers",
+  "itemGroup.beycraft": "Beycraft",
   "item.beycraft.package": "Paquete",
   "item.beycraft.launcher": "Lanzador",
   "item.beycraft.left_launcher": "Lanzador de izquierda",
