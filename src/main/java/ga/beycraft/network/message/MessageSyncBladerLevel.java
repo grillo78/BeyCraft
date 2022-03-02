@@ -41,10 +41,10 @@ public class MessageSyncBladerLevel implements IMessage<MessageSyncBladerLevel> 
     public void handle(MessageSyncBladerLevel message, Supplier<NetworkEvent.Context> supplier) {
         supplier.get().enqueueWork(()->{
             Minecraft.getInstance().level.getEntity(message.playerID).getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h->{
+                if(message.syncWithWeb)
+                    RankingUtil.increaseExperience(message.experience - h.getExperience());
                 h.setExperience(message.experience);
                 h.setInResonance(message.inResonance);
-                if(message.syncWithWeb)
-                    RankingUtil.updateExperience(message.experience);
             });
         });
         supplier.get().setPacketHandled(true);

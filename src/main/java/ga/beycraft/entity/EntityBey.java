@@ -512,9 +512,9 @@ public class EntityBey extends CreatureEntity implements IEntityAdditionalSpawnD
                     } else {
                         entityIn.hurt(DamageSource.GENERIC,
                                 (getPartsAttack()
-                                        + ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getBurst(((EntityBey) entityIn).getLayer()) * 4
+                                        + ((ItemBeyLayer) ((EntityBey) entityIn).getLayer().getItem()).getBurst(((EntityBey) entityIn).getLayer())
                                         - ((EntityBey) entityIn).getPartsDefense()
-                                        + ((EntityBey) entityIn).getBladerLevel() - getBladerLevel()));
+                                        + getBladerLevel() - ((EntityBey) entityIn).getBladerLevel()));
                     }
                 }
 

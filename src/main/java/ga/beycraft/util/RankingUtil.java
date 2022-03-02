@@ -108,16 +108,15 @@ public class RankingUtil {
         }).start();
     }
 
-    public static void updateExperience(float experience) {
+    public static void increaseExperience(float experience) {
         new Thread(() -> {
             try {
                 HttpClient httpclient = HttpClients.custom().setSslcontext(ConnectionUtils.getDisabledSSLCheckContext()).build();
-                HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/update_experience/");
+                HttpPost httppost = new HttpPost("https://beycraft.ga/API/v2/ranking/increase_experience/");
 
                 List<NameValuePair> params = new ArrayList<>();
                 params.add(new BasicNameValuePair("token", getToken()));
                 params.add(new BasicNameValuePair("experience", String.valueOf(experience)));
-                params.add(new BasicNameValuePair("xp_updated", String.valueOf(true)));
                 httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
                 HttpResponse response = httpclient.execute(httppost);

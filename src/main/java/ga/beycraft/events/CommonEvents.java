@@ -228,7 +228,7 @@ public class CommonEvents {
         @SubscribeEvent
         public static void onPlayerRespawn(final PlayerEvent.PlayerRespawnEvent event) {
             event.getPlayer().getCapability(BladerCapProvider.BLADERLEVEL_CAP).ifPresent(h -> {
-                PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getExperience(), h.isInResonance(), true, event.getPlayer().getId()),
+                PacketHandler.instance.sendTo(new MessageSyncBladerLevel(h.getExperience(), h.isInResonance(), false, event.getPlayer().getId()),
                         ((ServerPlayerEntity) event.getPlayer()).connection.getConnection(),
                         NetworkDirection.PLAY_TO_CLIENT);
             });
