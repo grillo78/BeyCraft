@@ -70,6 +70,7 @@ public class Beycraft
             RenderLibSettings.Caching.CACHE_LOCATION = "beycraft_cached_models";
             RenderLibSettings.Caching.CACHE_VERSION = "1";
             RenderLibSettings.General.MODEL_UNLOAD_DELAY_MS = Integer.MAX_VALUE;
+            RenderLibSettings.Caching.CHECK_CACHE = false;
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onModelBake);
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerRenderers);
@@ -90,7 +91,7 @@ public class Beycraft
         RenderLibSettings.Rendering.CAMERA_HEIGHT_OFFSET = (float) (cameraPos.y - Minecraft.getInstance().player.getPosition(event.getPartialTick()).y);
         RenderManager.setRenderDistance(Minecraft.getInstance().options.renderDistance * 16);
         try {
-            BeyPartModel.worldModels.forEach(h -> h.render());
+//            BeyPartModel.worldModels.forEach(h -> h.render());
             RenderManager.update();
         } catch (NullPointerException e) {
         }
@@ -107,7 +108,7 @@ public class Beycraft
     private void renderHand(RenderHandEvent event) {
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        BeyPartModel.handModels.forEach(h -> h.render());
+//        BeyPartModel.handModels.forEach(h -> h.render());
         BeyPartModel.handModels.clear();
         RenderSystem.disableBlend();
         RenderSystem.defaultBlendFunc();

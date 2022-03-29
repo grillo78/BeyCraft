@@ -6,10 +6,12 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -18,6 +20,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'java'
+apply plugin: 'org.spongepowered.mixin'
 
 version = '1.7.30'
 group = 'ga.beycraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -73,6 +76,7 @@ minecraft {
 
             workingDirectory project.file('runWithCredentials')
             args '--username', 'grillo78', '--uuid', 'b8a6cebf-7221-4d53-b120-6e759f14fbfb'
+            arg "-mixin.config=beycraft.mixins.json"
         }
 
         server {
@@ -160,7 +164,7 @@ reobf {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.1-39.0.79'
-    shade 'ga.beycraft:RenderLib:1.0.0-pre7-test'
+    shade 'ga.beycraft:RenderLib:1.0.0-pre7-test-6'
     implementation fg.deobf('xyz.heroesunited:hu-core:2.5.4-alpha62')
 }
 
@@ -174,9 +178,14 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "beycraftsareus",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs"            : "beycraft.mixins.json"
         ])
     }
+}
+
+mixin {
+    add sourceSets.main, "beycraft.refmap.json"
 }
 
 // Example configuration to allow publishing using the maven-publish plugin
