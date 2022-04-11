@@ -1,13 +1,13 @@
 package ga.beycraft.common.item;
 
 import ga.beycraft.BeyTypes;
-import ga.beycraft.abilities.AbilityType;
-import ga.beycraft.common.tab.BeycraftCreativeModeTab;
-import net.minecraft.world.item.CreativeModeTab;
+import ga.beycraft.ability.AbilityType;
+import ga.beycraft.client.item.GenericPartRenderer;
+import ga.beycraft.common.tab.BeycraftItemGroup;
 
 public class DiscItem extends BeyPartItem{
 
     public DiscItem(String name, String displayName, float attack, float defense, float weight, AbilityType primaryAbility, AbilityType secondaryAbility, BeyTypes type) {
-        super(name, displayName, type, primaryAbility, secondaryAbility, BeycraftCreativeModeTab.DISCS, new Properties());
+        super(name, displayName, type, primaryAbility, secondaryAbility, BeycraftItemGroup.DISCS, new Properties().setISTER(()-> GenericPartRenderer::new));
     }
 }

@@ -1,4 +1,4 @@
-package ga.beycraft.abilities;
+package ga.beycraft.ability;
 
 import java.util.function.Supplier;
 

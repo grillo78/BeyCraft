@@ -1,7 +1,7 @@
 package ga.beycraft.common.item;
 
 import ga.beycraft.BeyTypes;
-import ga.beycraft.abilities.AbilityType;
+import ga.beycraft.ability.AbilityType;
 
 public class ClearWheelItem extends LayerItem {
     public ClearWheelItem(String name, String displayName, int rotationDirection, float weight, float burst, AbilityType primaryAbility, AbilityType secondaryAbility, BeyTypes type, Color resonanceColor, Color secondResonanceColor, Color thirdResonanceColor) {

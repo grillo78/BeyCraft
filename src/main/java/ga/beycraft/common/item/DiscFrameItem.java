@@ -1,7 +1,7 @@
 package ga.beycraft.common.item;
 
 import ga.beycraft.BeyTypes;
-import ga.beycraft.abilities.AbilityType;
+import ga.beycraft.ability.AbilityType;
 
 public class DiscFrameItem extends DiscItem{
 

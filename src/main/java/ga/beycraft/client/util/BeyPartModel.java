@@ -8,7 +8,7 @@ import friedrichlp.renderlib.tracking.ModelInfo;
 import friedrichlp.renderlib.tracking.RenderLayer;
 import friedrichlp.renderlib.tracking.RenderManager;
 import friedrichlp.renderlib.tracking.RenderObject;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.util.math.vector.Vector3d;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
@@ -16,12 +16,12 @@ import java.util.ArrayList;
 
 public class BeyPartModel {
 
-    private final com.mojang.math.Matrix4f modelView;
+    private final net.minecraft.util.math.vector.Matrix4f modelView;
     private static final RenderLayer layer = RenderManager.addRenderLayer(ViewBoxes.ALWAYS);
     public static final ArrayList<BeyPartModel> worldModels = new ArrayList<>();
     public static final ArrayList<BeyPartModel> handModels = new ArrayList<>();
     private final ArrayList<RenderObject> childs = new ArrayList<>();
-    private final Vec3 pos;
+    private final Vector3d pos;
     private final ModelInfo model;
     private final RenderObject sceneLayer;
     private final float xRot;
@@ -31,7 +31,7 @@ public class BeyPartModel {
     private final float yScale;
     private final float zScale;
 
-    public BeyPartModel(com.mojang.math.Matrix4f modelView, Vec3 pos, ModelInfo model, float xRot, float yRot, float zRot, float xScale, float yScale, float zScale) {
+    public BeyPartModel(net.minecraft.util.math.vector.Matrix4f modelView, Vector3d pos, ModelInfo model, float xRot, float yRot, float zRot, float xScale, float yScale, float zScale) {
         this.modelView = modelView;
         this.pos = pos;
         this.model = model;

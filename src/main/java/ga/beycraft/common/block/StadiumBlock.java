@@ -3,29 +3,29 @@ package ga.beycraft.common.block;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import ga.beycraft.Beycraft;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.IWaterLoggable;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.JSONUtils;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
 import xyz.heroesunited.heroesunited.hupacks.HUPacks;
 
 import javax.annotation.Nullable;
@@ -33,7 +33,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class StadiumBlock extends Block implements SimpleWaterloggedBlock {
+public class StadiumBlock extends Block implements IWaterLoggable {
 
     public static final EnumProperty<EnumPartType> PART = EnumProperty.create(
             "part", StadiumBlock.EnumPartType.class);
@@ -55,8 +55,8 @@ public class StadiumBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter levelIn, BlockPos pos, CollisionContext context) {
-        VoxelShape shape = Shapes.block();
+    public VoxelShape getShape(BlockState state, IBlockReader levelIn, BlockPos pos, ISelectionContext context) {
+        VoxelShape shape = VoxelShapes.block();
         switch (state.getValue(PART).ID) {
             case 0:
                 if (voxelShape1 != null) {
@@ -104,13 +104,13 @@ public class StadiumBlock extends Block implements SimpleWaterloggedBlock {
                 }
                 break;
             default:
-                return Shapes.block();
+                return VoxelShapes.block();
         }
         return shape;
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader levelIn, BlockPos pos) {
+    public boolean canSurvive(BlockState state, IWorldReader levelIn, BlockPos pos) {
         return canReplace(levelIn, pos.north().west()) && canReplace(levelIn, pos.north())
                 && canReplace(levelIn, pos.north().east()) && canReplace(levelIn, pos.west())
                 && canReplace(levelIn, pos) && canReplace(levelIn, pos.east())
@@ -137,7 +137,7 @@ public class StadiumBlock extends Block implements SimpleWaterloggedBlock {
 //    }
 
     @Override
-    public void setPlacedBy(Level levelIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(World levelIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         if (levelIn.getBlockState(pos.east().north()).getBlock() == Blocks.WATER
                 && levelIn.getBlockState(pos.east().north()).getFluidState().isSource()) {
             levelIn.setBlockAndUpdate(pos.east().north(),
@@ -206,13 +206,13 @@ public class StadiumBlock extends Block implements SimpleWaterloggedBlock {
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
         return defaultBlockState().setValue(WATERLOGGED,
                 Boolean.valueOf(context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(PART);
         builder.add(WATERLOGGED);
     }
@@ -222,7 +222,7 @@ public class StadiumBlock extends Block implements SimpleWaterloggedBlock {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    private void breakBlock(Level levelIn, BlockPos pos) {
+    private void breakBlock(World levelIn, BlockPos pos) {
         if (levelIn.getBlockState(pos).getBlock() == this) {
             if (levelIn.getBlockState(pos).getFluidState().isEmpty()) {
                 levelIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
@@ -233,7 +233,7 @@ public class StadiumBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public void onRemove(BlockState state, Level levelIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, World levelIn, BlockPos pos, BlockState newState, boolean isMoving) {
         super.onRemove(state,levelIn,pos,state,isMoving);
         if (newState.getBlock() != this) {
             switch (state.getValue(PART).getSerializedName()) {
@@ -298,7 +298,7 @@ public class StadiumBlock extends Block implements SimpleWaterloggedBlock {
         Beycraft.LOGGER.info("Finished processing of Stadium collisions");
     }
 
-    private boolean canReplace(LevelReader world, BlockPos pos) {
+    private boolean canReplace(IWorldReader world, BlockPos pos) {
         return world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getBlock() == Blocks.GRASS
                 || world.getBlockState(pos).getBlock() == Blocks.TALL_GRASS
                 || world.getBlockState(pos).getBlock() == Blocks.TALL_SEAGRASS
@@ -308,24 +308,24 @@ public class StadiumBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     public static class VoxelShapesUtil {
-        private static VoxelShape shape = Shapes.block();
+        private static VoxelShape shape = VoxelShapes.block();
 
         public static void init(){
 
             try {
                 InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("hitboxes/stadium_hitbox.json");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                JsonObject jsonObject = GsonHelper.fromJson(HUPacks.GSON, reader, JsonObject.class);
+                JsonObject jsonObject = JSONUtils.fromJson(HUPacks.GSON, reader, JsonObject.class);
                 JsonArray elements = jsonObject.get("elements").getAsJsonArray();
 
                 for (int i = 0; i < elements.size(); i++) {
                     JsonObject element = elements.get(i).getAsJsonObject();
                     JsonArray from = element.get("from").getAsJsonArray();
                     JsonArray to = element.get("to").getAsJsonArray();
-                    if(shape == Shapes.block()) {
+                    if(shape == VoxelShapes.block()) {
                         shape = Block.box(from.get(0).getAsDouble(),from.get(1).getAsDouble(),from.get(2).getAsDouble(),to.get(0).getAsDouble(),to.get(1).getAsDouble(),to.get(2).getAsDouble());
                     } else {
-                        shape = Shapes.join(shape, Block.box(from.get(0).getAsDouble(),from.get(1).getAsDouble(),from.get(2).getAsDouble(),to.get(0).getAsDouble(),to.get(1).getAsDouble(),to.get(2).getAsDouble()), BooleanOp.OR).optimize();
+                        shape = VoxelShapes.join(shape, Block.box(from.get(0).getAsDouble(),from.get(1).getAsDouble(),from.get(2).getAsDouble(),to.get(0).getAsDouble(),to.get(1).getAsDouble(),to.get(2).getAsDouble()), IBooleanFunction.OR).optimize();
                     }
                 }
                 reader.close();
@@ -339,7 +339,7 @@ public class StadiumBlock extends Block implements SimpleWaterloggedBlock {
             return shape.move(offsetX,0,offsetZ);
         }
     }
-    public enum EnumPartType implements StringRepresentable {
+    public enum EnumPartType implements IStringSerializable {
         TOPLEFT("topleft", 0), TOPCENTER("topcenter", 1), TOPRIGHT("topright", 2), MIDDLELEFT("middleleft", 3),
         MIDDLECENTER("middlecenter", 4), MIDDLERIGHT("middleright", 5), BOTTOMLEFT("bottomleft", 6),
         BOTTOMCENTER("bottomcenter", 7), BOTTOMRIGHT("bottomright", 8);

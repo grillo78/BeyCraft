@@ -7,8 +7,8 @@ import friedrichlp.renderlib.tracking.ModelInfo;
 import friedrichlp.renderlib.tracking.ModelManager;
 import ga.beycraft.BeyTypes;
 import ga.beycraft.Beycraft;
-import ga.beycraft.abilities.AbilityType;
-import net.minecraft.world.item.Item;
+import ga.beycraft.ability.AbilityType;
+import net.minecraft.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.DeferredRegister;
@@ -23,6 +23,9 @@ import java.util.Properties;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Beycraft.MOD_ID);
+    public static final Item LAYERICON = register("layericon", new Item(new Item.Properties()));
+    public static final Item DISCICON = register("discicon", new Item(new Item.Properties()));
+    public static final Item DRIVERICON = register("drivericon", new Item(new Item.Properties()));
 
     static {
         ItemCreator.getItemsFromFolder();
