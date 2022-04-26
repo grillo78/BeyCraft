@@ -18,8 +18,8 @@ public class BeyPartModel {
 
     private final net.minecraft.util.math.vector.Matrix4f modelView;
     private static final RenderLayer layer = RenderManager.addRenderLayer(ViewBoxes.ALWAYS);
-    public static final ArrayList<BeyPartModel> worldModels = new ArrayList<>();
-    public static final ArrayList<BeyPartModel> handModels = new ArrayList<>();
+    public static final ArrayList<BeyPartModel> WORLD_MODELS = new ArrayList<>();
+    public static final ArrayList<BeyPartModel> HAND_MODELS = new ArrayList<>();
     private final ArrayList<RenderObject> childs = new ArrayList<>();
     private final Vector3d pos;
     private final ModelInfo model;

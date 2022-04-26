@@ -35,4 +35,8 @@ public class BeyPartItem extends Item {
     public String getName() {
         return name;
     }
+
+    public boolean canDropOnBurst() {
+        return true;
+    }
 }

@@ -8,11 +8,14 @@ import friedrichlp.renderlib.tracking.ModelManager;
 import ga.beycraft.BeyTypes;
 import ga.beycraft.Beycraft;
 import ga.beycraft.ability.AbilityType;
+import ga.beycraft.common.tab.BeycraftItemGroup;
+import ga.beycraft.utils.Direction;
 import net.minecraft.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import xyz.heroesunited.heroesunited.common.objects.container.EquipmentAccessoriesSlot;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,6 +30,40 @@ public class ModItems {
     public static final Item DISCICON = register("discicon", new Item(new Item.Properties()));
     public static final Item DRIVERICON = register("drivericon", new Item(new Item.Properties()));
 
+    //Launchers
+    public static final Item RIGHT_LAUNCHER = register("right_launcher", new LauncherItem(new Item.Properties(), Direction.RIGHT));
+    public static final Item LEFT_LAUNCHER = register("left_launcher", new LauncherItem(new Item.Properties(), Direction.LEFT));
+    public static final Item DUAL_LAUNCHER = register("dual_launcher", new DualLauncherItem(new Item.Properties()));
+
+    //Launcher accessories
+    public static final Item HANDLE = register("handle", new HandleItem(new Item.Properties().tab(BeycraftItemGroup.INSTANCE)));
+    public static final Item BEYLOGGER = register("beylogger", new BeyloggerItem(new Item.Properties()));
+    public static final Item BEYLOGGER_PLUS = register("beylogger_plus", new BeyloggerItem(new Item.Properties()));
+
+
+    //Clothes
+    public static final AccessoryItem BARUTO_JACKET = register( "baruto_jacket",
+            new AccessoryItem(EquipmentAccessoriesSlot.JACKET));
+    public static final AccessoryItem BARUTO_PANTS = register( "baruto_pants",
+            new AccessoryItem(EquipmentAccessoriesSlot.PANTS));
+    public static final AccessoryItem BARUTO_BOOTS = register( "baruto_boots",
+            new AccessoryItem(EquipmentAccessoriesSlot.SHOES));
+    public static final AccessoryItem BARUTO_CHEST = register( "baruto_chest",
+            new AccessoryItem(EquipmentAccessoriesSlot.TSHIRT));
+    public static final AccessoryItem BARUTO_GLOVES = register( "baruto_gloves",
+            new AccessoryItem(EquipmentAccessoriesSlot.GLOVES));
+
+    public static final AccessoryItem BARUTO_JACKET_CHO_Z = register( "baruto_jacket_cho_z",
+            new AccessoryItem(EquipmentAccessoriesSlot.JACKET));
+    public static final AccessoryItem BARUTO_PANTS_CHO_Z = register( "baruto_pants_cho_z",
+            new AccessoryItem(EquipmentAccessoriesSlot.PANTS));
+    public static final AccessoryItem BARUTO_BOOTS_CHO_Z = register( "baruto_boots_cho_z",
+            new AccessoryItem(EquipmentAccessoriesSlot.SHOES));
+    public static final AccessoryItem BARUTO_CHEST_CHO_Z = register( "baruto_chest_cho_z",
+            new AccessoryItem(EquipmentAccessoriesSlot.TSHIRT));
+    public static final AccessoryItem BARUTO_GLOVES_CHO_Z = register( "baruto_gloves_cho_z",
+            new AccessoryItem(EquipmentAccessoriesSlot.GLOVES));
+
     static {
         ItemCreator.getItemsFromFolder();
     }
@@ -37,7 +74,7 @@ public class ModItems {
     }
 
     public static class ItemCreator {
-        public static HashMap<Item, ModelInfo> models = new HashMap();
+        public static HashMap<Item, ModelInfo> MODELS = new HashMap();
 
 
         public static void getItemsFromFolder() {
@@ -222,10 +259,10 @@ public class ModItems {
 //
 //                    } else {
                             RenderLibSettings.General.MODEL_LOAD_LIMIT++;
-                            models.put(finalItem, ModelManager.registerModel(new File("BeyParts/models/" + file.getName().replace(".properties", ".obj")), new ModelLoaderProperty(0.0f)));
+                            MODELS.put(finalItem, ModelManager.registerModel(new File("BeyParts/models/" + file.getName().replace(".properties", ".obj")), new ModelLoaderProperty(0.0f)));
 //                    }
-                            models.get(finalItem).addRenderEffect(RenderEffect.NORMAL_LIGHTING);
-                            models.get(finalItem).addRenderEffect(RenderEffect.AMBIENT_OCCLUSION);
+                            MODELS.get(finalItem).addRenderEffect(RenderEffect.NORMAL_LIGHTING);
+                            MODELS.get(finalItem).addRenderEffect(RenderEffect.AMBIENT_OCCLUSION);
                         });
                     }
                 }

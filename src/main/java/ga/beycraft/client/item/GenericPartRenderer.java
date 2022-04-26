@@ -40,16 +40,16 @@ public class GenericPartRenderer extends ItemStackTileEntityRenderer {
         BeyPartModel model = null;
         switch (transformType) {
             case GUI:
-                sceneLayer = layer.addRenderObject(ModItems.ItemCreator.models.get(stack.getItem()));
+                sceneLayer = layer.addRenderObject(ModItems.ItemCreator.MODELS.get(stack.getItem()));
                 break;
             case FIRST_PERSON_LEFT_HAND:
             case FIRST_PERSON_RIGHT_HAND:
                 vector4f = new Vector4f(0, 0, 0, 1 / 16);
                 vector4f.transform(matrix);
                 pos = cameraPos.add(vector4f.x(), vector4f.y() + 0.2, vector4f.z());
-                model = new BeyPartModel(modelView, pos, ModItems.ItemCreator.models.get(stack.getItem()), 20, 180, 0, 0.5F, 0.5F, 0.5F);
+                model = new BeyPartModel(modelView, pos, ModItems.ItemCreator.MODELS.get(stack.getItem()), 20, 180, 0, 0.5F, 0.5F, 0.5F);
                 sceneLayer = model.getSceneLayer();
-                BeyPartModel.handModels.add(model);
+                BeyPartModel.HAND_MODELS.add(model);
                 break;
             case GROUND:
             case THIRD_PERSON_RIGHT_HAND:
@@ -61,17 +61,17 @@ public class GenericPartRenderer extends ItemStackTileEntityRenderer {
                 modelView = new net.minecraft.util.math.vector.Matrix4f(matrixStack.last().pose());
                 pos = cameraPos.add(vector4f.x(), vector4f.y(), vector4f.z());
             default:
-                model = new BeyPartModel(modelView, pos, ModItems.ItemCreator.models.get(stack.getItem()), 0, 0, 0, 1, 1, 1);
+                model = new BeyPartModel(modelView, pos, ModItems.ItemCreator.MODELS.get(stack.getItem()), 0, 0, 0, 1, 1, 1);
                 sceneLayer = model.getSceneLayer();
-                BeyPartModel.worldModels.add(model);
+                BeyPartModel.WORLD_MODELS.add(model);
                 break;
         }
         if (model != null) {
             BeyPartModel finalModel = model;
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
                 Item frameItem = cap.getStackInSlot(0).getItem();
-                if (ModItems.ItemCreator.models.containsKey(frameItem) && stack.getItem() instanceof DiscFrameItem) {
-                    RenderObject sceneFrame = finalModel.addChild(ModItems.ItemCreator.models.get(frameItem));
+                if (ModItems.ItemCreator.MODELS.containsKey(frameItem) && stack.getItem() instanceof DiscFrameItem) {
+                    RenderObject sceneFrame = finalModel.addChild(ModItems.ItemCreator.MODELS.get(frameItem));
                     sceneFrame.transform.rotate(0,((DiscFrameItem)stack.getItem()).getFrameRotation(),0);
                 }
             });

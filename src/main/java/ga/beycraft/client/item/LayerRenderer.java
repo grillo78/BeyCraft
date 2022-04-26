@@ -17,12 +17,9 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector4f;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.opengl.GL11;
 
 public class LayerRenderer extends ItemStackTileEntityRenderer {
@@ -43,16 +40,16 @@ public class LayerRenderer extends ItemStackTileEntityRenderer {
         BeyPartModel model = null;
         switch (transformType) {
             case GUI:
-                sceneLayer = layer.addRenderObject(ModItems.ItemCreator.models.get(stack.getItem()));
+                sceneLayer = layer.addRenderObject(ModItems.ItemCreator.MODELS.get(stack.getItem()));
                 break;
             case FIRST_PERSON_LEFT_HAND:
             case FIRST_PERSON_RIGHT_HAND:
                 vector4f = new Vector4f(0, 0, 0, 1 / 16);
                 vector4f.transform(matrix);
                 pos = cameraPos.add(vector4f.x(), vector4f.y() + 0.2, vector4f.z());
-                model = new BeyPartModel(modelView, pos, ModItems.ItemCreator.models.get(stack.getItem()), 20, 180, 0, 0.5F, 0.5F, 0.5F);
+                model = new BeyPartModel(modelView, pos, ModItems.ItemCreator.MODELS.get(stack.getItem()), 20, 180, 0, 0.5F, 0.5F, 0.5F);
                 sceneLayer = model.getSceneLayer();
-                BeyPartModel.handModels.add(model);
+                BeyPartModel.HAND_MODELS.add(model);
                 break;
             case GROUND:
             case THIRD_PERSON_RIGHT_HAND:
@@ -64,9 +61,9 @@ public class LayerRenderer extends ItemStackTileEntityRenderer {
                 modelView = new net.minecraft.util.math.vector.Matrix4f(matrixStack.last().pose());
                 pos = cameraPos.add(vector4f.x(), vector4f.y(), vector4f.z());
             default:
-                model = new BeyPartModel(modelView, pos, ModItems.ItemCreator.models.get(stack.getItem()), 0, 0, 0, 1, 1, 1);
+                model = new BeyPartModel(modelView, pos, ModItems.ItemCreator.MODELS.get(stack.getItem()), 0, 0, 0, 1, 1, 1);
                 sceneLayer = model.getSceneLayer();
-                BeyPartModel.worldModels.add(model);
+                BeyPartModel.WORLD_MODELS.add(model);
                 break;
         }
         if (model != null) {
@@ -74,8 +71,15 @@ public class LayerRenderer extends ItemStackTileEntityRenderer {
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
                 for (int i = 0; i < cap.getSlots(); i++) {
                     Item partItem = cap.getStackInSlot(i).getItem();
-                    if (ModItems.ItemCreator.models.containsKey(partItem)) {
-                        finalModel.addChild(ModItems.ItemCreator.models.get(partItem));
+                    if (ModItems.ItemCreator.MODELS.containsKey(partItem)) {
+                        if (partItem instanceof DiscFrameItem) {
+                            cap.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(capability -> {
+                                if (ModItems.ItemCreator.MODELS.containsKey(capability.getStackInSlot(0).getItem())) {
+                                    finalModel.addChild(ModItems.ItemCreator.MODELS.get(capability.getStackInSlot(0).getItem()));
+                                }
+                            });
+                        }
+                        finalModel.addChild(ModItems.ItemCreator.MODELS.get(partItem));
                     }
                 }
             });

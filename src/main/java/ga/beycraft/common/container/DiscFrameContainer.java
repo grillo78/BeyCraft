@@ -16,33 +16,17 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 
-public class LauncherContainer extends Container {
+public class DiscFrameContainer extends Container {
 
-    public LauncherContainer(@Nullable ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory, Direction direction) {
-        super(type, id);
-        addSlots(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseGet(() -> new ItemStackHandler(3)), direction);
-        addPlayerSlots(new InvWrapper(playerInventory), playerInventory.selected);
-    }
 
-    public LauncherContainer(@Nullable ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory) {
+    public DiscFrameContainer(@Nullable ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory) {
         super(type, id);
         addSlots(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseGet(() -> new ItemStackHandler(3)));
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.selected);
     }
 
-    protected void addSlots(IItemHandler cap, Direction direction) {
-        this.addSlot(new BeySlot(cap, 0, 10, 15, direction));
-        this.addOtherSlots(cap);
-    }
-
-    private void addOtherSlots(IItemHandler cap) {
-        this.addSlot(new HandleSlot(cap, 1, 38, 15));
-        this.addSlot(new BeyloggerSlot(cap, 2, 10, 35));
-    }
-
     protected void addSlots(IItemHandler cap) {
-        this.addSlot(new BeySlotDual(cap, 0, 10, 15));
-        this.addOtherSlots(cap);
+        this.addSlot(new FrameSlot(cap, 0, 10, 15));
     }
 
     protected void addPlayerSlots(InvWrapper playerInventory, int locked) {

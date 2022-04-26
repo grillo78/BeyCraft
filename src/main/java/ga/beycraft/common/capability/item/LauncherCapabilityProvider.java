@@ -1,4 +1,4 @@
-package ga.beycraft.common.capability;
+package ga.beycraft.common.capability.item;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -9,15 +9,15 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
-public class BeyCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable {
+public class LauncherCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable {
 
     private final LazyOptional<IItemHandler> inventory;
 
-    public BeyCapabilityProvider(IItemHandler inventory) {
-        this.inventory = LazyOptional.of(() -> inventory);
+    public LauncherCapabilityProvider() {
+        this.inventory = LazyOptional.of(() -> new ItemStackHandler(3));
     }
-
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
