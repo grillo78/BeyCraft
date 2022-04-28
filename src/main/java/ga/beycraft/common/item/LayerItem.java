@@ -136,32 +136,34 @@ public class LayerItem extends BeyPartItem {
     }
 
     public void renderBey(BeybladeEntity beyblade, RenderLayer layer, IItemHandler cap, float partialTicks) {
-
-        List<RenderObject> childs = new ArrayList<>();
-        Vector3d pos = beyblade.getPosition(partialTicks);
-        RenderObject mainScene = layer.addRenderObject(getModelInfo(cap.getStackInSlot(0).getItem()));
-        mainScene.setHidden(true);
-        RenderObject sceneDisc = mainScene.addChild(getModelInfo(cap.getStackInSlot(0).getItem()));
-        for (int i = 1; i < cap.getSlots(); i++) {
-            childs.add(sceneDisc.addChild(getModelInfo(cap.getStackInSlot(i).getItem())));
+        if (cap.getStackInSlot(0).getItem() instanceof BeyPartItem) {
+            List<RenderObject> childs = new ArrayList<>();
+            Vector3d pos = beyblade.getPosition(partialTicks);
+            RenderObject mainScene = layer.addRenderObject(getModelInfo(cap.getStackInSlot(0).getItem()));
+            mainScene.setHidden(true);
+            RenderObject sceneDisc = mainScene.addChild(getModelInfo(cap.getStackInSlot(0).getItem()));
+            for (int i = 1; i < cap.getSlots(); i++) {
+                childs.add(sceneDisc.addChild(getModelInfo(cap.getStackInSlot(i).getItem())));
+            }
+            RenderObject sceneLayer = sceneDisc.addChild(getModelInfo(beyblade.getStack().getItem()));
+            RenderSystem.depthMask(true);
+            mainScene.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
+            mainScene.transform.scale(0.3F, 0.3F, 0.3F);
+            double stadiumCenterDistance = beyblade.findStadiumCenter().distanceTo(beyblade.getPosition(partialTicks));
+            double inclinationMultiplier = beyblade.getEnergy()>1?stadiumCenterDistance : 1-beyblade.getEnergy();
+            Vector3d vector = new Vector3d(-30, 0, this.getRotationDirection(beyblade.getStack()).getValue() * 30).multiply(inclinationMultiplier, inclinationMultiplier, inclinationMultiplier).yRot((float) Math.toRadians(MathHelper.lerp(partialTicks, beyblade.yRotO, beyblade.yRot)));
+            mainScene.transform.rotate((float) vector.x, (float) 0, (float) -vector.z);
+            sceneDisc.transform.rotate(0, MathHelper.lerp(partialTicks, beyblade.getSpinAngleO(), beyblade.getSpinAngle()), 0);
+            mainScene.forceTransformUpdate();
+            RenderManager.render(layer, RenderMode.USE_CUSTOM_MATS);
+            sceneLayer.remove();
+            sceneDisc.remove();
+            for (RenderObject child : childs) {
+                child.remove();
+            }
+            childs.clear();
+            mainScene.remove();
         }
-        RenderObject sceneLayer = sceneDisc.addChild(getModelInfo(beyblade.getStack().getItem()));
-        RenderSystem.depthMask(true);
-        mainScene.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
-        mainScene.transform.scale(0.3F, 0.3F, 0.3F);
-        double stadiumCenterDistance = beyblade.findStadiumCenter().distanceTo(beyblade.getPosition(partialTicks));
-        Vector3d vector = new Vector3d(-30, 0, this.getRotationDirection(beyblade.getStack()).getValue()*30).multiply(stadiumCenterDistance,stadiumCenterDistance,stadiumCenterDistance).yRot((float) Math.toRadians(MathHelper.lerp(partialTicks, beyblade.yRotO, beyblade.yRot)));
-        mainScene.transform.rotate((float) vector.x, (float) 0, (float) -vector.z);
-        sceneDisc.transform.rotate(0, MathHelper.lerp(partialTicks, beyblade.getSpinAngleO(), beyblade.getSpinAngle()), 0);
-        mainScene.forceTransformUpdate();
-        RenderManager.render(layer, RenderMode.USE_CUSTOM_MATS);
-        sceneLayer.remove();
-        sceneDisc.remove();
-        for (RenderObject child : childs) {
-            child.remove();
-        }
-        childs.clear();
-        mainScene.remove();
     }
 
     private ModelInfo getModelInfo(Item item) {
@@ -170,9 +172,9 @@ public class LayerItem extends BeyPartItem {
 
     public double getRadiusReduction(ItemStack beyblade) {
         AtomicDouble radiusReduction = new AtomicDouble(0);
-        beyblade.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap->{
-            if(cap.getStackInSlot(1).getItem() instanceof DriverItem){
-                radiusReduction.set(((DriverItem)cap.getStackInSlot(1).getItem()).getRadiusReduction());
+        beyblade.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+            if (cap.getStackInSlot(1).getItem() instanceof DriverItem) {
+                radiusReduction.set(((DriverItem) cap.getStackInSlot(1).getItem()).getRadiusReduction());
             }
         });
 
@@ -181,9 +183,9 @@ public class LayerItem extends BeyPartItem {
 
     public double getDefense(ItemStack beyblade) {
         AtomicDouble defense = new AtomicDouble(this.defense);
-        beyblade.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap->{
-            if(cap.getStackInSlot(0).getItem() instanceof DiscItem){
-                defense.set(((DiscItem)cap.getStackInSlot(0).getItem()).getDefense(cap.getStackInSlot(0)));
+        beyblade.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+            if (cap.getStackInSlot(0).getItem() instanceof DiscItem) {
+                defense.set(((DiscItem) cap.getStackInSlot(0).getItem()).getDefense(cap.getStackInSlot(0)));
             }
         });
 
@@ -192,12 +194,22 @@ public class LayerItem extends BeyPartItem {
 
     public double getAttack(ItemStack beyblade) {
         AtomicDouble attack = new AtomicDouble(this.attack);
-        beyblade.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap->{
-            if(cap.getStackInSlot(0).getItem() instanceof DiscItem){
-                attack.set(((DiscItem)cap.getStackInSlot(0).getItem()).getAttack(cap.getStackInSlot(0)));
+        beyblade.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+            if (cap.getStackInSlot(0).getItem() instanceof DiscItem) {
+                attack.set(((DiscItem) cap.getStackInSlot(0).getItem()).getAttack(cap.getStackInSlot(0)));
             }
         });
         return attack.get();
+    }
+
+    public double getFriction(ItemStack beyblade) {
+        AtomicDouble friction = new AtomicDouble(1);
+        beyblade.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+            if (cap.getStackInSlot(1).getItem() instanceof DriverItem) {
+                friction.set(((DriverItem) cap.getStackInSlot(1).getItem()).getFriction());
+            }
+        });
+        return friction.get();
     }
 
     public static class Color {

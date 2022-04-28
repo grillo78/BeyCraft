@@ -4,9 +4,9 @@ import ga.beycraft.common.block.ModBlocks;
 import ga.beycraft.common.block.StadiumBlock;
 import ga.beycraft.common.item.BeyPartItem;
 import ga.beycraft.common.item.LayerItem;
+import ga.beycraft.common.launch.Launch;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -20,6 +20,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
@@ -44,18 +47,19 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     private ItemStack beyblade = ItemStack.EMPTY;
     private float spinAngle = 0;
     private float spinAngleO = 0;
-    private boolean isStopped = false;
+    private static final DataParameter<Float> ENERGY = EntityDataManager.defineId(BeybladeEntity.class, DataSerializers.FLOAT);
+    private static final DataParameter<Boolean> STOPPED = EntityDataManager.defineId(BeybladeEntity.class, DataSerializers.BOOLEAN);
     private LayerItem layer;
+    private Launch launch;
 
-    public BeybladeEntity(World level, ItemStack beyblade) {
+    public BeybladeEntity(World level, ItemStack beyblade, Launch launch) {
         this(ModEntities.BEYBLADE, level);
         this.beyblade = beyblade;
-        if(!level.isClientSide) {
-            layer = ((LayerItem) beyblade.getItem());
-            AbilityHelper.setAttribute(this, "defense", Attributes.MAX_HEALTH, UUID.randomUUID(), (layer.getDefense(beyblade)+1 )* 100, AttributeModifier.Operation.ADDITION);
-            AbilityHelper.setAttribute(this, "attack", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), (layer.getAttack(beyblade)+1) * 33, AttributeModifier.Operation.ADDITION);
-            setHealth(getMaxHealth());
-        }
+        layer = ((LayerItem) beyblade.getItem());
+        AbilityHelper.setAttribute(this, "defense", Attributes.MAX_HEALTH, UUID.randomUUID(), (layer.getDefense(beyblade) + 1) * 200, AttributeModifier.Operation.ADDITION);
+        AbilityHelper.setAttribute(this, "attack", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), (layer.getAttack(beyblade) + 1) * 33, AttributeModifier.Operation.ADDITION);
+        setHealth(getMaxHealth());
+        this.launch = launch;
     }
 
     BeybladeEntity(EntityType<? extends CreatureEntity> type, World level) {
@@ -85,40 +89,65 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     @Override
     public void tick() {
         super.tick();
-        if(layer != null){
-            BlockPos pos = new BlockPos(position().add(0D, -0.001D, 0D));
-            if (level.getBlockState(pos).getBlock() != ModBlocks.STADIUM && level.getBlockState(pos).getBlock() != Blocks.AIR)
-                isStopped = true;
-            if (!isStopped) {
-                int dir = layer.getRotationDirection(beyblade).getValue();
-                if (onGround) {
-                    Vector3d stadiumCenter = findStadiumCenter();
-                    this.lookAt(EntityAnchorArgument.Type.EYES, stadiumCenter);
-                    Vector3d distanceToCenter = stadiumCenter.add(position().add(getBbWidth()/2, 0, getBbWidth()/2).reverse());
-                    this.setDeltaMovement(getDeltaMovement().add(distanceToCenter
-                            .multiply(0.025*layer.getRadiusReduction(beyblade), 0, 0.025*layer.getRadiusReduction(beyblade)))
-                            .add(distanceToCenter
-                                    .multiply(0.085, 0, 0.085).yRot((float) (Math.toRadians(-90) * dir))));
+        if (layer != null) {
+            if (!level.isClientSide) {
+                BlockPos pos = new BlockPos(position().add(0D, -0.001D, 0D));
+                if ((level.getBlockState(pos).getBlock() != ModBlocks.STADIUM && level.getBlockState(pos).getBlock() != Blocks.AIR) || getEnergy() < 0)
+                    setStopped(true);
+                if (!isStopped() && onGround) {
+                    setEnergy((float) (getEnergy()- 0.0001 * layer.getFriction(beyblade)));
+                    launch.moveBeyblade(this);
                 }
-            }
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                if(level.isClientSide)
+            } else
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
                     this.clientTick();
-            });
+                });
         }
+    }
+
+    private void setStopped(boolean stopped) {
+        this.entityData.set(STOPPED, stopped);
+    }
+
+    public boolean isStopped() {
+        return this.entityData.get(STOPPED);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        this.entityData.define(ENERGY, 1f);
+        this.entityData.define(STOPPED, false);
+        super.defineSynchedData();
     }
 
     @Override
     protected void doPush(Entity entity) {
-        super.doPush(entity);
-        if(!level.isClientSide && entity instanceof BeybladeEntity){
+        if (!level.isClientSide && entity instanceof BeybladeEntity) {
             double x = (getX() - entity.getX()) / 2;
             double y = (getY() - entity.getY()) / 2;
             double z = (getZ() - entity.getZ()) / 2;
-            ((ServerWorld) level).sendParticles(ParticleTypes.SWEEP_ATTACK, getX(), getY(), getZ(), 1, x, y, z,
-                    1);
-            entity.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+            if (random.nextInt(5) == 0) {
+                ((ServerWorld) level).sendParticles(ParticleTypes.SWEEP_ATTACK, getX(), getY(), getZ(), 1, x, y, z,
+                        1);
+                entity.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                this.hurt(DamageSource.mobAttack((BeybladeEntity) entity), (float) ((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE));
+            }
+        } else {
+            super.doPush(entity);
         }
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
+    public void setEnergy(float energy) {
+        this.entityData.set(ENERGY, Float.valueOf(energy));
+    }
+
+    public Float getEnergy() {
+        return entityData.get(ENERGY);
     }
 
     public Vector3d findStadiumCenter() {
@@ -137,7 +166,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     @OnlyIn(Dist.CLIENT)
     private void clientTick() {
         this.spinAngleO = this.spinAngle;
-        if (!isStopped) {
+        if (!isStopped()) {
             this.spinAngle += ((LayerItem) beyblade.getItem()).getRotationDirection(beyblade).getValue() * 30;
         }
     }
@@ -182,6 +211,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
         super.readAdditionalSaveData(compound);
         beyblade = ItemStack.of(compound.getCompound("beyblade"));
         layer = ((LayerItem) beyblade.getItem());
+        launch = new Launch();
     }
 
     @Override
@@ -191,7 +221,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     }
 
     public static AttributeModifierMap.MutableAttribute registerMonsterAttributes() {
-        return MonsterEntity.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 1).add(Attributes.ATTACK_DAMAGE, 1).add(Attributes.MAX_HEALTH, 1);
+        return MonsterEntity.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 1).add(Attributes.ATTACK_DAMAGE, 1).add(Attributes.MAX_HEALTH, 1).add(Attributes.KNOCKBACK_RESISTANCE, 0.3);
     }
 
     public ItemStack getStack() {

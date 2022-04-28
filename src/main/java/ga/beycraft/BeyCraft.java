@@ -8,9 +8,15 @@ import friedrichlp.renderlib.tracking.RenderManager;
 import ga.beycraft.client.entity.BeybladeRenderer;
 import ga.beycraft.client.screen.DiscFrameScreen;
 import ga.beycraft.client.screen.LauncherScreen;
+import ga.beycraft.client.screen.LaunchScreen;
 import ga.beycraft.client.screen.LayerScreen;
 import ga.beycraft.client.util.BeyPartModel;
+import ga.beycraft.client.util.KeyBinds;
 import ga.beycraft.common.block.ModBlocks;
+import ga.beycraft.common.capability.entity.Blader;
+import ga.beycraft.common.capability.entity.BladerCapabilityProvider;
+import ga.beycraft.common.capability.entity.BladerStorage;
+import ga.beycraft.common.capability.entity.IBlader;
 import ga.beycraft.common.entity.BeybladeEntity;
 import ga.beycraft.common.entity.ModEntities;
 import ga.beycraft.common.capability.item.beylogger.Beylogger;
@@ -18,51 +24,52 @@ import ga.beycraft.common.capability.item.beylogger.BeyloggerStorage;
 import ga.beycraft.common.capability.item.beylogger.IBeylogger;
 import ga.beycraft.common.container.ModContainers;
 import ga.beycraft.common.item.*;
+import ga.beycraft.common.launch.LaunchType;
+import ga.beycraft.common.launch.LaunchTypes;
 import ga.beycraft.utils.CommonUtils;
 import ga.beycraft.utils.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.BuiltInModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.MissingTextureSprite;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.util.Hand;
-import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.registries.RegistryBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import xyz.heroesunited.heroesunited.client.events.HUSetRotationAnglesEvent;
+import org.lwjgl.glfw.GLFW;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -81,6 +88,7 @@ public class Beycraft {
     public Beycraft() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
         FMLJavaModLoadingContext.get().getModEventBus().register(new SpecialEvents());
+        MinecraftForge.EVENT_BUS.register(new SpecialRuntimeEvents());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             try {
@@ -110,7 +118,7 @@ public class Beycraft {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerModel);
             MinecraftForge.EVENT_BUS.addListener(this::onRenderWorld);
             MinecraftForge.EVENT_BUS.addListener(this::renderHand);
-            MinecraftForge.EVENT_BUS.addListener(this::setPlayerRotations);
+            MinecraftForge.EVENT_BUS.addListener(this::onKeyPressed);
         });
         if (HAS_INTERNET) {
             try {
@@ -124,10 +132,7 @@ public class Beycraft {
         ModBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModContainers.CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModEntities.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
-    }
-
-    private void setup(final FMLCommonSetupEvent event) {
-        CapabilityManager.INSTANCE.register(IBeylogger.class, new BeyloggerStorage(), Beylogger::new);
+        LaunchTypes.LAUNCH_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     private void downloadDefaultPack() throws IOException {
@@ -150,6 +155,10 @@ public class Beycraft {
         }
     }
 
+    private void setup(final FMLCommonSetupEvent event) {
+        CapabilityManager.INSTANCE.register(IBeylogger.class, new BeyloggerStorage(), Beylogger::new);
+        CapabilityManager.INSTANCE.register(IBlader.class, new BladerStorage(), Blader::new);
+    }
 
     @OnlyIn(Dist.CLIENT)
     private void onRenderWorld(RenderWorldLastEvent event) {
@@ -184,6 +193,13 @@ public class Beycraft {
     }
 
     @OnlyIn(Dist.CLIENT)
+    private void onKeyPressed(InputEvent.KeyInputEvent event) {
+        if (KeyBinds.LAUNCH_SCREEN.isDown() && event.getAction() == GLFW.GLFW_PRESS) {
+            Minecraft.getInstance().setScreen(new LaunchScreen(new TranslationTextComponent("screen.launch_screen.name")));
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
     private void registerModel(final ModelRegistryEvent event) {
         ModelLoader.addSpecialModel(new ResourceLocation(MOD_ID, "launchers/dual_launcher/launcher_body"));
         ModelLoader.addSpecialModel(new ResourceLocation(MOD_ID, "launchers/dual_launcher/grab_part"));
@@ -205,6 +221,7 @@ public class Beycraft {
 
     @OnlyIn(Dist.CLIENT)
     private void doClientStuff(FMLClientSetupEvent event) {
+        ClientRegistry.registerKeyBinding(KeyBinds.LAUNCH_SCREEN);
         RenderTypeLookup.setRenderLayer(ModBlocks.STADIUM, RenderType.cutoutMipped());
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.BEYBLADE, BeybladeRenderer::new);
         ScreenManager.register(ModContainers.LAYER, LayerScreen::new);
@@ -212,107 +229,6 @@ public class Beycraft {
         ScreenManager.register(ModContainers.LEFT_LAUNCHER, LauncherScreen::new);
         ScreenManager.register(ModContainers.DUAL_LAUNCHER, LauncherScreen::new);
         ScreenManager.register(ModContainers.DISC_FRAME, DiscFrameScreen::new);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    private void setPlayerRotations(final HUSetRotationAnglesEvent event) {
-        PlayerEntity player = event.getPlayer();
-        PlayerModel model = event.getPlayerModel();
-        if (player.getItemInHand(Hand.MAIN_HAND).getItem() instanceof LauncherItem
-                || player.getItemInHand(Hand.OFF_HAND).getItem() instanceof LauncherItem) {
-            model.leftArm.xRot = (float) Math.toRadians(player.xRot - 90);
-            model.rightArm.xRot = (float) Math.toRadians(player.xRot - 90);
-
-            model.leftSleeve.xRot = (float) Math.toRadians(player.xRot - 90);
-            model.rightSleeve.xRot = (float) Math.toRadians(player.xRot - 90);
-
-            model.leftArm.yRot = (float) Math.toRadians(20);
-            model.rightArm.yRot = (float) Math.toRadians(-20);
-            model.rightArm.zRot = (float) Math
-                    .toRadians(25 * (1 - ((90 - (-player.xRot)) / 90)));
-            model.leftArm.zRot = (float) Math.toRadians(25 * (1 - ((90 - player.xRot) / 90)));
-
-            model.leftSleeve.yRot = (float) Math.toRadians(20);
-            model.rightSleeve.yRot = (float) Math.toRadians(-20);
-            model.rightSleeve.zRot = (float) Math
-                    .toRadians(25 * (1 - ((90 - (-player.xRot)) / 90)));
-            model.leftSleeve.zRot = (float) Math
-                    .toRadians(25 * (1 - ((90 - player.xRot) / 90)));
-        }
-
-        if (player.getMainHandItem().getItem() instanceof LauncherItem) {
-            player.getMainHandItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap->{
-                if (cap.getStackInSlot(1).getItem() instanceof HandleItem){
-                    if(player.getMainArm() ==HandSide.RIGHT){
-                        model.rightArm.yRot = (float) Math.toRadians(0);
-                        model.rightArm.zRot = (float) Math.toRadians(0);
-                        model.rightSleeve.yRot = (float) Math.toRadians(0);
-                        model.rightSleeve.zRot = (float) Math.toRadians(0);
-
-                    } else {
-                        model.leftArm.yRot = (float) Math.toRadians(0);
-                        model.leftArm.zRot = (float) Math.toRadians(0);
-                        model.leftSleeve.yRot = (float) Math.toRadians(0);
-                        model.leftSleeve.zRot = (float) Math.toRadians(0);
-                    }
-                }
-                if (player.getCooldowns().isOnCooldown(player.getMainHandItem().getItem())) {
-                    if (player.getMainArm() == HandSide.RIGHT) {
-                        model.leftArm.yRot = (float) Math.toRadians(-25);
-                        model.leftArm.zRot = (float) Math
-                                .toRadians(-25 * (1 - ((90 - player.xRot) / 90)));
-                        model.leftSleeve.yRot = (float) Math.toRadians(-25);
-                        model.leftSleeve.zRot = (float) Math
-                                .toRadians(-25 * (1 - ((90 - player.xRot) / 90)));
-                    } else {
-                        model.rightArm.yRot = (float) Math.toRadians(25);
-                        model.rightArm.zRot = (float) Math
-                                .toRadians(-25 * (1 - ((90 - (-player.xRot)) / 90)));
-                        model.rightSleeve.yRot = (float) Math.toRadians(25);
-                        model.rightSleeve.zRot = (float) Math
-                                .toRadians(-25 * (1 - ((90 - (-player.xRot)) / 90)));
-                    }
-                }
-            });
-        }
-
-        if (player.getItemInHand(Hand.OFF_HAND).getItem() instanceof LauncherItem) {
-            player.getItemInHand(Hand.OFF_HAND).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap->{
-                if (cap.getStackInSlot(1).getItem() instanceof HandleItem){
-                    if (cap.getStackInSlot(1).getItem() instanceof HandleItem){
-                        if(player.getMainArm() !=HandSide.RIGHT){
-                            model.rightArm.yRot = (float) Math.toRadians(0);
-                            model.rightArm.zRot = (float) Math.toRadians(0);
-                            model.rightSleeve.yRot = (float) Math.toRadians(0);
-                            model.rightSleeve.zRot = (float) Math.toRadians(0);
-
-                        } else {
-                            model.leftArm.yRot = (float) Math.toRadians(0);
-                            model.leftArm.zRot = (float) Math.toRadians(0);
-                            model.leftSleeve.yRot = (float) Math.toRadians(0);
-                            model.leftSleeve.zRot = (float) Math.toRadians(0);
-                        }
-                    }
-                    if (player.getCooldowns().isOnCooldown(player.getMainHandItem().getItem())) {
-                        if (player.getMainArm() != HandSide.RIGHT) {
-                            model.leftArm.yRot = (float) Math.toRadians(-25);
-                            model.leftArm.zRot = (float) Math
-                                    .toRadians(-25 * (1 - ((90 - player.xRot) / 90)));
-                            model.leftSleeve.yRot = (float) Math.toRadians(-25);
-                            model.leftSleeve.zRot = (float) Math
-                                    .toRadians(-25 * (1 - ((90 - player.xRot) / 90)));
-                        } else {
-                            model.rightArm.yRot = (float) Math.toRadians(25);
-                            model.rightArm.zRot = (float) Math
-                                    .toRadians(-25 * (1 - ((90 - (-player.xRot)) / 90)));
-                            model.rightSleeve.yRot = (float) Math.toRadians(25);
-                            model.rightSleeve.zRot = (float) Math
-                                    .toRadians(-25 * (1 - ((90 - (-player.xRot)) / 90)));
-                        }
-                    }
-                }
-            });
-        }
     }
 
     public static class SpecialEvents {
@@ -323,6 +239,16 @@ public class Beycraft {
             GlobalEntityTypeAttributes.put(ModEntities.BEYBLADE,
                     BeybladeEntity.registerMonsterAttributes().build());
 
+        }
+    }
+
+    public static class SpecialRuntimeEvents {
+
+        @SubscribeEvent
+        public void playerCapabilitiesInjection(final AttachCapabilitiesEvent<Entity> event) {
+            if (event.getObject() instanceof PlayerEntity) {
+                event.addCapability(new ResourceLocation(MOD_ID, "blader"), new BladerCapabilityProvider());
+            }
         }
     }
 }

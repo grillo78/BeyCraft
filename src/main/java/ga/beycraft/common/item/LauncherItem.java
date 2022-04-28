@@ -5,6 +5,7 @@ import ga.beycraft.common.entity.BeybladeEntity;
 import ga.beycraft.common.capability.item.LauncherCapabilityProvider;
 import ga.beycraft.common.container.LauncherContainer;
 import ga.beycraft.common.container.ModContainers;
+import ga.beycraft.common.launch.Launch;
 import ga.beycraft.common.tab.BeycraftItemGroup;
 import ga.beycraft.utils.Direction;
 import net.minecraft.entity.player.PlayerEntity;
@@ -90,13 +91,8 @@ public class LauncherItem extends Item {
                 stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
                     if (cap.getStackInSlot(0).getItem() instanceof LayerItem) {
                         ItemStack beybladeStack = cap.getStackInSlot(0);
-                        LayerItem layer = (LayerItem) cap.getStackInSlot(0).getItem();
-                        BeybladeEntity beyblade = new BeybladeEntity(level, beybladeStack.copy());
-                        beyblade.moveTo(player.position().x + player.getLookAngle().x / 2,
-                                player.position().y + 1 + player.getLookAngle().y / 2,
-                                player.position().z + player.getLookAngle().z / 2, (float) (player.yRot+layer.getRotationDirection(beybladeStack).getValue()*Math.toRadians(-45)), 0);
-                        level.addFreshEntity(beyblade);
-                        beybladeStack.shrink(1);
+                        Launch launch = new Launch();
+                        launch.launchBeyblade(beybladeStack, level, player, hand);
                     }
                 });
             }
