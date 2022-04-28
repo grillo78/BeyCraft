@@ -24,11 +24,17 @@ public class LaunchType extends ForgeRegistryEntry<LaunchType> {
     private final Supplier<Launch> launchSupplier;
     private int x;
     private int y;
+    private ResourceLocation requisite;
 
-    public LaunchType(Supplier<Launch> launchSupplier, int x, int y) {
+    public LaunchType(Supplier<Launch> launchSupplier, int x, int y, ResourceLocation requisite) {
         this.launchSupplier = launchSupplier;
         this.x = x;
         this.y = y;
+        this.requisite = requisite;
+    }
+
+    public ResourceLocation getRequisite() {
+        return requisite;
     }
 
     public int getX() {
@@ -39,7 +45,7 @@ public class LaunchType extends ForgeRegistryEntry<LaunchType> {
         return y;
     }
 
-    public Launch generateLaunch(){
+    public Launch generateLaunch() {
         return launchSupplier.get();
     }
 }

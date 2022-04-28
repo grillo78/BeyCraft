@@ -1,5 +1,6 @@
 package ga.beycraft.common.capability.entity;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
@@ -15,12 +16,13 @@ public class BladerCapabilityProvider implements ICapabilitySerializable {
 
     @CapabilityInject(IBlader.class)
     public static final Capability<IBlader> BLADER_CAP = null;
-    private IBlader bladerLevel = BLADER_CAP.getDefaultInstance();
+    private IBlader bladerValue = BLADER_CAP.getDefaultInstance();
 
     private final LazyOptional<IBlader> blader;
 
-    public BladerCapabilityProvider() {
-        this.blader = LazyOptional.of(() ->bladerLevel);
+    public BladerCapabilityProvider(PlayerEntity player) {
+        this.blader = LazyOptional.of(() ->bladerValue);
+        bladerValue.setPlayer(player);
     }
 
     @Override

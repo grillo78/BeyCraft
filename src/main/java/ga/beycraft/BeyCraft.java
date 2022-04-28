@@ -7,8 +7,8 @@ import friedrichlp.renderlib.math.Vector3;
 import friedrichlp.renderlib.tracking.RenderManager;
 import ga.beycraft.client.entity.BeybladeRenderer;
 import ga.beycraft.client.screen.DiscFrameScreen;
-import ga.beycraft.client.screen.LauncherScreen;
 import ga.beycraft.client.screen.LaunchScreen;
+import ga.beycraft.client.screen.LauncherScreen;
 import ga.beycraft.client.screen.LayerScreen;
 import ga.beycraft.client.util.BeyPartModel;
 import ga.beycraft.client.util.KeyBinds;
@@ -17,14 +17,14 @@ import ga.beycraft.common.capability.entity.Blader;
 import ga.beycraft.common.capability.entity.BladerCapabilityProvider;
 import ga.beycraft.common.capability.entity.BladerStorage;
 import ga.beycraft.common.capability.entity.IBlader;
-import ga.beycraft.common.entity.BeybladeEntity;
-import ga.beycraft.common.entity.ModEntities;
 import ga.beycraft.common.capability.item.beylogger.Beylogger;
 import ga.beycraft.common.capability.item.beylogger.BeyloggerStorage;
 import ga.beycraft.common.capability.item.beylogger.IBeylogger;
 import ga.beycraft.common.container.ModContainers;
-import ga.beycraft.common.item.*;
-import ga.beycraft.common.launch.LaunchType;
+import ga.beycraft.common.entity.BeybladeEntity;
+import ga.beycraft.common.entity.ModEntities;
+import ga.beycraft.common.item.BeyPartItem;
+import ga.beycraft.common.item.ModItems;
 import ga.beycraft.common.launch.LaunchTypes;
 import ga.beycraft.utils.CommonUtils;
 import ga.beycraft.utils.Config;
@@ -54,7 +54,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -65,7 +64,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegistryBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -247,7 +245,7 @@ public class Beycraft {
         @SubscribeEvent
         public void playerCapabilitiesInjection(final AttachCapabilitiesEvent<Entity> event) {
             if (event.getObject() instanceof PlayerEntity) {
-                event.addCapability(new ResourceLocation(MOD_ID, "blader"), new BladerCapabilityProvider());
+                event.addCapability(new ResourceLocation(MOD_ID, "blader"), new BladerCapabilityProvider((PlayerEntity) event.getObject()));
             }
         }
     }
