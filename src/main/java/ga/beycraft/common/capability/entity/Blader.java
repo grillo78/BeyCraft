@@ -12,7 +12,7 @@ import net.minecraft.nbt.INBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkDirection;
 
-public class Blader implements IBlader{
+public class Blader implements IBlader {
 
     private LaunchType launchType = LaunchTypes.BASIC_LAUNCH_TYPE;
     private PlayerEntity player;
@@ -20,7 +20,7 @@ public class Blader implements IBlader{
     @Override
     public void readNBT(CompoundNBT nbt) {
 
-        if(nbt.contains("launchType"))
+        if (nbt.contains("launchType") && LaunchType.LAUNCH_TYPES.getValue(new ResourceLocation(nbt.getString("launchType"))) != null)
             launchType = LaunchType.LAUNCH_TYPES.getValue(new ResourceLocation(nbt.getString("launchType")));
 
     }
@@ -36,9 +36,9 @@ public class Blader implements IBlader{
 
     @Override
     public void syncToAll() {
-        if(!player.level.isClientSide){
+        if (!player.level.isClientSide) {
             for (PlayerEntity playerAux : player.level.players()) {
-                PacketHandler.INSTANCE.sendTo(new MessageSyncBladerCap((CompoundNBT) writeNBT(), player.getId()),((ServerPlayerEntity)playerAux).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+                PacketHandler.INSTANCE.sendTo(new MessageSyncBladerCap((CompoundNBT) writeNBT(), player.getId()), ((ServerPlayerEntity) playerAux).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
             }
         } else {
             PacketHandler.INSTANCE.sendToServer(new MessageToServerSyncBladerCap((CompoundNBT) writeNBT()));
@@ -52,7 +52,8 @@ public class Blader implements IBlader{
 
     @Override
     public void setLaunchType(LaunchType launchType) {
-        this.launchType = launchType;
+        if (launchType != null)
+            this.launchType = launchType;
     }
 
     @Override

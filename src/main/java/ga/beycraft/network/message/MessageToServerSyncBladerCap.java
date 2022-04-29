@@ -1,7 +1,7 @@
 package ga.beycraft.network.message;
 
-import com.mrcrayfish.furniture.network.PacketHandler;
 import ga.beycraft.common.capability.entity.BladerCapabilityProvider;
+import ga.beycraft.network.PacketHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -39,7 +39,7 @@ public class MessageToServerSyncBladerCap implements IMessage<MessageToServerSyn
             player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(h->{
                 h.readNBT(message.nbt);
                 for (ServerPlayerEntity playerAux: supplier.get().getSender().getLevel().players()) {
-                    PacketHandler.instance.sendTo(new MessageSyncBladerCap(message.nbt,player.getId()),playerAux.connection.getConnection(),
+                    PacketHandler.INSTANCE.sendTo(new MessageSyncBladerCap(message.nbt,player.getId()),playerAux.connection.getConnection(),
                             NetworkDirection.PLAY_TO_CLIENT);
                 }
             });

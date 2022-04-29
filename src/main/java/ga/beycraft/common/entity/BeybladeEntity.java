@@ -5,6 +5,7 @@ import ga.beycraft.common.block.StadiumBlock;
 import ga.beycraft.common.item.BeyPartItem;
 import ga.beycraft.common.item.LayerItem;
 import ga.beycraft.common.launch.Launch;
+import ga.beycraft.common.launch.LaunchType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.CreatureEntity;
@@ -27,6 +28,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -211,13 +213,19 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
         super.readAdditionalSaveData(compound);
         beyblade = ItemStack.of(compound.getCompound("beyblade"));
         layer = ((LayerItem) beyblade.getItem());
-        launch = new Launch();
+        CompoundNBT launchCompound = compound.getCompound("launch");
+        launch = LaunchType.LAUNCH_TYPES.getValue(new ResourceLocation(launchCompound.getString("launchType"))).generateLaunch();
+        launch.deserializeNBT(launchCompound.getCompound("launchNBT"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
         compound.put("beyblade", beyblade.save(new CompoundNBT()));
+        CompoundNBT launchCompound = new CompoundNBT();
+        launchCompound.putString("launchType", launch.getLaunchType().getRegistryName().toString());
+        launchCompound.put("launchNBT",launch.serializeNBT());
+        compound.put("launch", launchCompound);
     }
 
     public static AttributeModifierMap.MutableAttribute registerMonsterAttributes() {

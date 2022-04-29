@@ -149,7 +149,7 @@ dependencies {
 
     compile fg.deobf('xyz.heroesunited:hu-core:2.5.38')
     shade 'ga.beycraft:RenderLib:1.0.0-pre7-test-2'
-    compile fg.deobf('curse.maven:furniture-55438:3346467')
+    runtimeOnly fg.deobf('curse.maven:furniture-55438:3346467')
 //    shade 'com.oneandone:composite-jks:1.0'
 
 }

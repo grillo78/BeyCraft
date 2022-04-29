@@ -26,6 +26,7 @@ import ga.beycraft.common.entity.ModEntities;
 import ga.beycraft.common.item.BeyPartItem;
 import ga.beycraft.common.item.ModItems;
 import ga.beycraft.common.launch.LaunchTypes;
+import ga.beycraft.network.PacketHandler;
 import ga.beycraft.utils.CommonUtils;
 import ga.beycraft.utils.Config;
 import net.minecraft.client.Minecraft;
@@ -154,6 +155,7 @@ public class Beycraft {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+        PacketHandler.init();
         CapabilityManager.INSTANCE.register(IBeylogger.class, new BeyloggerStorage(), Beylogger::new);
         CapabilityManager.INSTANCE.register(IBlader.class, new BladerStorage(), Blader::new);
     }

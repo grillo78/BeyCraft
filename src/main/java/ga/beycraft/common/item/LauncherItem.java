@@ -1,6 +1,7 @@
 package ga.beycraft.common.item;
 
 import ga.beycraft.client.item.LauncherRenderer;
+import ga.beycraft.common.capability.entity.BladerCapabilityProvider;
 import ga.beycraft.common.entity.BeybladeEntity;
 import ga.beycraft.common.capability.item.LauncherCapabilityProvider;
 import ga.beycraft.common.container.LauncherContainer;
@@ -91,8 +92,10 @@ public class LauncherItem extends Item {
                 stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
                     if (cap.getStackInSlot(0).getItem() instanceof LayerItem) {
                         ItemStack beybladeStack = cap.getStackInSlot(0);
-                        Launch launch = new Launch();
-                        launch.launchBeyblade(beybladeStack, level, player, hand);
+                        player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(blader->{
+                            Launch launch = blader.getLaunchType().generateLaunch();
+                            launch.launchBeyblade(beybladeStack, level, player, hand);
+                        });
                     }
                 });
             }

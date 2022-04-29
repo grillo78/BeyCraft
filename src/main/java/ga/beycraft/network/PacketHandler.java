@@ -3,6 +3,7 @@ package ga.beycraft.network;
 import ga.beycraft.Beycraft;
 import ga.beycraft.network.message.IMessage;
 import ga.beycraft.network.message.MessageSyncBladerCap;
+import ga.beycraft.network.message.MessageToServerSyncBladerCap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -27,6 +28,7 @@ public class PacketHandler {
 
         // Register packets
         register(MessageSyncBladerCap.class, new MessageSyncBladerCap());
+        register(MessageToServerSyncBladerCap.class, new MessageToServerSyncBladerCap());
     }
 
     /**
