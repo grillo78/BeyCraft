@@ -64,6 +64,10 @@ public class LayerItem extends BeyPartItem {
         this.thirdResonanceColor = thirdResonanceColor;
     }
 
+    public Color getResonanceColor() {
+        return resonanceColor;
+    }
+
     public int getSlotsAmount() {
         return 2;
     }
@@ -210,6 +214,16 @@ public class LayerItem extends BeyPartItem {
             }
         });
         return friction.get();
+    }
+
+    public double getSpeed(ItemStack beyblade) {
+        AtomicDouble speed = new AtomicDouble(1);
+        beyblade.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+            if (cap.getStackInSlot(1).getItem() instanceof DriverItem) {
+                speed.set(((DriverItem) cap.getStackInSlot(1).getItem()).getSpeed());
+            }
+        });
+        return speed.get();
     }
 
     public static class Color {

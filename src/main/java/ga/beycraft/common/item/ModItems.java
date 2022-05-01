@@ -167,6 +167,7 @@ public class ModItems {
                                 item = new DriverItem(file.getName().replace(".properties", ""), properties.getProperty("name"),
                                         Float.parseFloat(properties.getProperty("friction")),
                                         Float.parseFloat(properties.getProperty("radiusReduction")),
+                                        properties.containsKey("speed")?Float.parseFloat(properties.getProperty("speed")) + 5 : 10,
                                         getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
                                         getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
                                         properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);

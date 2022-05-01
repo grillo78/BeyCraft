@@ -9,11 +9,13 @@ public class DriverItem extends BeyPartItem{
 
     private float radiusReduction;
     private float friction;
+    private float speed;
 
-    public DriverItem(String name, String displayName, float friction, float radiusReduction, AbilityType primaryAbility, AbilityType secondaryAbility, BeyTypes type) {
+    public DriverItem(String name, String displayName, float friction, float radiusReduction, float speed, AbilityType primaryAbility, AbilityType secondaryAbility, BeyTypes type) {
         super(name, displayName, type, primaryAbility, secondaryAbility, BeycraftItemGroup.DRIVERS, new Properties().setISTER(()-> GenericPartRenderer::new));
         this.friction = friction;
         this.radiusReduction = radiusReduction;
+        this.speed = speed;
     }
 
     public float getRadiusReduction() {
@@ -22,5 +24,9 @@ public class DriverItem extends BeyPartItem{
 
     public float getFriction() {
         return friction;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 }
