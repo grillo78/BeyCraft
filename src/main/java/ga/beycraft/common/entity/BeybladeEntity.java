@@ -60,7 +60,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
         this(ModEntities.BEYBLADE, level);
         this.beyblade = beyblade;
         layer = ((LayerItem) beyblade.getItem());
-        AbilityHelper.setAttribute(this, "defense", Attributes.MAX_HEALTH, UUID.randomUUID(), (layer.getDefense(beyblade) + 1) * 200, AttributeModifier.Operation.ADDITION);
+        AbilityHelper.setAttribute(this, "defense", Attributes.MAX_HEALTH, UUID.randomUUID(), (layer.getDefense(beyblade) + 1) * 300 -(layer.getBurst(beyblade) + 1) * 20, AttributeModifier.Operation.ADDITION);
         AbilityHelper.setAttribute(this, "attack", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), (layer.getAttack(beyblade) + 1) * 33, AttributeModifier.Operation.ADDITION);
         setHealth(getMaxHealth());
         this.launch = launch;
@@ -127,19 +127,8 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     @Override
     protected void doPush(Entity entity) {
         if (!level.isClientSide && entity instanceof BeybladeEntity) {
-            double x = (getX() - entity.getX()) / 2;
-            double y = (getY() - entity.getY()) / 2;
-            double z = (getZ() - entity.getZ()) / 2;
-            if (random.nextInt(10) == 0) {
-                ((ServerWorld) level).sendParticles(ParticleTypes.SWEEP_ATTACK, getX(), getY(), getZ(), 1, x, y, z,
-                        1);
-                entity.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-
-                if (random.nextInt(10) == 0)
-                    this.hurt(DamageSource.mobAttack((BeybladeEntity) entity), (float) ((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE));
-            }
             setEnergy((float) (getEnergy()-((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE)/100));
-        } else {
+            launch.onAttack( this, (BeybladeEntity) entity);
             super.doPush(entity);
         }
     }

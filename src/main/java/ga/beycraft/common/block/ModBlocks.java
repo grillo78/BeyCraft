@@ -17,6 +17,7 @@ public class ModBlocks {
             Beycraft.MOD_ID);
 
     public static StadiumBlock STADIUM = register("stadium", new StadiumBlock(AbstractBlock.Properties.of(Material.METAL)));
+    public static BeycreatorBlock BEYCREATOR = register("beycreator", new BeycreatorBlock(AbstractBlock.Properties.of(Material.METAL)));
 
     private static <T extends Block> T register(String name, T block) {
         BLOCKS.register(name, () -> block);

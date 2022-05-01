@@ -226,6 +226,10 @@ public class LayerItem extends BeyPartItem {
         return speed.get();
     }
 
+    public double getBurst(ItemStack beyblade) {
+        return burst;
+    }
+
     public static class Color {
         private final float red;
         private final float green;

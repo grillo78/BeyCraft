@@ -5,14 +5,18 @@ import ga.beycraft.common.entity.BeybladeEntity;
 import ga.beycraft.common.item.LayerItem;
 import ga.beycraft.common.stats.CustomStats;
 import net.minecraft.command.arguments.EntityAnchorArgument;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import xyz.heroesunited.heroesunited.common.capabilities.HUPlayer;
 
 public class Launch {
@@ -52,7 +56,7 @@ public class Launch {
     }
 
     private Vector3d getOffset(PlayerEntity player) {
-        Vector3d offset = new Vector3d(0,0,0.5).yRot((float) Math.toRadians(player.yRot));
+        Vector3d offset = new Vector3d(0,0,1).yRot((float) Math.toRadians(player.yRot));
         return new Vector3d(0,1.5,0).add(-offset.x, offset.y, offset.z);
     }
 
@@ -62,11 +66,19 @@ public class Launch {
         Vector3d stadiumCenter = beyblade.findStadiumCenter();
         beyblade.lookAt(EntityAnchorArgument.Type.EYES, stadiumCenter);
         Vector3d distanceToCenter = stadiumCenter.add(beyblade.position().reverse());
-        double speed = layer.getSpeed(beyblade.getStack()) -5;
+        double speed = layer.getSpeed(beyblade.getStack());
         beyblade.setDeltaMovement(beyblade.getDeltaMovement().add(distanceToCenter
-                .multiply(0.025 * layer.getRadiusReduction(beyblade.getStack()), 0, 0.025 * layer.getRadiusReduction(beyblade.getStack())))
+                .multiply(getReduction() * layer.getRadiusReduction(beyblade.getStack()), 0, getReduction() * layer.getRadiusReduction(beyblade.getStack())))
                 .add(distanceToCenter
-                        .multiply(0.08*speed/8, 0, 0.08*speed/8).yRot((float) (Math.toRadians(-90) * dir))));
+                        .multiply(getSpeed()*speed/15, 0, getSpeed()*speed/15).yRot((float) (Math.toRadians(-90) * dir))));
+    }
+
+    protected double getSpeed(){
+        return 0.08;
+    }
+
+    protected double getReduction(){
+        return 0.025;
     }
 
     public CompoundNBT serializeNBT(){
@@ -92,4 +104,17 @@ public class Launch {
     public void deserializeNBT(CompoundNBT launchNBT) {
 
     }
+
+    public void onAttack(BeybladeEntity attacker, BeybladeEntity entity){
+        if (attacker.getRandom().nextInt(10) == 0) {
+            double x = (attacker.getX() - entity.getX()) / 2;
+            double y = (attacker.getY() - entity.getY()) / 2;
+            double z = (attacker.getZ() - entity.getZ()) / 2;
+            ((ServerWorld) attacker.level).sendParticles(ParticleTypes.SWEEP_ATTACK, attacker.getX(), attacker.getY(), attacker.getZ(), 1, x, y, z,
+                    1);
+            entity.hurt(DamageSource.mobAttack(attacker), (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE));
+
+            if (attacker.getRandom().nextInt(20) == 0)
+                attacker.hurt(DamageSource.mobAttack((BeybladeEntity) entity), (float) ((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE));
+        }}
 }
