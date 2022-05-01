@@ -26,6 +26,7 @@ import ga.beycraft.common.entity.ModEntities;
 import ga.beycraft.common.item.BeyPartItem;
 import ga.beycraft.common.item.ModItems;
 import ga.beycraft.common.launch.LaunchTypes;
+import ga.beycraft.common.stats.CustomStats;
 import ga.beycraft.network.PacketHandler;
 import ga.beycraft.utils.CommonUtils;
 import ga.beycraft.utils.Config;
@@ -135,7 +136,7 @@ public class Beycraft {
     }
 
     private void downloadDefaultPack() throws IOException {
-        if (Config.COMMON.downloadDefaultPack.get()) {
+        if (Config.PRE_SETUP.downloadDefaultPack) {
             BufferedInputStream in = new BufferedInputStream(new URL("https://beycraft.ga/Starter%20Pack.zip").openStream());
             File itemsFolder = new File("BeyParts");
             if (!itemsFolder.exists()) {
@@ -158,6 +159,7 @@ public class Beycraft {
         PacketHandler.init();
         CapabilityManager.INSTANCE.register(IBeylogger.class, new BeyloggerStorage(), Beylogger::new);
         CapabilityManager.INSTANCE.register(IBlader.class, new BladerStorage(), Blader::new);
+        CustomStats.init();
     }
 
     @OnlyIn(Dist.CLIENT)

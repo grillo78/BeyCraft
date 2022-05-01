@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 public class BeyloggerItem extends Item {
 
     public BeyloggerItem(Properties properties) {
-        super(properties.tab(BeycraftItemGroup.INSTANCE));
+        super(properties.tab(BeycraftItemGroup.INSTANCE).stacksTo(1));
     }
 
     @Nullable

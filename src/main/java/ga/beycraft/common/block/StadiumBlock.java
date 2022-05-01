@@ -3,6 +3,7 @@ package ga.beycraft.common.block;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import ga.beycraft.Beycraft;
+import ga.beycraft.common.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -19,10 +20,7 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.shapes.*;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -107,6 +105,15 @@ public class StadiumBlock extends Block implements IWaterLoggable {
                 return VoxelShapes.block();
         }
         return shape;
+    }
+
+    private boolean shouldUseAccurateCollisions(ISelectionContext context, BlockPos pos) {
+        return context instanceof EntitySelectionContext && context.getEntity() != null && context.getEntity().getY() == pos.getY();
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState p_220071_1_, IBlockReader p_220071_2_, BlockPos pos, ISelectionContext p_220071_4_) {
+        return shouldUseAccurateCollisions(p_220071_4_, pos)? VoxelShapes.block() : super.getCollisionShape(p_220071_1_, p_220071_2_, pos, p_220071_4_);
     }
 
     @Override
@@ -336,7 +343,7 @@ public class StadiumBlock extends Block implements IWaterLoggable {
         }
 
         public static VoxelShape getStadiumShape(float offsetX, float offsetZ){
-            return shape.move(offsetX,0,offsetZ);
+            return shape.move(offsetX,-0.05,offsetZ);
         }
     }
     public enum EnumPartType implements IStringSerializable {

@@ -8,6 +8,7 @@ import ga.beycraft.common.launch.Launch;
 import ga.beycraft.common.launch.LaunchType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -53,6 +54,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     private static final DataParameter<Boolean> STOPPED = EntityDataManager.defineId(BeybladeEntity.class, DataSerializers.BOOLEAN);
     private LayerItem layer;
     private Launch launch;
+    private Vector3d[] points = new Vector3d[10];
 
     public BeybladeEntity(World level, ItemStack beyblade, Launch launch) {
         this(ModEntities.BEYBLADE, level);
@@ -97,7 +99,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
                 if ((level.getBlockState(pos).getBlock() != ModBlocks.STADIUM && level.getBlockState(pos).getBlock() != Blocks.AIR) || getEnergy() < 0)
                     setStopped(true);
                 if (!isStopped() && onGround) {
-                    setEnergy((float) (getEnergy()- 0.0001 * layer.getFriction(beyblade)));
+                    setEnergy((float) (getEnergy()- 0.01 * layer.getFriction(beyblade)));
                     launch.moveBeyblade(this);
                 }
             } else
@@ -117,7 +119,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(ENERGY, 1f);
+        this.entityData.define(ENERGY, 100f);
         this.entityData.define(STOPPED, false);
         super.defineSynchedData();
     }
@@ -128,12 +130,15 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
             double x = (getX() - entity.getX()) / 2;
             double y = (getY() - entity.getY()) / 2;
             double z = (getZ() - entity.getZ()) / 2;
-            if (random.nextInt(5) == 0) {
+            if (random.nextInt(10) == 0) {
                 ((ServerWorld) level).sendParticles(ParticleTypes.SWEEP_ATTACK, getX(), getY(), getZ(), 1, x, y, z,
                         1);
                 entity.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                this.hurt(DamageSource.mobAttack((BeybladeEntity) entity), (float) ((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE));
+
+                if (random.nextInt(10) == 0)
+                    this.hurt(DamageSource.mobAttack((BeybladeEntity) entity), (float) ((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE));
             }
+            setEnergy((float) (getEnergy()-((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE)/100));
         } else {
             super.doPush(entity);
         }
@@ -170,6 +175,28 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
         this.spinAngleO = this.spinAngle;
         if (!isStopped()) {
             this.spinAngle += ((LayerItem) beyblade.getItem()).getRotationDirection(beyblade).getValue() * 30;
+        }
+        if(onGround)
+            updatePoints(this);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public Vector3d[] getPoints() {
+        return points;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void updatePoints(BeybladeEntity entity) {
+        for (int i = 0; i < points.length; i++) {
+            if (points[i] != null) {
+                if (i != points.length - 1) {
+                    points[i] = points[i + 1];
+                } else {
+                    points[i] = entity.getPosition(Minecraft.getInstance().getFrameTime());
+                }
+            } else {
+                points[i] = entity.position();
+            }
         }
     }
 

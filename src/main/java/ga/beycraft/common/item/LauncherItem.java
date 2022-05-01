@@ -33,7 +33,7 @@ public class LauncherItem extends Item {
     private Direction direction;
 
     public LauncherItem(Properties properties, Direction direction) {
-        super(properties.tab(BeycraftItemGroup.INSTANCE).setISTER(() -> LauncherRenderer::new));
+        super(properties.tab(BeycraftItemGroup.INSTANCE).setISTER(() -> LauncherRenderer::new).stacksTo(1));
         this.direction = direction;
     }
 

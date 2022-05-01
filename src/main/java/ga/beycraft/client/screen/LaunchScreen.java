@@ -1,5 +1,6 @@
 package ga.beycraft.client.screen;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import ga.beycraft.Beycraft;
@@ -9,11 +10,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class LaunchScreen extends Screen {
 
@@ -39,7 +43,7 @@ public class LaunchScreen extends Screen {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
+        this.renderBackground(matrixStack, -1);
         for (Widget widget : buttons) {
             if (widget instanceof LaunchButton) {
                 LaunchButton button = (LaunchButton) widget;
@@ -86,6 +90,15 @@ public class LaunchScreen extends Screen {
                     blader.setLaunchType(((LaunchButton) button).launch);
                     blader.syncToAll();
                 });
+            }, (p_238659_1_, p_238659_2_, p_238659_3_, p_238659_4_) -> {
+                if (p_238659_1_.active) {
+                    List<IReorderingProcessor> lines = new ArrayList<>();
+                    lines.addAll(screen.minecraft.font.split(new TranslationTextComponent("button." + launch.getRegistryName().getPath() + ".name"), Math.max(screen.width / 2 - 43, 170)));
+                    lines.addAll(screen.minecraft.font.split(new TranslationTextComponent("button."+launch.getRegistryName().getPath()+".description"), Math.max(screen.width / 2 - 43, 170)));
+                    lines.addAll(screen.minecraft.font.split(new TranslationTextComponent("button."+launch.getRegistryName().getPath()+".requirements"), Math.max(screen.width / 2 - 43, 170)));
+                    screen.renderTooltip(p_238659_2_, lines, p_238659_3_, p_238659_4_);
+                }
+
             });
             this.launch = launch;
             launchTexture = new ResourceLocation(launch.getRegistryName().getNamespace(), "textures/gui/launch/" + launch.getRegistryName().getPath() + ".png");

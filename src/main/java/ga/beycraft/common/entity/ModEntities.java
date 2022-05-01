@@ -10,7 +10,7 @@ public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Beycraft.MOD_ID);
 
     public static final EntityType<BeybladeEntity> BEYBLADE = register("beyblade", EntityType.Builder
-            .<BeybladeEntity>of(BeybladeEntity::new, EntityClassification.MONSTER).sized(0.1F, 0.1F)
+            .<BeybladeEntity>of(BeybladeEntity::new, EntityClassification.MONSTER).sized(0.15F, 0.15F)
             .build(Beycraft.MOD_ID + ":beyblade"));
 
     private static <T extends EntityType<?>> T register(String name, T containerType) {
