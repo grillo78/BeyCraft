@@ -127,7 +127,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     @Override
     protected void doPush(Entity entity) {
         if (!level.isClientSide && entity instanceof BeybladeEntity) {
-            setEnergy((float) (getEnergy()-((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE)/100));
+            setEnergy((float) (getEnergy()-((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE)/10));
             launch.onAttack( this, (BeybladeEntity) entity);
             super.doPush(entity);
         }
