@@ -115,6 +115,6 @@ public class Launch {
             entity.hurt(DamageSource.mobAttack(attacker), (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE));
 
             if (attacker.getRandom().nextInt(20) == 0)
-                attacker.hurt(DamageSource.mobAttack((BeybladeEntity) entity), (float) ((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE));
+                attacker.hurt(DamageSource.mobAttack(entity), (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE));
         }}
 }
