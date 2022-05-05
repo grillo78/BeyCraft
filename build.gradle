@@ -118,6 +118,7 @@ repositories {
     maven { url 'https://maven.hypherionmc.me/releases' }
     maven { url 'https://maven.explodingcreeper.me/' }
     maven { url "https://www.cursemaven.com" }
+    maven { url 'https://maven.blamejared.com' }
     mavenCentral()
     flatDir {
         dirs 'libs'
@@ -150,6 +151,8 @@ dependencies {
     compile fg.deobf('xyz.heroesunited:hu-core:2.5.38')
     shade 'ga.beycraft:RenderLib:1.0.0-pre7-test-2'
     runtimeOnly fg.deobf('curse.maven:furniture-55438:3346467')
+    compile fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.2")
+//    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.2")
 //    shade 'com.oneandone:composite-jks:1.0'
 
 }

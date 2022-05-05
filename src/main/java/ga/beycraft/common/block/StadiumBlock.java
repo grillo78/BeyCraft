@@ -291,7 +291,7 @@ public class StadiumBlock extends Block implements IWaterLoggable {
     }
 
     private void setVoxelShapes() {
-        Beycraft.LOGGER.info("Starting to processing Stadium collisions");
+        Beycraft.LOGGER.info("Starting to processing stadium.json collisions");
         VoxelShapesUtil.init();
         voxelShape1 = VoxelShapesUtil.getStadiumShape(-1, 1);
         voxelShape2 = VoxelShapesUtil.getStadiumShape(-1, 0);
@@ -302,7 +302,7 @@ public class StadiumBlock extends Block implements IWaterLoggable {
         voxelShape7 = VoxelShapesUtil.getStadiumShape(1, 1);
         voxelShape8 = VoxelShapesUtil.getStadiumShape(1, 0);
         voxelShape9 = VoxelShapesUtil.getStadiumShape(1, -1);
-        Beycraft.LOGGER.info("Finished processing of Stadium collisions");
+        Beycraft.LOGGER.info("Finished processing of stadium.json collisions");
     }
 
     private boolean canReplace(IWorldReader world, BlockPos pos) {

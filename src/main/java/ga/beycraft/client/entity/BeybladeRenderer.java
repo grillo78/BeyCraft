@@ -16,6 +16,7 @@ import ga.beycraft.client.util.CustomRenderType;
 import ga.beycraft.common.entity.BeybladeEntity;
 import ga.beycraft.common.item.LayerItem;
 import ga.beycraft.common.item.ModItems;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -32,7 +33,6 @@ import java.util.List;
 public class BeybladeRenderer extends EntityRenderer<BeybladeEntity> {
 
     public static final List<Runnable> RUNNABLES = Lists.newArrayList();
-    public final List<RenderObject> childs = Lists.newArrayList();
     private RenderLayer layer = RenderManager.addRenderLayer(ViewBoxes.ALWAYS);
 
     public BeybladeRenderer(EntityRendererManager p_i46179_1_) {
@@ -48,6 +48,9 @@ public class BeybladeRenderer extends EntityRenderer<BeybladeEntity> {
     public void render(BeybladeEntity beyblade, float entityYaw, float partialTicks, MatrixStack matrixStack,
                        IRenderTypeBuffer bufferIn, int packedLightIn) {
         if (beyblade.isAlive()) {
+
+            if (!beyblade.isStopped() && beyblade.getLaunch() != null && !Minecraft.getInstance().isPaused())
+                    beyblade.getLaunch().renderTick(beyblade);
 
             matrixStack.pushPose();
             net.minecraft.util.math.vector.Matrix4f matrix4f1 = matrixStack.last().pose();

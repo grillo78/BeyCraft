@@ -8,6 +8,7 @@ import friedrichlp.renderlib.tracking.RenderLayer;
 import friedrichlp.renderlib.tracking.RenderManager;
 import friedrichlp.renderlib.tracking.RenderObject;
 import ga.beycraft.BeyTypes;
+import ga.beycraft.Beycraft;
 import ga.beycraft.ability.AbilityType;
 import ga.beycraft.client.item.LayerRenderer;
 import ga.beycraft.common.capability.item.parts.BeyCapabilityProvider;
@@ -26,6 +27,7 @@ import net.minecraft.nbt.INBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
@@ -62,6 +64,10 @@ public class LayerItem extends BeyPartItem {
         this.resonanceColor = resonanceColor;
         this.secondResonanceColor = secondResonanceColor;
         this.thirdResonanceColor = thirdResonanceColor;
+    }
+
+    public ResourceLocation getBookCategory() {
+        return new ResourceLocation(Beycraft.MOD_ID, "layers");
     }
 
     public Color getResonanceColor() {

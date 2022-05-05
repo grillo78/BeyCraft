@@ -5,7 +5,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import friedrichlp.renderlib.RenderLibSettings;
 import friedrichlp.renderlib.math.Vector3;
 import friedrichlp.renderlib.tracking.RenderManager;
+import ga.beycraft.client.block.BeycreatorRenderer;
 import ga.beycraft.client.entity.BeybladeRenderer;
+import ga.beycraft.client.particle.SparkleParticle;
 import ga.beycraft.client.screen.DiscFrameScreen;
 import ga.beycraft.client.screen.LaunchScreen;
 import ga.beycraft.client.screen.LauncherScreen;
@@ -13,6 +15,7 @@ import ga.beycraft.client.screen.LayerScreen;
 import ga.beycraft.client.util.BeyPartModel;
 import ga.beycraft.client.util.KeyBinds;
 import ga.beycraft.common.block.ModBlocks;
+import ga.beycraft.common.block_entity.ModTileEntities;
 import ga.beycraft.common.capability.entity.Blader;
 import ga.beycraft.common.capability.entity.BladerCapabilityProvider;
 import ga.beycraft.common.capability.entity.BladerStorage;
@@ -26,6 +29,7 @@ import ga.beycraft.common.entity.ModEntities;
 import ga.beycraft.common.item.BeyPartItem;
 import ga.beycraft.common.item.ModItems;
 import ga.beycraft.common.launch.LaunchTypes;
+import ga.beycraft.common.particle.ModParticles;
 import ga.beycraft.common.stats.CustomStats;
 import ga.beycraft.network.PacketHandler;
 import ga.beycraft.utils.CommonUtils;
@@ -70,6 +74,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
+import vazkii.patchouli.api.BookContentsReloadEvent;
+import vazkii.patchouli.client.book.BookCategory;
+import vazkii.patchouli.client.book.BookContents;
+import vazkii.patchouli.client.book.BookEntry;
+import vazkii.patchouli.client.book.ClientBookRegistry;
+import vazkii.patchouli.common.book.Book;
+import vazkii.patchouli.common.book.BookRegistry;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -90,6 +101,7 @@ public class Beycraft {
         FMLJavaModLoadingContext.get().getModEventBus().register(new SpecialEvents());
         MinecraftForge.EVENT_BUS.register(new SpecialRuntimeEvents());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        MinecraftForge.EVENT_BUS.addListener(this::onBookReload);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             try {
                 URL url = new URL("http://www.google.com");
@@ -114,6 +126,7 @@ public class Beycraft {
             RenderLibSettings.General.MODEL_UNLOAD_DELAY_MS = Integer.MAX_VALUE;
 //            RenderLibSettings.Caching.CHECK_CACHE = false;
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onParticleFactoriesRegistry);
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onModelBake);
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerModel);
             MinecraftForge.EVENT_BUS.addListener(this::onRenderWorld);
@@ -132,6 +145,8 @@ public class Beycraft {
         ModBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModContainers.CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModEntities.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ModTileEntities.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ModParticles.PARTICLES.register(FMLJavaModLoadingContext.get().getModEventBus());
         LaunchTypes.LAUNCH_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
@@ -155,11 +170,30 @@ public class Beycraft {
         }
     }
 
+    private void onBookReload(BookContentsReloadEvent event) {
+        Book book = BookRegistry.INSTANCE.books.get(event.book);
+        for (BeyPartItem item : BeyPartItem.getParts()) {
+            BookEntry entry = ClientBookRegistry.INSTANCE.gson.fromJson(item.getEntryJson(), BookEntry.class);
+            entry.setBook(book);
+            BookCategory category = entry.getCategory();
+            if (category != null) {
+                category.addEntry(entry);
+            }
+            entry.setId(item.getRegistryName());
+            entry.build();
+        }
+    }
+
     private void setup(final FMLCommonSetupEvent event) {
         PacketHandler.init();
         CapabilityManager.INSTANCE.register(IBeylogger.class, new BeyloggerStorage(), Beylogger::new);
         CapabilityManager.INSTANCE.register(IBlader.class, new BladerStorage(), Blader::new);
         CustomStats.init();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void onParticleFactoriesRegistry(final ParticleFactoryRegisterEvent event) {
+        Minecraft.getInstance().particleEngine.register(ModParticles.SPARKLE, SparkleParticle.Factory::new);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -178,8 +212,12 @@ public class Beycraft {
         for (Runnable runnable : BeybladeRenderer.RUNNABLES) {
             runnable.run();
         }
+        for (Runnable runnable : BeycreatorRenderer.RUNNABLES) {
+            runnable.run();
+        }
         BeyPartModel.WORLD_MODELS.clear();
         BeybladeRenderer.RUNNABLES.clear();
+        BeycreatorRenderer.RUNNABLES.clear();
         RenderSystem.disableBlend();
         RenderSystem.defaultBlendFunc();
     }
@@ -223,6 +261,7 @@ public class Beycraft {
 
     @OnlyIn(Dist.CLIENT)
     private void doClientStuff(FMLClientSetupEvent event) {
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.BEYCREATOR, BeycreatorRenderer::new);
         ClientRegistry.registerKeyBinding(KeyBinds.LAUNCH_SCREEN);
         RenderTypeLookup.setRenderLayer(ModBlocks.STADIUM, RenderType.cutoutMipped());
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.BEYBLADE, BeybladeRenderer::new);

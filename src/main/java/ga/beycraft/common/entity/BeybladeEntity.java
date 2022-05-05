@@ -25,7 +25,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -33,7 +32,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
@@ -74,12 +72,20 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
         buffer.writeItemStack(beyblade, true);
+        CompoundNBT launchCompound = new CompoundNBT();
+        launchCompound.putString("launchType", launch.getLaunchType().getRegistryName().toString());
+        launchCompound.put("launchNBT",launch.serializeNBT());
+        buffer.writeNbt(launchCompound);
     }
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
         beyblade = additionalData.readItem();
         layer = ((LayerItem) beyblade.getItem());
+
+        CompoundNBT launchCompound = additionalData.readAnySizeNbt();
+        launch = LaunchType.LAUNCH_TYPES.getValue(new ResourceLocation(launchCompound.getString("launchType"))).generateLaunch();
+        launch.deserializeNBT(launchCompound.getCompound("launchNBT"));
     }
 
     @Override
@@ -167,6 +173,10 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
         }
         if(onGround)
             updatePoints(this);
+    }
+
+    public Launch getLaunch() {
+        return launch;
     }
 
     @OnlyIn(Dist.CLIENT)

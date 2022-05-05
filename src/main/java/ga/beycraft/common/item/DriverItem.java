@@ -1,9 +1,11 @@
 package ga.beycraft.common.item;
 
 import ga.beycraft.BeyTypes;
+import ga.beycraft.Beycraft;
 import ga.beycraft.ability.AbilityType;
 import ga.beycraft.client.item.GenericPartRenderer;
 import ga.beycraft.common.tab.BeycraftItemGroup;
+import net.minecraft.util.ResourceLocation;
 
 public class DriverItem extends BeyPartItem{
 
@@ -16,6 +18,10 @@ public class DriverItem extends BeyPartItem{
         this.friction = friction;
         this.radiusReduction = radiusReduction;
         this.speed = speed;
+    }
+
+    public ResourceLocation getBookCategory() {
+        return new ResourceLocation(Beycraft.MOD_ID, "drivers");
     }
 
     public float getRadiusReduction() {

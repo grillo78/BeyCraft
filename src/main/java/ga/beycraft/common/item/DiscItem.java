@@ -1,10 +1,14 @@
 package ga.beycraft.common.item;
 
 import ga.beycraft.BeyTypes;
+import ga.beycraft.Beycraft;
 import ga.beycraft.ability.AbilityType;
 import ga.beycraft.client.item.GenericPartRenderer;
 import ga.beycraft.common.tab.BeycraftItemGroup;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.ResourceLocation;
 
 public class DiscItem extends BeyPartItem{
 
@@ -19,6 +23,10 @@ public class DiscItem extends BeyPartItem{
         this.weight = weight;
     }
 
+    public ResourceLocation getBookCategory() {
+        return new ResourceLocation(Beycraft.MOD_ID, "discs");
+    }
+
     public float getAttack(ItemStack disc) {
         return attack;
     }
@@ -29,5 +37,10 @@ public class DiscItem extends BeyPartItem{
 
     public float getWeight(ItemStack disc) {
         return weight;
+    }
+
+    @Override
+    public boolean canBeCrafted(Item item) {
+        return item == Items.IRON_INGOT;
     }
 }

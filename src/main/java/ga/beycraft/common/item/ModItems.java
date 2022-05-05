@@ -64,6 +64,10 @@ public class ModItems {
     public static final AccessoryItem BARUTO_GLOVES_CHO_Z = register( "baruto_gloves_cho_z",
             new AccessoryItem(EquipmentAccessoriesSlot.GLOVES));
 
+    //Utils
+    public static final Item PLASTIC = register("plastic", new Item(new Item.Properties().tab(BeycraftItemGroup.INSTANCE)));
+    public static final Item BEYPAD = register("beypad", new Item(new Item.Properties()));
+
     static {
         ItemCreator.getItemsFromFolder();
     }

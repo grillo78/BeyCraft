@@ -1,9 +1,15 @@
 package ga.beycraft.common.item;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import ga.beycraft.BeyTypes;
+import ga.beycraft.Beycraft;
 import ga.beycraft.ability.AbilityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,5 +44,33 @@ public class BeyPartItem extends Item {
 
     public boolean canDropOnBurst() {
         return true;
+    }
+
+    public boolean canBeCrafted(Item item) {
+        return item == ModItems.PLASTIC;
+    }
+
+    public ResourceLocation getBookCategory() {
+        return new ResourceLocation(Beycraft.MOD_ID, "layers");
+    }
+
+    public JsonElement getEntryJson() {
+
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.add("name", new JsonPrimitive(name));
+        jsonObject.add("icon", new JsonPrimitive(getRegistryName().toString()));
+        jsonObject.add("category", new JsonPrimitive(getBookCategory().toString()));
+
+        JsonArray pages = new JsonArray();
+
+        JsonObject itemPage = new JsonObject();
+        itemPage.add("type", new JsonPrimitive(Beycraft.MOD_ID+":big_item"));
+        itemPage.add("item", new JsonPrimitive(getRegistryName().toString()));
+        pages.add(itemPage);
+
+        jsonObject.add("pages", pages);
+
+        return jsonObject;
     }
 }

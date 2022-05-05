@@ -2,8 +2,12 @@ package ga.beycraft.common.launch;
 
 import ga.beycraft.common.entity.BeybladeEntity;
 import ga.beycraft.common.item.LayerItem;
+import ga.beycraft.common.particle.ModParticles;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FlashLaunch extends Launch {
 
@@ -38,7 +42,9 @@ public class FlashLaunch extends Launch {
                     } else {
                         hasAttacked = false;
                     }
-                } else
+                } else if (distance < 0.2)
+                    hasAttacked = true;
+                else
                     beyblade.setDeltaMovement(beyblade.getDeltaMovement().add(distanceToCenter
                             .multiply(0.5 * layer.getRadiusReduction(beyblade.getStack()), 0, 0.5 * layer.getRadiusReduction(beyblade.getStack())))
                             .add(distanceToCenter
@@ -51,9 +57,24 @@ public class FlashLaunch extends Launch {
     public void onAttack(BeybladeEntity attacker, BeybladeEntity entity) {
         Vector3d stadiumCenter = attacker.findStadiumCenter();
         Vector3d distanceToCenter = stadiumCenter.add(attacker.position().reverse());
-        entity.setDeltaMovement(distanceToCenter.multiply(3*distanceToCenter.length(), 0, 3*distanceToCenter.length()));
+        entity.setDeltaMovement(distanceToCenter.multiply(3 * distanceToCenter.length(), 0, 3 * distanceToCenter.length()));
         if (!hasAttacked) {
             this.hasAttacked = true;
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void renderTick(BeybladeEntity beyblade) {
+        super.renderTick(beyblade);
+        if(beyblade.isOnGround()){
+            Vector3d stadiumCenter = beyblade.findStadiumCenter();
+            Vector3d distanceToCenter = stadiumCenter.add(beyblade.position().reverse());
+            Vector3d movement = distanceToCenter.multiply(0.1, 0.1, 0.1).yRot(90);
+            Vector3d position = beyblade.getPosition(Minecraft.getInstance().getFrameTime()).add(0, 0.01, 0);
+            for (int i = 0; i < 25; i++) {
+                beyblade.level.addParticle(ModParticles.SPARKLE, position.x, position.y, position.z, movement.x, movement.y, movement.z);
+            }
         }
     }
 

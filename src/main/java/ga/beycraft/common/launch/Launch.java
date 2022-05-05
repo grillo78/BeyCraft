@@ -17,6 +17,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import xyz.heroesunited.heroesunited.common.capabilities.HUPlayer;
 
 public class Launch {
@@ -117,4 +119,9 @@ public class Launch {
             if (attacker.getRandom().nextInt(20) == 0)
                 attacker.hurt(DamageSource.mobAttack(entity), (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE));
         }}
+
+    @OnlyIn(Dist.CLIENT)
+    public void renderTick(BeybladeEntity beyblade) {
+
+    }
 }
