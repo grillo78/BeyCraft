@@ -8,10 +8,7 @@ import friedrichlp.renderlib.tracking.RenderManager;
 import ga.beycraft.client.block.BeycreatorRenderer;
 import ga.beycraft.client.entity.BeybladeRenderer;
 import ga.beycraft.client.particle.SparkleParticle;
-import ga.beycraft.client.screen.DiscFrameScreen;
-import ga.beycraft.client.screen.LaunchScreen;
-import ga.beycraft.client.screen.LauncherScreen;
-import ga.beycraft.client.screen.LayerScreen;
+import ga.beycraft.client.screen.*;
 import ga.beycraft.client.util.BeyPartModel;
 import ga.beycraft.client.util.KeyBinds;
 import ga.beycraft.common.block.ModBlocks;
@@ -32,10 +29,12 @@ import ga.beycraft.common.launch.LaunchTypes;
 import ga.beycraft.common.particle.ModParticles;
 import ga.beycraft.common.stats.CustomStats;
 import ga.beycraft.network.PacketHandler;
+import ga.beycraft.utils.ClientUtils;
 import ga.beycraft.utils.CommonUtils;
 import ga.beycraft.utils.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.BuiltInModel;
@@ -51,6 +50,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -81,6 +81,8 @@ import vazkii.patchouli.client.book.BookEntry;
 import vazkii.patchouli.client.book.ClientBookRegistry;
 import vazkii.patchouli.common.book.Book;
 import vazkii.patchouli.common.book.BookRegistry;
+import xyz.heroesunited.heroesunited.client.render.model.space.SunModel;
+import xyz.heroesunited.heroesunited.mixin.client.AccessorModelBakery;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -95,6 +97,7 @@ public class Beycraft {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "beycraft";
     public static boolean HAS_INTERNET = true;
+    private boolean firstScreenMenuOpen=true;
 
     public Beycraft() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
@@ -132,6 +135,7 @@ public class Beycraft {
             MinecraftForge.EVENT_BUS.addListener(this::onRenderWorld);
             MinecraftForge.EVENT_BUS.addListener(this::renderHand);
             MinecraftForge.EVENT_BUS.addListener(this::onKeyPressed);
+            MinecraftForge.EVENT_BUS.addListener(this::onScreenOpen);
         });
         if (HAS_INTERNET) {
             try {
@@ -181,6 +185,7 @@ public class Beycraft {
             }
             entry.setId(item.getRegistryName());
             entry.build();
+            book.contents.entries.put(entry.getId(), entry);
         }
     }
 
@@ -194,6 +199,25 @@ public class Beycraft {
     @OnlyIn(Dist.CLIENT)
     private void onParticleFactoriesRegistry(final ParticleFactoryRegisterEvent event) {
         Minecraft.getInstance().particleEngine.register(ModParticles.SPARKLE, SparkleParticle.Factory::new);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void onScreenOpen(final GuiOpenEvent event) {
+        if (event.getGui() instanceof MainMenuScreen && firstScreenMenuOpen) {
+            firstScreenMenuOpen = false;
+            try {
+                ClientUtils.setDiscordRPC();
+            } catch (Exception e) {
+                LOGGER.error("Error during Discord RPC start");
+            }
+            if (!HAS_INTERNET) {
+                event.setCanceled(true);
+                Minecraft.getInstance()
+                        .setScreen(new NoInternetConnectionScreen(new StringTextComponent("")));
+            } else try {
+                ClientUtils.RankingUtils.checkLogin(event);
+            } catch (Exception e){}
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

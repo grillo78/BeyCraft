@@ -67,6 +67,7 @@ public class BeyPartItem extends Item {
         JsonObject itemPage = new JsonObject();
         itemPage.add("type", new JsonPrimitive(Beycraft.MOD_ID+":big_item"));
         itemPage.add("item", new JsonPrimitive(getRegistryName().toString()));
+        itemPage.add("title", new JsonPrimitive(name));
         pages.add(itemPage);
 
         jsonObject.add("pages", pages);

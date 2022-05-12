@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -118,7 +119,8 @@ public class LaunchScreen extends Screen {
             RenderSystem.enableDepthTest();
             this.blit(p_230431_1_, this.x, this.y, 0, 0 + i, this.width, this.height);
             minecraft.getTextureManager().bind(launchTexture);
-            this.blit(p_230431_1_, this.x + 4, this.y + 4, 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
+            TextureAtlasSprite sprite = launch.getRenderMaterial().sprite();
+            this.blit(p_230431_1_, this.x + 4, this.y + 4, 0, iconHeight*2, iconWidth, iconHeight, iconWidth, iconHeight*3);
             this.renderBg(p_230431_1_, minecraft, p_230431_2_, p_230431_3_);
             if (this.isHovered)
                 this.renderToolTip(p_230431_1_, p_230431_2_, p_230431_3_);

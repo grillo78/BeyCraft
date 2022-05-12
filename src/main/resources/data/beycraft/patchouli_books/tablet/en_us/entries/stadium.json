@@ -1,0 +1,12 @@
+{
+  "name": "Stadium",
+  "icon": "beycraft:stadium",
+  "category": "beycraft:blocks",
+  "pages": [
+    {
+      "type": "beycraft:big_item",
+      "title": "Stadium",
+      "item": "beycraft:stadium"
+    }
+  ]
+}

@@ -72,26 +72,22 @@ public class GenericPartRenderer extends ItemStackTileEntityRenderer {
                 Item frameItem = cap.getStackInSlot(0).getItem();
                 if (ModItems.ItemCreator.MODELS.containsKey(frameItem) && stack.getItem() instanceof DiscFrameItem) {
                     RenderObject sceneFrame = finalModel.addChild(ModItems.ItemCreator.MODELS.get(frameItem));
-                    sceneFrame.transform.rotate(0,((DiscFrameItem)stack.getItem()).getFrameRotation(),0);
+                    sceneFrame.transform.rotate(0, ((DiscFrameItem) stack.getItem()).getFrameRotation(), 0);
                 }
             });
         } else {
-            GL11.glRotatef(50, 1, 0, 0);
+            GL11.glRotatef(20, 1, 0, 0);
             GL11.glTranslated(0, -0.5, 0);
             GL11.glScaled(2, 2, 2);
-            vector4f = new Vector4f(0, 0, 0, 16);
-            vector4f.transform(matrix);
-            pos = cameraPos.add(vector4f.x(), vector4f.y(), vector4f.z());
 
-            RenderSystem.enableBlend();
-            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-
+//            RenderSystem.enableBlend();
+//            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             sceneLayer.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
             sceneLayer.forceTransformUpdate();
             RenderManager.render(layer, RenderMode.USE_FFP_MATS);
             sceneLayer.remove();
-            RenderSystem.disableBlend();
-            RenderSystem.defaultBlendFunc();
+//            RenderSystem.disableBlend();
+//            RenderSystem.defaultBlendFunc();
         }
         matrixStack.popPose();
     }
