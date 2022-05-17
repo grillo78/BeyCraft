@@ -2,6 +2,7 @@ package ga.beycraft.network;
 
 import ga.beycraft.Beycraft;
 import ga.beycraft.network.message.IMessage;
+import ga.beycraft.network.message.MessageGetExperience;
 import ga.beycraft.network.message.MessageSyncBladerCap;
 import ga.beycraft.network.message.MessageToServerSyncBladerCap;
 import net.minecraft.util.ResourceLocation;
@@ -29,6 +30,7 @@ public class PacketHandler {
         // Register packets
         register(MessageSyncBladerCap.class, new MessageSyncBladerCap());
         register(MessageToServerSyncBladerCap.class, new MessageToServerSyncBladerCap());
+        register(MessageGetExperience.class, new MessageGetExperience());
     }
 
     /**

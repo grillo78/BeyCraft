@@ -16,13 +16,15 @@ public class Blader implements IBlader {
 
     private LaunchType launchType = LaunchTypes.BASIC_LAUNCH_TYPE;
     private PlayerEntity player;
+    private Level bladerLevel = new Level();
 
     @Override
     public void readNBT(CompoundNBT nbt) {
 
         if (nbt.contains("launchType") && LaunchType.LAUNCH_TYPES.getValue(new ResourceLocation(nbt.getString("launchType"))) != null)
             launchType = LaunchType.LAUNCH_TYPES.getValue(new ResourceLocation(nbt.getString("launchType")));
-
+        if (nbt.contains("bladerLevel"))
+            bladerLevel = Level.readFromNBT(nbt.getCompound("bladerLevel"));
     }
 
     @Override
@@ -30,7 +32,7 @@ public class Blader implements IBlader {
         CompoundNBT compoundNBT = new CompoundNBT();
 
         compoundNBT.putString("launchType", launchType.getRegistryName().toString());
-
+        compoundNBT.put("bladerLevel", bladerLevel.writeNBT());
         return compoundNBT;
     }
 
@@ -59,5 +61,10 @@ public class Blader implements IBlader {
     @Override
     public void setPlayer(PlayerEntity player) {
         this.player = player;
+    }
+
+    @Override
+    public Level getBladerLevel() {
+        return this.bladerLevel;
     }
 }

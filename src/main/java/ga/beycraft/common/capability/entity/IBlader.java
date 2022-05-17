@@ -17,4 +17,6 @@ public interface IBlader {
     LaunchType getLaunchType();
 
     void setPlayer(PlayerEntity player);
+
+    Level getBladerLevel();
 }

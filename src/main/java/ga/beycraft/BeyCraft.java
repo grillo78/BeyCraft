@@ -13,10 +13,7 @@ import ga.beycraft.client.util.BeyPartModel;
 import ga.beycraft.client.util.KeyBinds;
 import ga.beycraft.common.block.ModBlocks;
 import ga.beycraft.common.block_entity.ModTileEntities;
-import ga.beycraft.common.capability.entity.Blader;
-import ga.beycraft.common.capability.entity.BladerCapabilityProvider;
-import ga.beycraft.common.capability.entity.BladerStorage;
-import ga.beycraft.common.capability.entity.IBlader;
+import ga.beycraft.common.capability.entity.*;
 import ga.beycraft.common.capability.item.beylogger.Beylogger;
 import ga.beycraft.common.capability.item.beylogger.BeyloggerStorage;
 import ga.beycraft.common.capability.item.beylogger.IBeylogger;
@@ -29,10 +26,12 @@ import ga.beycraft.common.launch.LaunchTypes;
 import ga.beycraft.common.particle.ModParticles;
 import ga.beycraft.common.stats.CustomStats;
 import ga.beycraft.network.PacketHandler;
+import ga.beycraft.network.message.MessageGetExperience;
 import ga.beycraft.utils.ClientUtils;
 import ga.beycraft.utils.CommonUtils;
 import ga.beycraft.utils.Config;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.renderer.RenderType;
@@ -47,10 +46,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -60,6 +62,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -70,19 +73,17 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.network.NetworkDirection;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 import vazkii.patchouli.api.BookContentsReloadEvent;
 import vazkii.patchouli.client.book.BookCategory;
-import vazkii.patchouli.client.book.BookContents;
 import vazkii.patchouli.client.book.BookEntry;
 import vazkii.patchouli.client.book.ClientBookRegistry;
 import vazkii.patchouli.common.book.Book;
 import vazkii.patchouli.common.book.BookRegistry;
-import xyz.heroesunited.heroesunited.client.render.model.space.SunModel;
-import xyz.heroesunited.heroesunited.mixin.client.AccessorModelBakery;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -97,7 +98,7 @@ public class Beycraft {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "beycraft";
     public static boolean HAS_INTERNET = true;
-    private boolean firstScreenMenuOpen=true;
+    private boolean firstScreenMenuOpen = true;
 
     public Beycraft() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
@@ -105,6 +106,7 @@ public class Beycraft {
         MinecraftForge.EVENT_BUS.register(new SpecialRuntimeEvents());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.addListener(this::onBookReload);
+        MinecraftForge.EVENT_BUS.addListener(this::onEntityEnterWorld);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             try {
                 URL url = new URL("http://www.google.com");
@@ -136,6 +138,7 @@ public class Beycraft {
             MinecraftForge.EVENT_BUS.addListener(this::renderHand);
             MinecraftForge.EVENT_BUS.addListener(this::onKeyPressed);
             MinecraftForge.EVENT_BUS.addListener(this::onScreenOpen);
+            MinecraftForge.EVENT_BUS.addListener(this::onScreenRender);
         });
         if (HAS_INTERNET) {
             try {
@@ -189,6 +192,21 @@ public class Beycraft {
         }
     }
 
+    private void onEntityEnterWorld(final PlayerEvent.PlayerLoggedInEvent event) {
+        StringTextComponent prefix = new StringTextComponent("[BeyCraft] -> Join to my Discord server: ");
+        StringTextComponent url = new StringTextComponent("https://discord.gg/2PpbtFr");
+        prefix.withStyle(TextFormatting.GOLD);
+        url.withStyle(TextFormatting.GOLD);
+        event.getPlayer().sendMessage(prefix, Util.NIL_UUID);
+        event.getPlayer().sendMessage(url, Util.NIL_UUID);
+        event.getPlayer().getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(blader -> {
+            blader.syncToAll();
+        });
+        PacketHandler.INSTANCE.sendTo(new MessageGetExperience(),
+                ((ServerPlayerEntity) event.getPlayer()).connection.getConnection(),
+                NetworkDirection.PLAY_TO_CLIENT);
+    }
+
     private void setup(final FMLCommonSetupEvent event) {
         PacketHandler.init();
         CapabilityManager.INSTANCE.register(IBeylogger.class, new BeyloggerStorage(), Beylogger::new);
@@ -216,7 +234,35 @@ public class Beycraft {
                         .setScreen(new NoInternetConnectionScreen(new StringTextComponent("")));
             } else try {
                 ClientUtils.RankingUtils.checkLogin(event);
-            } catch (Exception e){}
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void onScreenRender(RenderGameOverlayEvent.Post event) {
+        if (!Minecraft.getInstance().options.renderDebug) {
+            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+                Minecraft.getInstance().player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(cap -> {
+                    Level h = cap.getBladerLevel();
+                    String s = String.valueOf(h.getLevel());
+                    float i1 = (75 - Minecraft.getInstance().font.width(s)) / 2f;
+                    int j1 = 16;
+                    Minecraft.getInstance().font.drawShadow(event.getMatrixStack(), s, i1,
+                            (float) j1, 8453920);
+                    s = "Blader Level:";
+
+                    i1 = 5;
+                    j1 = 5;
+                    Minecraft.getInstance().font.drawShadow(event.getMatrixStack(), s, i1,
+                            (float) j1, 8453920);
+                    Minecraft.getInstance().getEntityRenderDispatcher().textureManager
+                            .bind(AbstractGui.GUI_ICONS_LOCATION);
+                    float i = (h.getExpForNextLevel() - h.getExperience()) / (Level.calcExpForNextLevel(h.getLevel()+1)-Level.calcExpForNextLevel(h.getLevel()));
+                    AbstractGui.blit(event.getMatrixStack(), 1, 27, 0, 74, 75, 5, 105, 256);
+                    AbstractGui.blit(event.getMatrixStack(), 1, 27, 0, 79, (int) (75 - 75 * i), 5, 105, 256);
+                });
+            }
         }
     }
 

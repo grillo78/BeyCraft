@@ -98,5 +98,33 @@ public class ClientUtils {
             }
             return resultSuccess;
         }
+
+        public static float getExperience(){
+            float experience = 0;
+            try {
+                CloseableHttpClient httpclient = HttpClients.createDefault();
+                HttpPost httppost = new HttpPost("https://beycraft.ga/API/v3/get_xp/?token=" + TOKEN);
+
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    InputStream inStream = entity.getContent();
+                    String result = IOUtils.toString(inStream, StandardCharsets.UTF_8);
+                    JsonElement root = new JsonParser().parse(result);
+                    JsonObject elements = root.getAsJsonObject();
+                    if (elements.get("status").getAsString().equals("success")) {
+                        experience = elements.get("xp").getAsFloat();
+                    } else
+                        System.out.println(result);
+                }
+            } catch (MalformedURLException mue) {
+                mue.printStackTrace();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return experience;
+        }
     }
 }
