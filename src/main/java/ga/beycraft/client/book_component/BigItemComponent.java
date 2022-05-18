@@ -27,7 +27,6 @@ import java.util.function.UnaryOperator;
 public class BigItemComponent  implements ICustomComponent {
     private transient int x, y;
     private transient ItemStack item;
-    private transient float yRot = 0;
 
     @Override
     public void build(int componentX, int componentY, int pageNum) {
@@ -39,8 +38,6 @@ public class BigItemComponent  implements ICustomComponent {
     @Override
     public void render(MatrixStack matrixStack, IComponentRenderContext iComponentRenderContext, float v, int i, int i1) {
         matrixStack.pushPose();
-        yRot+=1;
-        matrixStack.mulPose(new Quaternion(0,yRot,0,true));
         vazkii.patchouli.client.RenderHelper.transferMsToGl(matrixStack, () -> {
             renderGuiItem(item, x, y,Minecraft.getInstance().getItemRenderer().getModel(item, null, null));
         });

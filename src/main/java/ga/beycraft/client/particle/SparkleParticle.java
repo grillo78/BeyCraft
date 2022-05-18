@@ -1,6 +1,8 @@
 package ga.beycraft.client.particle;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import ga.beycraft.client.util.CustomRenderType;
 import net.minecraft.client.Minecraft;
@@ -27,11 +29,6 @@ public class SparkleParticle extends SpriteTexturedParticle {
     }
 
     @Override
-    public IParticleRenderType getRenderType() {
-        return IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
-    }
-
-    @Override
     public void render(IVertexBuilder p_225606_1_, ActiveRenderInfo activeRenderInfo, float p_225606_3_) {
 
         IRenderTypeBuffer.Impl buffers = Minecraft.getInstance().renderBuffers().bufferSource();
@@ -51,6 +48,17 @@ public class SparkleParticle extends SpriteTexturedParticle {
         buffer.vertex(matrix4f, (float) xd/3, (float) yd/3, (float) zd/3).color(255, 170, 59, 255).endVertex();
         buffer.vertex(matrix4f, (float) xd/2, (float) yd/2, (float) zd/2).color(255, 217, 0, 255).endVertex();
         buffers.endBatch();
+
+
+        RenderSystem.enableBlend();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.alphaFunc(516, 0.003921569F);
+        RenderSystem.enableDepthTest();
+    }
+
+    @Override
+    public IParticleRenderType getRenderType() {
+        return IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     @OnlyIn(Dist.CLIENT)

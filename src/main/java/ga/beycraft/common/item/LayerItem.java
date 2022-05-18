@@ -152,7 +152,7 @@ public class LayerItem extends BeyPartItem {
             RenderObject mainScene = layer.addRenderObject(getModelInfo(cap.getStackInSlot(0).getItem()));
             mainScene.setHidden(true);
             RenderObject sceneDisc = mainScene.addChild(getModelInfo(cap.getStackInSlot(0).getItem()));
-            for (int i = 1; i < cap.getSlots(); i++) {
+            for (int i = 0; i < cap.getSlots(); i++) {
                 childs.add(sceneDisc.addChild(getModelInfo(cap.getStackInSlot(i).getItem())));
             }
             RenderObject sceneLayer = sceneDisc.addChild(getModelInfo(beyblade.getStack().getItem()));
@@ -164,6 +164,12 @@ public class LayerItem extends BeyPartItem {
             Vector3d vector = new Vector3d(-30, 0, this.getRotationDirection(beyblade.getStack()).getValue() * 30).multiply(inclinationMultiplier, inclinationMultiplier, inclinationMultiplier).yRot((float) Math.toRadians(MathHelper.lerp(partialTicks, beyblade.yRotO, beyblade.yRot)));
             mainScene.transform.rotate((float) vector.x, (float) 0, (float) -vector.z);
             sceneDisc.transform.rotate(0, MathHelper.lerp(partialTicks, beyblade.getSpinAngleO(), beyblade.getSpinAngle()), 0);
+            int direction = getRotationDirection(beyblade.getStack()).getValue();
+            if(this instanceof DualLayerItem){
+                sceneLayer.transform.rotate(0, -(direction*35)+direction*(70*beyblade.getHealth()/beyblade.getMaxHealth()), 0);
+            } else {
+                sceneLayer.transform.rotate(0, 10, 0);
+            }
             mainScene.forceTransformUpdate();
             RenderManager.render(layer, RenderMode.USE_CUSTOM_MATS);
             sceneLayer.remove();

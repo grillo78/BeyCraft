@@ -6,6 +6,7 @@ import ga.beycraft.common.item.BeyPartItem;
 import ga.beycraft.common.item.LayerItem;
 import ga.beycraft.common.launch.Launch;
 import ga.beycraft.common.launch.LaunchType;
+import ga.beycraft.common.particle.ModParticles;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
@@ -25,13 +26,11 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
@@ -40,6 +39,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import xyz.heroesunited.heroesunited.common.abilities.AbilityHelper;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -59,7 +59,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
         this.beyblade = beyblade;
         layer = ((LayerItem) beyblade.getItem());
         AbilityHelper.setAttribute(this, "defense", Attributes.MAX_HEALTH, UUID.randomUUID(), (layer.getDefense(beyblade) + 1) * 200 -(layer.getBurst(beyblade) + 1) * 20, AttributeModifier.Operation.ADDITION);
-        AbilityHelper.setAttribute(this, "attack", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), (layer.getAttack(beyblade) + 1) * 33, AttributeModifier.Operation.ADDITION);
+        AbilityHelper.setAttribute(this, "attack", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), (layer.getAttack(beyblade) + 1) * 15, AttributeModifier.Operation.ADDITION);
         setHealth(getMaxHealth());
         this.launch = launch;
     }
@@ -133,10 +133,16 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     @Override
     protected void doPush(Entity entity) {
         if (!level.isClientSide && entity instanceof BeybladeEntity) {
-            setEnergy((float) (getEnergy()-((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE)/2));
+            setEnergy((float) (getEnergy()-((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE)/30));
             launch.onAttack( this, (BeybladeEntity) entity);
-            super.doPush(entity);
         }
+        super.doPush(entity);
+    }
+
+    @Override
+    public void push(double p_70024_1_, double p_70024_3_, double p_70024_5_) {
+        double multiplier = 5+random.nextInt(5)+random.nextDouble();
+        super.push(p_70024_1_*multiplier, p_70024_3_*multiplier, p_70024_5_*multiplier);
     }
 
     @Override
@@ -170,6 +176,18 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
         this.spinAngleO = this.spinAngle;
         if (!isStopped()) {
             this.spinAngle += ((LayerItem) beyblade.getItem()).getRotationDirection(beyblade).getValue() * 30;
+        }
+
+        List<Entity> list = this.level.getEntities(this, this.getBoundingBox().inflate(0.1));
+        for (Entity entity : list) {
+            if(entity instanceof BeybladeEntity) {
+                Vector3d distanceToEnemy = entity.position().add(position().reverse());
+                Vector3d movement = distanceToEnemy.multiply(0.1, 0.1, 0.1).yRot(90);
+                Vector3d position = getPosition(Minecraft.getInstance().getFrameTime()).add(distanceToEnemy.multiply(0.5,0.5,0.5)).add(0,0.09,0);
+                for (int i = 0; i < 25; i++) {
+                    level.addParticle(ModParticles.SPARKLE, position.x, position.y, position.z, movement.x, movement.y, movement.z);
+                }
+            }
         }
         if(onGround)
             updatePoints(this);
