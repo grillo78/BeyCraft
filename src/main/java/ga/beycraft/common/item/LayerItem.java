@@ -152,7 +152,18 @@ public class LayerItem extends BeyPartItem {
             RenderObject mainScene = layer.addRenderObject(getModelInfo(cap.getStackInSlot(0).getItem()));
             mainScene.setHidden(true);
             RenderObject sceneDisc = mainScene.addChild(getModelInfo(cap.getStackInSlot(0).getItem()));
-            for (int i = 0; i < cap.getSlots(); i++) {
+            cap.getStackInSlot(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(discCap ->{
+                for (int i = 0; i < discCap.getSlots(); i++) {
+                    ModelInfo model = getModelInfo(discCap.getStackInSlot(i).getItem());
+                    if (model!= null) {
+                        RenderObject child = sceneDisc.addChild(model);
+                        if (cap.getStackInSlot(0).getItem() instanceof DiscFrameItem)
+                            child.transform.rotate(0, ((DiscFrameItem) cap.getStackInSlot(0).getItem()).getFrameRotation(), 0);
+                        childs.add(child);
+                    }
+                }
+            });
+            for (int i = 1; i < cap.getSlots(); i++) {
                 childs.add(sceneDisc.addChild(getModelInfo(cap.getStackInSlot(i).getItem())));
             }
             RenderObject sceneLayer = sceneDisc.addChild(getModelInfo(beyblade.getStack().getItem()));

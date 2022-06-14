@@ -10,6 +10,7 @@ public class ModParticles {
     public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Beycraft.MOD_ID);
 
     public static BasicParticleType SPARKLE = register("sparkle", new BasicParticleType(false));
+    public static BasicParticleType RESONANCE = register("resonance", new BasicParticleType(false));
 
     private static <T extends ParticleType> T register(String name, T particle) {
         PARTICLES.register(name, () -> particle);

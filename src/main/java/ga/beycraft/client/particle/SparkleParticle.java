@@ -56,6 +56,7 @@ public class SparkleParticle extends SpriteTexturedParticle {
         RenderSystem.enableDepthTest();
     }
 
+
     @Override
     public IParticleRenderType getRenderType() {
         return IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;

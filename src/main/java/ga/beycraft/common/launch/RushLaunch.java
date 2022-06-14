@@ -26,7 +26,13 @@ public class RushLaunch extends Launch {
                 beyblade.lookAt(EntityAnchorArgument.Type.EYES, stadiumCenter);
             }
 
-            beyblade.yRot -= 2 * ((LayerItem)beyblade.getStack().getItem()).getRotationDirection(beyblade.getStack()).getValue();
+            float multiplier = 2;
+            if (distance<0.35) {
+                multiplier = 45;
+            }
+            System.out.println("distance to center: " + distance);
+
+            beyblade.yRot -= multiplier * ((LayerItem)beyblade.getStack().getItem()).getRotationDirection(beyblade.getStack()).getValue();
 
             beyblade.setDeltaMovement(beyblade.getDeltaMovement().add(beyblade.getLookAngle().multiply(0.0125*speed, 0, 0.0125*speed).add(distanceToCenter.multiply(0.025,0,0.025))));
         }

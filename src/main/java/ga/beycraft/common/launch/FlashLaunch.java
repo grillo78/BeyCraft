@@ -14,6 +14,7 @@ public class FlashLaunch extends Launch {
     private boolean hasAttacked = false;
     private boolean normalMovement = false;
     private int counter = 0;
+    private float speed = 0.2F;
 
     public FlashLaunch() {
         super(LaunchTypes.FLASH_LAUNCH_TYPE);
@@ -26,30 +27,28 @@ public class FlashLaunch extends Launch {
             normalMovement = true;
             super.moveBeyblade(beyblade);
         } else {
-            if (counter < 40)
-                super.moveBeyblade(beyblade);
-            else {
-                LayerItem layer = (LayerItem) beyblade.getStack().getItem();
-                int dir = layer.getRotationDirection(beyblade.getStack()).getValue();
-                Vector3d stadiumCenter = beyblade.findStadiumCenter();
-                Vector3d distanceToCenter = stadiumCenter.add(beyblade.position().reverse());
-                beyblade.lookAt(EntityAnchorArgument.Type.EYES, stadiumCenter);
-                double distance = distanceToCenter.length();
-                double speed = layer.getSpeed(beyblade.getStack());
-                if (hasAttacked) {
-                    if (distance < 1.3) {
-                        super.moveBeyblade(beyblade);
-                    } else {
-                        hasAttacked = false;
-                    }
-                } else if (distance < 0.2)
-                    hasAttacked = true;
-                else
-                    beyblade.setDeltaMovement(beyblade.getDeltaMovement().add(distanceToCenter
-                            .multiply(0.5 * layer.getRadiusReduction(beyblade.getStack()), 0, 0.5 * layer.getRadiusReduction(beyblade.getStack())))
-                            .add(distanceToCenter
-                                    .multiply(0.08 * speed / 15, 0, 0.08 * speed / 15).yRot((float) (Math.toRadians(-90) * dir))));
-            }
+            LayerItem layer = (LayerItem) beyblade.getStack().getItem();
+            int dir = layer.getRotationDirection(beyblade.getStack()).getValue();
+            Vector3d stadiumCenter = beyblade.findStadiumCenter();
+            Vector3d distanceToCenter = stadiumCenter.add(beyblade.position().reverse());
+            beyblade.lookAt(EntityAnchorArgument.Type.EYES, stadiumCenter);
+            double distance = distanceToCenter.length();
+            double speed = layer.getSpeed(beyblade.getStack());
+            if (hasAttacked) {
+                if (distance < 1.3) {
+                    this.speed += 0.00001 / distance;
+                    super.moveBeyblade(beyblade);
+                } else {
+                    this.speed = 0.2F;
+                    hasAttacked = false;
+                }
+            } else if (distance < 0.2)
+                hasAttacked = true;
+            else
+                beyblade.setDeltaMovement(beyblade.getDeltaMovement().add(distanceToCenter
+                        .multiply(0.5 * layer.getRadiusReduction(beyblade.getStack()), 0, 0.5 * layer.getRadiusReduction(beyblade.getStack())))
+                        .add(distanceToCenter
+                                .multiply(0.08 * speed / 15, 0, 0.08 * speed / 15).yRot((float) (Math.toRadians(-90) * dir))));
         }
     }
 
@@ -67,7 +66,7 @@ public class FlashLaunch extends Launch {
     @Override
     public void renderTick(BeybladeEntity beyblade) {
         super.renderTick(beyblade);
-        if(beyblade.isOnGround()){
+        if (beyblade.isOnGround() && !normalMovement) {
             Vector3d stadiumCenter = beyblade.findStadiumCenter();
             Vector3d distanceToCenter = stadiumCenter.add(beyblade.position().reverse());
             Vector3d movement = distanceToCenter.multiply(0.1, 0.1, 0.1).yRot(90);
@@ -80,11 +79,12 @@ public class FlashLaunch extends Launch {
 
     @Override
     public double getSpeed() {
-        return !normalMovement ? 0.2 : super.getSpeed();
+
+        return hasAttacked || !normalMovement ? speed : super.getSpeed();
     }
 
     @Override
     public double getReduction() {
-        return !normalMovement ? 0.2 : super.getReduction();
+        return hasAttacked || !normalMovement ? 0.2 : super.getReduction();
     }
 }

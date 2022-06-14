@@ -7,6 +7,7 @@ import friedrichlp.renderlib.math.Vector3;
 import friedrichlp.renderlib.tracking.RenderManager;
 import ga.beycraft.client.block.BeycreatorRenderer;
 import ga.beycraft.client.entity.BeybladeRenderer;
+import ga.beycraft.client.particle.ResonanceParticle;
 import ga.beycraft.client.particle.SparkleParticle;
 import ga.beycraft.client.screen.*;
 import ga.beycraft.client.util.BeyPartModel;
@@ -217,6 +218,7 @@ public class Beycraft {
     @OnlyIn(Dist.CLIENT)
     private void onParticleFactoriesRegistry(final ParticleFactoryRegisterEvent event) {
         Minecraft.getInstance().particleEngine.register(ModParticles.SPARKLE, SparkleParticle.Factory::new);
+        Minecraft.getInstance().particleEngine.register(ModParticles.RESONANCE, ResonanceParticle.Factory::new);
     }
 
     @OnlyIn(Dist.CLIENT)
