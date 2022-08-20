@@ -46,7 +46,7 @@ public class ClientUtils {
                 tokenProperties.load(new FileReader(tokenFile));
                 if(tokenProperties.containsKey("token")){
                     CloseableHttpClient httpclient = HttpClients.createDefault();
-                    HttpPost httppost = new HttpPost("https://beycraft.ga/API/v3/check_login/?token=" + tokenProperties.getProperty("token"));
+                    HttpPost httppost = new HttpPost("https://beycraft.com/API/v3/check_login/?token=" + tokenProperties.getProperty("token"));
 
                     HttpResponse response = httpclient.execute(httppost);
                     HttpEntity entity = response.getEntity();
@@ -70,7 +70,7 @@ public class ClientUtils {
             boolean resultSuccess = false;
             try {
                 CloseableHttpClient httpclient = HttpClients.createDefault();
-                HttpPost httppost = new HttpPost("https://beycraft.ga/API/v3/check_credentials/?username=" + username + "&password=" + password);
+                HttpPost httppost = new HttpPost("https://beycraft.com/API/v3/check_credentials/?username=" + username + "&password=" + password);
 
                 HttpResponse response = httpclient.execute(httppost);
                 HttpEntity entity = response.getEntity();
@@ -103,7 +103,7 @@ public class ClientUtils {
             float experience = 0;
             try {
                 CloseableHttpClient httpclient = HttpClients.createDefault();
-                HttpPost httppost = new HttpPost("https://beycraft.ga/API/v3/get_xp/?token=" + TOKEN);
+                HttpPost httppost = new HttpPost("https://beycraft.com/API/v3/get_xp/?token=" + TOKEN);
 
                 HttpResponse response = httpclient.execute(httppost);
                 HttpEntity entity = response.getEntity();
