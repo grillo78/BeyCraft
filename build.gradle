@@ -38,7 +38,7 @@ minecraft {
     mappings channel: 'official', version: '1.16.5'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
-     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -112,11 +112,10 @@ minecraft {
 
 repositories {
     maven { url 'https://jitpack.io' }
-    maven { url 'https://maven.explodingcreeper.me/' }
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
     maven { url 'http://harleyoconnor.com/maven' }
     maven { url 'https://maven.hypherionmc.me/releases' }
-    maven { url 'https://maven.explodingcreeper.me/' }
+    maven { url "https://maven.explodingcreeper.me/releases" }
     maven { url "https://www.cursemaven.com" }
     maven { url 'https://maven.blamejared.com' }
     mavenCentral()
