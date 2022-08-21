@@ -40,7 +40,7 @@ public class RankingUtil {
         JsonArray ranking = null;
 
         try {
-            url = new URL("https://beycraft.ga/API/ranking/get_ranking/");
+            url = new URL("https://beycraft.com/API/ranking/get_ranking/");
             is = url.openStream();  // throws an IOException
             br = new BufferedReader(new InputStreamReader(is));
             while ((line = br.readLine()) != null) {
@@ -65,7 +65,7 @@ public class RankingUtil {
         new Thread(() -> {
             try {
                 HttpClient httpclient = HttpClients.custom().setSslcontext(ConnectionUtils.getDisabledSSLCheckContext()).build();
-                HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/win_battle/");
+                HttpPost httppost = new HttpPost("https://beycraft.com/API/ranking/win_battle/");
 
                 List<NameValuePair> params = new ArrayList<>();
                 params.add(new BasicNameValuePair("token", getToken()));
@@ -89,7 +89,7 @@ public class RankingUtil {
         new Thread(() -> {
             try {
                 HttpClient httpclient = HttpClients.custom().setSslcontext(ConnectionUtils.getDisabledSSLCheckContext()).build();
-                HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/lose_battle/");
+                HttpPost httppost = new HttpPost("https://beycraft.com/API/ranking/lose_battle/");
 
                 List<NameValuePair> params = new ArrayList<>();
                 params.add(new BasicNameValuePair("token", getToken()));
@@ -112,7 +112,7 @@ public class RankingUtil {
         new Thread(() -> {
             try {
                 HttpClient httpclient = HttpClients.custom().setSslcontext(ConnectionUtils.getDisabledSSLCheckContext()).build();
-                HttpPost httppost = new HttpPost("https://beycraft.ga/API/v2/ranking/increase_experience/");
+                HttpPost httppost = new HttpPost("https://beycraft.com/API/v2/ranking/increase_experience/");
 
                 List<NameValuePair> params = new ArrayList<>();
                 params.add(new BasicNameValuePair("token", getToken()));
@@ -138,7 +138,7 @@ public class RankingUtil {
 
         try {
             HttpClient httpclient = HttpClients.custom().setSslcontext(ConnectionUtils.getDisabledSSLCheckContext()).build();
-            HttpPost httppost = new HttpPost("https://beycraft.ga/API/login/");
+            HttpPost httppost = new HttpPost("https://beycraft.com/API/login/");
 
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("username", username));
@@ -197,7 +197,7 @@ public class RankingUtil {
 
         try {
             HttpClient httpclient = HttpClients.custom().setSslcontext(ConnectionUtils.getDisabledSSLCheckContext()).build();
-            HttpPost httppost = new HttpPost("https://beycraft.ga/API/ranking/get_experience/");
+            HttpPost httppost = new HttpPost("https://beycraft.com/API/ranking/get_experience/");
 
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("token", getToken()));
