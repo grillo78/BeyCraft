@@ -201,6 +201,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
         Vector3d position = getPosition(Minecraft.getInstance().getFrameTime()).add(0,0.05,0);
         for (int i = 0; i < 25; i++) {
             level.addParticle(ModParticles.RESONANCE, position.x, position.y, position.z, 0, random.nextDouble()*0.02, 0);
+            level.addParticle(ModParticles.RESONANCE, position.x, position.y, position.z, 0, random.nextDouble()*0.02, 0);
         }
         if (onGround)
             updatePoints(this);
