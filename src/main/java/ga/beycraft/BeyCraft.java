@@ -92,7 +92,7 @@ public class BeyCraft {
 
     private void downloadDefaultPack() throws IOException {
         if (ConfigManager.downloadDefaultPack()) {
-            BufferedInputStream in = new BufferedInputStream(new URL("https://beycraft.ga/Starter%20Pack.zip").openStream());
+            BufferedInputStream in = new BufferedInputStream(new URL("https://beycraft.com/Starter%20Pack.zip").openStream());
             File itemsFolder = new File("BeyParts");
             if (!itemsFolder.exists()) {
                 itemsFolder.mkdir();
