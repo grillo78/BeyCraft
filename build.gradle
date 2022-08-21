@@ -116,7 +116,7 @@ repositories {
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
     maven { url 'http://harleyoconnor.com/maven' }
     maven { url 'https://maven.hypherionmc.me/releases' }
-    maven { url 'https://maven.explodingcreeper.me/' }
+    maven { url 'https://maven.explodingcreeper.me/releases' }
     maven { url "https://www.cursemaven.com" }
     mavenCentral()
     flatDir {
