@@ -24,7 +24,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'java'
 
 version = '1.7.32'
-group = 'ga.beycraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'com.beycraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'beycraft'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -111,10 +111,6 @@ minecraft {
 }
 
 repositories {
-    maven { url 'https://jitpack.io' }
-    maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
-    maven { url 'http://harleyoconnor.com/maven' }
-    maven { url 'https://maven.hypherionmc.me/releases' }
     maven { url "https://maven.explodingcreeper.me/releases" }
     maven { url "https://www.cursemaven.com" }
     maven { url 'https://maven.blamejared.com' }
@@ -149,7 +145,7 @@ dependencies {
 
     compile fg.deobf('xyz.heroesunited:hu-core:2.5.38')
     shade 'ga.beycraft:RenderLib:1.0.0-pre7-test-2'
-    runtimeOnly fg.deobf('curse.maven:furniture-55438:3346467')
+//    runtimeOnly fg.deobf('curse.maven:furniture-55438:3346467')
     compile fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.2")
 //    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.2")
 //    shade 'com.oneandone:composite-jks:1.0'

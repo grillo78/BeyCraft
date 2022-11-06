@@ -32,3 +32,9 @@ mandatory=true
 versionRange="[2.5.4-alpha62,)"
 ordering="AFTER"
 side="BOTH"
+[[dependencies.beycraft]]
+modId="patchouli"
+mandatory=true
+versionRange="[1.16.4-53.2,)"
+ordering="AFTER"
+side="BOTH"

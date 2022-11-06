@@ -1,10 +1,20 @@
 {
-  "bey.hit": {
+  "hit": {
     "category": "entity",
     "subtitle": "bey.hit",
     "sounds": [
       {
         "name": "beycraft:bey/hit",
+        "stream": true
+      }
+    ]
+  },
+  "floor_friction": {
+    "category": "entity",
+    "subtitle": "bey.floor_friction",
+    "sounds": [
+      {
+        "name": "beycraft:bey/floor_friction",
         "stream": true
       }
     ]
