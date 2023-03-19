@@ -11,11 +11,11 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public class BladerCapabilityProvider implements ICapabilitySerializable {
 
-    @CapabilityInject(IBlader.class)
-    public static final Capability<IBlader> BLADER_CAP = null;
-    private IBlader bladerValue = BLADER_CAP.getDefaultInstance();
+    @CapabilityInject(Blader.class)
+    public static final Capability<Blader> BLADER_CAP = null;
+    private Blader bladerValue = BLADER_CAP.getDefaultInstance();
 
-    private final LazyOptional<IBlader> blader;
+    private final LazyOptional<Blader> blader;
 
     public BladerCapabilityProvider(PlayerEntity player) {
         this.blader = LazyOptional.of(() ->bladerValue);

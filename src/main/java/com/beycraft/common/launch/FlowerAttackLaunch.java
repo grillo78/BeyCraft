@@ -9,13 +9,13 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class FlashLaunch extends Launch {
+public class FlowerAttackLaunch extends Launch {
 
     private boolean hasAttacked = false;
     private boolean normalMovement = false;
     private float speed = 0.2F;
 
-    public FlashLaunch() {
+    public FlowerAttackLaunch() {
         super(LaunchTypes.FLASH_LAUNCH_TYPE);
     }
 

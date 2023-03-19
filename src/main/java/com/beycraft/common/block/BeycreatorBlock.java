@@ -160,10 +160,6 @@ public class BeycreatorBlock extends HorizontalBlock {
                 default:
                     throw new IllegalStateException("Unexpected value: " + state.getValue(FACING));
             }
-            System.out.println("Hit offset: " + hitOffset);
-            System.out.println("In button 1: " + buttonLeft.contains(hitOffset));
-            System.out.println("In button 2: " + buttonRight.contains(hitOffset));
-            System.out.println("In button 3: " + buttonAccept.contains(hitOffset));
             if (buttonLeft.contains(hitOffset))
                 ((BeycreatorTileEntity) level.getBlockEntity(blockPos)).increaseIndex(-1);
             else if (buttonRight.contains(hitOffset))

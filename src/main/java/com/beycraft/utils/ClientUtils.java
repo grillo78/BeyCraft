@@ -10,14 +10,20 @@ import net.minecraftforge.client.event.GuiOpenEvent;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import xyz.heroesunited.heroesunited.util.HURichPresence;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class ClientUtils {
@@ -125,6 +131,77 @@ public class ClientUtils {
                 e.printStackTrace();
             }
             return experience;
+        }
+
+        public static void increaseExperience(float experience) {
+            new Thread(() -> {
+                try {
+                    CloseableHttpClient httpclient = HttpClients.createDefault();
+                    HttpPost httppost = new HttpPost("https://beycraft.com/API/v2/ranking/increase_experience/");
+
+                    List<NameValuePair> params = new ArrayList<>();
+                    params.add(new BasicNameValuePair("token", TOKEN));
+                    params.add(new BasicNameValuePair("experience", String.valueOf(experience)));
+                    httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+
+                    HttpResponse response = httpclient.execute(httppost);
+                    HttpEntity entity = response.getEntity();
+                    System.out.println(new BufferedReader(new InputStreamReader(entity.getContent())).readLine());
+                } catch (MalformedURLException mue) {
+                    mue.printStackTrace();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+
+        public static void winCombat() {
+            new Thread(() -> {
+                try {
+                    CloseableHttpClient httpclient = HttpClients.createDefault();
+                    HttpPost httppost = new HttpPost("https://beycraft.com/API/ranking/win_battle/");
+
+                    List<NameValuePair> params = new ArrayList<>();
+                    params.add(new BasicNameValuePair("token", TOKEN));
+                    httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+
+                    HttpResponse response = httpclient.execute(httppost);
+                    HttpEntity entity = response.getEntity();
+                    System.out.println(new BufferedReader(new InputStreamReader(entity.getContent())).readLine());
+                } catch (MalformedURLException mue) {
+                    mue.printStackTrace();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+
+        public static void loseCombat() {
+
+            new Thread(() -> {
+                try {
+                    CloseableHttpClient httpclient = HttpClients.createDefault();
+                    HttpPost httppost = new HttpPost("https://beycraft.com/API/ranking/lose_battle/");
+
+                    List<NameValuePair> params = new ArrayList<>();
+                    params.add(new BasicNameValuePair("token", TOKEN));
+                    httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+
+                    HttpResponse response = httpclient.execute(httppost);
+                    HttpEntity entity = response.getEntity();
+                    System.out.println(new BufferedReader(new InputStreamReader(entity.getContent())).readLine());
+                } catch (MalformedURLException mue) {
+                    mue.printStackTrace();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
     }
 }

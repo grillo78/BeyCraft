@@ -1,6 +1,8 @@
 package com.beycraft;
 
+import com.beycraft.client.block.BattleInformerRenderer;
 import com.beycraft.client.block.BeycreatorRenderer;
+import com.beycraft.client.block.ExpositoryRenderer;
 import com.beycraft.client.entity.BeybladeRenderer;
 import com.beycraft.client.particle.ResonanceParticle;
 import com.beycraft.client.particle.SparkleParticle;
@@ -9,7 +11,9 @@ import com.beycraft.client.util.BeyPartModel;
 import com.beycraft.client.util.KeyBinds;
 import com.beycraft.common.block.ModBlocks;
 import com.beycraft.common.block_entity.ModTileEntities;
-import com.beycraft.common.capability.entity.*;
+import com.beycraft.common.capability.entity.Blader;
+import com.beycraft.common.capability.entity.BladerCapabilityProvider;
+import com.beycraft.common.capability.entity.BladerStorage;
 import com.beycraft.common.capability.item.beylogger.Beylogger;
 import com.beycraft.common.capability.item.beylogger.BeyloggerStorage;
 import com.beycraft.common.capability.item.beylogger.IBeylogger;
@@ -20,6 +24,7 @@ import com.beycraft.common.item.BeyPartItem;
 import com.beycraft.common.item.ModItems;
 import com.beycraft.common.launch.LaunchTypes;
 import com.beycraft.common.particle.ModParticles;
+import com.beycraft.common.ranking.Level;
 import com.beycraft.common.sound.ModSounds;
 import com.beycraft.common.stats.CustomStats;
 import com.beycraft.network.PacketHandler;
@@ -123,15 +128,14 @@ public class Beycraft {
                 System.out.println("Internet is not connected");
             }
 
-            Runtime.getRuntime().addShutdownHook(new Thread(()->{
-                try {
-                    File folder = new File("beycraft_cached_models");
-                    if (folder.exists())
-                        FileUtils.deleteDirectory(folder);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }));
+
+            try {
+                File folder = new File("beycraft_cached_models");
+                if (folder.exists())
+                    FileUtils.deleteDirectory(folder);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             RenderLibSettings.Caching.CACHE_LOCATION = "beycraft_cached_models";
             RenderLibSettings.Caching.CACHE_VERSION = "1";
             RenderLibSettings.General.MODEL_UNLOAD_DELAY_MS = Integer.MAX_VALUE;
@@ -142,6 +146,7 @@ public class Beycraft {
             MinecraftForge.EVENT_BUS.addListener(this::onRenderWorld);
             MinecraftForge.EVENT_BUS.addListener(this::renderHand);
             MinecraftForge.EVENT_BUS.addListener(this::onKeyPressed);
+            MinecraftForge.EVENT_BUS.addListener(this::onMouseScroll);
             MinecraftForge.EVENT_BUS.addListener(this::onScreenOpen);
             MinecraftForge.EVENT_BUS.addListener(this::onScreenRender);
         });
@@ -216,7 +221,7 @@ public class Beycraft {
     private void setup(final FMLCommonSetupEvent event) {
         PacketHandler.init();
         CapabilityManager.INSTANCE.register(IBeylogger.class, new BeyloggerStorage(), Beylogger::new);
-        CapabilityManager.INSTANCE.register(IBlader.class, new BladerStorage(), Blader::new);
+        CapabilityManager.INSTANCE.register(Blader.class, new BladerStorage(), Blader::new);
         CustomStats.init();
     }
 
@@ -310,6 +315,13 @@ public class Beycraft {
     }
 
     @OnlyIn(Dist.CLIENT)
+    private void onMouseScroll(InputEvent.MouseScrollEvent event) {
+        Blader blader = Minecraft.getInstance().player.getCapability(BladerCapabilityProvider.BLADER_CAP).orElse(null);
+        if (blader != null && blader.isLaunching())
+            event.setCanceled(true);
+    }
+
+    @OnlyIn(Dist.CLIENT)
     private void onKeyPressed(InputEvent.KeyInputEvent event) {
         if (KeyBinds.LAUNCH_SCREEN.isDown() && event.getAction() == GLFW.GLFW_PRESS) {
             Minecraft.getInstance().setScreen(new LaunchScreen(new TranslationTextComponent("screen.launch_screen.name")));
@@ -342,10 +354,13 @@ public class Beycraft {
     @OnlyIn(Dist.CLIENT)
     private void doClientStuff(FMLClientSetupEvent event) {
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.BEYCREATOR, BeycreatorRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.BATTLE_INFORMER, BattleInformerRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.EXPOSITORYTILEENTITYTYPE, ExpositoryRenderer::new);
         KeyBinds.registerKeys();
         RenderTypeLookup.setRenderLayer(ModBlocks.STADIUM, RenderType.cutoutMipped());
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.BEYBLADE, BeybladeRenderer::new);
         ScreenManager.register(ModContainers.LAYER, LayerScreen::new);
+        ScreenManager.register(ModContainers.CLEAR_WHEEL, LayerScreen::new);
         ScreenManager.register(ModContainers.RIGHT_LAUNCHER, LauncherScreen::new);
         ScreenManager.register(ModContainers.LEFT_LAUNCHER, LauncherScreen::new);
         ScreenManager.register(ModContainers.DUAL_LAUNCHER, LauncherScreen::new);

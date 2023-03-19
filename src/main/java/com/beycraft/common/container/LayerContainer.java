@@ -21,8 +21,12 @@ public class LayerContainer extends Container {
 
     public LayerContainer(@Nullable ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory) {
         super(type, id);
-        addSlots(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseGet(() -> new ItemStackHandler(2)));
+        addSlots(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseGet(() -> new ItemStackHandler(getSlotsAmount())));
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.selected);
+    }
+
+    protected int getSlotsAmount() {
+        return 2;
     }
 
     protected void addSlots(IItemHandler cap) {

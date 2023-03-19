@@ -1,5 +1,8 @@
 package com.beycraft.utils;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.server.ServerWorld;
+
 import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -42,6 +45,18 @@ public class CommonUtils {
                 bos.write(bytesIn, 0, read);
             }
             bos.close();
+        }
+    }
+
+    public static class PlayerUtils{
+
+        public static PlayerEntity getPlayerByName(String playerName, ServerWorld level) {
+            PlayerEntity returnablePlayer = null;
+            for (PlayerEntity player : level.players()) {
+                if(player.getName().getString().equals(playerName))
+                    returnablePlayer = player;
+            }
+            return returnablePlayer;
         }
     }
 }

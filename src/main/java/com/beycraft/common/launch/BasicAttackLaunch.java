@@ -5,11 +5,11 @@ import com.beycraft.common.item.LayerItem;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.util.math.vector.Vector3d;
 
-public class RushLaunch extends Launch {
+public class BasicAttackLaunch extends Launch {
 
     private float speed = 15;
 
-    public RushLaunch() {
+    public BasicAttackLaunch() {
         super(LaunchTypes.RUSH_LAUNCH_TYPE);
     }
 
@@ -30,7 +30,6 @@ public class RushLaunch extends Launch {
             if (distance<0.35) {
                 multiplier = 45;
             }
-            System.out.println("distance to center: " + distance);
 
             beyblade.yRot -= multiplier * ((LayerItem)beyblade.getStack().getItem()).getRotationDirection(beyblade.getStack()).getValue();
 

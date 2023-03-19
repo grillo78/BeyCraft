@@ -18,7 +18,9 @@ import friedrichlp.renderlib.tracking.RenderLayer;
 import friedrichlp.renderlib.tracking.RenderManager;
 import friedrichlp.renderlib.tracking.RenderObject;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -103,12 +105,16 @@ public class LayerItem extends BeyPartItem {
             ItemStack stack = player.getItemInHand(hand);
             NetworkHooks.openGui((ServerPlayerEntity) player,
                     new SimpleNamedContainerProvider(
-                            (id, playerInventory, playerEntity) -> new LayerContainer(ModContainers.LAYER, id,
-                                    stack, playerInventory),
+                            (id, playerInventory, playerEntity) -> getLayerContainer(id, stack, playerInventory),
                             new StringTextComponent(getDescriptionId())));
             result = ActionResult.success(stack);
         }
         return result;
+    }
+
+    protected Container getLayerContainer(int id, ItemStack stack, PlayerInventory playerInventory){
+        return new LayerContainer(ModContainers.LAYER, id,
+                stack, playerInventory);
     }
 
     @Nullable

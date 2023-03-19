@@ -1,6 +1,7 @@
 package com.beycraft.client.screen;
 
 import com.beycraft.Beycraft;
+import com.beycraft.client.screen.widget.LaunchesList;
 import com.beycraft.common.capability.entity.BladerCapabilityProvider;
 import com.beycraft.common.launch.LaunchType;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -9,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -21,8 +21,8 @@ import java.util.List;
 
 public class LaunchScreen extends Screen {
 
-    private LaunchType selected;
     private HashMap<LaunchType, LaunchButton> buttonsMap = new HashMap<>();
+    private LaunchesList launches;
 
     public LaunchScreen(ITextComponent p_i51108_1_) {
         super(p_i51108_1_);
@@ -32,30 +32,21 @@ public class LaunchScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        for (LaunchType launch : LaunchType.LAUNCH_TYPES.getValues()) {
-            float xCoord = this.width * ((float) launch.getX()) / 100;
-            float yCoord = this.height * ((float) launch.getY()) / 100;
-            LaunchButton button = new LaunchButton((int) xCoord, (int) yCoord - 25, 50, 50, new TranslationTextComponent("launch." + launch.getRegistryName().getPath()), this, launch);
-            this.addButton(button);
-            buttonsMap.put(launch, button);
-        }
+//        for (LaunchType launch : LaunchType.LAUNCH_TYPES.getValues()) {
+//            float xCoord = this.width * ((float) launch.getX()) / 100;
+//            float yCoord = this.height * ((float) launch.getY()) / 100;
+//            LaunchButton button = new LaunchButton((int) xCoord, (int) yCoord - 25, 50, 50, new TranslationTextComponent("launch." + launch.getRegistryName().getPath()), this, launch);
+//            this.addButton(button);
+//            buttonsMap.put(launch, button);
+//        }
+        launches = new LaunchesList();
+        this.children.add(launches);
     }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack, -1);
-        for (Widget widget : buttons) {
-            if (widget instanceof LaunchButton) {
-                LaunchButton button = (LaunchButton) widget;
-                if (button.launch.getRequisite() != null) {
-                    int color = !button.isHovered() ? -16777216 : -1;
-                    LaunchButton requisiteButton = buttonsMap.get(LaunchType.LAUNCH_TYPES.getValue(button.launch.getRequisite()));
-                    if (button.y != requisiteButton.y)
-                        vLine(matrixStack, requisiteButton.x + 25, requisiteButton.y + 25, button.y+25, color);
-                    hLine(matrixStack, button.x - 1, requisiteButton.x + 25, button.y + 25, color);
-                }
-            }
-        }
+        launches.render(matrixStack, mouseX, mouseY, partialTicks);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
@@ -86,7 +77,7 @@ public class LaunchScreen extends Screen {
                     buttonAux.selected = false;
                 }
                 ((LaunchButton) button).selected = true;
-                Minecraft.getInstance().player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(blader->{
+                Minecraft.getInstance().player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(blader -> {
                     blader.setLaunchType(((LaunchButton) button).launch);
                     blader.syncToAll();
                 });
@@ -94,15 +85,15 @@ public class LaunchScreen extends Screen {
                 if (p_238659_1_.active) {
                     List<IReorderingProcessor> lines = new ArrayList<>();
                     lines.addAll(screen.minecraft.font.split(new TranslationTextComponent("button." + launch.getRegistryName().getPath() + ".name"), Math.max(screen.width / 2 - 43, 170)));
-                    lines.addAll(screen.minecraft.font.split(new TranslationTextComponent("button."+launch.getRegistryName().getPath()+".description"), Math.max(screen.width / 2 - 43, 170)));
-                    lines.addAll(screen.minecraft.font.split(new TranslationTextComponent("button."+launch.getRegistryName().getPath()+".requirements"), Math.max(screen.width / 2 - 43, 170)));
+                    lines.addAll(screen.minecraft.font.split(new TranslationTextComponent("button." + launch.getRegistryName().getPath() + ".description"), Math.max(screen.width / 2 - 43, 170)));
+                    lines.addAll(screen.minecraft.font.split(new TranslationTextComponent("button." + launch.getRegistryName().getPath() + ".requirements"), Math.max(screen.width / 2 - 43, 170)));
                     screen.renderTooltip(p_238659_2_, lines, p_238659_3_, p_238659_4_);
                 }
 
             });
             this.launch = launch;
             launchTexture = new ResourceLocation(launch.getRegistryName().getNamespace(), "textures/gui/launch/" + launch.getRegistryName().getPath() + ".png");
-            Minecraft.getInstance().player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(blader->{
+            Minecraft.getInstance().player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(blader -> {
                 selected = launch == blader.getLaunchType();
             });
         }
@@ -118,8 +109,7 @@ public class LaunchScreen extends Screen {
             RenderSystem.enableDepthTest();
             this.blit(p_230431_1_, this.x, this.y, 0, 0 + i, this.width, this.height);
             minecraft.getTextureManager().bind(launchTexture);
-            TextureAtlasSprite sprite = launch.getRenderMaterial().sprite();
-            this.blit(p_230431_1_, this.x + 4, this.y + 4, 0, iconHeight*2, iconWidth, iconHeight, iconWidth, iconHeight*3);
+            this.blit(p_230431_1_, this.x + 4, this.y + 4, 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
             this.renderBg(p_230431_1_, minecraft, p_230431_2_, p_230431_3_);
             if (this.isHovered)
                 this.renderToolTip(p_230431_1_, p_230431_2_, p_230431_3_);

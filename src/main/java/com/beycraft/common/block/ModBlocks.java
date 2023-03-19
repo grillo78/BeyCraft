@@ -15,9 +15,11 @@ public class ModBlocks {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS,
             Beycraft.MOD_ID);
+    public static final Block BATTLE_INFORMER = register("battle_informer", new BattleInformerBlock(Material.METAL));
 
     public static StadiumBlock STADIUM = register("stadium", new StadiumBlock(AbstractBlock.Properties.of(Material.METAL)));
     public static BeycreatorBlock BEYCREATOR = register("beycreator", new BeycreatorBlock(AbstractBlock.Properties.of(Material.METAL)));
+    public static ExpositoryBlock EXPOSITORY = register("expository", new ExpositoryBlock(AbstractBlock.Properties.of(Material.METAL)));
 
     private static <T extends Block> T register(String name, T block) {
         BLOCKS.register(name, () -> block);

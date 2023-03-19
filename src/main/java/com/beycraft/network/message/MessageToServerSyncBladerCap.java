@@ -37,7 +37,7 @@ public class MessageToServerSyncBladerCap implements IMessage<MessageToServerSyn
         supplier.get().enqueueWork(()->{
             PlayerEntity player = supplier.get().getSender();
             player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(h->{
-                h.readNBT(message.nbt);
+                h.readNetwork(message.nbt);
                 for (ServerPlayerEntity playerAux: supplier.get().getSender().getLevel().players()) {
                     PacketHandler.INSTANCE.sendTo(new MessageSyncBladerCap(message.nbt,player.getId()),playerAux.connection.getConnection(),
                             NetworkDirection.PLAY_TO_CLIENT);

@@ -2,7 +2,7 @@
   "components": [
     {
       "type": "custom",
-      "class": "ga.beycraft.client.book_component.BigItemComponent",
+      "class": "com.beycraft.client.book_component.BigItemComponent",
       "item": "#item",
       "x": 50,
       "y": 50

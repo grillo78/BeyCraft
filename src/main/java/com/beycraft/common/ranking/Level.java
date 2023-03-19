@@ -1,4 +1,4 @@
-package com.beycraft.common.capability.entity;
+package com.beycraft.common.ranking;
 
 import net.minecraft.nbt.CompoundNBT;
 

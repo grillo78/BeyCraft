@@ -38,7 +38,7 @@ public class MessageSyncBladerCap implements IMessage<MessageSyncBladerCap>{
         supplier.get().enqueueWork(()->{
             Entity player = Minecraft.getInstance().level.getEntity(message.playerID);
             player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(cap->{
-                cap.readNBT(message.nbt);
+                cap.readNetwork(message.nbt);
             });
         });
         supplier.get().setPacketHandled(true);

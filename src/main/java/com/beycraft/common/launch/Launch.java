@@ -1,29 +1,31 @@
 package com.beycraft.common.launch;
 
-import com.beycraft.Beycraft;
+import com.alrex.parcool.client.animation.Animator;
+import com.beycraft.common.capability.entity.Blader;
+import com.beycraft.common.capability.entity.BladerCapabilityProvider;
 import com.beycraft.common.entity.BeybladeEntity;
 import com.beycraft.common.item.LayerItem;
 import com.beycraft.common.stats.CustomStats;
+import com.beycraft.network.PacketHandler;
+import com.beycraft.network.message.MessageApplyAnimation;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import xyz.heroesunited.heroesunited.common.capabilities.HUPlayer;
+import net.minecraftforge.fml.network.NetworkDirection;
 
 public class Launch {
-
-    private static final ResourceLocation ANIMATIONS_FILE = new ResourceLocation(Beycraft.MOD_ID, "animations/launches.animation.json");
 
     protected LaunchType launchType;
     protected boolean activated = false;
@@ -40,22 +42,39 @@ public class Launch {
         activated = true;
     }
 
-    public BeybladeEntity launchBeyblade(ItemStack beyblade, World level, PlayerEntity player, Hand hand) {
-        player.awardStat(CustomStats.LAUNCH);
-        LayerItem layer = (LayerItem) beyblade.getItem();
-        BeybladeEntity beybladeEntity = new BeybladeEntity(level, beyblade.copy(), this, player.getUUID());
+    public void launchBeyblade(ItemStack beyblade, World level, ServerPlayerEntity player, Hand hand) {
+        Blader blader = player.getCapability(BladerCapabilityProvider.BLADER_CAP).orElse(null);
+        if(!blader.isLaunching()){
+            PacketHandler.INSTANCE.sendTo(new MessageApplyAnimation(player.getUUID()), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 
-        Vector3d position = new Vector3d(player.position().x,
-                player.position().y,
-                player.position().z);
-        position = position.add(getOffset(player));
+            new Thread(()->{
+                try {
+                    blader.setLaunching(true);
+                    blader.syncToAll();
+                    Thread.sleep(3250);
+                    player.awardStat(CustomStats.LAUNCH);
+                    LayerItem layer = (LayerItem) beyblade.getItem();
+                    BeybladeEntity beybladeEntity = new BeybladeEntity(level, beyblade.copy(), this, player.getUUID());
+                    Vector3d position = new Vector3d(player.position().x,
+                            player.position().y,
+                            player.position().z);
+                    position = position.add(getOffset(player));
 
-        beybladeEntity.moveTo(position.x, position.y, position.z, (float) (player.yRot + layer.getRotationDirection(beyblade).getValue() * Math.toRadians(-45)), 0);
-        level.addFreshEntity(beybladeEntity);
-        beybladeEntity.setDeltaMovement(getLaunchImpulse(player));
-        beyblade.shrink(1);
-        HUPlayer.getCap(player).setAnimation(getAnimation(getHandSide(hand, player)), ANIMATIONS_FILE, false);
-        return beybladeEntity;
+                    beybladeEntity.moveTo(position.x, position.y, position.z, (float) (player.yRot + layer.getRotationDirection(beyblade).getValue() * Math.toRadians(-45)), 0);
+                    level.addFreshEntity(beybladeEntity);
+                    beybladeEntity.setDeltaMovement(getLaunchImpulse(player));
+                    beyblade.shrink(1);
+                    blader.setLaunching(false);
+                    blader.syncToAll();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).run();
+        }
+    }
+
+    private Animator getAnimator() {
+        return null;
     }
 
     private Vector3d getOffset(PlayerEntity player) {
@@ -74,7 +93,7 @@ public class Launch {
                 .multiply(getReduction() * layer.getRadiusReduction(beyblade.getStack()), 0, getReduction() * layer.getRadiusReduction(beyblade.getStack())))
                 .add(distanceToCenter
                         .multiply(getSpeed() * speed / 15, 0, getSpeed() * speed / 15).yRot((float) (Math.toRadians(-90) * dir))));
-        if(activated && distanceToCenter.length()<0.15){
+        if (activated && distanceToCenter.length() < 0.15) {
             activated = false;
         }
     }
@@ -123,7 +142,7 @@ public class Launch {
             if (attacker.getRandom().nextInt(20) == 0)
                 attacker.hurt(DamageSource.mobAttack(entity), (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE));
         }
-        if(shouldDeactivate())
+        if (shouldDeactivate())
             activated = false;
     }
 

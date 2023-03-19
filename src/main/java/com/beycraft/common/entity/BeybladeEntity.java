@@ -11,12 +11,14 @@ import com.beycraft.common.sound.ModSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.controller.LookController;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -102,10 +104,15 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     }
 
     @Override
+    public void lookAt(EntityAnchorArgument.Type p_200602_1_, Vector3d p_200602_2_) {
+        super.lookAt(p_200602_1_, p_200602_2_);
+    }
+
+    @Override
     public ActionResultType interactAt(PlayerEntity p_184199_1_, Vector3d p_184199_2_, Hand p_184199_3_) {
         if (!dropped) {
             dropped = true;
-            ItemEntity entity = new ItemEntity(level, position().x, position().y, position().z, beyblade);
+            ItemEntity entity = new ItemEntity(level, p_184199_1_.position().x, p_184199_1_.position().y, p_184199_1_.position().z, beyblade);
             level.addFreshEntity(entity);
             this.remove();
         }
@@ -122,7 +129,6 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
                     setStopped(true);
                 if (!isStopped()) {
                     if (onGround) {
-                        this.playSound(ModSounds.FLOOR_FRICTION, 0.2F, 1F);
                         setEnergy((float) (getEnergy() - 0.01 * layer.getFriction(beyblade)));
                         launch.moveBeyblade(this);
                     }
@@ -178,6 +184,11 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     }
 
     @Override
+    public LookController getLookControl() {
+        return super.getLookControl();
+    }
+
+    @Override
     protected void doPush(Entity entity) {
         if (!level.isClientSide && entity instanceof BeybladeEntity) {
             setEnergy((float) (getEnergy() - ((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE) / 30));
@@ -225,6 +236,8 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     private void clientTick() {
         this.spinAngleO = this.spinAngle;
         if (!isStopped()) {
+            if(onGround && tickCount%2 == 0)
+                this.level.playLocalSound(getX(), getY(), getZ(), ModSounds.FLOOR_FRICTION, getSoundSource(), 0.1F, 1.1F, false);
             this.spinAngle += ((LayerItem) beyblade.getItem()).getRotationDirection(beyblade).getValue() * 30;
         }
 
@@ -338,5 +351,13 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
 
     public ItemStack getStack() {
         return beyblade;
+    }
+
+    public String getPlayerName() {
+        return level.getPlayerByUUID(owner).getName().getString();
+    }
+
+    public boolean isDropped() {
+        return dropped;
     }
 }

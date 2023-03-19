@@ -30,6 +30,9 @@ public class PacketHandler {
         register(MessageGetExperience.class, new MessageGetExperience());
         register(MessageActivateLaunch.class, new MessageActivateLaunch());
         register(MessageActivateResonance.class, new MessageActivateResonance());
+        register(MessageWinCombat.class, new MessageWinCombat());
+        register(MessageLoseCombat.class, new MessageLoseCombat());
+        register(MessageApplyAnimation.class, new MessageApplyAnimation());
     }
 
     /**

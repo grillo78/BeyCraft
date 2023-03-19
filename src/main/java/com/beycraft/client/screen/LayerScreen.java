@@ -10,13 +10,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 public class LayerScreen extends ContainerScreen<LayerContainer> {
+    private final int slots;
+
     public LayerScreen(LayerContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
+        this.slots = screenContainer.slots.size()-36;
     }
 
     @Override
     protected void renderLabels(MatrixStack p_230451_1_, int p_230451_2_, int p_230451_3_) {
-        this.font.draw(p_230451_1_, this.inventory.getDisplayName().getVisualOrderText(), (float)this.inventoryLabelX, (float)this.inventoryLabelY, 4210752);
+        this.font.draw(p_230451_1_, this.inventory.getDisplayName().getVisualOrderText(), (float) this.inventoryLabelX, (float) this.inventoryLabelY, 4210752);
     }
 
     @Override
@@ -29,7 +32,7 @@ public class LayerScreen extends ContainerScreen<LayerContainer> {
     @Override
     protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1f, 1f, 1f, 1f);
-        this.getMinecraft().getTextureManager().bind(new ResourceLocation(Beycraft.MOD_ID, "textures/gui/container/2_slots.png"));
+        this.getMinecraft().getTextureManager().bind(new ResourceLocation(Beycraft.MOD_ID, "textures/gui/container/" + slots + "_slots.png"));
         int relX = (this.width - this.imageWidth) / 2;
         int relY = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
