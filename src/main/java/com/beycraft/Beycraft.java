@@ -205,7 +205,7 @@ public class Beycraft {
 
     private void downloadDefaultPack() throws IOException {
         if (Config.PRE_SETUP.downloadDefaultPack) {
-            BufferedInputStream in = new BufferedInputStream(new URL("https://cdn.fdnetworks.org/grillo78/beycraft/Starter_Pack.zip?randomID=" + Timestamp.from(Instant.now()).getTime()).openStream());
+            BufferedInputStream in = new BufferedInputStream(new URL("https://cdn.fdnetworks.org/grillo78/beycraft/Starter_Pack.zip?randomID=" + UUID.randomUUID().toString()).openStream());
             File itemsFolder = new File("BeyParts");
             if (!itemsFolder.exists()) {
                 itemsFolder.mkdir();
