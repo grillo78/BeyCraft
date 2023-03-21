@@ -9,7 +9,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class AnimationsList extends ExtendedList<AnimationsList.AnimationsListEntry> {
 
-    private TranslationTextComponent name = new TranslationTextComponent("title.launches");
+    private TranslationTextComponent name = new TranslationTextComponent("title.animations");
 
     public AnimationsList() {
         super(Minecraft.getInstance(), Minecraft.getInstance().screen.width/2, Minecraft.getInstance().screen.height, 30, Minecraft.getInstance().screen.height - 30, 18);
