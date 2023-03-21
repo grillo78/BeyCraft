@@ -5,12 +5,13 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Properties;
 
 public class Config {
 
     public static class PreSetup {
-        public boolean downloadDefaultPack;
+        public boolean downloadDefaultPack = true;
 
         public PreSetup() {
             File configFile = new File("config/beycraft_pre_setup.properties");
@@ -21,9 +22,10 @@ public class Config {
                 }
                 config.load(new FileReader(configFile));
                 if (config.isEmpty()) {
-                    config.setProperty("downloadDefaultPack", "false");
+                    config.setProperty("downloadDefaultPack", "true");
                 }
                 downloadDefaultPack = Boolean.valueOf(config.getProperty("downloadDefaultPack"));
+                config.store(new FileWriter(configFile),"");
             } catch (Exception e) {
             }
         }

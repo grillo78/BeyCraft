@@ -93,6 +93,9 @@ import vazkii.patchouli.client.book.ClientBookRegistry;
 import vazkii.patchouli.common.book.Book;
 import vazkii.patchouli.common.book.BookRegistry;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -100,6 +103,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.UUID;
 
 @Mod(Beycraft.MOD_ID)
 public class Beycraft {
@@ -115,6 +123,7 @@ public class Beycraft {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.addListener(this::onBookReload);
         MinecraftForge.EVENT_BUS.addListener(this::onEntityEnterWorld);
+        getDisabledSSLCheckContext();
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             try {
                 URL url = new URL("http://www.google.com");
@@ -168,9 +177,35 @@ public class Beycraft {
         LaunchTypes.LAUNCH_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
+    private SSLContext getDisabledSSLCheckContext(){
+        String javaVersion = System.getProperty("java.version");
+        if(javaVersion.startsWith("1.8.0_") && Integer.valueOf(javaVersion.substring(6))<101){
+            try {
+                TrustManager[] trustAllCerts = new TrustManager[]{
+                        new X509TrustManager() {
+                            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                                System.out.println("accepted SSL");
+                                return null;
+                            }
+                            public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+                            }
+                            public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+                            }
+                        }
+                };
+                SSLContext sc = SSLContext.getInstance("SSL");
+                sc.init(null, trustAllCerts, new java.security.SecureRandom());
+                return sc;
+            } catch (NoSuchAlgorithmException | KeyManagementException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     private void downloadDefaultPack() throws IOException {
         if (Config.PRE_SETUP.downloadDefaultPack) {
-            BufferedInputStream in = new BufferedInputStream(new URL("https://beycraft.ga/Starter%20Pack.zip").openStream());
+            BufferedInputStream in = new BufferedInputStream(new URL("https://cdn.fdnetworks.org/grillo78/beycraft/Starter_Pack.zip?randomID=" + Timestamp.from(Instant.now()).getTime()).openStream());
             File itemsFolder = new File("BeyParts");
             if (!itemsFolder.exists()) {
                 itemsFolder.mkdir();

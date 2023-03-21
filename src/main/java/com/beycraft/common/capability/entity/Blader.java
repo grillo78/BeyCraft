@@ -85,6 +85,10 @@ public class Blader {
             this.launchType = launchType;
     }
 
+    public void setAnimatorID(int animatorID) {
+        this.animatorID = animatorID;
+    }
+
     public void setPlayer(PlayerEntity player) {
         this.player = player;
     }

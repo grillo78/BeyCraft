@@ -45,7 +45,7 @@ public class Launch {
     public void launchBeyblade(ItemStack beyblade, World level, ServerPlayerEntity player, Hand hand) {
         Blader blader = player.getCapability(BladerCapabilityProvider.BLADER_CAP).orElse(null);
         if(!blader.isLaunching()){
-            PacketHandler.INSTANCE.sendTo(new MessageApplyAnimation(player.getUUID()), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+            PacketHandler.INSTANCE.sendTo(new MessageApplyAnimation(player.getUUID(), hand), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 
             new Thread(()->{
                 try {
@@ -73,13 +73,9 @@ public class Launch {
         }
     }
 
-    private Animator getAnimator() {
-        return null;
-    }
-
-    private Vector3d getOffset(PlayerEntity player) {
-        Vector3d offset = new Vector3d(0, 0, 1).yRot((float) Math.toRadians(player.yRot));
-        return new Vector3d(0, 1.5, 0).add(-offset.x, offset.y, offset.z);
+    protected Vector3d getOffset(PlayerEntity player) {
+        Vector3d offset = new Vector3d(0, 0, 0.75).yRot((float) Math.toRadians(player.yRot));
+        return new Vector3d(0, 1.25, 0).add(-offset.x, offset.y, offset.z);
     }
 
     public void moveBeyblade(BeybladeEntity beyblade) {
