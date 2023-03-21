@@ -32,6 +32,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -66,6 +68,31 @@ public class LayerItem extends BeyPartItem {
         this.resonanceColor = resonanceColor;
         this.secondResonanceColor = secondResonanceColor;
         this.thirdResonanceColor = thirdResonanceColor;
+    }
+
+    @Override
+    public StringTextComponent getName(ItemStack stack) {
+        List<ITextComponent> names = getPartsNames(stack);
+        StringTextComponent name = getLayerName(stack);
+        for (int i = 0; i < names.size(); i++) {
+            name.append(" ").append(names.get(i));
+        }
+        return name;
+    }
+
+    protected StringTextComponent getLayerName(ItemStack stack) {
+        return new StringTextComponent(getDisplayName());
+    }
+
+    protected List<ITextComponent> getPartsNames(ItemStack stack) {
+        List<ITextComponent> names = new ArrayList<>();
+
+        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
+            if(!itemHandler.getStackInSlot(0).isEmpty()) names.add(itemHandler.getStackInSlot(0).getHoverName());
+            if(!itemHandler.getStackInSlot(1).isEmpty()) names.add(itemHandler.getStackInSlot(1).getHoverName());
+        });
+
+        return names;
     }
 
     public ResourceLocation getBookCategory() {
@@ -112,7 +139,7 @@ public class LayerItem extends BeyPartItem {
         return result;
     }
 
-    protected Container getLayerContainer(int id, ItemStack stack, PlayerInventory playerInventory){
+    protected Container getLayerContainer(int id, ItemStack stack, PlayerInventory playerInventory) {
         return new LayerContainer(ModContainers.LAYER, id,
                 stack, playerInventory);
     }
@@ -158,10 +185,10 @@ public class LayerItem extends BeyPartItem {
             RenderObject mainScene = layer.addRenderObject(getModelInfo(cap.getStackInSlot(0).getItem()));
             mainScene.setHidden(true);
             RenderObject sceneDisc = mainScene.addChild(getModelInfo(cap.getStackInSlot(0).getItem()));
-            cap.getStackInSlot(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(discCap ->{
+            cap.getStackInSlot(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(discCap -> {
                 for (int i = 0; i < discCap.getSlots(); i++) {
                     ModelInfo model = getModelInfo(discCap.getStackInSlot(i).getItem());
-                    if (model!= null) {
+                    if (model != null) {
                         RenderObject child = sceneDisc.addChild(model);
                         if (cap.getStackInSlot(0).getItem() instanceof DiscFrameItem)
                             child.transform.rotate(0, ((DiscFrameItem) cap.getStackInSlot(0).getItem()).getFrameRotation(), 0);
@@ -177,13 +204,13 @@ public class LayerItem extends BeyPartItem {
             mainScene.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
             mainScene.transform.scale(0.3F, 0.3F, 0.3F);
             double stadiumCenterDistance = beyblade.findStadiumCenter().distanceTo(beyblade.getPosition(partialTicks));
-            double inclinationMultiplier = beyblade.getEnergy()>1?stadiumCenterDistance : 1-beyblade.getEnergy();
+            double inclinationMultiplier = beyblade.getEnergy() > 1 ? stadiumCenterDistance : 1 - beyblade.getEnergy();
             Vector3d vector = new Vector3d(-30, 0, this.getRotationDirection(beyblade.getStack()).getValue() * 30).multiply(inclinationMultiplier, inclinationMultiplier, inclinationMultiplier).yRot((float) Math.toRadians(MathHelper.lerp(partialTicks, beyblade.yRotO, beyblade.yRot)));
             mainScene.transform.rotate((float) vector.x, (float) 0, (float) -vector.z);
             sceneDisc.transform.rotate(0, MathHelper.lerp(partialTicks, beyblade.getSpinAngleO(), beyblade.getSpinAngle()), 0);
             int direction = getRotationDirection(beyblade.getStack()).getValue();
-            if(this instanceof DualLayerItem){
-                sceneLayer.transform.rotate(0, -(direction*35)+direction*(70*beyblade.getHealth()/beyblade.getMaxHealth()), 0);
+            if (this instanceof DualLayerItem) {
+                sceneLayer.transform.rotate(0, -(direction * 35) + direction * (70 * beyblade.getHealth() / beyblade.getMaxHealth()), 0);
             } else {
                 sceneLayer.transform.rotate(0, 10, 0);
             }

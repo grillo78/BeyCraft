@@ -15,6 +15,7 @@ import net.minecraft.nbt.INBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -37,6 +38,15 @@ public class DiscFrameItem extends DiscItem {
         this.attack = attack;
         this.defense = defense;
         this.weight = weight;
+    }
+
+    @Override
+    public StringTextComponent getName(ItemStack stack) {
+        StringTextComponent name = super.getName(stack);
+        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
+            if (!itemHandler.getStackInSlot(0).isEmpty()) name.append(" ").append(itemHandler.getStackInSlot(0).getHoverName());
+        });
+        return name;
     }
 
     @Override

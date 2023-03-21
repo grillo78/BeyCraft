@@ -9,10 +9,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class BeyPartItem extends Item {
 
@@ -40,6 +44,15 @@ public class BeyPartItem extends Item {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public StringTextComponent getName(ItemStack stack) {
+        return new StringTextComponent(displayName);
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public boolean canDropOnBurst() {

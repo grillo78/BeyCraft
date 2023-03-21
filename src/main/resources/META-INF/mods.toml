@@ -7,7 +7,7 @@ version="${file.jarVersion}"
 displayName="Beycraft Burst"
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json"
-displayURL="https://beycraft.ga/"
+displayURL="https://beycraft.com/"
 logoFile="logo.png"
 credits="Thanks to all the people that help with assets and the people of MCMC, MMD and Forge discord servers for the help."
 authors="grillo78, Marctron, Ángel, Pigiih"
