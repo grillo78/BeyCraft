@@ -30,14 +30,12 @@ public class DiscFrameItem extends DiscItem {
     private float frameRotation;
     private float attack;
     private float defense;
-    private float weight;
 
     public DiscFrameItem(String name, String displayName, float attack, float defense, float weight, float frameRotation, AbilityType primaryAbility, AbilityType secondaryAbility, BeyTypes type) {
         super(name, displayName, attack, defense, weight, primaryAbility, secondaryAbility, type);
         this.frameRotation = frameRotation;
         this.attack = attack;
         this.defense = defense;
-        this.weight = weight;
     }
 
     @Override
