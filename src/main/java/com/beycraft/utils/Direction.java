@@ -16,4 +16,8 @@ public enum Direction {
     public int getValue() {
         return value;
     }
+
+    public Direction inverted() {
+        return this == RIGHT? LEFT: RIGHT;
+    }
 }
