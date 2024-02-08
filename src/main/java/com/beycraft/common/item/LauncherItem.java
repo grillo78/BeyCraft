@@ -85,7 +85,7 @@ public class LauncherItem extends Item {
             if (player.isShiftKeyDown()) {
                 NetworkHooks.openGui((ServerPlayerEntity) player,
                         new SimpleNamedContainerProvider(
-                                (id, playerInventory, playerEntity) -> generateContainer(id, stack, playerInventory),
+                                (id, playerInventory, playerEntity) -> generateContainer(id, stack, playerInventory, hand),
                                 new StringTextComponent(getDescriptionId())));
                 result = ActionResult.success(stack);
             } else {
@@ -103,7 +103,7 @@ public class LauncherItem extends Item {
         return result;
     }
 
-    public LauncherContainer generateContainer(int id, ItemStack stack, PlayerInventory playerInventory) {
-        return new LauncherContainer(direction == Direction.RIGHT ? ModContainers.RIGHT_LAUNCHER : ModContainers.LEFT_LAUNCHER, id, stack, playerInventory, direction);
+    public LauncherContainer generateContainer(int id, ItemStack stack, PlayerInventory playerInventory, Hand hand) {
+        return new LauncherContainer(direction == Direction.RIGHT ? ModContainers.RIGHT_LAUNCHER : ModContainers.LEFT_LAUNCHER, id, stack, playerInventory, hand == Hand.MAIN_HAND, direction);
     }
 }

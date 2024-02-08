@@ -34,5 +34,16 @@
   "beycoins.successful.command.message": "You claimed %s BeyCoins",
   "beybox.successful.command.message": "You bought a random beyblade pack",
   "beybox.fail.command.message": "You don't have enough money to buy a random bey box",
-  "no_internet.message": "This mod requires access to internet to work, connect to it to play"
+  "no_internet.message": "This mod requires access to internet to work, connect to it to play",
+  "key.beycraft.category": "Beycraft",
+  "key.beycraft.activate_launch": "Activate Launch",
+  "key.beycraft.belt": "Open Belt Screen",
+  "key.beycraft.launch_screen": "Open Launch Screen",
+  "title.launches": "Launches",
+  "title.animations": "Animations",
+  "launch.basic_launch_type": "Basic Launch",
+  "launch.basic_attack_launch_type": "Basic Attack Launch",
+  "launch.flower_attack_launch_type": "Flower Pattern Launch",
+  "animation.basic_shoot": "Basic Shoot",
+  "animation.nightmare_shoot": "Nightmare Shoot"
 }

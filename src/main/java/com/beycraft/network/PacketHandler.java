@@ -33,6 +33,7 @@ public class PacketHandler {
         register(MessageWinCombat.class, new MessageWinCombat());
         register(MessageLoseCombat.class, new MessageLoseCombat());
         register(MessageApplyAnimation.class, new MessageApplyAnimation());
+        register(MessageOpenBeltContainer.class, new MessageOpenBeltContainer());
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.beycraft.client.book_component;
 
-import com.beycraft.Beycraft;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -29,7 +28,6 @@ public class BigItemComponent  implements ICustomComponent {
     public void build(int componentX, int componentY, int pageNum) {
         x = componentX;
         y = componentY;
-        Beycraft.LOGGER.debug("Custom Component Test built at ({}, {}) page {}", componentX, componentY, pageNum);
     }
 
     @Override
@@ -60,16 +58,11 @@ public class BigItemComponent  implements ICustomComponent {
         MatrixStack matrixstack = new MatrixStack();
         IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().renderBuffers().bufferSource();
         boolean flag = !p_191962_4_.usesBlockLight();
-        if (flag) {
+        if (flag)
             RenderHelper.setupForFlatItems();
-        }
 
         itemRenderer.render(p_191962_1_, ItemCameraTransforms.TransformType.GUI, false, matrixstack, irendertypebuffer$impl, 15728880, OverlayTexture.NO_OVERLAY, p_191962_4_);
         irendertypebuffer$impl.endBatch();
-        RenderSystem.enableDepthTest();
-        if (flag) {
-            RenderHelper.setupFor3DItems();
-        }
 
         RenderSystem.disableAlphaTest();
         RenderSystem.disableRescaleNormal();

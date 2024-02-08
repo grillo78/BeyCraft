@@ -4,6 +4,7 @@ import com.beycraft.common.container.LauncherContainer;
 import com.beycraft.common.container.ModContainers;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 
 public class DualLauncherItem extends LauncherItem{
 
@@ -13,7 +14,8 @@ public class DualLauncherItem extends LauncherItem{
     }
 
     @Override
-    public LauncherContainer generateContainer(int id, ItemStack stack, PlayerInventory playerInventory) {
-        return new LauncherContainer(ModContainers.DUAL_LAUNCHER, id, stack, playerInventory);
+    public LauncherContainer generateContainer(int id, ItemStack stack, PlayerInventory playerInventory, Hand hand) {
+
+        return new LauncherContainer(ModContainers.DUAL_LAUNCHER, id, stack, hand == Hand.MAIN_HAND, playerInventory);
     }
 }

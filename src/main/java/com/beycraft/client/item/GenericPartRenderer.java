@@ -4,7 +4,9 @@ import com.beycraft.client.util.BeyPartModel;
 import com.beycraft.common.item.DiscFrameItem;
 import com.beycraft.common.item.ModItems;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import friedrichlp.renderlib.library.RenderMode;
+import friedrichlp.renderlib.math.Vector3;
 import friedrichlp.renderlib.render.ViewBoxes;
 import friedrichlp.renderlib.tracking.RenderLayer;
 import friedrichlp.renderlib.tracking.RenderManager;
@@ -78,14 +80,11 @@ public class GenericPartRenderer extends ItemStackTileEntityRenderer {
             GL11.glTranslated(0, -0.5, 0);
             GL11.glScaled(2, 2, 2);
 
-//            RenderSystem.enableBlend();
-//            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            RenderSystem.enableDepthTest();
             sceneLayer.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
             sceneLayer.forceTransformUpdate();
             RenderManager.render(layer, RenderMode.USE_FFP_MATS);
             sceneLayer.remove();
-//            RenderSystem.disableBlend();
-//            RenderSystem.defaultBlendFunc();
         }
         matrixStack.popPose();
     }

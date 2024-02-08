@@ -30,6 +30,7 @@ import com.beycraft.common.stats.CustomStats;
 import com.beycraft.network.PacketHandler;
 import com.beycraft.network.message.MessageActivateLaunch;
 import com.beycraft.network.message.MessageGetExperience;
+import com.beycraft.network.message.MessageOpenBeltContainer;
 import com.beycraft.utils.ClientUtils;
 import com.beycraft.utils.CommonUtils;
 import com.beycraft.utils.Config;
@@ -42,6 +43,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.MainMenuScreen;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.BuiltInModel;
@@ -105,8 +107,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.UUID;
 
 @Mod(Beycraft.MOD_ID)
@@ -158,6 +158,7 @@ public class Beycraft {
             MinecraftForge.EVENT_BUS.addListener(this::onMouseScroll);
             MinecraftForge.EVENT_BUS.addListener(this::onScreenOpen);
             MinecraftForge.EVENT_BUS.addListener(this::onScreenRender);
+            MinecraftForge.EVENT_BUS.addListener(this::onInputUpdate);
         });
         if (HAS_INTERNET) {
             try {
@@ -177,9 +178,9 @@ public class Beycraft {
         LaunchTypes.LAUNCH_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
-    private SSLContext getDisabledSSLCheckContext(){
+    public static SSLContext getDisabledSSLCheckContext() {
         String javaVersion = System.getProperty("java.version");
-        if(javaVersion.startsWith("1.8.0_") && Integer.valueOf(javaVersion.substring(6))<101){
+        if (javaVersion.startsWith("1.8.0_") && Integer.valueOf(javaVersion.substring(6)) < 101) {
             try {
                 TrustManager[] trustAllCerts = new TrustManager[]{
                         new X509TrustManager() {
@@ -187,8 +188,10 @@ public class Beycraft {
                                 System.out.println("accepted SSL");
                                 return null;
                             }
+
                             public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
                             }
+
                             public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
                             }
                         }
@@ -267,6 +270,21 @@ public class Beycraft {
     }
 
     @OnlyIn(Dist.CLIENT)
+    public void onInputUpdate(InputUpdateEvent e) {
+        Blader blader = e.getPlayer().getCapability(BladerCapabilityProvider.BLADER_CAP).orElse(null);
+        if (blader != null && blader.isLaunching()) {
+            e.getMovementInput().right = false;
+            e.getMovementInput().left = false;
+            e.getMovementInput().up = false;
+            e.getMovementInput().down = false;
+            e.getMovementInput().shiftKeyDown = false;
+            e.getMovementInput().jumping = false;
+            e.getMovementInput().forwardImpulse = 0;
+            e.getMovementInput().leftImpulse = 0;
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
     private void onScreenOpen(final GuiOpenEvent event) {
         if (event.getGui() instanceof MainMenuScreen && firstScreenMenuOpen) {
             firstScreenMenuOpen = false;
@@ -283,6 +301,11 @@ public class Beycraft {
                 ClientUtils.RankingUtils.checkLogin(event);
             } catch (Exception e) {
             }
+        }
+        if (event.getGui() instanceof ContainerScreen) {
+            Blader blader = Minecraft.getInstance().player.getCapability(BladerCapabilityProvider.BLADER_CAP).orElse(null);
+            if (blader != null && blader.isLaunching())
+                event.setCanceled(true);
         }
     }
 
@@ -305,7 +328,7 @@ public class Beycraft {
                             (float) j1, 8453920);
                     Minecraft.getInstance().getEntityRenderDispatcher().textureManager
                             .bind(AbstractGui.GUI_ICONS_LOCATION);
-                    float i = (h.getExpForNextLevel() - h.getExperience()) / (Level.calcExpForNextLevel(h.getLevel()+1)-Level.calcExpForNextLevel(h.getLevel()));
+                    float i = (h.getExpForNextLevel() - h.getExperience()) / (Level.calcExpForNextLevel(h.getLevel() + 1) - Level.calcExpForNextLevel(h.getLevel()));
                     AbstractGui.blit(event.getMatrixStack(), 1, 27, 0, 74, 75, 5, 105, 256);
                     AbstractGui.blit(event.getMatrixStack(), 1, 27, 0, 79, (int) (75 - 75 * i), 5, 105, 256);
                 });
@@ -364,6 +387,9 @@ public class Beycraft {
         if (KeyBinds.ACTIVATE_LAUNCH.isDown() && event.getAction() == GLFW.GLFW_PRESS) {
             PacketHandler.INSTANCE.sendToServer(new MessageActivateLaunch());
         }
+        if (KeyBinds.BELT.isDown() && event.getAction() == GLFW.GLFW_PRESS) {
+            PacketHandler.INSTANCE.sendToServer(new MessageOpenBeltContainer());
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -400,26 +426,27 @@ public class Beycraft {
         ScreenManager.register(ModContainers.LEFT_LAUNCHER, LauncherScreen::new);
         ScreenManager.register(ModContainers.DUAL_LAUNCHER, LauncherScreen::new);
         ScreenManager.register(ModContainers.DISC_FRAME, DiscFrameScreen::new);
+        ScreenManager.register(ModContainers.BELT_CONTAINER, BeltScreen::new);
     }
 
-    public static class SpecialEvents {
+public static class SpecialEvents {
 
-        @SubscribeEvent
-        public void registerEntityType(final RegistryEvent.Register<EntityType<?>> event) {
+    @SubscribeEvent
+    public void registerEntityType(final RegistryEvent.Register<EntityType<?>> event) {
 
-            GlobalEntityTypeAttributes.put(ModEntities.BEYBLADE,
-                    BeybladeEntity.registerMonsterAttributes().build());
+        GlobalEntityTypeAttributes.put(ModEntities.BEYBLADE,
+                BeybladeEntity.registerMonsterAttributes().build());
 
+    }
+}
+
+public static class SpecialRuntimeEvents {
+
+    @SubscribeEvent
+    public void playerCapabilitiesInjection(final AttachCapabilitiesEvent<Entity> event) {
+        if (event.getObject() instanceof PlayerEntity) {
+            event.addCapability(new ResourceLocation(MOD_ID, "blader"), new BladerCapabilityProvider((PlayerEntity) event.getObject()));
         }
     }
-
-    public static class SpecialRuntimeEvents {
-
-        @SubscribeEvent
-        public void playerCapabilitiesInjection(final AttachCapabilitiesEvent<Entity> event) {
-            if (event.getObject() instanceof PlayerEntity) {
-                event.addCapability(new ResourceLocation(MOD_ID, "blader"), new BladerCapabilityProvider((PlayerEntity) event.getObject()));
-            }
-        }
-    }
+}
 }

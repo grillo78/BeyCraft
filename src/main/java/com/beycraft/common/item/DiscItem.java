@@ -2,7 +2,7 @@ package com.beycraft.common.item;
 
 import com.beycraft.BeyTypes;
 import com.beycraft.Beycraft;
-import com.beycraft.ability.AbilityType;
+import com.beycraft.common.ability.AbilityType;
 import com.beycraft.client.item.GenericPartRenderer;
 import com.beycraft.common.tab.BeycraftItemGroup;
 import net.minecraft.item.Item;

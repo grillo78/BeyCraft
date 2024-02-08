@@ -28,8 +28,6 @@ public class LauncherRenderer extends ItemStackTileEntityRenderer {
                              IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
         matrixStack.pushPose();
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-            if (cap.getStackInSlot(1).getItem() instanceof HandleItem)
-                matrixStack.translate(0.1, 0, 0);
             IBakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(Beycraft.MOD_ID,
                     "launchers/" + stack.getItem().getRegistryName().getPath() + "/launcher_body"));
 
@@ -55,8 +53,8 @@ public class LauncherRenderer extends ItemStackTileEntityRenderer {
             if (transformType != ItemCameraTransforms.TransformType.GUI) {
                 ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
                 matrixStack.pushPose();
-                matrixStack.translate(0.35, 0.4, 0.2);
-                matrixStack.scale(0.75F, 0.75F, 0.75F);
+                matrixStack.translate(0.4, 0.45, 0.325);
+                matrixStack.scale(0.85F, 0.85F, 0.85F);
                 itemRenderer.renderStatic(cap.getStackInSlot(1), ItemCameraTransforms.TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
                 itemRenderer.renderStatic(cap.getStackInSlot(2), ItemCameraTransforms.TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
                 matrixStack.popPose();

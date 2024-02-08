@@ -1,7 +1,9 @@
 package com.beycraft.common.container;
 
-import com.beycraft.common.container.slot.*;
-import com.beycraft.utils.Direction;
+import com.beycraft.common.container.slot.BeltBeySlot;
+import com.beycraft.common.container.slot.BeltLauncherSlot;
+import com.beycraft.common.container.slot.FusionWheelSlot;
+import com.beycraft.common.container.slot.LockedSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -16,36 +18,19 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 
-public class LauncherContainer extends Container {
+public class BeltContainer extends Container {
 
-    public LauncherContainer(@Nullable ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory, boolean mainHand, Direction direction) {
-        super(type, id);
-        addSlots(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseGet(() -> new ItemStackHandler(3)), direction);
-        addPlayerSlots(new InvWrapper(playerInventory), playerInventory.selected, mainHand);
+    public BeltContainer(@Nullable ContainerType<?> pMenuType, int pContainerId, ItemStack stack, PlayerInventory playerInventory) {
+        super(pMenuType, pContainerId);
+
+        IItemHandler cap = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseGet(() -> new ItemStackHandler(2));
+
+        addSlot(new BeltBeySlot(cap, 0, 10, 15));
+        addSlot(new BeltLauncherSlot(cap, 1, 10, 35));
+        addPlayerSlots(new InvWrapper(playerInventory), playerInventory.selected);
     }
 
-    public LauncherContainer(@Nullable ContainerType<?> type, int id, ItemStack stack, boolean mainHand, PlayerInventory playerInventory) {
-        super(type, id);
-        addSlots(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseGet(() -> new ItemStackHandler(3)));
-        addPlayerSlots(new InvWrapper(playerInventory), playerInventory.selected, mainHand);
-    }
-
-    protected void addSlots(IItemHandler cap, Direction direction) {
-        this.addSlot(new BeySlot(cap, 0, 10, 15, direction));
-        this.addOtherSlots(cap);
-    }
-
-    private void addOtherSlots(IItemHandler cap) {
-        this.addSlot(new HandleSlot(cap, 1, 38, 15));
-        this.addSlot(new BeyloggerSlot(cap, 2, 10, 35));
-    }
-
-    protected void addSlots(IItemHandler cap) {
-        this.addSlot(new BeySlotDual(cap, 0, 10, 15));
-        this.addOtherSlots(cap);
-    }
-
-    protected void addPlayerSlots(InvWrapper playerInventory, int locked, boolean mainHand) {
+    protected void addPlayerSlots(InvWrapper playerInventory, int locked) {
         int yStart = 30 + 18 * 3;
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
@@ -58,15 +43,14 @@ public class LauncherContainer extends Container {
         for (int row = 0; row < 9; ++row) {
             int x = 8 + row * 18;
             int y = yStart + 58;
-            if (row == locked && mainHand)
-                this.addSlot(new LockedSlot(playerInventory, row, x, y));
-            else
+            if (row != locked)
                 this.addSlot(new SlotItemHandler(playerInventory, row, x, y));
+            else
+                this.addSlot(new LockedSlot(playerInventory, row, x, y));
         }
     }
-
     @Override
-    public boolean stillValid(PlayerEntity playerIn) {
+    public boolean stillValid(PlayerEntity pPlayer) {
         return true;
     }
 

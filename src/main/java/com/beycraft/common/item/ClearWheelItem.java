@@ -1,13 +1,12 @@
 package com.beycraft.common.item;
 
 import com.beycraft.BeyTypes;
-import com.beycraft.ability.AbilityType;
+import com.beycraft.common.ability.AbilityType;
 import com.beycraft.common.container.ClearWheelContainer;
 import com.beycraft.common.container.ModContainers;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 

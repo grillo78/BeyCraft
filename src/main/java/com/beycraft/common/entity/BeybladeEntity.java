@@ -1,5 +1,6 @@
 package com.beycraft.common.entity;
 
+import com.beycraft.common.ability.Ability;
 import com.beycraft.common.block.ModBlocks;
 import com.beycraft.common.block.StadiumBlock;
 import com.beycraft.common.item.BeyPartItem;
@@ -42,6 +43,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import xyz.heroesunited.heroesunited.common.abilities.AbilityHelper;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -191,6 +193,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     @Override
     protected void doPush(Entity entity) {
         if (!level.isClientSide && entity instanceof BeybladeEntity) {
+            layer.getAbilities();
             setEnergy((float) (getEnergy() - ((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE) / 30));
             launch.onAttack(this, (BeybladeEntity) entity);
         }

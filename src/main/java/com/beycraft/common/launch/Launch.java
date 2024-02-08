@@ -1,6 +1,5 @@
 package com.beycraft.common.launch;
 
-import com.alrex.parcool.client.animation.Animator;
 import com.beycraft.common.capability.entity.Blader;
 import com.beycraft.common.capability.entity.BladerCapabilityProvider;
 import com.beycraft.common.entity.BeybladeEntity;
@@ -25,10 +24,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkDirection;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class Launch {
 
     protected LaunchType launchType;
     protected boolean activated = false;
+    private static final ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 
     public Launch(LaunchType launchType) {
         this.launchType = launchType;
@@ -44,32 +48,28 @@ public class Launch {
 
     public void launchBeyblade(ItemStack beyblade, World level, ServerPlayerEntity player, Hand hand) {
         Blader blader = player.getCapability(BladerCapabilityProvider.BLADER_CAP).orElse(null);
-        if(!blader.isLaunching()){
+        if (!blader.isLaunching()) {
             PacketHandler.INSTANCE.sendTo(new MessageApplyAnimation(player.getUUID(), hand), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 
-            new Thread(()->{
-                try {
-                    blader.setLaunching(true);
-                    blader.syncToAll();
-                    Thread.sleep(3250);
-                    player.awardStat(CustomStats.LAUNCH);
-                    LayerItem layer = (LayerItem) beyblade.getItem();
-                    BeybladeEntity beybladeEntity = new BeybladeEntity(level, beyblade.copy(), this, player.getUUID());
-                    Vector3d position = new Vector3d(player.position().x,
-                            player.position().y,
-                            player.position().z);
-                    position = position.add(getOffset(player));
 
-                    beybladeEntity.moveTo(position.x, position.y, position.z, (float) (player.yRot + layer.getRotationDirection(beyblade).getValue() * Math.toRadians(-45)), 0);
-                    level.addFreshEntity(beybladeEntity);
-                    beybladeEntity.setDeltaMovement(getLaunchImpulse(player));
-                    beyblade.shrink(1);
-                    blader.setLaunching(false);
-                    blader.syncToAll();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).run();
+            blader.setLaunching(true);
+            blader.syncToAll();
+            threadPool.schedule(() -> {
+                player.awardStat(CustomStats.LAUNCH);
+                LayerItem layer = (LayerItem) beyblade.getItem();
+                BeybladeEntity beybladeEntity = new BeybladeEntity(level, beyblade.copy(), this, player.getUUID());
+                Vector3d position = new Vector3d(player.position().x,
+                        player.position().y,
+                        player.position().z);
+                position = position.add(getOffset(player));
+
+                beybladeEntity.moveTo(position.x, position.y, position.z, (float) (player.yRot + layer.getRotationDirection(beyblade).getValue() * Math.toRadians(-45)), 0);
+                level.addFreshEntity(beybladeEntity);
+                beybladeEntity.setDeltaMovement(getLaunchImpulse(player));
+                beyblade.shrink(1);
+                blader.setLaunching(false);
+                blader.syncToAll();
+            }, 3250, TimeUnit.SECONDS);
         }
     }
 

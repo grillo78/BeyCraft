@@ -6,5 +6,7 @@
   "creative_tab": "beycraft",
   "nameplate_color": "000000",
   "show_progress": false,
-  "custom_book_item": "beycraft:beypad"
+  "custom_book_item": "beycraft:beypad",
+  "open_sound": "beycraft:tablet_wink",
+  "flip_sound": "beycraft:tablet_wink"
 }

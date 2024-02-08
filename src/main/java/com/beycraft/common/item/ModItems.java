@@ -2,7 +2,7 @@ package com.beycraft.common.item;
 
 import com.beycraft.BeyTypes;
 import com.beycraft.Beycraft;
-import com.beycraft.ability.AbilityType;
+import com.beycraft.common.ability.AbilityType;
 import com.beycraft.common.tab.BeycraftItemGroup;
 import com.beycraft.utils.Direction;
 import friedrichlp.renderlib.RenderLibSettings;
@@ -63,6 +63,8 @@ public class ModItems {
             new AccessoryItem(EquipmentAccessoriesSlot.TSHIRT));
     public static final AccessoryItem BARUTO_GLOVES_CHO_Z = register( "baruto_gloves_cho_z",
             new AccessoryItem(EquipmentAccessoriesSlot.GLOVES));
+    public static final AccessoryItem BELT = register( "belt",
+            new BladerBelt());
 
     //Utils
     public static final Item PLASTIC = register("plastic", new Item(new Item.Properties().tab(BeycraftItemGroup.INSTANCE)));
@@ -123,7 +125,7 @@ public class ModItems {
                                         Float.parseFloat(properties.getProperty("weight")),
                                         Float.parseFloat(properties.getProperty("burst")),
                                         getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
                                         properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null,
                                         new LayerItem.Color(rgb[0], rgb[1], rgb[2]),
                                         new LayerItem.Color(rgb2[0], rgb2[1], rgb2[2]),
@@ -136,7 +138,7 @@ public class ModItems {
                                         Float.parseFloat(properties.getProperty("weight")),
                                         Float.parseFloat(properties.getProperty("burst")),
                                         getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
                                         properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null,
                                         new LayerItem.Color(rgb[0], rgb[1], rgb[2]),
                                         new LayerItem.Color(rgb2[0], rgb2[1], rgb2[2]),
@@ -148,7 +150,7 @@ public class ModItems {
                                         Float.parseFloat(properties.getProperty("defense")),
                                         Float.parseFloat(properties.getProperty("weight")),
                                         getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
                                         properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
                                 break;
                             case "frame":
@@ -164,7 +166,7 @@ public class ModItems {
                                         Float.parseFloat(properties.getProperty("weight")),
                                         Float.parseFloat(properties.getProperty("frameRotation")),
                                         getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
                                         properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
                                 break;
                             case "driver":
@@ -173,7 +175,7 @@ public class ModItems {
                                         Float.parseFloat(properties.getProperty("radiusReduction")),
                                         properties.containsKey("speed")?Float.parseFloat(properties.getProperty("speed")) + 5 : 10,
                                         getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
                                         properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
                                 break;
 //                            case "GTlayer":
@@ -183,7 +185,7 @@ public class ModItems {
 //                                        Float.parseFloat(properties.getProperty("defense")),
 //                                        Float.parseFloat(properties.getProperty("weight")),
 //                                        getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-//                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+//                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
 //                                        properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
 //                                break;
 //                            case "GTlayerDual":
@@ -192,7 +194,7 @@ public class ModItems {
 //                                        Float.parseFloat(properties.getProperty("defense")),
 //                                        Float.parseFloat(properties.getProperty("weight")),
 //                                        getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-//                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+//                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
 //                                        properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
 //                                break;
 //
@@ -203,7 +205,7 @@ public class ModItems {
 //                                        Float.parseFloat(properties.getProperty("defense")),
 //                                        Float.parseFloat(properties.getProperty("weight")),
 //                                        getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-//                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+//                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
 //                                        properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
 //                                break;
 //                            case "GTlayerDualNoWeight":
@@ -212,7 +214,7 @@ public class ModItems {
 //                                        Float.parseFloat(properties.getProperty("defense")),
 //                                        Float.parseFloat(properties.getProperty("weight")),
 //                                        getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-//                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+//                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
 //                                        properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
 //                                break;
 //                            case "GTchip":
@@ -237,7 +239,7 @@ public class ModItems {
                                         Float.parseFloat(properties.getProperty("defense")),
                                         Float.parseFloat(properties.getProperty("weight")),
                                         getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
                                         properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
                                 break;
                             case "ClearWheel":
@@ -246,7 +248,7 @@ public class ModItems {
                                         Float.parseFloat(properties.getProperty("weight")),
                                         Float.parseFloat(properties.getProperty("burst")),
                                         getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-                                        getSecondAbilityByName(properties.getProperty("secondAbilityName"), properties),
+                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
                                         properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null, new LayerItem.Color(rgb[0], rgb[1], rgb[2]),
                                         new LayerItem.Color(rgb2[0], rgb2[1], rgb2[2]), new LayerItem.Color(rgb3[0], rgb3[1], rgb3[2]));
                                 break;
@@ -279,10 +281,6 @@ public class ModItems {
         }
 
         private static AbilityType getFirstAbilityByName(String firstAbilityName, Properties properties) {
-            return null;
-        }
-
-        private static AbilityType getSecondAbilityByName(String firstAbilityName, Properties properties) {
             return null;
         }
     }

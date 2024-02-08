@@ -96,6 +96,7 @@ public class LayerRenderer extends ItemStackTileEntityRenderer {
 
             sceneLayer.transform.setPosition((float) pos.x, (float) pos.y, (float) pos.z);
             sceneLayer.forceTransformUpdate();
+            RenderSystem.enableDepthTest();
             RenderManager.render(layer, RenderMode.USE_FFP_MATS);
             sceneLayer.remove();
             RenderSystem.disableBlend();

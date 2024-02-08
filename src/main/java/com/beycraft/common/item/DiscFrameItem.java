@@ -1,7 +1,7 @@
 package com.beycraft.common.item;
 
 import com.beycraft.BeyTypes;
-import com.beycraft.ability.AbilityType;
+import com.beycraft.common.ability.AbilityType;
 import com.beycraft.common.capability.item.parts.DiscFrameCapabilityProvider;
 import com.beycraft.common.container.DiscFrameContainer;
 import com.beycraft.common.container.ModContainers;
@@ -15,7 +15,6 @@ import net.minecraft.nbt.INBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;

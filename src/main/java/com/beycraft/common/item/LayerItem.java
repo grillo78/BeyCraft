@@ -2,7 +2,8 @@ package com.beycraft.common.item;
 
 import com.beycraft.BeyTypes;
 import com.beycraft.Beycraft;
-import com.beycraft.ability.AbilityType;
+import com.beycraft.common.ability.Ability;
+import com.beycraft.common.ability.AbilityType;
 import com.beycraft.client.item.LayerRenderer;
 import com.beycraft.common.capability.item.parts.BeyCapabilityProvider;
 import com.beycraft.common.container.LayerContainer;
@@ -11,6 +12,7 @@ import com.beycraft.common.entity.BeybladeEntity;
 import com.beycraft.common.tab.BeycraftItemGroup;
 import com.beycraft.utils.Direction;
 import com.google.common.util.concurrent.AtomicDouble;
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
 import friedrichlp.renderlib.library.RenderMode;
 import friedrichlp.renderlib.tracking.ModelInfo;
@@ -32,7 +34,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
@@ -70,6 +71,28 @@ public class LayerItem extends BeyPartItem {
         this.thirdResonanceColor = thirdResonanceColor;
     }
 
+
+    public List<Ability> getAbilities(ItemStack stack) {
+
+        List<Ability> abilities = new ArrayList<>();
+
+        if (getPrimaryAbility() != null)
+            abilities.add(getPrimaryAbility());
+        if (getSecondaryAbility() != null)
+            abilities.add(getSecondaryAbility());
+
+        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
+            for (int i = 0; i < itemHandler.getSlots(); i++) {
+                if (itemHandler.getStackInSlot(i).getItem() instanceof BeyPartItem)
+                    abilities.add(((DiscItem) itemHandler.getStackInSlot(i).getItem()).getPrimaryAbility());
+                if (itemHandler.getStackInSlot(i).getItem() instanceof BeyPartItem)
+                    abilities.add(((DiscItem) itemHandler.getStackInSlot(i).getItem()).getSecondaryAbility());
+            }
+        });
+
+        return abilities;
+    }
+
     @Override
     public StringTextComponent getName(ItemStack stack) {
         List<ITextComponent> names = getPartsNames(stack);
@@ -97,6 +120,12 @@ public class LayerItem extends BeyPartItem {
 
     public ResourceLocation getBookCategory() {
         return new ResourceLocation(Beycraft.MOD_ID, "layers");
+    }
+
+    @Override
+    protected JsonObject getSecondPage() {
+        JsonObject page = super.getSecondPage();
+        return page;
     }
 
     public Color getResonanceColor() {

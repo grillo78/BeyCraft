@@ -33,11 +33,11 @@ public class BeyloggerCapabilityProvider implements ICapabilityProvider, ICapabi
 
     @Override
     public CompoundNBT serializeNBT() {
-        return (CompoundNBT) BEYLOGGER.getStorage().writeNBT(BEYLOGGER, beylogger.orElseThrow(NullPointerException::new), null);
+        return (CompoundNBT) beylogger.orElseThrow(NullPointerException::new).writeNBT();
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        BEYLOGGER.getStorage().readNBT(BEYLOGGER, beylogger.orElseThrow(NullPointerException::new), null, nbt);
+        beylogger.orElseThrow(NullPointerException::new).readNBT(nbt);
     }
 }

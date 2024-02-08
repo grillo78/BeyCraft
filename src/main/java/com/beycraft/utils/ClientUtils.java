@@ -1,5 +1,6 @@
 package com.beycraft.utils;
 
+import com.beycraft.Beycraft;
 import com.beycraft.client.screen.LoginScreen;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -51,7 +52,7 @@ public class ClientUtils {
                 Properties tokenProperties = new Properties();
                 tokenProperties.load(new FileReader(tokenFile));
                 if(tokenProperties.containsKey("token")){
-                    CloseableHttpClient httpclient = HttpClients.createDefault();
+                HttpClient httpclient = HttpClients.custom().setSslcontext(Beycraft.getDisabledSSLCheckContext()).build();
                     HttpPost httppost = new HttpPost("https://beycraft.com/API/v3/check_login/?token=" + tokenProperties.getProperty("token"));
 
                     HttpResponse response = httpclient.execute(httppost);
@@ -136,7 +137,7 @@ public class ClientUtils {
         public static void increaseExperience(float experience) {
             new Thread(() -> {
                 try {
-                    CloseableHttpClient httpclient = HttpClients.createDefault();
+                HttpClient httpclient = HttpClients.custom().setSslcontext(Beycraft.getDisabledSSLCheckContext()).build();
                     HttpPost httppost = new HttpPost("https://beycraft.com/API/v2/ranking/increase_experience/");
 
                     List<NameValuePair> params = new ArrayList<>();
@@ -160,7 +161,7 @@ public class ClientUtils {
         public static void winCombat() {
             new Thread(() -> {
                 try {
-                    CloseableHttpClient httpclient = HttpClients.createDefault();
+                HttpClient httpclient = HttpClients.custom().setSslcontext(Beycraft.getDisabledSSLCheckContext()).build();
                     HttpPost httppost = new HttpPost("https://beycraft.com/API/ranking/win_battle/");
 
                     List<NameValuePair> params = new ArrayList<>();
@@ -184,7 +185,7 @@ public class ClientUtils {
 
             new Thread(() -> {
                 try {
-                    CloseableHttpClient httpclient = HttpClients.createDefault();
+                HttpClient httpclient = HttpClients.custom().setSslcontext(Beycraft.getDisabledSSLCheckContext()).build();
                     HttpPost httppost = new HttpPost("https://beycraft.com/API/ranking/lose_battle/");
 
                     List<NameValuePair> params = new ArrayList<>();

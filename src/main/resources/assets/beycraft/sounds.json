@@ -38,5 +38,15 @@
         "stream": true
       }
     ]
+  },
+  "tablet_wink": {
+    "category": "player",
+    "subtitle": "tablet wink",
+    "sounds": [
+      {
+        "name": "beycraft:tablet_wink",
+        "stream": true
+      }
+    ]
   }
 }
