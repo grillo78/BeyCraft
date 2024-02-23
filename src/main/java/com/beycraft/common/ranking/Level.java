@@ -16,7 +16,6 @@ public class Level {
         CompoundNBT compound = new CompoundNBT();
         compound.putInt("level", level);
         compound.putFloat("experience", experience);
-        compound.putFloat("expForNexLevel", expForNextLevel);
         return compound;
     }
 
@@ -24,12 +23,12 @@ public class Level {
         Level level = new Level();
         level.level = compound.getInt("level");
         level.experience = compound.getFloat("experience");
-        level.expForNextLevel = compound.getFloat("expForNexLevel");
+        level.calcExpForNextLevel();
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setCustomLevel(int level) {
+        setExperience(calcExpForNextLevel(level));
     }
 
     public int getLevel() {
@@ -47,7 +46,7 @@ public class Level {
     }
 
     public void calcExpForNextLevel() {
-        expForNextLevel = calcExpForNextLevel(level);
+        expForNextLevel = calcExpForNextLevel(level+1);
     }
 
     public float getExpForNextLevel() {

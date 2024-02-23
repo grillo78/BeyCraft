@@ -26,6 +26,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.ActionResult;
@@ -71,7 +72,6 @@ public class LayerItem extends BeyPartItem {
         this.thirdResonanceColor = thirdResonanceColor;
     }
 
-
     public List<Ability> getAbilities(ItemStack stack) {
 
         List<Ability> abilities = new ArrayList<>();
@@ -84,9 +84,9 @@ public class LayerItem extends BeyPartItem {
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
             for (int i = 0; i < itemHandler.getSlots(); i++) {
                 if (itemHandler.getStackInSlot(i).getItem() instanceof BeyPartItem)
-                    abilities.add(((DiscItem) itemHandler.getStackInSlot(i).getItem()).getPrimaryAbility());
+                    abilities.add(((BeyPartItem) itemHandler.getStackInSlot(i).getItem()).getPrimaryAbility());
                 if (itemHandler.getStackInSlot(i).getItem() instanceof BeyPartItem)
-                    abilities.add(((DiscItem) itemHandler.getStackInSlot(i).getItem()).getSecondaryAbility());
+                    abilities.add(((BeyPartItem) itemHandler.getStackInSlot(i).getItem()).getSecondaryAbility());
             }
         });
 
@@ -149,7 +149,10 @@ public class LayerItem extends BeyPartItem {
     public boolean isBeyAssembled(ItemStack stack) {
         AtomicBoolean assembled = new AtomicBoolean(true);
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-
+            for (int i = 0; i < getSlotsAmount(); i++) {
+                if (cap.getStackInSlot(i).getItem() == Items.AIR)
+                    assembled.set(false);
+            }
         });
         return assembled.get();
     }

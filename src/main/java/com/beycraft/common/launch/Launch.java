@@ -28,7 +28,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Launch {
+public class    Launch {
 
     protected LaunchType launchType;
     protected boolean activated = false;
@@ -49,10 +49,11 @@ public class Launch {
     public void launchBeyblade(ItemStack beyblade, World level, ServerPlayerEntity player, Hand hand) {
         Blader blader = player.getCapability(BladerCapabilityProvider.BLADER_CAP).orElse(null);
         if (!blader.isLaunching()) {
-            PacketHandler.INSTANCE.sendTo(new MessageApplyAnimation(player.getUUID(), hand), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
-
+            if(launchType != LaunchTypes.HAND_LAUNCH_TYPE)
+                PacketHandler.INSTANCE.sendTo(new MessageApplyAnimation(player.getUUID(), hand), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 
             blader.setLaunching(true);
+            blader.getBladerLevel().increaseExperience(0.01F);
             blader.syncToAll();
             threadPool.schedule(() -> {
                 player.awardStat(CustomStats.LAUNCH);
@@ -69,7 +70,7 @@ public class Launch {
                 beyblade.shrink(1);
                 blader.setLaunching(false);
                 blader.syncToAll();
-            }, 3250, TimeUnit.SECONDS);
+            }, 3250, TimeUnit.MILLISECONDS);
         }
     }
 

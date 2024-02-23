@@ -11,6 +11,7 @@ import friedrichlp.renderlib.model.ModelLoaderProperty;
 import friedrichlp.renderlib.tracking.ModelInfo;
 import friedrichlp.renderlib.tracking.ModelManager;
 import net.minecraft.item.Item;
+import net.minecraft.util.IItemProvider;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.DeferredRegister;
@@ -69,6 +70,7 @@ public class ModItems {
     //Utils
     public static final Item PLASTIC = register("plastic", new Item(new Item.Properties().tab(BeycraftItemGroup.INSTANCE)));
     public static final Item BEYPAD = register("beypad", new Item(new Item.Properties()));
+    public static final IItemProvider BEYCOIN = register("beycoin", new BeycoinItem());
 
     static {
         ItemCreator.getItemsFromFolder();
@@ -144,6 +146,20 @@ public class ModItems {
                                         new LayerItem.Color(rgb2[0], rgb2[1], rgb2[2]),
                                         new LayerItem.Color(rgb3[0], rgb3[1], rgb3[2]));
                                 break;
+                            case "GTlayer":
+                                item = new LayerGTItem(file.getName().replace(".properties", ""), properties.getProperty("name"),
+                                        Integer.parseInt(properties.getProperty("rotationDirection")),
+                                        Float.parseFloat(properties.getProperty("attack")),
+                                        Float.parseFloat(properties.getProperty("defense")),
+                                        Float.parseFloat(properties.getProperty("weight")),
+                                        Float.parseFloat(properties.getProperty("burst")),
+                                        getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
+                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
+                                        properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null,
+                                        new LayerItem.Color(rgb[0], rgb[1], rgb[2]),
+                                        new LayerItem.Color(rgb2[0], rgb2[1], rgb2[2]),
+                                        new LayerItem.Color(rgb3[0], rgb3[1], rgb3[2]));
+                                break;
                             case "disc":
                                 item = new DiscItem(file.getName().replace(".properties", ""), properties.getProperty("name"),
                                         Float.parseFloat(properties.getProperty("attack")),
@@ -178,16 +194,6 @@ public class ModItems {
                                         getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
                                         properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
                                 break;
-//                            case "GTlayer":
-//                                item = new LayerGTItem(file.getName().replace(".properties", ""), properties.getProperty("name"),
-//                                        Integer.parseInt(properties.getProperty("rotationDirection")),
-//                                        Float.parseFloat(properties.getProperty("attack")),
-//                                        Float.parseFloat(properties.getProperty("defense")),
-//                                        Float.parseFloat(properties.getProperty("weight")),
-//                                        getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
-//                                        getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
-//                                        properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
-//                                break;
 //                            case "GTlayerDual":
 //                                item = new LayerGTDualItem(file.getName().replace(".properties", ""), properties.getProperty("name"),
 //                                        Float.parseFloat(properties.getProperty("attack")),
@@ -229,10 +235,11 @@ public class ModItems {
 //                                        properties.containsKey("burst") ? Float.parseFloat(properties.getProperty("burst")) : 2, new LayerItem.Color(rgb[0], rgb[1], rgb[2]),
 //                                        new LayerItem.Color(rgb2[0], rgb2[1], rgb2[2]), new LayerItem.Color(rgb3[0], rgb3[1], rgb3[2]));
 //                                break;
-//                            case "GTWeight":
-//                                item = new ItemBeyGTWeight(file.getName().replace(".properties", ""), properties.getProperty("name"),
-//                                        Float.valueOf(properties.getProperty("weight")));
-//                                break;
+                            case "GTWeight":
+                                item = new GTWeightItem(file.getName().replace(".properties", ""), properties.getProperty("name"),
+                                        Float.valueOf(properties.getProperty("weight")),
+                                        properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);
+                                break;
                             case "FusionWheel":
                                 item = new FusionWheelItem(file.getName().replace(".properties", ""), properties.getProperty("name"),
                                         Float.parseFloat(properties.getProperty("attack")),

@@ -1,6 +1,5 @@
 package com.beycraft.common.entity;
 
-import com.beycraft.common.ability.Ability;
 import com.beycraft.common.block.ModBlocks;
 import com.beycraft.common.block.StadiumBlock;
 import com.beycraft.common.item.BeyPartItem;
@@ -43,7 +42,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import xyz.heroesunited.heroesunited.common.abilities.AbilityHelper;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -61,6 +59,8 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     private Vector3d[] points = new Vector3d[10];
     private UUID owner;
     private boolean onResonance = false;
+    private int resonanceTimer = 0;
+    private int resonanceCooldown = 0;
 
     public BeybladeEntity(World level, ItemStack beyblade, Launch launch, UUID owner) {
         this(ModEntities.BEYBLADE, level);
@@ -130,6 +130,8 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
                 if ((level.getBlockState(pos).getBlock() != ModBlocks.STADIUM && level.getBlockState(pos).getBlock() != Blocks.AIR) || getEnergy() < 0)
                     setStopped(true);
                 if (!isStopped()) {
+                    if(onResonance){
+                    }
                     if (onGround) {
                         setEnergy((float) (getEnergy() - 0.01 * layer.getFriction(beyblade)));
                         launch.moveBeyblade(this);
@@ -193,7 +195,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     @Override
     protected void doPush(Entity entity) {
         if (!level.isClientSide && entity instanceof BeybladeEntity) {
-            layer.getAbilities();
+            layer.getAbilities(beyblade);
             setEnergy((float) (getEnergy() - ((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE) / 30));
             launch.onAttack(this, (BeybladeEntity) entity);
         }

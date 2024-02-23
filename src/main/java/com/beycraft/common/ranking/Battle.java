@@ -5,8 +5,6 @@ import com.beycraft.common.block_entity.StadiumTileEntity;
 import com.beycraft.common.capability.entity.BladerCapabilityProvider;
 import com.beycraft.common.entity.BeybladeEntity;
 import com.beycraft.network.PacketHandler;
-import com.beycraft.network.message.MessageLoseCombat;
-import com.beycraft.network.message.MessageWinCombat;
 import com.beycraft.utils.CommonUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -153,12 +151,10 @@ public class Battle {
                 h.getWallet().increaseCurrency(points.get(player));
             });
 
-            PacketHandler.INSTANCE.sendTo(new MessageWinCombat(), player.connection.getConnection(),
-                    NetworkDirection.PLAY_TO_CLIENT);
+            //TO-DO notify win combat
             points.forEach((auxPlayer, points) -> {
                 if (auxPlayer != player) {
-                    PacketHandler.INSTANCE.sendTo(new MessageLoseCombat(), ((ServerPlayerEntity) auxPlayer).connection.getConnection(),
-                            NetworkDirection.PLAY_TO_CLIENT);
+                    //TO-DO notify lose combat
 
                     auxPlayer.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(h -> {
                         h.getWallet().increaseCurrency(this.points.get(auxPlayer));

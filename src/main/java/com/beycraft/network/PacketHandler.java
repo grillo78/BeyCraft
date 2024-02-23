@@ -27,13 +27,11 @@ public class PacketHandler {
         // Register packets
         register(MessageSyncBladerCap.class, new MessageSyncBladerCap());
         register(MessageToServerSyncBladerCap.class, new MessageToServerSyncBladerCap());
-        register(MessageGetExperience.class, new MessageGetExperience());
         register(MessageActivateLaunch.class, new MessageActivateLaunch());
         register(MessageActivateResonance.class, new MessageActivateResonance());
-        register(MessageWinCombat.class, new MessageWinCombat());
-        register(MessageLoseCombat.class, new MessageLoseCombat());
         register(MessageApplyAnimation.class, new MessageApplyAnimation());
         register(MessageOpenBeltContainer.class, new MessageOpenBeltContainer());
+        register(MessageHandSpinning.class, new MessageHandSpinning());
     }
 
     /**

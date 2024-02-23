@@ -34,8 +34,8 @@ public abstract class BeyPartItem extends Item {
 
     public BeyPartItem(String name, String displayName, BeyTypes type, AbilityType primaryAbility, AbilityType secondaryAbility, ItemGroup tab, Properties properties) {
         super(properties.tab(tab).stacksTo(1));
-        this.primaryAbility = primaryAbility.getAbility();
-        this.secondaryAbility = secondaryAbility.getAbility();
+        if (primaryAbility != null) this.primaryAbility = primaryAbility.getAbility();
+        if (secondaryAbility != null) this.secondaryAbility = secondaryAbility.getAbility();
         this.type = type;
         this.name = name;
         this.displayName = displayName;
