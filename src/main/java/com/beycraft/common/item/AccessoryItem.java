@@ -1,6 +1,7 @@
 package com.beycraft.common.item;
 
 import com.beycraft.common.tab.BeycraftItemGroup;
+import net.minecraft.client.shader.Shader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

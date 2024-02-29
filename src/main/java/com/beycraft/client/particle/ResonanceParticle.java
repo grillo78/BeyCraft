@@ -42,21 +42,19 @@ public class ResonanceParticle extends SpriteTexturedParticle {
 
     protected ResonanceParticle(ClientWorld p_i232448_1_, double x, double y, double z, double speedX, double speedY, double speedZ) {
         super(p_i232448_1_, x, y, z, 0, 0, 0);
-        this.xd = speedX;
-        this.yd = speedY;
-        this.zd = speedZ;
         List<Entity> list = this.level.getEntities(null, new AxisAlignedBB(x - 0.1, y - 0.1, z - 0.1, x + 0.1, y + 0.1, z + 0.1));
+        this.yd = 0.015;
         if (!list.isEmpty()) {
-            quadSize = 0.09F;
+            quadSize = 0.11F;
             this.owner = list.get(0);
             offset = owner.getPosition(Minecraft.getInstance().getFrameTime()).add(new Vector3d(this.x, this.y, this.z).reverse());
             if (p_i232448_1_.random.nextBoolean()) {
-                setColor(0, 0, 1);
+                setColor((float) speedX, (float) speedY, (float) speedZ);
             } else {
                 float value = new Random().nextFloat() / 2;
-                setColor(0.5F + value, 0.5F + value, 0);
+                setColor(0.5F + value, 0.5F + value, 0.5F + value);
                 setAlpha(0.1F);
-                quadSize = 0.08F;
+                quadSize = 0.1F;
             }
         } else {
             remove();
@@ -65,7 +63,7 @@ public class ResonanceParticle extends SpriteTexturedParticle {
 
     @Override
     public void render(IVertexBuilder p_225606_1_, ActiveRenderInfo p_225606_2_, float partialTicks) {
-        if (owner != null && owner.isAlive() && quadSize<0.091){
+        if (owner != null && owner.isAlive()) {
             Vector3d position = owner.getPosition(partialTicks).add(offset);
             xo = x = position.x;
             zo = z = position.z;
@@ -102,10 +100,6 @@ public class ResonanceParticle extends SpriteTexturedParticle {
             quadSize -= 0.005F;
         } else
             remove();
-        if(quadSize>0.09){
-            remove();
-            System.out.println("quadSize = " + quadSize);
-        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -119,7 +113,7 @@ public class ResonanceParticle extends SpriteTexturedParticle {
         @Override
         public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z,
                                        double xSpeed, double ySpeed, double zSpeed) {
-            ResonanceParticle resonanceParticle = new ResonanceParticle((ClientWorld) worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
+            ResonanceParticle resonanceParticle = new ResonanceParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
             resonanceParticle.pickSprite(this.spriteSet);
             return resonanceParticle;
         }

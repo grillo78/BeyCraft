@@ -54,11 +54,11 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     private float spinAngleO = 0;
     private static final DataParameter<Float> ENERGY = EntityDataManager.defineId(BeybladeEntity.class, DataSerializers.FLOAT);
     private static final DataParameter<Boolean> STOPPED = EntityDataManager.defineId(BeybladeEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> ON_RESONANCE = EntityDataManager.defineId(BeybladeEntity.class, DataSerializers.BOOLEAN);
     private LayerItem layer;
     private Launch launch;
     private Vector3d[] points = new Vector3d[10];
     private UUID owner;
-    private boolean onResonance = false;
     private int resonanceTimer = 0;
     private int resonanceCooldown = 0;
 
@@ -128,9 +128,13 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
             if (!level.isClientSide) {
                 BlockPos pos = new BlockPos(position().add(0D, -0.001D, 0D));
                 if ((level.getBlockState(pos).getBlock() != ModBlocks.STADIUM && level.getBlockState(pos).getBlock() != Blocks.AIR) || getEnergy() < 0)
-                    setStopped(true);
+                    setStopped();
                 if (!isStopped()) {
-                    if(onResonance){
+                    if(isOnResonance()){
+                        resonanceTimer--;
+                        if (resonanceTimer == 0) {
+                            deactivateResonance();
+                        }
                     }
                     if (onGround) {
                         setEnergy((float) (getEnergy() - 0.01 * layer.getFriction(beyblade)));
@@ -167,13 +171,23 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
         return ModSounds.HIT;
     }
 
-    private void setStopped(boolean stopped) {
-        this.entityData.set(STOPPED, stopped);
-        onResonance = false;
+    private void setStopped() {
+        this.entityData.set(STOPPED, true);
+        this.entityData.set(ON_RESONANCE, false);
     }
 
     public void activateResonance() {
-        onResonance = true;
+        this.entityData.set(ON_RESONANCE, true);
+        this.resonanceTimer = 100;
+    }
+
+    public void deactivateResonance() {
+        this.entityData.set(ON_RESONANCE, false);
+        this.resonanceCooldown = 500;
+    }
+
+    public int getResonanceCooldown() {
+        return resonanceCooldown;
     }
 
     public boolean isStopped() {
@@ -184,6 +198,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     protected void defineSynchedData() {
         this.entityData.define(ENERGY, 100f);
         this.entityData.define(STOPPED, false);
+        this.entityData.define(ON_RESONANCE, false);
         super.defineSynchedData();
     }
 
@@ -258,7 +273,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
                 this.playSound(ModSounds.HIT, this.getSoundVolume(), this.getVoicePitch());
             }
         }
-        if (onResonance) {
+        if (isOnResonance()) {
             Vector3d position = getPosition(Minecraft.getInstance().getFrameTime()).add(0, 0.05, 0);
             for (int i = 0; i < 25; i++) {
                 level.addParticle(ModParticles.RESONANCE, position.x, position.y, position.z, 0, random.nextDouble() * 0.02, 0);
@@ -364,5 +379,13 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
 
     public boolean isDropped() {
         return dropped;
+    }
+
+    public boolean isOnResonance() {
+        return this.entityData.get(ON_RESONANCE);
+    }
+
+    public LayerItem.Color resonanceColor() {
+        return layer.getResonanceColor();
     }
 }

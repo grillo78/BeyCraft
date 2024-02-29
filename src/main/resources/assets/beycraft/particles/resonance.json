@@ -1,9 +1,18 @@
 {
   "textures": [
-    "beycraft:resonance",
     "beycraft:sparkle",
-    "beycraft:sparkle",
-    "beycraft:sparkle",
-    "beycraft:sparkle"
-    ]
+    "minecraft:flash",
+    "minecraft:flash",
+    "minecraft:flash",
+    "minecraft:flash",
+    "minecraft:flash",
+    "minecraft:flash",
+    "minecraft:flash",
+    "minecraft:flash",
+    "minecraft:flash",
+    "minecraft:flash",
+    "minecraft:flash",
+    "minecraft:flash",
+    "minecraft:flash"
+  ]
 }

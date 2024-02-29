@@ -3,6 +3,7 @@ package com.beycraft.client.entity;
 import com.beycraft.client.util.CustomRenderType;
 import com.beycraft.common.entity.BeybladeEntity;
 import com.beycraft.common.item.LayerItem;
+import com.beycraft.common.particle.ModParticles;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -42,7 +43,7 @@ public class BeybladeRenderer extends EntityRenderer<BeybladeEntity> {
         if (beyblade.isAlive()) {
 
             if (!beyblade.isStopped() && beyblade.getLaunch() != null && !Minecraft.getInstance().isPaused())
-                    beyblade.getLaunch().renderTick(beyblade);
+                beyblade.getLaunch().renderTick(beyblade);
 
             matrixStack.pushPose();
             net.minecraft.util.math.vector.Matrix4f matrix4f1 = matrixStack.last().pose();
@@ -61,12 +62,12 @@ public class BeybladeRenderer extends EntityRenderer<BeybladeEntity> {
                         wr.vertex(matrix4f1, x, y, z).color(color.getRed(), color.getGreen(), color.getBlue(), 80).endVertex();
                         wr.vertex(matrix4f1, x1, y1, z1).color(color.getRed(), color.getGreen(), color.getBlue(), 80).endVertex();
                         IVertexBuilder wr2 = bufferIn.getBuffer(CustomRenderType.THINLINE);
-                        wr2.vertex(matrix4f1, x, y, z).color(255,255,255, 255).endVertex();
-                        wr2.vertex(matrix4f1, x1, y1, z1).color(255,255,255, 255).endVertex();
+                        wr2.vertex(matrix4f1, x, y, z).color(255, 255, 255, 255).endVertex();
+                        wr2.vertex(matrix4f1, x1, y1, z1).color(255, 255, 255, 255).endVertex();
                     } else {
                         IVertexBuilder wr2 = bufferIn.getBuffer(CustomRenderType.THINLINE);
-                        wr2.vertex(matrix4f1, x, y, z).color(255,255,255, 255).endVertex();
-                        wr2.vertex(matrix4f1, 0, 0, 0).color(255,255,255, 255).endVertex();
+                        wr2.vertex(matrix4f1, x, y, z).color(255, 255, 255, 255).endVertex();
+                        wr2.vertex(matrix4f1, 0, 0, 0).color(255, 255, 255, 255).endVertex();
                         IVertexBuilder wr = bufferIn.getBuffer(CustomRenderType.THICKLINE);
                         wr.vertex(matrix4f1, x, y, z).color(color.getRed(), color.getGreen(), color.getBlue(), 80).endVertex();
                         wr.vertex(matrix4f1, 0, 0, 0).color(color.getRed(), color.getGreen(), color.getBlue(), 80).endVertex();
@@ -74,6 +75,9 @@ public class BeybladeRenderer extends EntityRenderer<BeybladeEntity> {
                 }
             }
             matrixStack.popPose();
+            if (beyblade.isOnResonance()) {
+                beyblade.level.addParticle(ModParticles.RESONANCE, true, beyblade.position().x, beyblade.position().y, beyblade.position().z, beyblade.resonanceColor().getRed(), beyblade.resonanceColor().getGreen(), beyblade.resonanceColor().getBlue());
+            }
 
             beyblade.getStack().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
                 RUNNABLES.add(() -> {
@@ -83,7 +87,9 @@ public class BeybladeRenderer extends EntityRenderer<BeybladeEntity> {
 
                         return new Matrix4f(floatBuffer);
                     };
-                    ((LayerItem)beyblade.getStack().getItem()).renderBey(beyblade, layer, cap, partialTicks);
+
+                    ((LayerItem) beyblade.getStack().getItem()).renderBey(beyblade, layer, cap, partialTicks);
+
                 });
             });
         }
