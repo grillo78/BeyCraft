@@ -27,6 +27,7 @@ import net.minecraftforge.fml.network.NetworkDirection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class    Launch {
 
@@ -46,8 +47,9 @@ public class    Launch {
         activated = true;
     }
 
-    public void launchBeyblade(ItemStack beyblade, World level, ServerPlayerEntity player, Hand hand) {
+    public BeybladeEntity launchBeyblade(ItemStack beyblade, World level, ServerPlayerEntity player, Hand hand) {
         Blader blader = player.getCapability(BladerCapabilityProvider.BLADER_CAP).orElse(null);
+        AtomicReference<BeybladeEntity> beybladeEntity = new AtomicReference<>();
         if (!blader.isLaunching()) {
             if(launchType != LaunchTypes.HAND_LAUNCH_TYPE)
                 PacketHandler.INSTANCE.sendTo(new MessageApplyAnimation(player.getUUID(), hand), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
@@ -58,20 +60,23 @@ public class    Launch {
             threadPool.schedule(() -> {
                 player.awardStat(CustomStats.LAUNCH);
                 LayerItem layer = (LayerItem) beyblade.getItem();
-                BeybladeEntity beybladeEntity = new BeybladeEntity(level, beyblade.copy(), this, player.getUUID());
+                beybladeEntity.set(new BeybladeEntity(level, beyblade.copy(), this, player.getUUID()));
                 Vector3d position = new Vector3d(player.position().x,
                         player.position().y,
                         player.position().z);
                 position = position.add(getOffset(player));
 
-                beybladeEntity.moveTo(position.x, position.y, position.z, (float) (player.yRot + layer.getRotationDirection(beyblade).getValue() * Math.toRadians(-45)), 0);
-                level.addFreshEntity(beybladeEntity);
-                beybladeEntity.setDeltaMovement(getLaunchImpulse(player));
+                beybladeEntity.get().setEnergy((float) (99+Math.pow(2,blader.getBladerLevel().getLevel()/1000F)));
+
+                beybladeEntity.get().moveTo(position.x, position.y, position.z, (float) (player.yRot + layer.getRotationDirection(beyblade).getValue() * Math.toRadians(-45)), 0);
+                level.addFreshEntity(beybladeEntity.get());
+                beybladeEntity.get().setDeltaMovement(getLaunchImpulse(player));
                 beyblade.shrink(1);
                 blader.setLaunching(false);
                 blader.syncToAll();
             }, 3250, TimeUnit.MILLISECONDS);
         }
+        return beybladeEntity.get();
     }
 
     protected Vector3d getOffset(PlayerEntity player) {
@@ -111,14 +116,6 @@ public class    Launch {
         return Vector3d.ZERO;
     }
 
-    private HandSide getHandSide(Hand hand, PlayerEntity player) {
-        return hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
-    }
-
-    private String getAnimation(HandSide hand) {
-        return hand != HandSide.RIGHT ? "basic_launch" : "basic_launch_mirror";
-    }
-
     public LaunchType getLaunchType() {
         return launchType;
     }
@@ -128,16 +125,19 @@ public class    Launch {
     }
 
     public void onAttack(BeybladeEntity attacker, BeybladeEntity entity) {
-        if (attacker.getRandom().nextInt(10) == 0) {
+        if (attacker.getRandom().nextInt(5) == 0) {
             double x = (attacker.getX() - entity.getX()) / 2;
             double y = (attacker.getY() - entity.getY()) / 2;
             double z = (attacker.getZ() - entity.getZ()) / 2;
             ((ServerWorld) attacker.level).sendParticles(ParticleTypes.SWEEP_ATTACK, attacker.getX(), attacker.getY(), attacker.getZ(), 1, x, y, z,
                     1);
             entity.hurt(DamageSource.mobAttack(attacker), (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE));
+            entity.setDeltaMovement(attacker.position().subtract(entity.position()).normalize().multiply(0.5,0,0.5).add(0,0.3,0));
 
-            if (attacker.getRandom().nextInt(20) == 0)
+            if (attacker.getRandom().nextInt(5) == 0) {
                 attacker.hurt(DamageSource.mobAttack(entity), (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                attacker.setDeltaMovement(entity.position().subtract(attacker.position()).normalize().multiply(0.5,0,0.5).add(0,0.3,0));
+            }
         }
         if (shouldDeactivate())
             activated = false;

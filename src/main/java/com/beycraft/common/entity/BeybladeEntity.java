@@ -88,21 +88,25 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
 
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
-        buffer.writeItemStack(beyblade, true);
-        CompoundNBT launchCompound = new CompoundNBT();
-        launchCompound.putString("launchType", launch.getLaunchType().getRegistryName().toString());
-        launchCompound.put("launchNBT", launch.serializeNBT());
-        buffer.writeNbt(launchCompound);
+//        buffer.writeItemStack(beyblade, true);
+//        CompoundNBT launchCompound = new CompoundNBT();
+//        launchCompound.putString("launchType", launch.getLaunchType().getRegistryName().toString());
+//        launchCompound.put("launchNBT", launch.serializeNBT());
+//        buffer.writeNbt(launchCompound);
+        CompoundNBT compound = new CompoundNBT();
+        addAdditionalSaveData(compound);
+        buffer.writeNbt(compound);
     }
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
-        beyblade = additionalData.readItem();
-        layer = ((LayerItem) beyblade.getItem());
-
-        CompoundNBT launchCompound = additionalData.readAnySizeNbt();
-        launch = LaunchType.LAUNCH_TYPES.getValue(new ResourceLocation(launchCompound.getString("launchType"))).generateLaunch();
-        launch.deserializeNBT(launchCompound.getCompound("launchNBT"));
+//        beyblade = additionalData.readItem();
+//        layer = ((LayerItem) beyblade.getItem());
+//
+//        CompoundNBT launchCompound = additionalData.readAnySizeNbt();
+//        launch = LaunchType.LAUNCH_TYPES.getValue(new ResourceLocation(launchCompound.getString("launchType"))).generateLaunch();
+//        launch.deserializeNBT(launchCompound.getCompound("launchNBT"));
+        readAdditionalSaveData(additionalData.readNbt());
     }
 
     @Override
@@ -135,6 +139,9 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
                         if (resonanceTimer == 0) {
                             deactivateResonance();
                         }
+                    }else {
+                        if (resonanceCooldown>0)
+                            resonanceCooldown--;
                     }
                     if (onGround) {
                         setEnergy((float) (getEnergy() - 0.01 * layer.getFriction(beyblade)));
@@ -177,13 +184,17 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     }
 
     public void activateResonance() {
-        this.entityData.set(ON_RESONANCE, true);
-        this.resonanceTimer = 100;
+        if(!isStopped()){
+            this.entityData.set(ON_RESONANCE, true);
+            this.resonanceTimer = 100;
+            AbilityHelper.setAttribute(this, "resonanceModifer", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), 2, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        }
     }
 
     public void deactivateResonance() {
         this.entityData.set(ON_RESONANCE, false);
-        this.resonanceCooldown = 500;
+        AbilityHelper.setAttribute(this, "resonanceModifer", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), 0, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        this.resonanceCooldown = 200;
     }
 
     public int getResonanceCooldown() {
@@ -210,7 +221,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     @Override
     protected void doPush(Entity entity) {
         if (!level.isClientSide && entity instanceof BeybladeEntity) {
-            layer.getAbilities(beyblade);
+//            layer.getAbilities(beyblade);
             setEnergy((float) (getEnergy() - ((BeybladeEntity) entity).getAttributeValue(Attributes.ATTACK_DAMAGE) / 30));
             launch.onAttack(this, (BeybladeEntity) entity);
         }
@@ -259,6 +270,17 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
             if(onGround && tickCount%2 == 0)
                 this.level.playLocalSound(getX(), getY(), getZ(), ModSounds.FLOOR_FRICTION, getSoundSource(), 0.1F, 1.1F, false);
             this.spinAngle += ((LayerItem) beyblade.getItem()).getRotationDirection(beyblade).getValue() * 30;
+            if (isOnResonance()) {
+                Vector3d position = getPosition(Minecraft.getInstance().getFrameTime()).add(0, 0.05, 0);
+                for (int i = 0; i < 10; i++) {
+                    Vector3d finalPosition = position.add(new Vector3d(0.1,0,0).yRot((float) Math.toRadians(random.nextFloat()*360)));
+                    level.addParticle(ModParticles.RESONANCE, finalPosition.x, finalPosition.y, finalPosition.z, firstResonanceColor().getRed(), firstResonanceColor().getGreen(), firstResonanceColor().getBlue());
+                    finalPosition = position.add(new Vector3d(0.05,0,0).yRot((float) Math.toRadians(random.nextFloat()*360)));
+                    level.addParticle(ModParticles.RESONANCE, finalPosition.x, finalPosition.y, finalPosition.z, secondResonanceColor().getRed(), secondResonanceColor().getGreen(), secondResonanceColor().getBlue());
+                    finalPosition = position.add(new Vector3d(0.025,0,0).yRot((float) Math.toRadians(random.nextFloat()*360)));
+                    level.addParticle(ModParticles.RESONANCE, finalPosition.x, finalPosition.y, finalPosition.z, thirdResonanceColor().getRed(), thirdResonanceColor().getGreen(), thirdResonanceColor().getBlue());
+                }
+            }
         }
 
         List<Entity> list = this.level.getEntities(this, this.getBoundingBox().inflate(0.1));
@@ -271,13 +293,6 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
                     level.addParticle(ModParticles.SPARKLE, position.x, position.y, position.z, movement.x, movement.y, movement.z);
                 }
                 this.playSound(ModSounds.HIT, this.getSoundVolume(), this.getVoicePitch());
-            }
-        }
-        if (isOnResonance()) {
-            Vector3d position = getPosition(Minecraft.getInstance().getFrameTime()).add(0, 0.05, 0);
-            for (int i = 0; i < 25; i++) {
-                level.addParticle(ModParticles.RESONANCE, position.x, position.y, position.z, 0, random.nextDouble() * 0.02, 0);
-                level.addParticle(ModParticles.RESONANCE, position.x, position.y, position.z, 0, random.nextDouble() * 0.02, 0);
             }
         }
         if (onGround)
@@ -366,7 +381,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     }
 
     public static AttributeModifierMap.MutableAttribute registerMonsterAttributes() {
-        return MonsterEntity.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 1).add(Attributes.ATTACK_DAMAGE, 1).add(Attributes.MAX_HEALTH, 1).add(Attributes.KNOCKBACK_RESISTANCE, 0.3);
+        return MonsterEntity.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 1).add(Attributes.ATTACK_DAMAGE, 1).add(Attributes.MAX_HEALTH, 1).add(Attributes.KNOCKBACK_RESISTANCE, 3);
     }
 
     public ItemStack getStack() {
@@ -374,7 +389,7 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
     }
 
     public String getPlayerName() {
-        return level.getPlayerByUUID(owner).getName().getString();
+        return owner == null?"":level.getPlayerByUUID(owner).getName().getString();
     }
 
     public boolean isDropped() {
@@ -385,7 +400,15 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
         return this.entityData.get(ON_RESONANCE);
     }
 
-    public LayerItem.Color resonanceColor() {
-        return layer.getResonanceColor();
+    public LayerItem.Color firstResonanceColor() {
+        return layer.getFirstResonanceColor();
+    }
+
+    public LayerItem.Color secondResonanceColor() {
+        return layer.getSecondResonanceColor();
+    }
+
+    public LayerItem.Color thirdResonanceColor() {
+        return layer.getThirdResonanceColor();
     }
 }

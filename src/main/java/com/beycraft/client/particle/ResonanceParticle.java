@@ -1,5 +1,6 @@
 package com.beycraft.client.particle;
 
+import com.beycraft.common.entity.BeybladeEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
@@ -14,6 +15,8 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -24,6 +27,7 @@ import java.util.Random;
 
 public class ResonanceParticle extends SpriteTexturedParticle {
 
+    private static final float MAX_QUADSIZE = 0.03F;
     private static IParticleRenderType RENDER_TYPE = new IParticleRenderType() {
         @Override
         public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
@@ -45,17 +49,18 @@ public class ResonanceParticle extends SpriteTexturedParticle {
         List<Entity> list = this.level.getEntities(null, new AxisAlignedBB(x - 0.1, y - 0.1, z - 0.1, x + 0.1, y + 0.1, z + 0.1));
         this.yd = 0.015;
         if (!list.isEmpty()) {
-            quadSize = 0.11F;
+            quadSize = MAX_QUADSIZE;
             this.owner = list.get(0);
+
+            setAlpha(0.3F);
             offset = owner.getPosition(Minecraft.getInstance().getFrameTime()).add(new Vector3d(this.x, this.y, this.z).reverse());
-            if (p_i232448_1_.random.nextBoolean()) {
+//            if (p_i232448_1_.random.nextBoolean()) {
                 setColor((float) speedX, (float) speedY, (float) speedZ);
-            } else {
-                float value = new Random().nextFloat() / 2;
-                setColor(0.5F + value, 0.5F + value, 0.5F + value);
-                setAlpha(0.1F);
-                quadSize = 0.1F;
-            }
+//            } else {
+//                setColor(1,1,1);
+//                setAlpha(0.01F);
+//                quadSize = 0.02F;
+//            }
         } else {
             remove();
         }
@@ -65,6 +70,8 @@ public class ResonanceParticle extends SpriteTexturedParticle {
     public void render(IVertexBuilder p_225606_1_, ActiveRenderInfo p_225606_2_, float partialTicks) {
         if (owner != null && owner.isAlive()) {
             Vector3d position = owner.getPosition(partialTicks).add(offset);
+            if(owner instanceof BeybladeEntity)
+                position = position.add(((BeybladeEntity)owner).findStadiumCenter().subtract(owner.getPosition(partialTicks)).normalize().multiply(0.01,0,0.01));
             xo = x = position.x;
             zo = z = position.z;
             super.render(p_225606_1_, p_225606_2_, partialTicks);
@@ -96,8 +103,11 @@ public class ResonanceParticle extends SpriteTexturedParticle {
     @Override
     public void tick() {
         super.tick();
+        this.yo = this.y;
+        this.move(0, this.yd, 0);
+        if(offset != null)this.yd *= (0.04 - Math.pow(new Vector3d(offset.x,0, offset.z).length(),2))*20;
         if (quadSize > 0) {
-            quadSize -= 0.005F;
+            quadSize -= 0.002F;
         } else
             remove();
     }

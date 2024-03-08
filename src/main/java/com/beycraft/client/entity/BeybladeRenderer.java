@@ -3,7 +3,6 @@ package com.beycraft.client.entity;
 import com.beycraft.client.util.CustomRenderType;
 import com.beycraft.common.entity.BeybladeEntity;
 import com.beycraft.common.item.LayerItem;
-import com.beycraft.common.particle.ModParticles;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -17,9 +16,11 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.lwjgl.system.MemoryUtil;
 
+import java.math.BigDecimal;
 import java.nio.FloatBuffer;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class BeybladeRenderer extends EntityRenderer<BeybladeEntity> {
             matrixStack.pushPose();
             net.minecraft.util.math.vector.Matrix4f matrix4f1 = matrixStack.last().pose();
             LayerItem layerItem = (LayerItem) beyblade.getStack().getItem();
-            LayerItem.Color color = layerItem.getResonanceColor();
+            LayerItem.Color color = layerItem.getFirstResonanceColor();
             for (int i = 0; i < beyblade.getPoints().length; i++) {
                 if (beyblade.getPoints()[i] != null) {
                     float x = (float) (beyblade.getPoints()[i].x - beyblade.getPosition(partialTicks).x);
@@ -75,8 +76,16 @@ public class BeybladeRenderer extends EntityRenderer<BeybladeEntity> {
                 }
             }
             matrixStack.popPose();
-            if (beyblade.isOnResonance()) {
-                beyblade.level.addParticle(ModParticles.RESONANCE, true, beyblade.position().x, beyblade.position().y, beyblade.position().z, beyblade.resonanceColor().getRed(), beyblade.resonanceColor().getGreen(), beyblade.resonanceColor().getBlue());
+
+            if (this.entityRenderDispatcher.crosshairPickEntity == beyblade && !Minecraft.getInstance().player.isSpectator() && Minecraft.renderNames()) {
+                matrixStack.pushPose();
+                matrixStack.translate(0, 0.1F, 0);
+                renderNameTag(beyblade, new StringTextComponent(beyblade.getPlayerName()), matrixStack, bufferIn,
+                        packedLightIn);
+                matrixStack.translate(0, -0.25F, 0);
+                renderNameTag(beyblade, new StringTextComponent("Health: " + round(beyblade.getHealth() * 100 / beyblade.getMaxHealth(), 2) + "%"), matrixStack, bufferIn,
+                        packedLightIn);
+                matrixStack.popPose();
             }
 
             beyblade.getStack().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
@@ -93,5 +102,9 @@ public class BeybladeRenderer extends EntityRenderer<BeybladeEntity> {
                 });
             });
         }
+    }
+
+    public float round(float d, int decimalPlace) {
+        return BigDecimal.valueOf(d).setScale(decimalPlace, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 }

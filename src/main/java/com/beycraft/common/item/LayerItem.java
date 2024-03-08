@@ -13,6 +13,7 @@ import com.beycraft.common.tab.BeycraftItemGroup;
 import com.beycraft.utils.Direction;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import friedrichlp.renderlib.library.RenderMode;
 import friedrichlp.renderlib.tracking.ModelInfo;
@@ -43,6 +44,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -55,19 +57,19 @@ public class LayerItem extends BeyPartItem {
     private final float defense;
     private final float weight;
     private final float burst;
-    private final Color resonanceColor;
+    private final Color firstResonanceColor;
     private final Color secondResonanceColor;
     private final Color thirdResonanceColor;
 
     public LayerItem(String name, String displayName, int rotationDirection, float attack, float defense, float weight,
-                     float burst, AbilityType primaryAbility, AbilityType secondaryAbility, BeyTypes type, Color resonanceColor, Color secondResonanceColor, Color thirdResonanceColor) {
+                     float burst, AbilityType primaryAbility, AbilityType secondaryAbility, BeyTypes type, Color firstResonanceColor, Color secondResonanceColor, Color thirdResonanceColor) {
         super(name, displayName, type, primaryAbility, secondaryAbility, BeycraftItemGroup.LAYERS, new Properties().setISTER(() -> LayerRenderer::new));
         this.attack = attack;
         this.defense = defense;
         this.weight = weight;
         this.burst = burst;
         this.rotationDirection = Direction.getFromValue(rotationDirection);
-        this.resonanceColor = resonanceColor;
+        this.firstResonanceColor = firstResonanceColor;
         this.secondResonanceColor = secondResonanceColor;
         this.thirdResonanceColor = thirdResonanceColor;
     }
@@ -128,8 +130,16 @@ public class LayerItem extends BeyPartItem {
         return page;
     }
 
-    public Color getResonanceColor() {
-        return resonanceColor;
+    public Color getFirstResonanceColor() {
+        return firstResonanceColor;
+    }
+
+    public Color getSecondResonanceColor() {
+        return secondResonanceColor;
+    }
+
+    public Color getThirdResonanceColor() {
+        return thirdResonanceColor;
     }
 
     public int getSlotsAmount() {
@@ -247,6 +257,7 @@ public class LayerItem extends BeyPartItem {
                 sceneLayer.transform.rotate(0, 10, 0);
             }
             mainScene.forceTransformUpdate();
+//            GlStateManager._blendColor(1,1,1,1F);
             RenderManager.render(layer, RenderMode.USE_CUSTOM_MATS);
             sceneLayer.remove();
             sceneDisc.remove();

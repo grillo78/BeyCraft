@@ -32,8 +32,9 @@ import com.beycraft.common.ranking.Level;
 import com.beycraft.common.sound.ModSounds;
 import com.beycraft.common.stats.CustomStats;
 import com.beycraft.network.PacketHandler;
-import com.beycraft.network.message.MessageHandSpinning;
 import com.beycraft.network.message.MessageActivateLaunch;
+import com.beycraft.network.message.MessageActivateResonance;
+import com.beycraft.network.message.MessageHandSpinning;
 import com.beycraft.network.message.MessageOpenBeltContainer;
 import com.beycraft.utils.ClientUtils;
 import com.beycraft.utils.Config;
@@ -116,8 +117,6 @@ public class Beycraft {
         MinecraftForge.EVENT_BUS.addListener(this::onPlayerClone);
         MinecraftForge.EVENT_BUS.addListener(this::onCommandRegistry);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-
-
             try {
                 File folder = new File("beycraft_cached_models");
                 if (folder.exists())
@@ -222,7 +221,7 @@ public class Beycraft {
 
     @OnlyIn(Dist.CLIENT)
     public void onMouseCLick(InputEvent.ClickInputEvent e) {
-        if (Minecraft.getInstance().player.getMainHandItem().getItem() instanceof LayerItem && ((LayerItem)Minecraft.getInstance().player.getMainHandItem().getItem()).isBeyAssembled(Minecraft.getInstance().player.getMainHandItem())){
+        if (e.isAttack() && Minecraft.getInstance().player.getMainHandItem().getItem() instanceof LayerItem && ((LayerItem) Minecraft.getInstance().player.getMainHandItem().getItem()).isBeyAssembled(Minecraft.getInstance().player.getMainHandItem())) {
             PacketHandler.INSTANCE.sendToServer(new MessageHandSpinning());
             e.setCanceled(true);
         }
@@ -266,7 +265,7 @@ public class Beycraft {
                             .bind(AbstractGui.GUI_ICONS_LOCATION);
                     float i = (h.getExpForNextLevel() - h.getExperience()) / (Level.calcExpForNextLevel(h.getLevel() + 1) - Level.calcExpForNextLevel(h.getLevel()));
                     AbstractGui.blit(event.getMatrixStack(), 1, 27, 0, 74, 75, 5, 105, 256);
-                    AbstractGui.blit(event.getMatrixStack(), 1, 27, 0, 79, (int) (75 - 75 * i), 5, 105, 256);
+                    AbstractGui.blit(event.getMatrixStack(), 1, 27, 0, 79, (int) (-75*i), 5, 105, 256);
                 });
             }
         }
@@ -323,6 +322,9 @@ public class Beycraft {
         if (KeyBinds.ACTIVATE_LAUNCH.isDown() && event.getAction() == GLFW.GLFW_PRESS) {
             PacketHandler.INSTANCE.sendToServer(new MessageActivateLaunch());
         }
+        if (KeyBinds.ACTIVATE_RESONANCE.isDown() && event.getAction() == GLFW.GLFW_PRESS) {
+            PacketHandler.INSTANCE.sendToServer(new MessageActivateResonance());
+        }
         if (KeyBinds.BELT.isDown() && event.getAction() == GLFW.GLFW_PRESS) {
             PacketHandler.INSTANCE.sendToServer(new MessageOpenBeltContainer());
         }
@@ -369,10 +371,8 @@ public class Beycraft {
 
         @SubscribeEvent
         public void registerEntityType(final RegistryEvent.Register<EntityType<?>> event) {
-
             GlobalEntityTypeAttributes.put(ModEntities.BEYBLADE,
                     BeybladeEntity.registerMonsterAttributes().build());
-
         }
     }
 
