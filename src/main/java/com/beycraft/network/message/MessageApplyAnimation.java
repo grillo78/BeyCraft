@@ -64,7 +64,11 @@ public class MessageApplyAnimation implements IMessage<MessageApplyAnimation> {
             case 1:
                 animator = new NightmareShootAnimator(hand);
                 break;
+            case 2:
+                animator = new NightmareShootAnimator(hand);
+                break;
         }
+        System.out.println("Animator id: " + animator);
         return animator;
     }
 }

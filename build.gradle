@@ -21,7 +21,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: "com.github.johnrengelman.shadow"
 
-version = '2.0-snapshot-10'
+version = '2.0-snapshot-12'
 group = 'com.beycraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'beycraft'
 
@@ -141,7 +141,8 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.29'
 
     implementation fg.deobf('xyz.heroesunited:hu-core:2.5.4')
-    implementation fg.deobf('curse.maven:parcool-482378:4257967')
+//    implementation fg.deobf('curse.maven:parcool-482378:4257967')
+    implementation fg.deobf("curse.maven:parcool-482378:4772411")
     shade 'ga.beycraft:RenderLib:1.0.0-pre7-test-2'
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.3")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'

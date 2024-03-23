@@ -3,6 +3,7 @@
   "package": "com.beycraft.mixin",
   "refmap": "beycraft.refmap.json",
   "mixins":[
+    "AnimatorListMixin"
   ],
   "client": ["ClientPlayerEntityMixin"],
   "injectors": {
