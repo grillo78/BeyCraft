@@ -125,18 +125,18 @@ public class    Launch {
     }
 
     public void onAttack(BeybladeEntity attacker, BeybladeEntity entity) {
-        if (attacker.getRandom().nextInt(5) == 0) {
+        if (attacker.getRandom().nextInt(attacker.getLaunch().activated?1:5) == 0) {
             double x = (attacker.getX() - entity.getX()) / 2;
             double y = (attacker.getY() - entity.getY()) / 2;
             double z = (attacker.getZ() - entity.getZ()) / 2;
             ((ServerWorld) attacker.level).sendParticles(ParticleTypes.SWEEP_ATTACK, attacker.getX(), attacker.getY(), attacker.getZ(), 1, x, y, z,
                     1);
             entity.hurt(DamageSource.mobAttack(attacker), (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE));
-            entity.setDeltaMovement(attacker.position().subtract(entity.position()).normalize().multiply(0.5,0,0.5).add(0,0.3,0));
+            entity.setDeltaMovement(attacker.position().subtract(entity.position()).normalize().multiply(0.45,0,0.45).add(0,0.3,0));
 
-            if (attacker.getRandom().nextInt(5) == 0) {
+            if (attacker.getRandom().nextBoolean()) {
                 attacker.hurt(DamageSource.mobAttack(entity), (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                attacker.setDeltaMovement(entity.position().subtract(attacker.position()).normalize().multiply(0.5,0,0.5).add(0,0.3,0));
+                attacker.setDeltaMovement(entity.position().subtract(attacker.position()).normalize().multiply(0.45,0,0.45).add(0,0.3,0));
             }
         }
         if (shouldDeactivate())
@@ -149,6 +149,5 @@ public class    Launch {
 
     @OnlyIn(Dist.CLIENT)
     public void renderTick(BeybladeEntity beyblade) {
-
     }
 }
