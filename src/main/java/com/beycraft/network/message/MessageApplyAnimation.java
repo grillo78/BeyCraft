@@ -12,7 +12,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraftforge.fml.network.NetworkEvent;
-import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
 import java.util.UUID;
 import java.util.function.Supplier;

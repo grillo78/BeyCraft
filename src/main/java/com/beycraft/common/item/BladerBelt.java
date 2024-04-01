@@ -1,25 +1,44 @@
 package com.beycraft.common.item;
 
+import com.beycraft.client.entity.BeltModel;
 import com.beycraft.common.capability.item.BeltCapabilityProvider;
+import com.beycraft.common.tab.BeycraftItemGroup;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import grillo78.clothes_mod.common.items.ClothItem;
+import grillo78.clothes_mod.common.items.ClothesSlot;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
-import xyz.heroesunited.heroesunited.common.objects.container.EquipmentAccessoriesSlot;
 
 import javax.annotation.Nullable;
 
-public class BladerBelt extends AccessoryItem{
+public class BladerBelt extends ClothItem {
 
     public BladerBelt() {
-        super(EquipmentAccessoriesSlot.BELT);
+        super(new Properties().tab(BeycraftItemGroup.INSTANCE), ClothesSlot.BELT);
     }
 
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
         return new BeltCapabilityProvider();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void renderCloth(MatrixStack pMatrixStack, IRenderTypeBuffer pBuffer, int pPackedLight, Entity pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, PlayerModel bipedModel) {
+        BeltModel model = new BeltModel();
+        model.belt.copyFrom(bipedModel.body);
+        model.renderToBuffer(pMatrixStack, pBuffer.getBuffer(RenderType.entityTranslucent(this.getTexture())), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     @Nullable

@@ -8,6 +8,7 @@ import com.beycraft.common.launch.Launch;
 import com.beycraft.common.launch.LaunchType;
 import com.beycraft.common.particle.ModParticles;
 import com.beycraft.common.sound.ModSounds;
+import com.beycraft.utils.CommonUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
@@ -39,7 +40,6 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
-import xyz.heroesunited.heroesunited.common.abilities.AbilityHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -66,8 +66,8 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
         this(ModEntities.BEYBLADE, level);
         this.beyblade = beyblade;
         layer = ((LayerItem) beyblade.getItem());
-        AbilityHelper.setAttribute(this, "defense", Attributes.MAX_HEALTH, UUID.randomUUID(), (layer.getDefense(beyblade) + 1) * 200 - (layer.getBurst(beyblade) + 1) * 20, AttributeModifier.Operation.ADDITION);
-        AbilityHelper.setAttribute(this, "attack", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), (layer.getAttack(beyblade) + 1) * 15, AttributeModifier.Operation.ADDITION);
+        CommonUtils.AttributesUtil.setAttribute(this, "defense", Attributes.MAX_HEALTH, UUID.randomUUID(), (layer.getDefense(beyblade) + 1) * 200 - (layer.getBurst(beyblade) + 1) * 20, AttributeModifier.Operation.ADDITION);
+        CommonUtils.AttributesUtil.setAttribute(this, "attack", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), (layer.getAttack(beyblade) + 1) * 15, AttributeModifier.Operation.ADDITION);
         setHealth(getMaxHealth());
         this.launch = launch;
         this.owner = owner;
@@ -187,13 +187,13 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
         if(!isStopped()){
             this.entityData.set(ON_RESONANCE, true);
             this.resonanceTimer = 100;
-            AbilityHelper.setAttribute(this, "resonanceModifer", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), 2, AttributeModifier.Operation.MULTIPLY_TOTAL);
+            CommonUtils.AttributesUtil.setAttribute(this, "resonanceModifer", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), 2, AttributeModifier.Operation.MULTIPLY_TOTAL);
         }
     }
 
     public void deactivateResonance() {
         this.entityData.set(ON_RESONANCE, false);
-        AbilityHelper.setAttribute(this, "resonanceModifer", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), 0, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        CommonUtils.AttributesUtil.setAttribute(this, "resonanceModifer", Attributes.ATTACK_DAMAGE, UUID.randomUUID(), 0, AttributeModifier.Operation.MULTIPLY_TOTAL);
         this.resonanceCooldown = 200;
     }
 

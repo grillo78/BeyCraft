@@ -1,7 +1,6 @@
 package com.beycraft.common.container.slot;
 
 import com.beycraft.common.item.LauncherItem;
-import com.beycraft.common.item.LayerItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;

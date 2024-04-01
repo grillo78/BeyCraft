@@ -1,6 +1,5 @@
 package com.beycraft.common.container.slot;
 
-import com.beycraft.common.item.DiscItem;
 import com.beycraft.common.item.FusionWheelItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;

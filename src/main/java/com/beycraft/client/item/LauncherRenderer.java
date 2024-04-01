@@ -1,7 +1,7 @@
 package com.beycraft.client.item;
 
 import com.beycraft.Beycraft;
-import com.beycraft.common.item.HandleItem;
+import com.beycraft.common.capability.item.LauncherCapabilityProvider;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
@@ -17,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.Random;
 
@@ -27,27 +26,19 @@ public class LauncherRenderer extends ItemStackTileEntityRenderer {
     public void renderByItem(ItemStack stack, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStack,
                              IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
         matrixStack.pushPose();
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+        stack.getCapability(LauncherCapabilityProvider.LAUNCHER_CAPABILITY).ifPresent(cap -> {
             IBakedModel model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(Beycraft.MOD_ID,
                     "launchers/" + stack.getItem().getRegistryName().getPath() + "/launcher_body"));
 
             IVertexBuilder vertexBuilder = buffer
                     .getBuffer(RenderType.entityTranslucentCull(PlayerContainer.BLOCK_ATLAS));
             for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
-                if (stack.hasTag() && stack.getTag().contains("color")) {
-                    vertexBuilder.addVertexData(matrixStack.last(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn, true);
-                } else {
-                    vertexBuilder.addVertexData(matrixStack.last(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn, true);
-                }
+                vertexBuilder.addVertexData(matrixStack.last(), quad, cap.getRed() / 255F, cap.getGreen() / 255F, cap.getBlue() / 255F, combinedLightIn, combinedOverlayIn, true);
             }
             model = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(Beycraft.MOD_ID,
                     "launchers/" + stack.getItem().getRegistryName().getPath() + "/grab_part"));
             for (BakedQuad quad : model.getQuads(null, null, new Random(), EmptyModelData.INSTANCE)) {
-                if (stack.hasTag() && stack.getTag().contains("color")) {
-                    vertexBuilder.addVertexData(matrixStack.last(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn, true);
-                } else {
-                    vertexBuilder.addVertexData(matrixStack.last(), quad, 1, 1, 1, combinedLightIn, combinedOverlayIn, true);
-                }
+                vertexBuilder.addVertexData(matrixStack.last(), quad, cap.getRed() / 255F, cap.getGreen() / 255F, cap.getBlue() / 255F, combinedLightIn, combinedOverlayIn, true);
             }
 
             if (transformType != ItemCameraTransforms.TransformType.GUI) {
@@ -55,8 +46,8 @@ public class LauncherRenderer extends ItemStackTileEntityRenderer {
                 matrixStack.pushPose();
                 matrixStack.translate(0.4, 0.45, 0.325);
                 matrixStack.scale(0.85F, 0.85F, 0.85F);
-                itemRenderer.renderStatic(cap.getStackInSlot(1), ItemCameraTransforms.TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
-                itemRenderer.renderStatic(cap.getStackInSlot(2), ItemCameraTransforms.TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
+                itemRenderer.renderStatic(cap.getInventory().getStackInSlot(1), ItemCameraTransforms.TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
+                itemRenderer.renderStatic(cap.getInventory().getStackInSlot(2), ItemCameraTransforms.TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
                 matrixStack.popPose();
 
                 matrixStack.pushPose();
@@ -83,7 +74,7 @@ public class LauncherRenderer extends ItemStackTileEntityRenderer {
                         matrixStack.translate(-0.015, -0.225, 0);
                         break;
                 }
-                itemRenderer.renderStatic(cap.getStackInSlot(0), transformType, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
+                itemRenderer.renderStatic(cap.getInventory().getStackInSlot(0), transformType, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
                 matrixStack.popPose();
             }
         });

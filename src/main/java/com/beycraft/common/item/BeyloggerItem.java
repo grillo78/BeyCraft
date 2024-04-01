@@ -1,5 +1,6 @@
 package com.beycraft.common.item;
 
+import com.beycraft.client.item.BeyloggerRenderer;
 import com.beycraft.common.capability.item.beylogger.BeyloggerCapabilityProvider;
 import com.beycraft.common.tab.BeycraftItemGroup;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,7 +18,7 @@ import javax.annotation.Nullable;
 public class BeyloggerItem extends Item {
 
     public BeyloggerItem(Properties properties) {
-        super(properties.tab(BeycraftItemGroup.INSTANCE).stacksTo(1));
+        super(properties.tab(BeycraftItemGroup.INSTANCE).stacksTo(1).setISTER(()-> BeyloggerRenderer::new));
     }
 
     @Nullable

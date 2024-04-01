@@ -2,7 +2,6 @@ package com.beycraft.common.container;
 
 import com.beycraft.common.container.slot.BeltBeySlot;
 import com.beycraft.common.container.slot.BeltLauncherSlot;
-import com.beycraft.common.container.slot.FusionWheelSlot;
 import com.beycraft.common.container.slot.LockedSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

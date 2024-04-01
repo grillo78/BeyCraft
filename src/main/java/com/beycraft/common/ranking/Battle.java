@@ -4,13 +4,11 @@ import com.beycraft.common.block_entity.BattleInformerTileEntity;
 import com.beycraft.common.block_entity.StadiumTileEntity;
 import com.beycraft.common.capability.entity.BladerCapabilityProvider;
 import com.beycraft.common.entity.BeybladeEntity;
-import com.beycraft.network.PacketHandler;
 import com.beycraft.utils.CommonUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkDirection;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

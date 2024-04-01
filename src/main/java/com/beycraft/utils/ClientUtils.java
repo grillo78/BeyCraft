@@ -1,35 +1,9 @@
 package com.beycraft.utils;
 
-import com.beycraft.Beycraft;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.client.event.GuiOpenEvent;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import xyz.heroesunited.heroesunited.util.HURichPresence;
-
-import java.io.*;
-import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 public class ClientUtils {
 
     public static void setDiscordRPC() {
-        HURichPresence.getPresence().setDiscordRichPresence("Beycraft Burst", "In the menus", HURichPresence.MiniLogos.EXTERNAL, "Beycraft Burst");
+//        HURichPresence.getPresence().setDiscordRichPresence("Beycraft Burst", "In the menus", HURichPresence.MiniLogos.EXTERNAL, "Beycraft Burst");
     }
 
 //    public static class RankingUtils {

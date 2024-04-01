@@ -1,6 +1,5 @@
 package com.beycraft.client.screen.widget;
 
-import com.beycraft.common.capability.entity.Blader;
 import com.beycraft.common.capability.entity.BladerCapabilityProvider;
 import com.beycraft.common.launch.LaunchType;
 import com.beycraft.common.launch.LaunchTypes;

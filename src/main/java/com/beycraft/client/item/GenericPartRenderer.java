@@ -6,7 +6,6 @@ import com.beycraft.common.item.ModItems;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import friedrichlp.renderlib.library.RenderMode;
-import friedrichlp.renderlib.math.Vector3;
 import friedrichlp.renderlib.render.ViewBoxes;
 import friedrichlp.renderlib.tracking.RenderLayer;
 import friedrichlp.renderlib.tracking.RenderManager;

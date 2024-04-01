@@ -10,13 +10,14 @@ import friedrichlp.renderlib.library.RenderEffect;
 import friedrichlp.renderlib.model.ModelLoaderProperty;
 import friedrichlp.renderlib.tracking.ModelInfo;
 import friedrichlp.renderlib.tracking.ModelManager;
+import grillo78.clothes_mod.common.items.ClothItem;
+import grillo78.clothes_mod.common.items.ClothesSlot;
 import net.minecraft.item.Item;
 import net.minecraft.util.IItemProvider;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import xyz.heroesunited.heroesunited.common.objects.container.EquipmentAccessoriesSlot;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,28 +44,28 @@ public class ModItems {
 
 
     //Clothes
-    public static final AccessoryItem BARUTO_JACKET = register( "baruto_jacket",
-            new AccessoryItem(EquipmentAccessoriesSlot.JACKET));
-    public static final AccessoryItem BARUTO_PANTS = register( "baruto_pants",
-            new AccessoryItem(EquipmentAccessoriesSlot.PANTS));
-    public static final AccessoryItem BARUTO_BOOTS = register( "baruto_boots",
-            new AccessoryItem(EquipmentAccessoriesSlot.SHOES));
-    public static final AccessoryItem BARUTO_CHEST = register( "baruto_chest",
-            new AccessoryItem(EquipmentAccessoriesSlot.TSHIRT));
-    public static final AccessoryItem BARUTO_GLOVES = register( "baruto_gloves",
-            new AccessoryItem(EquipmentAccessoriesSlot.GLOVES));
+    public static final ClothItem BARUTO_JACKET = registerCloth("baruto_jacket",
+            ClothesSlot.JACKET);
+    public static final ClothItem BARUTO_PANTS = registerCloth("baruto_pants",
+            ClothesSlot.PANTS);
+    public static final ClothItem BARUTO_BOOTS = registerCloth("baruto_boots",
+            ClothesSlot.SHOES);
+    public static final ClothItem BARUTO_CHEST = registerCloth("baruto_chest",
+            ClothesSlot.SHIRT);
+    public static final ClothItem BARUTO_GLOVES = registerCloth("baruto_gloves",
+            ClothesSlot.GLOVES);
 
-    public static final AccessoryItem BARUTO_JACKET_CHO_Z = register( "baruto_jacket_cho_z",
-            new AccessoryItem(EquipmentAccessoriesSlot.JACKET));
-    public static final AccessoryItem BARUTO_PANTS_CHO_Z = register( "baruto_pants_cho_z",
-            new AccessoryItem(EquipmentAccessoriesSlot.PANTS));
-    public static final AccessoryItem BARUTO_BOOTS_CHO_Z = register( "baruto_boots_cho_z",
-            new AccessoryItem(EquipmentAccessoriesSlot.SHOES));
-    public static final AccessoryItem BARUTO_CHEST_CHO_Z = register( "baruto_chest_cho_z",
-            new AccessoryItem(EquipmentAccessoriesSlot.TSHIRT));
-    public static final AccessoryItem BARUTO_GLOVES_CHO_Z = register( "baruto_gloves_cho_z",
-            new AccessoryItem(EquipmentAccessoriesSlot.GLOVES));
-    public static final AccessoryItem BELT = register( "belt",
+    public static final ClothItem BARUTO_JACKET_CHO_Z = registerCloth("baruto_jacket_cho_z",
+            ClothesSlot.JACKET);
+    public static final ClothItem BARUTO_PANTS_CHO_Z = registerCloth("baruto_pants_cho_z",
+            ClothesSlot.PANTS);
+    public static final ClothItem BARUTO_BOOTS_CHO_Z = registerCloth("baruto_boots_cho_z",
+            ClothesSlot.SHOES);
+    public static final ClothItem BARUTO_CHEST_CHO_Z = registerCloth("baruto_chest_cho_z",
+            ClothesSlot.SHIRT);
+    public static final ClothItem BARUTO_GLOVES_CHO_Z = registerCloth("baruto_gloves_cho_z",
+            ClothesSlot.GLOVES);
+    public static final ClothItem BELT = register("belt",
             new BladerBelt());
 
     //Utils
@@ -74,6 +75,10 @@ public class ModItems {
 
     static {
         ItemCreator.getItemsFromFolder();
+    }
+
+    private static ClothItem registerCloth(String name, ClothesSlot slot) {
+        return register(name,new ClothItem(new Item.Properties().tab(BeycraftItemGroup.INSTANCE), slot));
     }
 
     private static <T extends Item> T register(String name, T item) {
@@ -189,7 +194,7 @@ public class ModItems {
                                 item = new DriverItem(file.getName().replace(".properties", ""), properties.getProperty("name"),
                                         Float.parseFloat(properties.getProperty("friction")),
                                         Float.parseFloat(properties.getProperty("radiusReduction")),
-                                        properties.containsKey("speed")?Float.parseFloat(properties.getProperty("speed")) + 5 : 10,
+                                        properties.containsKey("speed") ? Float.parseFloat(properties.getProperty("speed")) + 5 : 10,
                                         getFirstAbilityByName(properties.getProperty("firstAbilityName"), properties),
                                         getFirstAbilityByName(properties.getProperty("secondAbilityName"), properties),
                                         properties.containsKey("type") ? BeyTypes.getByName(properties.getProperty("type")) : null);

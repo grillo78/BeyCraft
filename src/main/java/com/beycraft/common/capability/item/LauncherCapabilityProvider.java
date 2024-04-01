@@ -4,24 +4,24 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 public class LauncherCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable {
 
-    private final LazyOptional<IItemHandler> inventory;
+    @CapabilityInject(ILauncher.class)
+    public static final Capability<ILauncher> LAUNCHER_CAPABILITY = null;
+    private final LazyOptional<ILauncher> inventory;
 
     public LauncherCapabilityProvider() {
-        this.inventory = LazyOptional.of(() -> new ItemStackHandler(3));
+        this.inventory = LazyOptional.of(() -> new Launcher());
     }
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (cap == LAUNCHER_CAPABILITY) {
             return inventory.cast();
         }
         return LazyOptional.empty();
@@ -29,13 +29,15 @@ public class LauncherCapabilityProvider implements ICapabilityProvider, ICapabil
 
     @Override
     public INBT serializeNBT() {
-        INBT nbt = inventory.map(items -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(items, null))
-                .orElseGet(CompoundNBT::new);
-        return nbt;
+        return inventory.orElse(null).serializeNBT();
     }
 
     @Override
     public void deserializeNBT(INBT nbt) {
-        inventory.ifPresent(items -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(items, null, nbt));
+        try{
+            inventory.orElse(null).deserializeNBT((CompoundNBT) nbt);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

@@ -32,15 +32,9 @@ public class PacketHandler {
         register(MessageApplyAnimation.class, new MessageApplyAnimation());
         register(MessageOpenBeltContainer.class, new MessageOpenBeltContainer());
         register(MessageHandSpinning.class, new MessageHandSpinning());
+        register(UpdateLauncherColor.class, new UpdateLauncherColor());
     }
-
-    /**
-     * Method to register a packet
-     *
-     * @param clazz   Class of the packet
-     * @param message Message object
-     * @param <T>
-     */
+    
     private static <T> void register(Class<T> clazz, IMessage<T> message) {
         INSTANCE.registerMessage(nextId++, clazz, message::encode, message::decode, message::handle);
     }

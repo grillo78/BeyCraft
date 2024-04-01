@@ -1,6 +1,7 @@
 package com.beycraft.common.block;
 
 import com.beycraft.Beycraft;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
@@ -23,7 +24,6 @@ import net.minecraft.util.math.shapes.*;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import xyz.heroesunited.heroesunited.hupacks.HUPacks;
 
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
@@ -321,7 +321,7 @@ public class StadiumBlock extends Block implements IWaterLoggable {
             try {
                 InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("hitboxes/stadium_hitbox.json");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                JsonObject jsonObject = JSONUtils.fromJson(HUPacks.GSON, reader, JsonObject.class);
+                JsonObject jsonObject = JSONUtils.fromJson(new Gson(), reader, JsonObject.class);
                 JsonArray elements = jsonObject.get("elements").getAsJsonArray();
 
                 for (int i = 0; i < elements.size(); i++) {

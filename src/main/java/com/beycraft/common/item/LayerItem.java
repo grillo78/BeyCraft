@@ -2,9 +2,9 @@ package com.beycraft.common.item;
 
 import com.beycraft.BeyTypes;
 import com.beycraft.Beycraft;
+import com.beycraft.client.item.LayerRenderer;
 import com.beycraft.common.ability.Ability;
 import com.beycraft.common.ability.AbilityType;
-import com.beycraft.client.item.LayerRenderer;
 import com.beycraft.common.capability.item.parts.BeyCapabilityProvider;
 import com.beycraft.common.container.LayerContainer;
 import com.beycraft.common.container.ModContainers;
@@ -13,7 +13,6 @@ import com.beycraft.common.tab.BeycraftItemGroup;
 import com.beycraft.utils.Direction;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.google.gson.JsonObject;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import friedrichlp.renderlib.library.RenderMode;
 import friedrichlp.renderlib.tracking.ModelInfo;
@@ -44,7 +43,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

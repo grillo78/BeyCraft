@@ -1,7 +1,6 @@
 package com.beycraft.common.item;
 
 import com.beycraft.client.item.LauncherRenderer;
-import com.beycraft.common.capability.entity.Blader;
 import com.beycraft.common.capability.entity.BladerCapabilityProvider;
 import com.beycraft.common.capability.item.LauncherCapabilityProvider;
 import com.beycraft.common.container.LauncherContainer;
@@ -24,7 +23,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -54,8 +52,8 @@ public class LauncherItem extends Item {
             combinedTag.put("base_tag", baseTag);
         }
 
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-            INBT capabilityTag = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(cap, null);
+        stack.getCapability(LauncherCapabilityProvider.LAUNCHER_CAPABILITY).ifPresent(launcher -> {
+            INBT capabilityTag = launcher.serializeNBT();
 
             if (capabilityTag != null) {
                 combinedTag.put("capability_tag", capabilityTag);
@@ -74,7 +72,7 @@ public class LauncherItem extends Item {
         CompoundNBT baseTag = nbt.getCompound("base_tag"); // empty if not found
         INBT capabilityTag = nbt.get("capability_tag");    // empty if not found
         stack.setTag(baseTag);
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(items -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(items, null, capabilityTag));
+        stack.getCapability(LauncherCapabilityProvider.LAUNCHER_CAPABILITY).ifPresent(launcher -> launcher.deserializeNBT((CompoundNBT) capabilityTag));
     }
 
     @Override
@@ -89,9 +87,9 @@ public class LauncherItem extends Item {
                                 new StringTextComponent(getDescriptionId())));
                 result = ActionResult.success(stack);
             } else {
-                stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-                    if (cap.getStackInSlot(0).getItem() instanceof LayerItem) {
-                        ItemStack beybladeStack = cap.getStackInSlot(0);
+                stack.getCapability(LauncherCapabilityProvider.LAUNCHER_CAPABILITY).ifPresent(cap -> {
+                    if (cap.getInventory().getStackInSlot(0).getItem() instanceof LayerItem) {
+                        ItemStack beybladeStack = cap.getInventory().getStackInSlot(0);
                         player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(blader->{
                             Launch launch = blader.getLaunchType().generateLaunch();
                             launch.launchBeyblade(beybladeStack, level, (ServerPlayerEntity) player, hand);

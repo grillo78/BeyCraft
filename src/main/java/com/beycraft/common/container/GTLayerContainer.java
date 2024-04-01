@@ -2,7 +2,6 @@ package com.beycraft.common.container;
 
 import com.beycraft.common.container.slot.GTWeightSlot;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;

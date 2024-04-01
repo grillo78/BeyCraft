@@ -1,13 +1,43 @@
 package com.beycraft.utils;
 
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.server.ServerWorld;
 
 import java.io.*;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class CommonUtils {
+
+    public static class AttributesUtil{
+        public static void setAttribute(LivingEntity entity, String name, Attribute attribute, UUID uuid, double amount, AttributeModifier.Operation operation) {
+            ModifiableAttributeInstance instance = entity.getAttribute(attribute);
+
+            if (instance == null || entity.level.isClientSide) {
+                return;
+            }
+
+            AttributeModifier modifier = instance.getModifier(uuid);
+
+            if (amount == 0 || modifier != null && (modifier.getAmount() != amount || modifier.getOperation() != operation)) {
+                instance.removeModifier(uuid);
+                return;
+            }
+
+            modifier = instance.getModifier(uuid);
+
+            if (modifier == null) {
+                modifier = new AttributeModifier(uuid, name, amount, operation);
+                instance.addTransientModifier(modifier);
+            }
+        }
+    }
+
     public static class ZipUtils {
         private static final int BUFFER_SIZE = 4096;
 

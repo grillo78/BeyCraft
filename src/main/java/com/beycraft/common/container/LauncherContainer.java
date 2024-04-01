@@ -1,5 +1,7 @@
 package com.beycraft.common.container;
 
+import com.beycraft.common.capability.item.Launcher;
+import com.beycraft.common.capability.item.LauncherCapabilityProvider;
 import com.beycraft.common.container.slot.*;
 import com.beycraft.utils.Direction;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,9 +10,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
@@ -20,13 +20,13 @@ public class LauncherContainer extends Container {
 
     public LauncherContainer(@Nullable ContainerType<?> type, int id, ItemStack stack, PlayerInventory playerInventory, boolean mainHand, Direction direction) {
         super(type, id);
-        addSlots(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseGet(() -> new ItemStackHandler(3)), direction);
+        addSlots(stack.getCapability(LauncherCapabilityProvider.LAUNCHER_CAPABILITY).orElseGet(() -> new Launcher()).getInventory(), direction);
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.selected, mainHand);
     }
 
     public LauncherContainer(@Nullable ContainerType<?> type, int id, ItemStack stack, boolean mainHand, PlayerInventory playerInventory) {
         super(type, id);
-        addSlots(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseGet(() -> new ItemStackHandler(3)));
+        addSlots(stack.getCapability(LauncherCapabilityProvider.LAUNCHER_CAPABILITY).orElseGet(() -> new Launcher()).getInventory());
         addPlayerSlots(new InvWrapper(playerInventory), playerInventory.selected, mainHand);
     }
 

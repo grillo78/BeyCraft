@@ -1,7 +1,5 @@
 package com.beycraft.client.entity.animator;
 
-import com.alrex.parcool.client.animation.Animator;
-import com.alrex.parcool.client.animation.PlayerModelRotator;
 import com.alrex.parcool.client.animation.PlayerModelTransformer;
 import com.alrex.parcool.common.capability.Parkourability;
 import net.minecraft.entity.player.PlayerEntity;

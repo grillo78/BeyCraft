@@ -2,7 +2,6 @@ package com.beycraft.client.screen;
 
 import com.beycraft.Beycraft;
 import com.beycraft.common.container.BeltContainer;
-import com.beycraft.common.container.LayerContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;

@@ -27,9 +27,9 @@ versionRange="[1.16.5,)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.beycraft]]
-modId="heroesunited"
+modId="clothes_mod"
 mandatory=true
-versionRange="[2.5.4-alpha62,)"
+versionRange="[0.1,)"
 ordering="AFTER"
 side="BOTH"
 [[dependencies.beycraft]]
