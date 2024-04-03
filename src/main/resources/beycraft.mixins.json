@@ -1,11 +1,13 @@
 {
   "required": true,
-  "package": "com.beycraft.mixin",
+  "package": "grillo78.beycraft.mixin",
   "refmap": "beycraft.refmap.json",
   "mixins":[
     "AnimatorListMixin"
   ],
-  "client": ["ClientPlayerEntityMixin"],
+  "client": [
+    "ClientPlayerEntityMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },

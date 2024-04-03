@@ -2,7 +2,7 @@
   "components": [
     {
       "type": "custom",
-      "class": "com.beycraft.client.book_component.BigItemComponent",
+      "class": "grillo78.beycraft.client.book_component.BigItemComponent",
       "item": "#item",
       "x": 50,
       "y": 75
