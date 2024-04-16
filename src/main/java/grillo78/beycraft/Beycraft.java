@@ -22,8 +22,6 @@ import grillo78.beycraft.common.capability.entity.BladerStorage;
 import grillo78.beycraft.common.capability.item.beylogger.Beylogger;
 import grillo78.beycraft.common.capability.item.beylogger.BeyloggerStorage;
 import grillo78.beycraft.common.capability.item.beylogger.IBeylogger;
-import grillo78.beycraft.common.commands.BeyCoinsCommand;
-import grillo78.beycraft.common.commands.GetBeyCoinsCommand;
 import grillo78.beycraft.common.commands.LevelCommand;
 import grillo78.beycraft.common.container.ModContainers;
 import grillo78.beycraft.common.entity.BeybladeEntity;
@@ -152,8 +150,8 @@ public class Beycraft {
     }
 
     private void onCommandRegistry(final RegisterCommandsEvent event) {
-        BeyCoinsCommand.register(event.getDispatcher());
-        GetBeyCoinsCommand.register(event.getDispatcher());
+//        BeyCoinsCommand.register(event.getDispatcher());
+//        GetBeyCoinsCommand.register(event.getDispatcher());
         LevelCommand.register(event.getDispatcher());
     }
 

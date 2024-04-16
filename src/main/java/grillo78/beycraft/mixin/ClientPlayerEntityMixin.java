@@ -1,8 +1,8 @@
 package grillo78.beycraft.mixin;
 
+import com.mojang.authlib.GameProfile;
 import grillo78.beycraft.common.capability.entity.Blader;
 import grillo78.beycraft.common.capability.entity.BladerCapabilityProvider;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;

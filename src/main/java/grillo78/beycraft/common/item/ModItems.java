@@ -1,20 +1,18 @@
 package grillo78.beycraft.common.item;
 
-import com.electronwill.nightconfig.core.AbstractConfig;
-import grillo78.beycraft.BeyTypes;
-import grillo78.beycraft.Beycraft;
-import grillo78.beycraft.common.ability.AbilityType;
-import grillo78.beycraft.common.tab.BeycraftItemGroup;
-import grillo78.beycraft.utils.Direction;
 import friedrichlp.renderlib.RenderLibSettings;
 import friedrichlp.renderlib.library.RenderEffect;
 import friedrichlp.renderlib.model.ModelLoaderProperty;
 import friedrichlp.renderlib.tracking.ModelInfo;
 import friedrichlp.renderlib.tracking.ModelManager;
+import grillo78.beycraft.BeyTypes;
+import grillo78.beycraft.Beycraft;
+import grillo78.beycraft.common.ability.AbilityType;
+import grillo78.beycraft.common.tab.BeycraftItemGroup;
+import grillo78.beycraft.utils.Direction;
 import grillo78.clothes_mod.common.items.ClothItem;
 import grillo78.clothes_mod.common.items.ClothesSlot;
 import net.minecraft.item.Item;
-import net.minecraft.util.IItemProvider;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.DeferredRegister;
@@ -74,7 +72,8 @@ public class ModItems {
     //Utils
     public static final Item PLASTIC = register("plastic", new Item(new Item.Properties().tab(BeycraftItemGroup.INSTANCE)));
     public static final Item BEYPAD = register("beypad", new Item(new Item.Properties()));
-    public static final BeycoinItem BEYCOIN = register("beycoin", new BeycoinItem());
+    public static final Item BEYCOIN = register("beycoin", new Item(new Item.Properties().tab(BeycraftItemGroup.INSTANCE)));
+//    public static final BeycoinItem BEYCOIN = register("beycoin", new BeycoinItem());
     public static final PackageItem PACKAGE  = register("package", new PackageItem(new Item.Properties().tab(BeycraftItemGroup.INSTANCE)));
 
     static {

@@ -1,9 +1,9 @@
 package grillo78.beycraft.client.block;
 
-import grillo78.beycraft.client.util.CustomRenderType;
-import grillo78.beycraft.common.block_entity.BattleInformerTileEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import grillo78.beycraft.client.util.CustomRenderType;
+import grillo78.beycraft.common.block_entity.BattleInformerTileEntity;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

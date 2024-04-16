@@ -1,8 +1,5 @@
 package grillo78.beycraft.client.entity;
 
-import grillo78.beycraft.client.util.CustomRenderType;
-import grillo78.beycraft.common.entity.BeybladeEntity;
-import grillo78.beycraft.common.item.LayerItem;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -11,6 +8,9 @@ import friedrichlp.renderlib.math.Matrix4f;
 import friedrichlp.renderlib.render.ViewBoxes;
 import friedrichlp.renderlib.tracking.RenderLayer;
 import friedrichlp.renderlib.tracking.RenderManager;
+import grillo78.beycraft.client.util.CustomRenderType;
+import grillo78.beycraft.common.entity.BeybladeEntity;
+import grillo78.beycraft.common.item.LayerItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;

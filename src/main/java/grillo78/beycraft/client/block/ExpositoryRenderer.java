@@ -1,8 +1,8 @@
 package grillo78.beycraft.client.block;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import grillo78.beycraft.common.block_entity.ExpositoryTileEntity;
 import grillo78.beycraft.common.item.BeyPartItem;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;

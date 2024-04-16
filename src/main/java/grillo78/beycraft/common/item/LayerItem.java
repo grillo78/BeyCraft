@@ -1,5 +1,13 @@
 package grillo78.beycraft.common.item;
 
+import com.google.common.util.concurrent.AtomicDouble;
+import com.google.gson.JsonObject;
+import com.mojang.blaze3d.systems.RenderSystem;
+import friedrichlp.renderlib.library.RenderMode;
+import friedrichlp.renderlib.tracking.ModelInfo;
+import friedrichlp.renderlib.tracking.RenderLayer;
+import friedrichlp.renderlib.tracking.RenderManager;
+import friedrichlp.renderlib.tracking.RenderObject;
 import grillo78.beycraft.BeyTypes;
 import grillo78.beycraft.Beycraft;
 import grillo78.beycraft.client.item.LayerRenderer;
@@ -11,14 +19,6 @@ import grillo78.beycraft.common.container.ModContainers;
 import grillo78.beycraft.common.entity.BeybladeEntity;
 import grillo78.beycraft.common.tab.BeycraftItemGroup;
 import grillo78.beycraft.utils.Direction;
-import com.google.common.util.concurrent.AtomicDouble;
-import com.google.gson.JsonObject;
-import com.mojang.blaze3d.systems.RenderSystem;
-import friedrichlp.renderlib.library.RenderMode;
-import friedrichlp.renderlib.tracking.ModelInfo;
-import friedrichlp.renderlib.tracking.RenderLayer;
-import friedrichlp.renderlib.tracking.RenderManager;
-import friedrichlp.renderlib.tracking.RenderObject;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;

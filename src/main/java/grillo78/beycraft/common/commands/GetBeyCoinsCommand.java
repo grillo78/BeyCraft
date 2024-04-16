@@ -1,16 +1,12 @@
 package grillo78.beycraft.common.commands;
 
-import grillo78.beycraft.common.capability.entity.BladerCapabilityProvider;
-import grillo78.beycraft.common.item.ModItems;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import grillo78.beycraft.common.capability.entity.BladerCapabilityProvider;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class GetBeyCoinsCommand {
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
@@ -23,14 +19,14 @@ public class GetBeyCoinsCommand {
         if(source.getEntity() != null && source.getEntity() instanceof ServerPlayerEntity){
             ServerPlayerEntity player = (ServerPlayerEntity) source.getEntity();
             player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(h->{
-                if(h.getWallet().getCurrency()>=amount){
-                    h.getWallet().increaseCurrency(-amount);
-                    player.level.addFreshEntity(new ItemEntity(player.level,player.getX(),
-                            player.getY(), player.getZ(), new ItemStack(ModItems.BEYCOIN, amount)));
-                    source.sendSuccess(new TranslationTextComponent("beycoins.successful.command.message", amount),true);
-                } else {
-                    source.sendFailure(new TranslationTextComponent("beycoins.fail.command.message"));
-                }
+//                if(h.getWallet().getCurrency()>=amount){
+//                    h.getWallet().increaseCurrency(-amount);
+//                    player.level.addFreshEntity(new ItemEntity(player.level,player.getX(),
+//                            player.getY(), player.getZ(), new ItemStack(ModItems.BEYCOIN, amount)));
+//                    source.sendSuccess(new TranslationTextComponent("beycoins.successful.command.message", amount),true);
+//                } else {
+//                    source.sendFailure(new TranslationTextComponent("beycoins.fail.command.message"));
+//                }
             });
         }
         return i;

@@ -1,11 +1,11 @@
 package grillo78.beycraft.common.item;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import grillo78.beycraft.BeyTypes;
 import grillo78.beycraft.common.ability.AbilityType;
 import grillo78.beycraft.common.capability.item.parts.DiscFrameCapabilityProvider;
 import grillo78.beycraft.common.container.DiscFrameContainer;
 import grillo78.beycraft.common.container.ModContainers;
-import com.google.common.util.concurrent.AtomicDouble;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;

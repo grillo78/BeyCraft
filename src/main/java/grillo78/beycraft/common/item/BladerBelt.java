@@ -1,9 +1,9 @@
 package grillo78.beycraft.common.item;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import grillo78.beycraft.client.entity.BeltModel;
 import grillo78.beycraft.common.capability.item.BeltCapabilityProvider;
 import grillo78.beycraft.common.tab.BeycraftItemGroup;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import grillo78.clothes_mod.common.items.ClothItem;
 import grillo78.clothes_mod.common.items.ClothesSlot;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

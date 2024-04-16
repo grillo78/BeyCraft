@@ -1,13 +1,13 @@
 package grillo78.beycraft.common.item;
 
-import grillo78.beycraft.BeyTypes;
-import grillo78.beycraft.Beycraft;
-import grillo78.beycraft.common.ability.Ability;
-import grillo78.beycraft.common.ability.AbilityType;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import grillo78.beycraft.BeyTypes;
+import grillo78.beycraft.Beycraft;
+import grillo78.beycraft.common.ability.Ability;
+import grillo78.beycraft.common.ability.AbilityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

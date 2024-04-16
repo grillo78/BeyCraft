@@ -18,7 +18,7 @@ public class Blader {
     private LaunchType launchType = LaunchTypes.BASIC_LAUNCH_TYPE;
     private PlayerEntity player;
     private Level bladerLevel = new Level();
-    private Wallet wallet = new Wallet();
+//    private Wallet wallet = new Wallet();
     private int animatorID = 0;
     private boolean launching = false;
 
@@ -28,8 +28,8 @@ public class Blader {
             launchType = LaunchType.LAUNCH_TYPES.getValue(new ResourceLocation(nbt.getString("launchType")));
         if (nbt.contains("bladerLevel"))
             bladerLevel = Level.readFromNBT(nbt.getCompound("bladerLevel"));
-        if (nbt.contains("wallet"))
-            wallet.deserializeNBT(nbt.getCompound("wallet"));
+//        if (nbt.contains("wallet"))
+//            wallet.deserializeNBT(nbt.getCompound("wallet"));
         if (nbt.contains("animatorID"))
             animatorID = nbt.getInt("animatorID");
     }
@@ -39,7 +39,7 @@ public class Blader {
 
         compoundNBT.putString("launchType", launchType.getRegistryName().toString());
         compoundNBT.put("bladerLevel", bladerLevel.writeNBT());
-        compoundNBT.put("wallet", wallet.serializeNBT());
+//        compoundNBT.put("wallet", wallet.serializeNBT());
         compoundNBT.putInt("animatorID", animatorID);
         return compoundNBT;
     }
@@ -96,9 +96,9 @@ public class Blader {
         return this.bladerLevel;
     }
 
-    public Wallet getWallet() {
-        return wallet;
-    }
+//    public Wallet getWallet() {
+//        return wallet;
+//    }
 
     public int getAnimatorID() {
         return animatorID;

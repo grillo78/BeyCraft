@@ -12,7 +12,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 

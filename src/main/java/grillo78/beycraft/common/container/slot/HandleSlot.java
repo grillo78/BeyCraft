@@ -16,4 +16,9 @@ public class HandleSlot extends SlotItemHandler {
     public boolean mayPlace(@Nonnull ItemStack stack) {
         return stack.getItem() instanceof HandleItem;
     }
+
+    @Override
+    public int getMaxStackSize() {
+        return 1;
+    }
 }

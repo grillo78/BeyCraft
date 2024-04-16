@@ -1,12 +1,11 @@
 package grillo78.beycraft.common.commands;
 
-import grillo78.beycraft.common.capability.entity.BladerCapabilityProvider;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import grillo78.beycraft.common.capability.entity.BladerCapabilityProvider;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class BeyCoinsCommand {
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
@@ -18,7 +17,7 @@ public class BeyCoinsCommand {
         if(source.getEntity() != null && source.getEntity() instanceof ServerPlayerEntity){
             ServerPlayerEntity player = (ServerPlayerEntity) source.getEntity();
             player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(h->{
-                source.sendSuccess(new TranslationTextComponent("beycoins.command.message",h.getWallet().getCurrency()),true);
+//                source.sendSuccess(new TranslationTextComponent("beycoins.command.message",h.getWallet().getCurrency()),true);
             });
         }
         return 0;

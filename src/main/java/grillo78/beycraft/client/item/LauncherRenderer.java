@@ -1,9 +1,9 @@
 package grillo78.beycraft.client.item;
 
-import grillo78.beycraft.Beycraft;
-import grillo78.beycraft.common.capability.item.LauncherCapabilityProvider;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import grillo78.beycraft.Beycraft;
+import grillo78.beycraft.common.capability.item.LauncherCapabilityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;

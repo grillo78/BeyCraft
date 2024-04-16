@@ -1,7 +1,7 @@
 package grillo78.beycraft.client.screen.widget;
 
-import grillo78.beycraft.common.capability.entity.BladerCapabilityProvider;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import grillo78.beycraft.common.capability.entity.BladerCapabilityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.list.AbstractList;
 import net.minecraft.client.gui.widget.list.ExtendedList;

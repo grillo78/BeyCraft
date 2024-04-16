@@ -1,9 +1,9 @@
 package grillo78.beycraft.client.screen;
 
-import grillo78.beycraft.Beycraft;
-import grillo78.beycraft.common.container.BeltContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import grillo78.beycraft.Beycraft;
+import grillo78.beycraft.common.container.BeltContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;

@@ -4,9 +4,12 @@ import grillo78.beycraft.common.block_entity.BattleInformerTileEntity;
 import grillo78.beycraft.common.block_entity.StadiumTileEntity;
 import grillo78.beycraft.common.capability.entity.BladerCapabilityProvider;
 import grillo78.beycraft.common.entity.BeybladeEntity;
+import grillo78.beycraft.common.item.ModItems;
 import grillo78.beycraft.utils.CommonUtils;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
@@ -56,7 +59,6 @@ public class Battle {
                     }
                 }
             }
-            updateBattleInformersPoints();
             if (points.size() > 2) {
                 type = BattleTypes.BATTLE_ROYAL;
             }
@@ -66,6 +68,7 @@ public class Battle {
                 stadium.invalidateBattle();
             }
         }
+        updateBattleInformersPoints();
 
         AtomicInteger beysSpinning = new AtomicInteger(0);
         AtomicReference<PlayerEntity> lastSpinningBeyPlayer = new AtomicReference<>();
@@ -75,8 +78,10 @@ public class Battle {
             if (!isStopped && isAlive && beysIn.contains(beybladeEntity)) {
                 if (beybladeEntity.isDropped())
                     cancelRound();
-                beysSpinning.getAndIncrement();
-                lastSpinningBeyPlayer.set(entity);
+                else {
+                    beysSpinning.getAndIncrement();
+                    lastSpinningBeyPlayer.set(entity);
+                }
             }
         }));
 
@@ -86,9 +91,9 @@ public class Battle {
                     PlayerEntity winner = lastSpinningBeyPlayer.get();
                     if (winner != null && points.containsKey(winner)) {
                         AtomicInteger beysAlive = new AtomicInteger();
-                        beys.forEach(((entity, BeybladeEntity) -> {
+                        beys.forEach(((entity, beybladeEntity) -> {
                             increaseXP((ServerPlayerEntity) entity, entity == winner);
-                            if (BeybladeEntity.isAlive())
+                            if (beybladeEntity.isAlive())
                                 beysAlive.getAndIncrement();
                         }));
                         points.put(winner, points.get(winner) + (beysAlive.get() == 1 ? 2 : 1));
@@ -106,7 +111,7 @@ public class Battle {
                     break;
             }
         } else {
-            if (beysSpinning.get() == 0 && beysIn.size() != 0) {
+            if (beysSpinning.get() != beysIn.size()) {
                 cancelRound();
             }
         }
@@ -145,18 +150,23 @@ public class Battle {
     private void setWinner(ServerPlayerEntity player) {
         if (battleForRanking) {
             points.forEach((auxPlayer, points) -> {
-                auxPlayer.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(h -> {
-                    h.getWallet().increaseCurrency(this.points.get(auxPlayer));
-                });
+//                auxPlayer.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(h -> {
+//                    h.getWallet().increaseCurrency(this.points.get(auxPlayer));
+//                });
+                ItemEntity coins = new ItemEntity(auxPlayer.level, auxPlayer.position().x, auxPlayer.position().y, auxPlayer.position().z, new ItemStack(ModItems.BEYCOIN, this.points.get(auxPlayer)));
+                auxPlayer.level.addFreshEntity(coins);
                 if (auxPlayer != player)
                     auxPlayer.displayClientMessage(new TranslationTextComponent("beycraft.lose_combat"), true);
                 else
                     auxPlayer.displayClientMessage(new TranslationTextComponent("beycraft.win_combat"), true);
             });
-        } else
-            player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(h -> {
-                h.getWallet().increaseCurrency(this.points.get(player));
-            });
+        } else {
+//            player.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(h -> {
+//                h.getWallet().increaseCurrency(this.points.get(player));
+//            });
+            ItemEntity coins = new ItemEntity(player.level, player.position().x, player.position().y, player.position().z, new ItemStack(ModItems.BEYCOIN, this.points.get(player)));
+            player.level.addFreshEntity(coins);
+        }
         stadium.invalidateBattle();
     }
 

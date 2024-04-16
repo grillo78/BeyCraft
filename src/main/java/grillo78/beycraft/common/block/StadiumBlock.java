@@ -1,9 +1,9 @@
 package grillo78.beycraft.common.block;
 
-import grillo78.beycraft.Beycraft;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import grillo78.beycraft.Beycraft;
 import grillo78.beycraft.common.block_entity.StadiumTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -217,6 +217,11 @@ public class StadiumBlock extends Block implements IWaterLoggable {
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         return defaultBlockState().setValue(WATERLOGGED,
                 Boolean.valueOf(context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER));
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
     }
 
     @Nullable

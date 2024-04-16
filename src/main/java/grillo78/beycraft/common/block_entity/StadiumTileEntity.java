@@ -29,7 +29,7 @@ public class StadiumTileEntity extends TileEntity implements ITickableTileEntity
     public void tick() {
         if (!level.isClientSide) {
             List<BeybladeEntity> beys = level.getEntitiesOfClass(BeybladeEntity.class,
-                    new AxisAlignedBB(getBlockPos().north().east(2), getBlockPos().south(2).west().above()));
+                    new AxisAlignedBB(getBlockPos().north(3).east(3), getBlockPos().south(3).west(3).above(3)));
             if (allowBattle) {
                 int beysSpinning = 0;
                 for (BeybladeEntity bey : beys) {

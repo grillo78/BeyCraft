@@ -1,9 +1,9 @@
 package grillo78.beycraft.common.commands;
 
-import grillo78.beycraft.common.capability.entity.BladerCapabilityProvider;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import grillo78.beycraft.common.capability.entity.BladerCapabilityProvider;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;

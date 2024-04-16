@@ -24,7 +24,7 @@ public class BeycoinItem extends Item {
             itemstack.shrink(amount);
 
             playerIn.getCapability(BladerCapabilityProvider.BLADER_CAP).ifPresent(h -> {
-                h.getWallet().increaseCurrency(amount);
+//                h.getWallet().increaseCurrency(amount);
             });
 
             result = ActionResult.success(itemstack);

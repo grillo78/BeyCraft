@@ -1,8 +1,8 @@
 package grillo78.beycraft.client.particle;
 
-import grillo78.beycraft.common.entity.BeybladeEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import grillo78.beycraft.common.entity.BeybladeEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;

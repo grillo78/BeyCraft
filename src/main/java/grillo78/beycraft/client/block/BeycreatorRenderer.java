@@ -1,9 +1,5 @@
 package grillo78.beycraft.client.block;
 
-import grillo78.beycraft.common.block.BeycreatorBlock;
-import grillo78.beycraft.common.block_entity.BeycreatorTileEntity;
-import grillo78.beycraft.common.item.BeyPartItem;
-import grillo78.beycraft.common.item.ModItems;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -15,6 +11,10 @@ import friedrichlp.renderlib.tracking.ModelInfo;
 import friedrichlp.renderlib.tracking.RenderLayer;
 import friedrichlp.renderlib.tracking.RenderManager;
 import friedrichlp.renderlib.tracking.RenderObject;
+import grillo78.beycraft.common.block.BeycreatorBlock;
+import grillo78.beycraft.common.block_entity.BeycreatorTileEntity;
+import grillo78.beycraft.common.item.BeyPartItem;
+import grillo78.beycraft.common.item.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
