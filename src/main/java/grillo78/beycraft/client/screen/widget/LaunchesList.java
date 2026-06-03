@@ -14,11 +14,11 @@ public class LaunchesList extends ExtendedList<LaunchesList.LaunchesListEntry> {
 
     public LaunchesList() {
         super(Minecraft.getInstance(), Minecraft.getInstance().screen.width/2, Minecraft.getInstance().screen.height, 30, Minecraft.getInstance().screen.height - 30, 18);
-        LaunchType.LAUNCH_TYPES.getEntries().forEach(type->{
+        LaunchType.LAUNCH_TYPES.getValues().forEach(type->{
             if(type != LaunchTypes.HAND_LAUNCH_TYPE){
-                LaunchesListEntry entry = new LaunchesListEntry(type.getValue());
+                LaunchesListEntry entry = new LaunchesListEntry(type);
                 addEntry(entry);
-                if (Minecraft.getInstance().player.getCapability(BladerCapabilityProvider.BLADER_CAP).orElse(null).getLaunchType() == type.getValue())
+                if (Minecraft.getInstance().player.getCapability(BladerCapabilityProvider.BLADER_CAP).orElse(null).getLaunchType() == type)
                     entry.select();
             }
         });

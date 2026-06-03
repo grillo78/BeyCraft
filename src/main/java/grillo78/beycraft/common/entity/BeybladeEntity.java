@@ -32,6 +32,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -134,6 +135,10 @@ public class BeybladeEntity extends CreatureEntity implements IEntityAdditionalS
                 if ((level.getBlockState(pos).getBlock() != ModBlocks.STADIUM && level.getBlockState(pos).getBlock() != Blocks.AIR) || getEnergy() < 0)
                     setStopped();
                 if (!isStopped()) {
+                    if(level.getBlockState(pos).getBlock() == Blocks.AIR) {
+                        double scaleFactor = MathHelper.clamp(getDeltaMovement().length(),0,2);
+                        setDeltaMovement(getDeltaMovement().normalize().multiply(scaleFactor, scaleFactor, scaleFactor));
+                    }
                     if(isOnResonance()){
                         resonanceTimer--;
                         if (resonanceTimer == 0) {

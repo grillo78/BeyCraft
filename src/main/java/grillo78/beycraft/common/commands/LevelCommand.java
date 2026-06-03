@@ -10,7 +10,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 
 public class LevelCommand {
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
-        LiteralArgumentBuilder<CommandSource> literalArgumentBuilder = Commands.literal("Bladerlevel").requires(source-> source.hasPermission(2)).then(Commands.argument("level", IntegerArgumentType.integer(1)).executes((context -> setLevel(context.getSource(), IntegerArgumentType.getInteger(context, "level")))));
+        LiteralArgumentBuilder<CommandSource> literalArgumentBuilder = Commands.literal("bladerlevel").requires(source-> source.hasPermission(2)).then(Commands.argument("level", IntegerArgumentType.integer(1)).executes((context -> setLevel(context.getSource(), IntegerArgumentType.getInteger(context, "level")))));
         dispatcher.register(literalArgumentBuilder);
     }
 

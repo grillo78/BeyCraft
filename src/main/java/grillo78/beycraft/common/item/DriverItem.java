@@ -26,7 +26,7 @@ public class DriverItem extends BeyPartItem{
     }
 
     public float getRadiusReduction() {
-        return radiusReduction;
+        return radiusReduction/3F;
     }
 
     public float getFriction() {

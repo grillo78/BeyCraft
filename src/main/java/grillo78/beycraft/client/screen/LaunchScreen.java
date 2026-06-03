@@ -15,7 +15,6 @@ public class LaunchScreen extends Screen {
 
     public LaunchScreen(ITextComponent p_i51108_1_) {
         super(p_i51108_1_);
-        Minecraft.getInstance().player.getCapability(BladerCapabilityProvider.BLADER_CAP).orElseThrow(NullPointerException::new);
     }
 
     @Override

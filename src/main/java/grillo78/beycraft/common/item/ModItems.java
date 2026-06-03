@@ -70,10 +70,10 @@ public class ModItems {
             new BladerBelt());
 
     //Utils
+    public static final Item RUBBER = register("rubber", new Item(new Item.Properties().tab(BeycraftItemGroup.INSTANCE)));
     public static final Item PLASTIC = register("plastic", new Item(new Item.Properties().tab(BeycraftItemGroup.INSTANCE)));
     public static final Item BEYPAD = register("beypad", new Item(new Item.Properties()));
     public static final Item BEYCOIN = register("beycoin", new Item(new Item.Properties().tab(BeycraftItemGroup.INSTANCE)));
-//    public static final BeycoinItem BEYCOIN = register("beycoin", new BeycoinItem());
     public static final PackageItem PACKAGE  = register("package", new PackageItem(new Item.Properties().tab(BeycraftItemGroup.INSTANCE)));
 
     static {
