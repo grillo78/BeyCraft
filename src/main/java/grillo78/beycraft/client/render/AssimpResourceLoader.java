@@ -71,8 +71,8 @@ public class AssimpResourceLoader {
                 return 0L; // null → Assimp reportará error de carga
             }
 
-            // Crear la estructura AIFile y registrar sus callbacks
-            AIFile aiFile = AIFile.create();
+            // CORRECCIÓN: Usamos malloc() para que la estructura persista en el heap nativo
+            AIFile aiFile = AIFile.malloc();
             long filePtr = aiFile.address();
 
             openFiles.put(filePtr, data);
@@ -97,7 +97,7 @@ public class AssimpResourceLoader {
                 return actual / size;
             });
 
-            // Escritura (no necesaria para carga, devuelve 0)
+            // Escritura
             aiFile.WriteProc((pFile, pBuffer, size, count) -> 0L);
 
             // Posición actual del cursor
@@ -118,12 +118,11 @@ public class AssimpResourceLoader {
                     default -> cursor[0];
                 };
 
-                // Clamp para evitar out-of-bounds
                 cursor[0] = Math.max(0, Math.min(newPos, buf.limit()));
                 return Assimp.aiReturn_SUCCESS;
             });
 
-            // Flush (no-op para lectura)
+            // Flush
             aiFile.FlushProc(pFile -> {});
 
             return filePtr;
@@ -133,36 +132,164 @@ public class AssimpResourceLoader {
         AIFileCloseProcI closeProc = (pFileIO, pFile) -> {
             ByteBuffer buf = openFiles.remove(pFile);
             if (buf != null) {
-                MemoryUtil.memFree(buf); // liberar memoria nativa
+                MemoryUtil.memFree(buf); // Liberar los bytes del archivo
             }
             fileCursors.remove(pFile);
+
+            // CORRECCIÓN: Re-envolvemos el puntero crudo pFile en un objeto AIFile
+            // para poder invocar su método .free() nativo correctamente.
+            AIFile.create(pFile).free();
         };
 
-        // ── Montar AIFileIO y lanzar la carga ─────────────────────────────────
-        try (AIFileIO fileIO = AIFileIO.create()) {
-            fileIO.OpenProc(openProc);
-            fileIO.CloseProc(closeProc);
+        // CORRECCIÓN: Eliminamos el try-with-resources.
+        // Usamos malloc() para que la definición de IO no se destruya al retornar la Scene.
+        AIFileIO fileIO = AIFileIO.malloc();
+        fileIO.OpenProc(openProc);
+        fileIO.CloseProc(closeProc);
 
-            // El primer argumento es solo un identificador; el contenido real
-            // lo proporciona openProc a través del ResourceManager.
-            AIScene scene = Assimp.aiImportFileEx(
-                    modelLoc.getPath(),
-                    flags,
-                    fileIO
+        AIScene scene = Assimp.aiImportFileEx(
+                modelLoc.getPath(),
+                flags,
+                fileIO
+        );
+
+        if (scene == null) {
+            openFiles.values().forEach(MemoryUtil::memFree);
+            fileIO.free(); // Si falló la carga aquí, limpiamos fileIO de inmediato
+            throw new RuntimeException(
+                    "Assimp no pudo cargar '" + modelLoc + "': " + Assimp.aiGetErrorString()
             );
-
-            if (scene == null) {
-                // Liberar cualquier buffer que haya quedado abierto en caso de error
-                openFiles.values().forEach(MemoryUtil::memFree);
-                throw new RuntimeException(
-                        "Assimp no pudo cargar '" + modelLoc + "': " + Assimp.aiGetErrorString()
-                );
-            }
-
-            return scene;
-            // Recuerda: llamar a Assimp.aiReleaseImport(scene) cuando termines de usar la escena.
         }
+
+        // Importante: No cerramos fileIO aquí porque Assimp lo volverá a necesitar en F3+T.
+        return scene;
     }
+//    public static AIScene loadFromResources(ResourceManager rm, ResourceLocation loc, int flags) {
+//
+//        // Ruta interna dentro de assets: assets/<namespace>/models/<path>
+//        ResourceLocation modelLoc = ResourceLocation.fromNamespaceAndPath(
+//                loc.getNamespace(),
+//                "models/" + loc.getPath()
+//        );
+//
+//        // Mapa: dirección del AIFile nativo → ByteBuffer con el contenido del archivo
+//        Map<Long, ByteBuffer> openFiles = new HashMap<>();
+//        // Mapa: dirección del AIFile nativo → cursor de lectura actual (en bytes)
+//        Map<Long, int[]> fileCursors = new HashMap<>();
+//
+//        // ── Callback: Assimp quiere abrir un archivo ──────────────────────────
+//        AIFileOpenProcI openProc = (pFileIO, pFileName, pOpenMode) -> {
+//
+//            String requestedName = MemoryUtil.memUTF8(pFileName);
+//            ResourceLocation fileLoc = resolveRelative(modelLoc, requestedName);
+//
+//            Beycraft.LOGGER.debug("Assimp solicita archivo: {}", fileLoc);
+//
+//            // Leer el recurso en un ByteBuffer nativo
+//            ByteBuffer data;
+//            try {
+//                Resource resource = rm.getResource(fileLoc)
+//                        .orElseThrow(() -> new FileNotFoundException(fileLoc.toString()));
+//                byte[] raw = resource.open().readAllBytes();
+//                data = MemoryUtil.memAlloc(raw.length); // heap nativo, hay que liberar manualmente
+//                data.put(raw).flip();
+//            } catch (IOException e) {
+//                Beycraft.LOGGER.error("Assimp: no se pudo abrir el recurso '{}'", fileLoc, e);
+//                return 0L; // null → Assimp reportará error de carga
+//            }
+//
+//            // Crear la estructura AIFile y registrar sus callbacks
+//            AIFile aiFile = AIFile.create();
+//            long filePtr = aiFile.address();
+//
+//            openFiles.put(filePtr, data);
+//            fileCursors.put(filePtr, new int[]{0});
+//
+//            // Lectura
+//            aiFile.ReadProc((pFile, pBuffer, size, count) -> {
+//                ByteBuffer buf = openFiles.get(pFile);
+//                int[] cursor = fileCursors.get(pFile);
+//                long toRead    = size * count;
+//                long available = buf.limit() - cursor[0];
+//                long actual    = Math.min(toRead, available);
+//
+//                if (actual <= 0) return 0L;
+//
+//                MemoryUtil.memCopy(
+//                        MemoryUtil.memAddress(buf) + cursor[0],
+//                        pBuffer,
+//                        actual
+//                );
+//                cursor[0] += (int) actual;
+//                return actual / size;
+//            });
+//
+//            // Escritura (no necesaria para carga, devuelve 0)
+//            aiFile.WriteProc((pFile, pBuffer, size, count) -> 0L);
+//
+//            // Posición actual del cursor
+//            aiFile.TellProc(pFile -> fileCursors.get(pFile)[0]);
+//
+//            // Tamaño total del archivo
+//            aiFile.FileSizeProc(pFile -> openFiles.get(pFile).limit());
+//
+//            // Seek
+//            aiFile.SeekProc((pFile, offset, origin) -> {
+//                ByteBuffer buf = openFiles.get(pFile);
+//                int[] cursor = fileCursors.get(pFile);
+//
+//                int newPos = switch (origin) {
+//                    case Assimp.aiOrigin_SET -> (int) offset;
+//                    case Assimp.aiOrigin_CUR -> cursor[0] + (int) offset;
+//                    case Assimp.aiOrigin_END -> buf.limit() + (int) offset;
+//                    default -> cursor[0];
+//                };
+//
+//                // Clamp para evitar out-of-bounds
+//                cursor[0] = Math.max(0, Math.min(newPos, buf.limit()));
+//                return Assimp.aiReturn_SUCCESS;
+//            });
+//
+//            // Flush (no-op para lectura)
+//            aiFile.FlushProc(pFile -> {});
+//
+//            return filePtr;
+//        };
+//
+//        // ── Callback: Assimp quiere cerrar un archivo ─────────────────────────
+//        AIFileCloseProcI closeProc = (pFileIO, pFile) -> {
+//            ByteBuffer buf = openFiles.remove(pFile);
+//            if (buf != null) {
+//                MemoryUtil.memFree(buf); // liberar memoria nativa
+//            }
+//            fileCursors.remove(pFile);
+//        };
+//
+//        // ── Montar AIFileIO y lanzar la carga ─────────────────────────────────
+//        try (AIFileIO fileIO = AIFileIO.create()) {
+//            fileIO.OpenProc(openProc);
+//            fileIO.CloseProc(closeProc);
+//
+//            // El primer argumento es solo un identificador; el contenido real
+//            // lo proporciona openProc a través del ResourceManager.
+//            AIScene scene = Assimp.aiImportFileEx(
+//                    modelLoc.getPath(),
+//                    flags,
+//                    fileIO
+//            );
+//
+//            if (scene == null) {
+//                // Liberar cualquier buffer que haya quedado abierto en caso de error
+//                openFiles.values().forEach(MemoryUtil::memFree);
+//                throw new RuntimeException(
+//                        "Assimp no pudo cargar '" + modelLoc + "': " + Assimp.aiGetErrorString()
+//                );
+//            }
+//
+//            return scene;
+//            // Recuerda: llamar a Assimp.aiReleaseImport(scene) cuando termines de usar la escena.
+//        }
+//    }
 
     /**
      * Resuelve la ruta de un archivo que Assimp solicita (p.ej. el .mtl)

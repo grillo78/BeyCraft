@@ -5,6 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import grillo78.beycraft.Beycraft;
 import grillo78.beycraft.ModTabs;
+import grillo78.beycraft.data.parts.burst.Disc;
+import grillo78.beycraft.data.parts.burst.Driver;
 import grillo78.beycraft.data.parts.burst.Layer;
 import grillo78.beycraft.network.RegisterModel;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +26,8 @@ import java.util.Map;
 public class BeypartsReloadListener extends SimpleJsonResourceReloadListener {
     public static Map<ResourceLocation, Beypart> BEYPARTS = new HashMap<>();
     public static List<Beypart> BURST_LAYERS = new ArrayList<>();
+    public static List<Beypart> BURST_DISCS = new ArrayList<>();
+    public static List<Beypart> BURST_DRIVERS = new ArrayList<>();
     private static final Gson GSON = new Gson();
 
     public BeypartsReloadListener() {
@@ -41,6 +45,14 @@ public class BeypartsReloadListener extends SimpleJsonResourceReloadListener {
                     case "layer":
                         part = new Layer(id, object);
                         BURST_LAYERS.add(part);
+                        break;
+                    case "disc":
+                        part = new Disc(id, object);
+                        BURST_DISCS.add(part);
+                        break;
+                    case "driver":
+                        part = new Driver(id, object);
+                        BURST_DRIVERS.add(part);
                         break;
                     default:
                         throw new Exception("Unkown beypart type.");

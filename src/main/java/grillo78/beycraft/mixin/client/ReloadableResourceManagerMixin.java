@@ -19,6 +19,6 @@ public class ReloadableResourceManagerMixin {
 
     @Inject(method = "createReload", at = @At("RETURN"))
     public void onCreateReload(Executor backgroundExecutor, Executor gameExecutor, CompletableFuture<Unit> waitingFor, List<PackResources> resourcePacks, CallbackInfoReturnable<ReloadInstance> cir){
-        MeshRegistry.cleanup();
+//        MeshRegistry.cleanup();
     }
 }

@@ -1,6 +1,8 @@
 package grillo78.beycraft.client;
 
 import grillo78.beycraft.Beycraft;
+import grillo78.beycraft.client.item.BurstDiscClientExtensions;
+import grillo78.beycraft.client.item.BurstDriverClientExtensions;
 import grillo78.beycraft.client.item.BurstLayerClientExtensions;
 import grillo78.beycraft.client.render.MeshRegistry;
 import grillo78.beycraft.client.render.ObjMesh;
@@ -23,6 +25,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 import java.io.IOException;
 
@@ -43,6 +46,8 @@ public class BeycraftClient {
 
     private void registerClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerItem(new BurstLayerClientExtensions(), ModItems.BURST_LAYER);
+        event.registerItem(new BurstDiscClientExtensions(), ModItems.BURST_DISC);
+        event.registerItem(new BurstDriverClientExtensions(), ModItems.BURST_DRIVER);
     }
 
     // ── Registro de shaders (mod bus) ─────────────────────────────────────────

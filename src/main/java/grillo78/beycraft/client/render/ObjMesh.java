@@ -233,7 +233,7 @@ public class ObjMesh {
         // ── Uniforms ──────────────────────────────────────────────────────────
         if (shader.MODEL_VIEW_MATRIX != null) shader.MODEL_VIEW_MATRIX.set(modelView);
         if (shader.PROJECTION_MATRIX != null) shader.PROJECTION_MATRIX.set(RenderSystem.getProjectionMatrix());
-        if (shader.COLOR_MODULATOR   != null) shader.COLOR_MODULATOR.set(1f, 1f, 1f, 1f);
+        if (shader.COLOR_MODULATOR != null) shader.COLOR_MODULATOR.set(1f, 1f, 1f, 1f);
 
         var lightmapUniform = shader.getUniform("LightmapUV");
         if (lightmapUniform != null) lightmapUniform.set(lightU, lightV);
@@ -260,7 +260,7 @@ public class ObjMesh {
         if (sub.hasTexture()) {
             AbstractTexture diffuseTex = Minecraft.getInstance()
                     .getTextureManager()
-                    .getTexture(sub.texture(), MissingTextureAtlasSprite.getTexture());
+                    .getTexture(sub.texture());
             GL13.glActiveTexture(GL13.GL_TEXTURE0);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, diffuseTex.getId());
         }
@@ -272,7 +272,7 @@ public class ObjMesh {
 
         // ── Draw ──────────────────────────────────────────────────────────────
         GL11.glDrawElements(GL11.GL_TRIANGLES, sub.indexCount(), GL11.GL_UNSIGNED_INT, sub.indexOffsetBytes());
-
+        GL13.glActiveTexture(GL13.GL_TEXTURE0); // restaurar slot activo
         shader.clear();
         GL30.glBindVertexArray(minecraftVAO);
     }
@@ -282,13 +282,13 @@ public class ObjMesh {
         if (subMeshes.isEmpty()) return;
 
         poseStack.pushPose();
-        poseStack.translate(0.5,0.5,0.5);
+        poseStack.translate(0.5, 0.5, 0.5);
         poseStack.mulPose(Axis.YN.rotationDegrees(180));
 
         Matrix4f modelView = new Matrix4f(RenderSystem.getModelViewMatrix())
                 .mul(poseStack.last().pose());
 
-        float lightU = ((packedLight & 0xFFFF)         + 8f) / 256f;
+        float lightU = ((packedLight & 0xFFFF) + 8f) / 256f;
         float lightV = (((packedLight >> 16) & 0xFFFF) + 8f) / 256f;
 
         // Obtener ID del lightmap una sola vez
@@ -302,10 +302,10 @@ public class ObjMesh {
         List<SubMesh> sorted = new ArrayList<>(subMeshes);
         sorted.sort(Comparator.comparingDouble(sub -> {
             Vec3 c = sub.center();
-            float wx = (float)(modelView.m00()*c.x + modelView.m10()*c.y + modelView.m20()*c.z + modelView.m30());
-            float wy = (float)(modelView.m01()*c.x + modelView.m11()*c.y + modelView.m21()*c.z + modelView.m31());
-            float wz = (float)(modelView.m02()*c.x + modelView.m12()*c.y + modelView.m22()*c.z + modelView.m32());
-            return -(wx*wx + wy*wy + wz*wz);
+            float wx = (float) (modelView.m00() * c.x + modelView.m10() * c.y + modelView.m20() * c.z + modelView.m30());
+            float wy = (float) (modelView.m01() * c.x + modelView.m11() * c.y + modelView.m21() * c.z + modelView.m31());
+            float wz = (float) (modelView.m02() * c.x + modelView.m12() * c.y + modelView.m22() * c.z + modelView.m32());
+            return -(wx * wx + wy * wy + wz * wz);
         }));
 
         var shader = OBJ_SHADER;
