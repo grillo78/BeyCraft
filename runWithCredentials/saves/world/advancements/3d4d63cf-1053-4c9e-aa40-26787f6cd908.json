@@ -1,0 +1,597 @@
+{
+  "mcwwindows:recipes/mosaic_pane/orange_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/immersivecooking/stone_countertop_from_smooth_stone_stonecutting": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/gray_glazed_terracotta": {
+    "criteria": {
+      "has_gray_terracotta": "2021-11-11 20:19:02 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/blue_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/acacia_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/stone/diorite_window2": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/cyan_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/diorite_stairs_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/white_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/gray_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/white_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:recipes/farmersdelight/acacia_pantry": {
+    "criteria": {
+      "has_acacia_trapdoor": "2021-11-11 20:44:28 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/blue_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/dark_oak_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/diorite_slab_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/blast_furnace": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/gray_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/diorite_rooftiles_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/birch_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/oak_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/blue_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/brown_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/green_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/cyan_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/lime_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/diorite_button_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/purple_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/spruce_boat": {
+    "criteria": {
+      "in_water": "2021-11-11 20:42:53 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/immersivecooking/stone_countertop_from_smooth_stone_slab_stonecutting": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/oak_planks": {
+    "criteria": {
+      "has_logs": "2021-11-11 20:25:12 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/white_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/black_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/diorite_stairs": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/purple_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/green_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "heroesunited:heroesunited/root": {
+    "criteria": {
+      "load_world": "2021-11-11 20:12:04 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/light_gray_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/andesite": {
+    "criteria": {
+      "has_stone": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/black_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/red_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/modern_diorite_wall": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/diorite_slab": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/yellow_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/brown_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/brown_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/crimson_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/diorite_button": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/magenta_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_diorite_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/sponge": {
+    "criteria": {
+      "has_wet_sponge": "2021-11-11 20:39:26 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/emerald": {
+    "criteria": {
+      "has_emerald_block": "2021-11-11 20:49:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_stone_slab": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/magenta_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/light_gray_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/light_blue_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/diorite_wall_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/diorite_wall": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/light_blue_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/lime_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/cyan_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:forest": "2021-11-11 20:12:04 +0000"
+    },
+    "done": false
+  },
+  "minecraft:recipes/misc/charcoal": {
+    "criteria": {
+      "has_log": "2021-11-11 20:25:12 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/yellow_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/birch_boat": {
+    "criteria": {
+      "in_water": "2021-11-11 20:42:53 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/gray_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/diorite_rooftiles_from_diorite": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/pink_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/railing_diorite_wall": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/orange_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/light_blue_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/acacia_boat": {
+    "criteria": {
+      "in_water": "2021-11-11 20:42:53 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/spruce_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/green_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/jungle_boat": {
+    "criteria": {
+      "in_water": "2021-11-11 20:42:53 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_iron_block": {
+    "criteria": {
+      "has_iron_block": "2021-11-11 20:52:11 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/light_gray_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:main/root": {
+    "criteria": {
+      "seeds": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/dark_oak_boat": {
+    "criteria": {
+      "in_water": "2021-11-11 20:42:53 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/warped_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/pink_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stripped_oak_wood": {
+    "criteria": {
+      "has_log": "2021-11-11 20:25:12 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/orange_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/purple_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/magenta_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/diorite_ornament_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/smooth_diorite_from_smelting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/jungle_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/lime_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/yellow_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/pink_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_diorite": {
+    "criteria": {
+      "has_stone": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/oak_boat": {
+    "criteria": {
+      "in_water": "2021-11-11 20:42:53 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/black_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-11 20:16:39 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/stone/diorite_window": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/anvil": {
+    "criteria": {
+      "has_iron_block": "2021-11-11 20:52:11 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/parapet/diorite_parapet": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:40:31 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/red_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/red_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:43:15 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_stone_slab_from_smooth_stone_stonecutting": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 20:22:22 +0000"
+    },
+    "done": true
+  },
+  "DataVersion": 2586
+}

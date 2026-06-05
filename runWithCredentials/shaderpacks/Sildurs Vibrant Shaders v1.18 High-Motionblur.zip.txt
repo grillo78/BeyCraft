@@ -1,0 +1,5 @@
+#Tue May 28 15:06:00 CEST 2019
+Lens_Flares=true
+POM=true
+POM_RES=128
+SSDO=true

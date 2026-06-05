@@ -1,0 +1,74 @@
+{
+  "minecraft:recipes/transportation/acacia_boat": {
+    "criteria": {
+      "in_water": "2020-01-06 08:53:51 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/oak_boat": {
+    "criteria": {
+      "in_water": "2020-01-06 08:53:51 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/gray_banner": {
+    "criteria": {
+      "has_gray_wool": "2020-01-06 08:35:01 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/dark_oak_boat": {
+    "criteria": {
+      "in_water": "2020-01-06 08:53:51 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/birch_boat": {
+    "criteria": {
+      "in_water": "2020-01-06 08:53:51 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/gray_carpet": {
+    "criteria": {
+      "has_gray_wool": "2020-01-06 08:35:01 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/jungle_boat": {
+    "criteria": {
+      "in_water": "2020-01-06 08:53:51 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/painting": {
+    "criteria": {
+      "has_wool": "2020-01-06 08:35:01 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/spruce_boat": {
+    "criteria": {
+      "in_water": "2020-01-06 08:53:51 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/gray_bed": {
+    "criteria": {
+      "has_gray_wool": "2020-01-06 08:35:01 -0700"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:forest": "2020-01-06 08:35:02 -0700",
+      "minecraft:jungle": "2020-01-10 10:28:35 -0700",
+      "minecraft:river": "2020-03-15 11:54:57 -0600",
+      "minecraft:wooded_hills": "2020-01-06 08:55:15 -0700",
+      "minecraft:swamp": "2020-01-06 08:53:49 -0700",
+      "minecraft:plains": "2020-01-06 08:53:35 -0700"
+    },
+    "done": false
+  },
+  "DataVersion": 1976
+}

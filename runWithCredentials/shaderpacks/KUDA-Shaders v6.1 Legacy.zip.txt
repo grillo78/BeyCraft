@@ -1,0 +1,6 @@
+#Fri Oct 04 17:36:48 CEST 2019
+depthOfField=true
+distanceBlur=true
+motionblur=true
+parallaxOcclusionMapping=true
+shakingCamera=true

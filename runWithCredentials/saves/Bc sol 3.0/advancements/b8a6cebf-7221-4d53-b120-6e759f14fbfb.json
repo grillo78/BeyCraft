@@ -1,0 +1,63 @@
+{
+  "minecraft:recipes/building_blocks/quartz_pillar": {
+    "criteria": {
+      "has_quartz_pillar": "2022-01-18 19:50:57 +0100"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_quartz_slab": {
+    "criteria": {
+      "has_smooth_quartz": "2022-02-15 22:41:35 +0100"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_quartz_slab_from_smooth_quartz_stonecutting": {
+    "criteria": {
+      "has_smooth_quartz": "2022-02-15 22:41:35 +0100"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/quartz_stairs": {
+    "criteria": {
+      "has_quartz_pillar": "2022-01-18 19:50:57 +0100"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/quartz_slab": {
+    "criteria": {
+      "has_quartz_pillar": "2022-01-18 19:50:57 +0100"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_quartz_stairs_from_smooth_quartz_stonecutting": {
+    "criteria": {
+      "has_smooth_quartz": "2022-02-15 22:41:35 +0100"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:plains": "2022-01-18 19:50:57 +0100"
+    },
+    "done": false
+  },
+  "minecraft:recipes/building_blocks/chiseled_quartz_block": {
+    "criteria": {
+      "has_quartz_pillar": "2022-01-18 19:50:57 +0100"
+    },
+    "done": true
+  },
+  "heroesunited:heroesunited/root": {
+    "criteria": {
+      "load_world": "2022-01-18 19:50:57 +0100"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_quartz_stairs": {
+    "criteria": {
+      "has_smooth_quartz": "2022-02-15 22:41:35 +0100"
+    },
+    "done": true
+  },
+  "DataVersion": 2865
+}

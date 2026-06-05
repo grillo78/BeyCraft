@@ -1,0 +1,161 @@
+---- Minecraft Crash Report ----
+// Don't do that.
+
+Time: 23/2/24 18:53
+Description: Rendering entity in world
+
+java.lang.BootstrapMethodError: bootstrap method initialization exception
+	at java.lang.invoke.BootstrapMethodInvoker.invoke(BootstrapMethodInvoker.java:194) ~[?:?] {}
+	at java.lang.invoke.CallSite.makeSite(CallSite.java:307) ~[?:?] {}
+	at java.lang.invoke.MethodHandleNatives.linkCallSiteImpl(MethodHandleNatives.java:258) ~[?:?] {}
+	at java.lang.invoke.MethodHandleNatives.linkCallSite(MethodHandleNatives.java:248) ~[?:?] {}
+	at BeybladeRenderer.render(BeybladeRenderer.java:84) ~[main/:?] {re:classloading}
+	at BeybladeRenderer.render(BeybladeRenderer.java:26) ~[main/:?] {re:classloading}
+	at net.minecraft.client.renderer.entity.EntityRendererManager.render(EntityRendererManager.java:252) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:heroesunited.mixins.json:client.MixinEntityRendererManager,pl:mixin:A,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.WorldRenderer.renderEntity(WorldRenderer.java:1224) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.WorldRenderer.renderLevel(WorldRenderer.java:1032) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.GameRenderer.renderLevel(GameRenderer.java:620) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:437) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1003) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:heroesunited.mixins.json:client.MixinMinecraft,pl:mixin:A,pl:runtimedistcleaner:A}
+	at net.minecraft.client.Minecraft.run(Minecraft.java:612) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:heroesunited.mixins.json:client.MixinMinecraft,pl:mixin:A,pl:runtimedistcleaner:A}
+	at net.minecraft.client.main.Main.main(Main.java:184) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?] {}
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:?] {}
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?] {}
+	at java.lang.reflect.Method.invoke(Method.java:566) ~[?:?] {}
+	at net.minecraftforge.userdev.FMLUserdevClientLaunchProvider.lambda$launchService$0(FMLUserdevClientLaunchProvider.java:52) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:37) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:54) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:72) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:82) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:66) [modlauncher-8.1.3.jar:?] {}
+	at net.minecraftforge.userdev.LaunchTesting.main(LaunchTesting.java:108) [forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {}
+Caused by: java.lang.IllegalArgumentException: java.lang.IllegalAccessException: member is private: BeybladeRenderer.lambda$render$2(MatrixStack,BeybladeEntity,float,IItemHandler)void/invokeVirtual, from BeybladeRenderer (unnamed module @39621e05)
+	at java.lang.invoke.MethodHandles$Lookup.revealDirect(MethodHandles.java:2004) ~[?:?] {}
+	at java.lang.invoke.AbstractValidatingLambdaMetafactory.<init>(AbstractValidatingLambdaMetafactory.java:133) ~[?:?] {}
+	at java.lang.invoke.InnerClassLambdaMetafactory.<init>(InnerClassLambdaMetafactory.java:159) ~[?:?] {}
+	at java.lang.invoke.LambdaMetafactory.metafactory(LambdaMetafactory.java:324) ~[?:?] {}
+	at java.lang.invoke.BootstrapMethodInvoker.invoke(BootstrapMethodInvoker.java:127) ~[?:?] {}
+	... 24 more
+Caused by: java.lang.IllegalAccessException: member is private: BeybladeRenderer.lambda$render$2(MatrixStack,BeybladeEntity,float,IItemHandler)void/invokeVirtual, from BeybladeRenderer (unnamed module @39621e05)
+	at java.lang.invoke.MemberName.makeAccessException(MemberName.java:942) ~[?:?] {}
+	at java.lang.invoke.MethodHandles$Lookup.checkAccess(MethodHandles.java:2206) ~[?:?] {}
+	at java.lang.invoke.MethodHandles$Lookup.revealDirect(MethodHandles.java:2001) ~[?:?] {}
+	at java.lang.invoke.AbstractValidatingLambdaMetafactory.<init>(AbstractValidatingLambdaMetafactory.java:133) ~[?:?] {}
+	at java.lang.invoke.InnerClassLambdaMetafactory.<init>(InnerClassLambdaMetafactory.java:159) ~[?:?] {}
+	at java.lang.invoke.LambdaMetafactory.metafactory(LambdaMetafactory.java:324) ~[?:?] {}
+	at java.lang.invoke.BootstrapMethodInvoker.invoke(BootstrapMethodInvoker.java:127) ~[?:?] {}
+	... 24 more
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at java.lang.invoke.BootstrapMethodInvoker.invoke(BootstrapMethodInvoker.java:194) ~[?:?] {}
+	at java.lang.invoke.CallSite.makeSite(CallSite.java:307) ~[?:?] {}
+	at java.lang.invoke.MethodHandleNatives.linkCallSiteImpl(MethodHandleNatives.java:258) ~[?:?] {}
+	at java.lang.invoke.MethodHandleNatives.linkCallSite(MethodHandleNatives.java:248) ~[?:?] {}
+	at BeybladeRenderer.render(BeybladeRenderer.java:84) ~[?:?] {re:classloading}
+	at BeybladeRenderer.render(BeybladeRenderer.java:26) ~[?:?] {re:classloading}
+-- Entity being rendered --
+Details:
+	Entity Type: beycraft:beyblade (BeybladeEntity)
+	Entity ID: 5123
+	Entity Name: entity.beycraft.beyblade
+	Entity's Exact location: 230.44, 69.35, -185.65
+	Entity's Block location: World: (230,69,-186), Chunk: (at 6,4,6 in 14,-12; contains blocks 224,0,-192 to 239,255,-177), Region: (0,-1; contains chunks 0,-32 to 31,-1, blocks 0,0,-512 to 511,255,-1)
+	Entity's Momentum: -0.20, -0.08, 0.06
+	Entity's Passengers: []
+	Entity's Vehicle: ~~ERROR~~ NullPointerException: null
+
+-- Renderer details --
+Details:
+	Assigned renderer: BeybladeRenderer@8a5ecad
+	Location: -1.41,-1.82,-3.74 - World: (-2,-2,-4), Chunk: (at 14,-1,12 in -1,-1; contains blocks -16,0,-16 to -1,255,-1), Region: (-1,-1; contains chunks -32,-32 to -1,-1, blocks -512,0,-512 to -1,255,-1)
+	Rotation: 3.7373006
+	Delta: 0.0999949
+Stacktrace:
+	at net.minecraft.client.renderer.entity.EntityRendererManager.render(EntityRendererManager.java:252) ~[forge:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:heroesunited.mixins.json:client.MixinEntityRendererManager,pl:mixin:A,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.WorldRenderer.renderEntity(WorldRenderer.java:1224) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.WorldRenderer.renderLevel(WorldRenderer.java:1032) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.GameRenderer.renderLevel(GameRenderer.java:620) ~[forge:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+
+
+-- Affected level --
+Details:
+	All players: 1 total; [ClientPlayerEntity['grillo78'/5494, l='ClientLevel', x=231.99, y=69.55, z=-181.90]]
+	Chunk stats: Client Chunk Cache: 441, 244
+	Level dimension: minecraft:overworld
+	Level spawn location: World: (115,71,-2), Chunk: (at 3,4,14 in 7,-1; contains blocks 112,0,-16 to 127,255,-1), Region: (0,-1; contains chunks 0,-32 to 31,-1, blocks 0,0,-512 to 511,255,-1)
+	Level time: 2027196102 game time, 49661796 day time
+	Server brand: forge
+	Server type: Integrated singleplayer server
+Stacktrace:
+	at net.minecraft.client.world.ClientWorld.fillReportDetails(ClientWorld.java:462) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A,re:mixin,pl:runtimedistcleaner:A}
+	at net.minecraft.client.Minecraft.fillReport(Minecraft.java:2093) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:heroesunited.mixins.json:client.MixinMinecraft,pl:mixin:A,pl:runtimedistcleaner:A}
+	at net.minecraft.client.Minecraft.run(Minecraft.java:628) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:heroesunited.mixins.json:client.MixinMinecraft,pl:mixin:A,pl:runtimedistcleaner:A}
+	at net.minecraft.client.main.Main.main(Main.java:184) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?] {}
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:?] {}
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?] {}
+	at java.lang.reflect.Method.invoke(Method.java:566) ~[?:?] {}
+	at net.minecraftforge.userdev.FMLUserdevClientLaunchProvider.lambda$launchService$0(FMLUserdevClientLaunchProvider.java:52) ~[forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:37) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:54) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:72) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:82) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:66) [modlauncher-8.1.3.jar:?] {}
+	at net.minecraftforge.userdev.LaunchTesting.main(LaunchTesting.java:108) [forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-recomp.jar:?] {}
+
+
+-- System Details --
+Details:
+	Minecraft Version: 1.16.5
+	Minecraft Version ID: 1.16.5
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 11.0.8, AdoptOpenJDK
+	Java VM Version: Dynamic Code Evolution 64-Bit Server VM (mixed mode), AdoptOpenJDK
+	Memory: 298865080 bytes (285 MB) / 1148858368 bytes (1095 MB) up to 4129554432 bytes (3938 MB)
+	CPUs: 12
+	JVM Flags: 2 total; -XX:+IgnoreUnrecognizedVMOptions -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump
+	ModLauncher: 8.1.3+8.1.3+main-8.1.x.c94d18ec
+	ModLauncher launch target: fmluserdevclient
+	ModLauncher naming: mcp
+	ModLauncher services: 
+		/mixin-0.8.4.jar mixin PLUGINSERVICE 
+		/eventbus-4.0.0.jar eventbus PLUGINSERVICE 
+		/forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-launcher.jar object_holder_definalize PLUGINSERVICE 
+		/forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-launcher.jar runtime_enum_extender PLUGINSERVICE 
+		/forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-launcher.jar capability_inject_definalize PLUGINSERVICE 
+		/accesstransformers-3.0.1.jar accesstransformer PLUGINSERVICE 
+		/forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-launcher.jar runtimedistcleaner PLUGINSERVICE 
+		/mixin-0.8.4.jar mixin TRANSFORMATIONSERVICE 
+		/forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-launcher.jar fml TRANSFORMATIONSERVICE 
+	FML: 36.2
+	Forge: net.minecraftforge:36.2.29
+	FML Language Providers: 
+		javafml@36.2
+		minecraft@1
+	Mod List: 
+		client-extra.jar                                  |Minecraft                     |minecraft                     |1.16.5              |DONE      |Manifest: a1:d4:5e:04:4f:d3:d6:e0:7b:37:97:cf:77:b0:de:ad:4a:47:ce:8c:96:49:5f:0a:cf:8c:ae:b2:6d:4b:8a:3f
+		forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1|Forge                         |forge                         |36.2.29             |DONE      |Manifest: NOSIGNATURE
+		Patchouli-1.16.4-53.3_mapped_parchment_2022.03.06-|Patchouli                     |patchouli                     |1.16.4-53.3         |DONE      |Manifest: NOSIGNATURE
+		hu-core-2.5.4_mapped_parchment_2022.03.06-1.16.5.j|Heroes United                 |heroesunited                  |2.5.4               |DONE      |Manifest: NOSIGNATURE
+		parcool-482378-4257967_mapped_parchment_2022.03.06|ParCool!                      |parcool                       |1.16.5-2.1.0.0-R    |DONE      |Manifest: NOSIGNATURE
+		main                                              |Beycraft Burst                |beycraft                      |NONE                |DONE      |Manifest: NOSIGNATURE
+	Crash Report UUID: eff4b9b4-fd79-4fab-a3a2-6a06626aaa90
+	Patchouli open book context: n/a
+	Launched Version: MOD_DEV
+	Backend library: LWJGL version 3.2.2 build 10
+	Backend API: GeForce GT 710/PCIe/SSE2 GL version 4.6.0 NVIDIA 456.71, NVIDIA Corporation
+	GL Caps: Using framebuffer using OpenGL 3.0
+	Using VBOs: Yes
+	Is Modded: Definitely; Client brand changed to 'forge'
+	Type: Client (map_client.txt)
+	Graphics mode: fast
+	Resource Packs: 
+	Current Language: English (US)
+	CPU: 12x AMD Ryzen 5 3600XT 6-Core Processor 

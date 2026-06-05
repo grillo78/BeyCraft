@@ -1,0 +1,15 @@
+{
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:wooded_hills": "2024-02-13 20:26:29 +0100"
+    },
+    "done": false
+  },
+  "heroesunited:heroesunited/root": {
+    "criteria": {
+      "load_world": "2024-02-13 20:26:29 +0100"
+    },
+    "done": true
+  },
+  "DataVersion": 2586
+}

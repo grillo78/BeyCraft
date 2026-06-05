@@ -1,0 +1,14 @@
+{
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:mountains": "2018-06-16 15:07:14 -0600",
+      "minecraft:forest": "2018-06-16 14:06:51 -0600",
+      "minecraft:beach": "2018-06-16 15:07:51 -0600",
+      "minecraft:river": "2018-06-16 15:07:24 -0600",
+      "minecraft:wooded_hills": "2018-06-16 15:12:37 -0600",
+      "minecraft:plains": "2018-06-16 15:08:39 -0600"
+    },
+    "done": false
+  },
+  "DataVersion": 1976
+}

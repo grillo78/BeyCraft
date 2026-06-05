@@ -1,0 +1,55 @@
+{
+  "minecraft:recipes/transportation/acacia_boat": {
+    "criteria": {
+      "in_water": "2018-12-28 11:49:00 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/oak_boat": {
+    "criteria": {
+      "in_water": "2018-12-28 11:49:00 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/dark_oak_boat": {
+    "criteria": {
+      "in_water": "2018-12-28 11:49:00 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/birch_boat": {
+    "criteria": {
+      "in_water": "2018-12-28 11:49:00 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/jungle_boat": {
+    "criteria": {
+      "in_water": "2018-12-28 11:49:00 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/spruce_boat": {
+    "criteria": {
+      "in_water": "2018-12-28 11:49:00 -0700"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:forest": "2017-07-23 00:38:10 -0600",
+      "minecraft:desert": "2018-02-12 21:55:21 -0700",
+      "minecraft:beach": "2018-12-28 11:40:53 -0700",
+      "minecraft:river": "2017-07-23 00:49:23 -0600",
+      "minecraft:wooded_hills": "2018-02-12 21:56:07 -0700",
+      "minecraft:plains": "2017-07-23 00:49:27 -0600"
+    },
+    "done": false
+  },
+  "minecraft:recipes/decorations/armor_stand": {
+    "criteria": {
+      "has_stone_slab": "2017-07-23 00:38:25 -0600"
+    },
+    "done": true
+  }
+}

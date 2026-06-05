@@ -1,0 +1,37 @@
+
+[voice_chat]
+	#If players in group chats can be heard locally
+	open_groups = false
+	#The opus codec
+	#Allowed Values: VOIP, AUDIO, RESTRICTED_LOWDELAY
+	codec = "VOIP"
+	#If players are allowed to record the voice chat
+	allow_recording = true
+	#The distance to where the voice starts fading
+	#Range: 1.0 ~ 1000000.0
+	fade_distance = 16.0
+	#The distance to where the voice can be heard
+	#Range: 1.0 ~ 1000000.0
+	distance = 32.0
+	#The port of the voice chat server
+	#Range: 0 ~ 65535
+	port = 8168
+	#The maximum size in bytes in a voice packet
+	#Set this to a lower value if your voice packets don't arrive
+	#Range: 256 ~ 10000
+	mtu_size = 1024
+	#If spectators are allowed to talk to other players
+	spectator_interaction = false
+	#The host name that clients should use to connect to the voice chat
+	#Don't change this value if you don't know what you are doing
+	voice_host = ""
+	#The frequency in which keep alive packets are sent
+	#Setting this to a higher value may result in timeouts
+	#Range: > 1000
+	keep_alive = 1000
+	#The IP address to bind the voice chat server on
+	#Use '0.0.0.0' to bind to an IP address chosen by the kernel
+	bind_address = "0.0.0.0"
+	#If group chats are allowed
+	enable_groups = true
+

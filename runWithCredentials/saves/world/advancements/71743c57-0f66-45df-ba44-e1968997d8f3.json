@@ -1,0 +1,44 @@
+{
+  "minecraft:recipes/redstone/stone_button": {
+    "criteria": {
+      "has_stone": "2017-11-07 16:19:07 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stonebrick": {
+    "criteria": {
+      "has_stone": "2017-11-07 16:19:07 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_slab": {
+    "criteria": {
+      "has_stone": "2017-11-07 16:19:07 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/stone_pressure_plate": {
+    "criteria": {
+      "has_stone": "2017-11-07 16:19:07 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/dark_oak_planks": {
+    "criteria": {
+      "has_log2": "2017-11-07 16:35:34 -0700"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "forest": "2017-11-07 16:10:02 -0700"
+    },
+    "done": false
+  },
+  "minecraft:recipes/decorations/armor_stand": {
+    "criteria": {
+      "has_stone_slab": "2017-11-07 16:35:47 -0700"
+    },
+    "done": true
+  }
+}

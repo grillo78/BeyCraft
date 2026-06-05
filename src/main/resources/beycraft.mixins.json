@@ -1,15 +1,16 @@
 {
   "required": true,
   "package": "grillo78.beycraft.mixin",
-  "refmap": "beycraft.refmap.json",
-  "mixins":[
-    "AnimatorListMixin"
-  ],
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [],
   "client": [
-    "ClientPlayerEntityMixin"
+    "client.ReloadableResourceManagerMixin",
+    "client.MinecraftMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "minVersion": "0.8"
+  "overwrites": {
+    "requireAnnotations": true
+  }
 }

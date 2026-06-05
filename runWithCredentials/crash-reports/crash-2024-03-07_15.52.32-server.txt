@@ -1,0 +1,92 @@
+---- Minecraft Crash Report ----
+// Daisy, daisy...
+
+Time: 7/3/24 15:52
+Description: Exception ticking world
+
+java.lang.NullPointerException: Exception ticking world
+	at net.minecraft.world.spawner.WorldEntitySpawner.createState(WorldEntitySpawner.java) ~[forge:?] {re:classloading}
+	at net.minecraft.world.server.ServerChunkProvider.tickChunks(ServerChunkProvider.java:349) ~[forge:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.server.ServerChunkProvider.tick(ServerChunkProvider.java:329) ~[forge:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.server.ServerWorld.tick(ServerWorld.java:336) ~[forge:?] {re:classloading}
+	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:885) ~[forge:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,pl:mixin:A}
+	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:821) ~[forge:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,pl:mixin:A}
+	at net.minecraft.server.integrated.IntegratedServer.tickServer(IntegratedServer.java:84) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:664) ~[forge:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,pl:mixin:A}
+	at net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:233) ~[forge:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,pl:mixin:A}
+	at java.lang.Thread.run(Thread.java:834) [?:?] {}
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Server thread
+Stacktrace:
+	at net.minecraft.world.spawner.WorldEntitySpawner.createState(WorldEntitySpawner.java) ~[forge:?] {re:classloading}
+	at net.minecraft.world.server.ServerChunkProvider.tickChunks(ServerChunkProvider.java:349) ~[forge:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.server.ServerChunkProvider.tick(ServerChunkProvider.java:329) ~[forge:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.server.ServerWorld.tick(ServerWorld.java:336) ~[forge:?] {re:classloading}
+-- Affected level --
+Details:
+	All players: 1 total; [ServerPlayerEntity['grillo78'/5493, l='ServerLevel[Greenfield v0.5.3]', x=230.46, y=69.00, z=-182.28]]
+	Chunk stats: ServerChunkCache: 2461
+	Level dimension: minecraft:overworld
+	Level spawn location: World: (115,71,-2), Chunk: (at 3,4,14 in 7,-1; contains blocks 112,0,-16 to 127,255,-1), Region: (0,-1; contains chunks 0,-32 to 31,-1, blocks 0,0,-512 to 511,255,-1)
+	Level time: 2027501944 game time, 49967638 day time
+	Level name: Greenfield v0.5.3
+	Level game mode: Game mode: survival (ID 0). Hardcore: false. Cheats: true
+	Level weather: Rain time: 1 (now: false), thunder time: 1 (now: false)
+	Known server brands: Mohist, forge arclight, Magma, forge
+	Level was modded: true
+	Level storage version: 0x04ABD - Anvil
+Stacktrace:
+	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:885) ~[forge:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,pl:mixin:A}
+	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:821) ~[forge:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,pl:mixin:A}
+	at net.minecraft.server.integrated.IntegratedServer.tickServer(IntegratedServer.java:84) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:664) ~[forge:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,pl:mixin:A}
+	at net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:233) ~[forge:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,pl:mixin:A}
+	at java.lang.Thread.run(Thread.java:834) [?:?] {}
+
+
+-- System Details --
+Details:
+	Minecraft Version: 1.16.5
+	Minecraft Version ID: 1.16.5
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 11.0.8, AdoptOpenJDK
+	Java VM Version: Dynamic Code Evolution 64-Bit Server VM (mixed mode), AdoptOpenJDK
+	Memory: 265210736 bytes (252 MB) / 1099628544 bytes (1048 MB) up to 4129554432 bytes (3938 MB)
+	CPUs: 12
+	JVM Flags: 2 total; -XX:+IgnoreUnrecognizedVMOptions -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump
+	ModLauncher: 8.1.3+8.1.3+main-8.1.x.c94d18ec
+	ModLauncher launch target: fmluserdevclient
+	ModLauncher naming: mcp
+	ModLauncher services: 
+		/mixin-0.8.4.jar mixin PLUGINSERVICE 
+		/eventbus-4.0.0.jar eventbus PLUGINSERVICE 
+		/forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-launcher.jar object_holder_definalize PLUGINSERVICE 
+		/forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-launcher.jar runtime_enum_extender PLUGINSERVICE 
+		/forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-launcher.jar capability_inject_definalize PLUGINSERVICE 
+		/accesstransformers-3.0.1.jar accesstransformer PLUGINSERVICE 
+		/forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-launcher.jar runtimedistcleaner PLUGINSERVICE 
+		/mixin-0.8.4.jar mixin TRANSFORMATIONSERVICE 
+		/forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1.16.5-launcher.jar fml TRANSFORMATIONSERVICE 
+	FML: 36.2
+	Forge: net.minecraftforge:36.2.29
+	FML Language Providers: 
+		javafml@36.2
+		minecraft@1
+	Mod List: 
+		client-extra.jar                                  |Minecraft                     |minecraft                     |1.16.5              |DONE      |Manifest: a1:d4:5e:04:4f:d3:d6:e0:7b:37:97:cf:77:b0:de:ad:4a:47:ce:8c:96:49:5f:0a:cf:8c:ae:b2:6d:4b:8a:3f
+		forge-1.16.5-36.2.29_mapped_parchment_2022.03.06-1|Forge                         |forge                         |36.2.29             |DONE      |Manifest: NOSIGNATURE
+		Patchouli-1.16.4-53.3_mapped_parchment_2022.03.06-|Patchouli                     |patchouli                     |1.16.4-53.3         |DONE      |Manifest: NOSIGNATURE
+		hu-core-2.5.4_mapped_parchment_2022.03.06-1.16.5.j|Heroes United                 |heroesunited                  |2.5.4               |DONE      |Manifest: NOSIGNATURE
+		parcool-482378-4257967_mapped_parchment_2022.03.06|ParCool!                      |parcool                       |1.16.5-2.1.0.0-R    |DONE      |Manifest: NOSIGNATURE
+		main                                              |Beycraft Burst                |beycraft                      |NONE                |DONE      |Manifest: NOSIGNATURE
+	Crash Report UUID: 8c4d9eeb-acc4-49cc-be4a-397dc96973fb
+	Patchouli open book context: n/a
+	Player Count: 1 / 8; [ServerPlayerEntity['grillo78'/5493, l='ServerLevel[Greenfield v0.5.3]', x=230.46, y=69.00, z=-182.28]]
+	Data Packs: vanilla, file/bukkit, mod:forge, mod:heroesunited (incompatible), mod:beycraft (incompatible), mod:patchouli (incompatible), mod:parcool (incompatible)
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'forge'

@@ -1,0 +1,15 @@
+{
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "forest": "2017-07-09 07:21:22 -0600",
+      "ocean": "2017-07-09 07:23:23 -0600"
+    },
+    "done": false
+  },
+  "minecraft:recipes/decorations/armor_stand": {
+    "criteria": {
+      "has_stone_slab": "2017-07-09 07:25:17 -0600"
+    },
+    "done": true
+  }
+}

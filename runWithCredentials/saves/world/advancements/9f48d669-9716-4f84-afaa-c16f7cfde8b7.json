@@ -1,0 +1,1715 @@
+{
+  "minecraft:recipes/building_blocks/black_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/brick_stairs_from_bricks_stonecutting": {
+    "criteria": {
+      "has_bricks": "2021-11-17 20:47:46 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/modern_nether_brick_wall": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_desk_left": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/lever": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cobblestone_stairs_from_cobblestone_stonecutting": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/green_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/brick_wall": {
+    "criteria": {
+      "has_bricks": "2021-11-17 20:47:46 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_four_panel_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/wheat": {
+    "criteria": {
+      "has_hay_block": "2021-11-17 20:47:40 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/nether_brick_slab": {
+    "criteria": {
+      "has_nether_brick": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/gray_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/pumpkin_seeds": {
+    "criteria": {
+      "has_pumpkin": "2021-11-17 20:28:50 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/gray_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/campfire": {
+    "criteria": {
+      "has_stick": "2021-11-29 10:54:07 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/redstone": {
+    "criteria": {
+      "has_redstone_block": "2021-11-29 11:27:50 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/purple_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/planks/oak_plank_window": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/light_gray_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/ladder": {
+    "criteria": {
+      "has_stick": "2021-11-29 10:54:07 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/chest": {
+    "criteria": {
+      "has_lots_of_items": "2021-11-17 20:08:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/nether_brick_wall": {
+    "criteria": {
+      "has_nether_bricks": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/wooden_shovel": {
+    "criteria": {
+      "has_stick": "2021-11-29 10:54:07 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/black_carpet_from_white_carpet": {
+    "criteria": {
+      "has_black_dye": "2021-11-17 20:12:13 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/blue_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:recipes/farmersdelight/stove": {
+    "criteria": {
+      "has_campfire": "2021-11-17 20:47:35 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/yellow_table_lamp": {
+    "criteria": {
+      "has_yellow_wool": "2021-11-29 10:49:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/stick": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/redstone_lamp": {
+    "criteria": {
+      "has_glowstone": "2021-11-17 20:09:46 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/spruce_plain_door": {
+    "criteria": {
+      "has_spruce_log": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_glass_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_stable_head_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_glass_desk_left": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/oak_large_suspended_stairs": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/purple_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "heroesunited:heroesunited/root": {
+    "criteria": {
+      "load_world": "2021-11-17 19:54:26 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:recipes/farmersdelight/sweet_berry_cookie": {
+    "criteria": {
+      "has_sweet_berries": "2021-11-17 20:32:18 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_mystic_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/wooden_hoe": {
+    "criteria": {
+      "has_stick": "2021-11-29 10:54:07 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cobblestone_slab": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/gray_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cobblestone_stairs": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_pult_2": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_pult_3": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_pult_4": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/glass_in_blast_furnace": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/brown_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_stool_chair": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_pult_1": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/windows/spruce_window2": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/parapet/spruce_log_parapet": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/lime_dye": {
+    "criteria": {
+      "has_white_dye": "2021-11-17 20:11:56 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/windows/spruce_window": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/strip/stripped_spruce_log_window": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/magenta_dye_from_blue_red_white_dye": {
+    "criteria": {
+      "has_white_dye": "2021-11-17 20:11:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/oak_fence_gate": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/emerald": {
+    "criteria": {
+      "has_emerald_block": "2021-11-29 22:48:52 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/yellow_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/magenta_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/yellow_pillow": {
+    "criteria": {
+      "has_yellow_wool": "2021-11-29 10:49:28 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/light_gray_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/brick_stairs": {
+    "criteria": {
+      "has_brick_block": "2021-11-17 20:47:46 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/red_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/damaged_paving": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "minecraft:story/mine_stone": {
+    "criteria": {
+      "get_stone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/gothic/nether_brick_gothic": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/spruce/spruce_bark_glass_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/target": {
+    "criteria": {
+      "has_hay_block": "2021-11-17 20:47:40 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/furnace": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:main/drink_hot_cocoa": {
+    "criteria": {
+      "hot_cocoa": "2021-11-17 20:31:59 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/armor_stand": {
+    "criteria": {
+      "has_stone_slab": "2021-11-17 20:35:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/red_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/charcoal": {
+    "criteria": {
+      "has_log": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:adventure/sleep_in_bed": {
+    "criteria": {
+      "slept_in_bed": "2021-11-29 11:26:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/spruce_planks": {
+    "criteria": {
+      "has_logs": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/wooden_pickaxe": {
+    "criteria": {
+      "has_stick": "2021-11-29 10:54:07 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cobblestone_slab_from_cobblestone_stonecutting": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "minecraft:husbandry/root": {
+    "criteria": {
+      "consumed_item": "2021-11-17 20:31:59 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:main/place_feast": {
+    "criteria": {
+      "shepherds_pie": "2021-11-17 20:44:24 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_dresser_9": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/strip/stripped_spruce_log_window2": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/oak_stairs": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_dresser_7": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/red_carpet": {
+    "criteria": {
+      "has_red_wool": "2021-11-29 11:00:16 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/yellow_couch": {
+    "criteria": {
+      "has_yellow_wool": "2021-11-29 10:49:28 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/blue_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/cyan_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_glass_desk_right": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:recipes/farmersdelight/cutting_board": {
+    "criteria": {
+      "has_stick": "2021-11-29 10:54:07 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/orange_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/light_blue_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/magenta_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:adventure/root": {
+    "criteria": {
+      "killed_something": "2021-11-17 20:22:15 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/light_gray_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:main/root": {
+    "criteria": {
+      "seeds": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/arrow/cobblestone_arrow_slit": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/stone_hoe": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_barn_glass_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_covered_desk_right": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/pink_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/yellow_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/yellow_banner": {
+    "criteria": {
+      "has_yellow_wool": "2021-11-29 10:49:28 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_chair": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_box_2": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/lime_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/oak_horse_fence": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/black_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_black_dye": "2021-11-17 20:12:13 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_pult": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cracked_nether_bricks": {
+    "criteria": {
+      "has_nether_bricks": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_cottage_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/jack_o_lantern": {
+    "criteria": {
+      "has_carved_pumpkin": "2021-11-17 20:52:35 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/glass_pane": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/brick_wall_from_bricks_stonecutting": {
+    "criteria": {
+      "has_bricks": "2021-11-17 20:47:46 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/print_oak": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/magenta_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/yellow_bed": {
+    "criteria": {
+      "has_yellow_wool": "2021-11-29 10:49:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/nether_brick_wall_from_nether_bricks_stonecutting": {
+    "criteria": {
+      "has_nether_bricks": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/light_blue_dye_from_blue_white_dye": {
+    "criteria": {
+      "has_white_dye": "2021-11-17 20:11:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/oak_fence": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/snow": {
+    "criteria": {
+      "has_snowball": "2021-11-17 20:22:16 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_plant_pot_left": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/grid_air_duct": {
+    "criteria": {
+      "has_vent_air_duct": "2021-11-17 20:52:05 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/anvil": {
+    "criteria": {
+      "has_iron_block": "2021-11-29 23:28:02 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/light_blue_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/pink_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/oak_slab": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/magenta_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/oak_fancy_table": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_cupboard_9": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/orange_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/orange_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_cupboard_7": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/oak_wired_fence": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/gray_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/pink_dye_from_red_white_dye": {
+    "criteria": {
+      "has_white_dye": "2021-11-17 20:11:56 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_cupboard_8": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/oak_wooden_crate": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/wooden_axe": {
+    "criteria": {
+      "has_stick": "2021-11-29 10:54:07 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:main/master_chef": {
+    "criteria": {
+      "shepherds_pie": "2021-11-29 11:04:07 +0000"
+    },
+    "done": false
+  },
+  "mcwfurnitures:recipes/spruce/spruce_double_desk_right": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/planks/oak_plank_window2": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_cupboard_5": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_cupboard_6": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/parapet/oak_plank_parapet": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:recipes/farmersdelight/honey_glazed_ham_block": {
+    "criteria": {
+      "has_smoked_ham": "2021-11-17 20:40:36 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/chiseled_nether_bricks_from_nether_bricks_stonecutting": {
+    "criteria": {
+      "has_nether_bricks": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/pink_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/cyan_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/white_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/light_blue_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/brewing/glass_bottle": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_modern_chair": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/light_gray_glazed_terracotta": {
+    "criteria": {
+      "has_light_gray_terracotta": "2021-11-29 23:00:52 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/nether_brick_stairs_from_nether_bricks_stonecutting": {
+    "criteria": {
+      "has_nether_bricks": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/cyan_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/painting": {
+    "criteria": {
+      "has_wool": "2021-11-29 10:49:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/white_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/blue_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_japanese_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/black_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/green_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "pitg:recipes/pitg/glass_pane_table": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/spruce_wood": {
+    "criteria": {
+      "has_log": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_stable_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_beach_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/green_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/gold_nugget_from_blasting": {
+    "criteria": {
+      "has_golden_axe": "2021-11-29 10:44:37 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/green_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/stone_shovel": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/wooden_sword": {
+    "criteria": {
+      "has_stick": "2021-11-29 10:54:07 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/arrow/nether_brick_arrow_slit": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cyan_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/yellow_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_dresser_6": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_dresser_5": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_dresser_4": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/red_couch": {
+    "criteria": {
+      "has_red_wool": "2021-11-29 11:00:16 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_dresser_3": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/red_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_furniture_7": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_nightstand_11": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_furniture_6": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/red_banner": {
+    "criteria": {
+      "has_red_wool": "2021-11-29 11:00:16 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_nightstand_10": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/oak_pressure_plate": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_furniture_4": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_furniture_3": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_furniture_2": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/lime_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/white_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_white_dye": "2021-11-17 20:11:56 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_furniture_1": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/brick_slab_from_bricks_stonecutting": {
+    "criteria": {
+      "has_bricks": "2021-11-17 20:47:46 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/yellow_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/brown_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/pitg/dual_glass_panes_in_blast_furnace": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/crossbow": {
+    "criteria": {
+      "has_stick": "2021-11-29 10:54:07 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/purple_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/oak_sign": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/oak_trapdoor": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_nightstand": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "pitg:recipes/pitg/glazing_tool": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/red_table_lamp": {
+    "criteria": {
+      "has_red_wool": "2021-11-29 11:00:16 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/chiseled_nether_bricks": {
+    "criteria": {
+      "has_nether_bricks": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/nether_brick_slab_from_nether_bricks_stonecutting": {
+    "criteria": {
+      "has_nether_bricks": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "mapperbase:recipes/mapperbase_group/flatter_hammer": {
+    "criteria": {
+      "has_stick": "2021-11-29 10:54:07 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_nightstand_9": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/white_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/blinds/oak_blinds": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/oak_button": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_double_desk_left": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/light_blue_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:recipes/farmersdelight/flint_knife": {
+    "criteria": {
+      "has_stick": "2021-11-29 10:54:07 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/lime_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_desk_right": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_nightstand_8": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_nightstand_5": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_nightstand_6": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_covered_desk_left": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_nightstand_3": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/gray_dye": {
+    "criteria": {
+      "has_white_dye": "2021-11-17 20:11:56 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_nightstand_4": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:forest": "2021-11-17 19:54:25 +0000",
+      "minecraft:river": "2021-11-29 11:33:35 +0000",
+      "minecraft:plains": "2021-11-29 11:33:30 +0000"
+    },
+    "done": false
+  },
+  "mcwfurnitures:recipes/spruce/spruce_nightstand_2": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/dark_bricks": {
+    "criteria": {
+      "has_bricks": "2021-11-17 20:47:46 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_nether_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_striped_chair": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/lime_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/brown_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/nether_brick_fence": {
+    "criteria": {
+      "has_nether_brick": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_modern_desk_right": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/red_pillow": {
+    "criteria": {
+      "has_red_wool": "2021-11-29 11:00:16 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/stone_sword": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/barrel": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/snow_block": {
+    "criteria": {
+      "has_snowball": "2021-11-17 20:22:16 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/cobblestone_wall": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/red_bed": {
+    "criteria": {
+      "has_red_wool": "2021-11-29 11:00:16 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/black_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/stone_pickaxe": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_modern_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/oak_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_paper_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/oak_fancy_door": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/brown_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/cobblestone_wall_from_cobblestone_stonecutting": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/orange_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_iron_block": {
+    "criteria": {
+      "has_iron_block": "2021-11-29 23:28:02 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/light_gray_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_plate": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_barn_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_dresser_box": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/pumpkin_pie": {
+    "criteria": {
+      "has_pumpkin": "2021-11-17 20:28:50 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/glass_panes_in_blast_furnace": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/light_gray_dye_from_gray_white_dye": {
+    "criteria": {
+      "has_white_dye": "2021-11-17 20:11:56 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/oak_stockade_fence": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/nether_brick_stairs": {
+    "criteria": {
+      "has_nether_brick": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/yellow_carpet": {
+    "criteria": {
+      "has_yellow_wool": "2021-11-29 10:49:28 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/oak_picket_fence": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_dresser": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/brick_slab": {
+    "criteria": {
+      "has_brick_block": "2021-11-17 20:47:46 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/white_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_western_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/blue_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_modern_desk_left": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:main/eat_nourishing_food": {
+    "criteria": {
+      "nourished": "2021-11-29 11:04:07 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:main/place_campfire": {
+    "criteria": {
+      "campfire": "2021-11-17 20:47:50 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_tropical_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_plant_pot_right": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/railing_nether_brick_wall": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:09:12 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_dresser_14": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/oak_highley_gate": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/gold_nugget_from_smelting": {
+    "criteria": {
+      "has_golden_axe": "2021-11-29 10:44:37 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_japanese2_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:08:06 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_dresser_12": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_dresser_13": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/weared_bricks": {
+    "criteria": {
+      "has_bricks": "2021-11-17 20:47:46 +0000"
+    },
+    "done": true
+  },
+  "mcwfurnitures:recipes/spruce/spruce_dresser_11": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:19:08 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/purple_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/soul_campfire": {
+    "criteria": {
+      "has_stick": "2021-11-29 10:54:07 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/black_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-17 20:01:38 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/stone_axe": {
+    "criteria": {
+      "has_cobblestone": "2021-11-17 20:36:27 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/light_gray_dye_from_black_white_dye": {
+    "criteria": {
+      "has_white_dye": "2021-11-17 20:11:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/pink_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/red_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:11:28 +0000"
+    },
+    "done": true
+  },
+  "DataVersion": 2586
+}

@@ -1,0 +1,46 @@
+
+["Action Permissions"]
+	allowFlipping = true
+	allowHorizontalWallRun = true
+	allowCrawl = true
+	allowDodge = true
+	allowVault = true
+	allowCatLeap = true
+	allowClingToCliff = true
+	allowBreakfall = true
+	allowWallJump = true
+	allowRoll = true
+	allowWallSlide = true
+	allowFastRunning = true
+
+[modifiers]
+	#FastRun Speed Modifier(Planned to be made to be changeable by each client player?)
+	#Range: 0.001 ~ 4.5
+	fastRunModifier = 3.0
+
+[Stamina]
+	#allow Infinite Stamina
+	infiniteStamina = true
+	#Range: 300 ~ 10000
+	"Max Value of Stamina" = 2000
+
+	[Stamina.Consumption]
+		#Range: 0 ~ 10000
+		CatLeap = 150
+		#Range: 0 ~ 10000
+		Flipping = 80
+		#Range: 0 ~ 10000
+		Breakfall = 100
+		#Range: 0 ~ 10000
+		Dodge = 80
+		#Range: 0 ~ 10000
+		ClimbUp = 150
+		#Range: 0 ~ 10000
+		FastRunning = 2
+		#Range: 0 ~ 10000
+		Vault = 50
+		#Range: 0 ~ 10000
+		WallJump = 120
+		#Range: 0 ~ 10000
+		ClingToCliff = 2
+

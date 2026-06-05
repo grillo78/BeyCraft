@@ -1,0 +1,6 @@
+
+#Client Settings
+[client]
+	#Changes the patreon-players head
+	changeHead = true
+

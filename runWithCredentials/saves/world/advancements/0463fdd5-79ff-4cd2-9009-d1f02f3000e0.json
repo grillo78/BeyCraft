@@ -1,0 +1,3400 @@
+{
+  "minecraft:recipes/tools/fishing_rod": {
+    "criteria": {
+      "has_string": "2021-11-12 21:46:11 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/brick_stairs_from_bricks_stonecutting": {
+    "criteria": {
+      "has_bricks": "2021-11-11 17:04:48 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/black_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/acacia_diorite_pantry": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/parapet/acacia_plank_parapet": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/lever": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/acacia_button": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/green_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/brick_wall": {
+    "criteria": {
+      "has_bricks": "2021-11-11 17:04:48 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/gray_glazed_terracotta": {
+    "criteria": {
+      "has_gray_terracotta": "2021-11-11 18:06:11 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/red_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_bricks": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/warped_granite_pantry": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/blue_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/warped_fancy_chest": {
+    "criteria": {
+      "has_chest": "2021-11-11 20:44:43 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/acacia_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/yellow_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/gray_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/white_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/magenta_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/purple_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_granite_stairs": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/dark_oak_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/blast_furnace": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/diorite_rooftiles_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/chest": {
+    "criteria": {
+      "has_lots_of_items": "2021-11-11 17:59:52 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/stone/stone_window2": {
+    "criteria": {
+      "has_planks": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/magenta_stained_glass_pane": {
+    "criteria": {
+      "has_glass": "2021-11-11 18:03:20 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/chiseled_stone_bricks_stone_from_stonecutting": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/oak_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/purpur_stairs": {
+    "criteria": {
+      "has_purpur_block": "2021-11-13 03:38:44 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/lime_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/stick": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/light_gray_pillow": {
+    "criteria": {
+      "has_light_gray_wool": "2021-11-11 18:06:13 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_brick_slab_from_stone_stonecutting": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/immersivecooking/stone_countertop_from_smooth_stone_slab_stonecutting": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_glass_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_beach_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/gray_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/white_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_quartz_slab_from_smooth_quartz_stonecutting": {
+    "criteria": {
+      "has_smooth_quartz": "2021-11-11 20:42:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/light_gray_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/purple_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/acacia_granite_pantry": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/purpur_pillar_from_purpur_block_stonecutting": {
+    "criteria": {
+      "has_purpur_block": "2021-11-13 03:38:44 +0000"
+    },
+    "done": true
+  },
+  "heroesunited:heroesunited/root": {
+    "criteria": {
+      "load_world": "2021-11-10 17:19:57 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:recipes/farmersdelight/sweet_berry_cookie": {
+    "criteria": {
+      "has_sweet_berries": "2021-11-17 20:44:05 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/orange_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/sandstone_stairs": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/acacia_highley_gate": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/black_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cobblestone_slab": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/orange_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/trapped_chest": {
+    "criteria": {
+      "has_tripwire_hook": "2021-11-13 19:15:34 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/glass_in_blast_furnace": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/sandstone_button": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_classic_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/acacia_tiki_torch": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:53:23 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/blinds/acacia_blinds": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/modern_sandstone_wall": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/brown_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/lime_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/crimson_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "survive:recipes/main/wool_hat": {
+    "criteria": {
+      "has_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/magenta_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/light_blue_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/polished_paving": {
+    "criteria": {
+      "has_white_concrete": "2021-11-12 22:03:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/sponge": {
+    "criteria": {
+      "has_wet_sponge": "2021-11-11 20:40:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/sandstone_slab": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_barn_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/lectern": {
+    "criteria": {
+      "has_book": "2021-11-11 21:49:26 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/emerald": {
+    "criteria": {
+      "has_emerald_block": "2021-11-12 22:29:44 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/yellow_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_stairs_from_stone_stonecutting": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/acacia_fence": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/magenta_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/magenta_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/light_gray_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/light_blue_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/birch_granite_pantry": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/brick_stairs": {
+    "criteria": {
+      "has_brick_block": "2021-11-11 17:04:48 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/blue_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/damaged_paving": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/railing_sandstone_wall": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/cyan_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/immersivecooking/granite_countertop_from_polished_granite_stonecutting": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/gray_stained_glass_pane": {
+    "criteria": {
+      "has_glass": "2021-11-11 18:04:08 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/armor_stand": {
+    "criteria": {
+      "has_stone_slab": "2021-11-12 20:45:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/red_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/dark_oak_diorite_pantry": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_modern_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/lime_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cobblestone_slab_from_cobblestone_stonecutting": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/white_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/gray_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/pink_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/quartz_stairs": {
+    "criteria": {
+      "has_chiseled_quartz_block": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_diorite_slab": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/oak_stairs": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/acacia_boat": {
+    "criteria": {
+      "in_water": "2021-11-10 18:10:28 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/blue_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/green_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_quartz_slab": {
+    "criteria": {
+      "has_smooth_quartz": "2021-11-11 20:42:56 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/dark_oak_tiki_torch": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:53:23 +0000"
+    },
+    "done": true
+  },
+  "minecraft:adventure/root": {
+    "criteria": {
+      "killed_something": "2021-11-12 19:47:57 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:recipes/farmersdelight/oak_pantry": {
+    "criteria": {
+      "has_oak_trapdoor": "2021-11-12 19:47:25 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/black_bed": {
+    "criteria": {
+      "has_black_wool": "2021-11-11 20:40:42 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/acacia_large_suspended_stairs": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/light_gray_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/gray_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/jungle_tiki_torch": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:53:23 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_brick_stairs_from_stone_stonecutting": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/arrow/cobblestone_arrow_slit": {
+    "criteria": {
+      "has_planks": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/yellow_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/acacia_fancy_door": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/white_wool_from_string": {
+    "criteria": {
+      "has_string": "2021-11-12 21:46:11 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/light_gray_table_lamp": {
+    "criteria": {
+      "has_light_gray_wool": "2021-11-11 18:06:13 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/magenta_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_barn_glass_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/green_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/warped_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/chiseled_quartz_block_from_quartz_block_stonecutting": {
+    "criteria": {
+      "has_quartz_block": "2021-11-11 20:42:58 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/gray_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/redstone_block": {
+    "criteria": {
+      "has_redstone": "2021-11-11 20:45:10 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/stone/stone_window": {
+    "criteria": {
+      "has_planks": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/magenta_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/brown_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/pink_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/lime_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/jungle_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_diorite_stairs_from_polished_diorite_stonecutting": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/quartz_pillar_from_quartz_block_stonecutting": {
+    "criteria": {
+      "has_quartz_block": "2021-11-11 20:42:58 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/brick_wall_from_bricks_stonecutting": {
+    "criteria": {
+      "has_bricks": "2021-11-11 17:04:48 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_japanese2_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/print_oak": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_quartz": {
+    "criteria": {
+      "has_quartz_block": "2021-11-11 20:42:58 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/light_blue_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/yellow_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_diorite_stairs": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/spruce_fancy_chest": {
+    "criteria": {
+      "has_chest": "2021-11-11 20:44:43 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_four_panel_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/red_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/oak_fence": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/light_gray_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/gold_ingot_from_gold_block": {
+    "criteria": {
+      "has_gold_block": "2021-11-12 18:49:33 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/light_blue_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/oak_slab": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/red_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/red_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/blue_stained_glass_pane": {
+    "criteria": {
+      "has_glass": "2021-11-11 18:02:33 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/magenta_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/oak_tiki_torch": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:53:23 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/orange_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/oak_wired_fence": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/oak_fancy_chest": {
+    "criteria": {
+      "has_chest": "2021-11-11 20:44:43 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/black_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:recipes/farmersdelight/honey_glazed_ham_block": {
+    "criteria": {
+      "has_smoked_ham": "2021-11-17 20:41:07 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/parapet/oak_plank_parapet": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/pink_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/acacia_pressure_plate": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/white_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/diorite_stairs_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/dark_oak_granite_pantry": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/brewing/glass_bottle": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/light_blue_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/blue_dye_from_cornflower": {
+    "criteria": {
+      "has_blue_flower": "2021-11-11 21:49:25 +0000"
+    },
+    "done": true
+  },
+  "survive:recipes/main/white_washcloth": {
+    "criteria": {
+      "has_string": "2021-11-12 21:46:11 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/acacia_terrace_table": {
+    "criteria": {
+      "has_acacia_pressure_plate": "2021-11-11 18:30:38 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/cyan_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/light_blue_stained_glass_pane": {
+    "criteria": {
+      "has_glass": "2021-11-11 18:02:50 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/blue_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/blue_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/pink_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/acacia_horse_fence": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/gray_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_diorite_slab_from_polished_diorite_stonecutting": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/cyan_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/light_gray_bed": {
+    "criteria": {
+      "has_light_gray_wool": "2021-11-11 18:06:13 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/cyan_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/quartz_slab": {
+    "criteria": {
+      "has_chiseled_quartz_block": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/light_gray_couch": {
+    "criteria": {
+      "has_light_gray_wool": "2021-11-11 18:06:13 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_japanese_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/black_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/green_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/green_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/black_table_lamp": {
+    "criteria": {
+      "has_black_wool": "2021-11-11 20:40:42 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_beach_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/lime_dye_from_smelting": {
+    "criteria": {
+      "has_sea_pickle": "2021-11-11 21:49:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/green_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/blue_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/crimson_fancy_chest": {
+    "criteria": {
+      "has_chest": "2021-11-11 20:44:43 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/acacia_picket_fence": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/light_blue_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/oak_planks": {
+    "criteria": {
+      "has_logs": "2021-11-11 18:05:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/light_gray_banner": {
+    "criteria": {
+      "has_light_gray_wool": "2021-11-11 18:06:13 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/yellow_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/bookshelf": {
+    "criteria": {
+      "has_book": "2021-11-11 21:49:26 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/light_blue_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/yellow_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_cottage_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/glowstone": {
+    "criteria": {
+      "has_glowstone_dust": "2021-11-11 21:49:25 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/brown_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/birch_diorite_pantry": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/black_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/black_banner": {
+    "criteria": {
+      "has_black_wool": "2021-11-11 20:40:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/quartz_slab_from_stonecutting": {
+    "criteria": {
+      "has_quartz_block": "2021-11-11 20:42:58 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/tripwire_hook": {
+    "criteria": {
+      "has_string": "2021-11-12 21:46:11 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/spruce_granite_pantry": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/chiseled_quartz_block": {
+    "criteria": {
+      "has_chiseled_quartz_block": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/lime_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/dark_oak_terrace_chair": {
+    "criteria": {
+      "has_dark_oak_pressure_plate": "2021-11-12 22:07:38 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/magenta_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/sandstone_stairs_from_sandstone_stonecutting": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/brown_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/stone_button": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/pitg/dual_glass_panes_in_blast_furnace": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/acacia_stockade_fence": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/planks/acacia_plank_window2": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/crossbow": {
+    "criteria": {
+      "has_string": "2021-11-12 21:46:11 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/brown_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/yellow_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/oak_sign": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/oak_trapdoor": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_diorite_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "pitg:recipes/pitg/glazing_tool": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/light_blue_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_western_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/white_pillow": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/white_couch": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/diorite_wall": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/purple_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_granite_stairs_from_polished_granite_stonecutting": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/sandstone_button_from_sandstone_stonecutting": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/lime_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/granite_paving": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/stonecutter": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:forest": "2021-11-10 17:19:57 +0000",
+      "minecraft:plains": "2021-11-10 19:32:30 +0000"
+    },
+    "done": false
+  },
+  "minecraft:recipes/decorations/purple_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/purpur_slab": {
+    "criteria": {
+      "has_purpur_block": "2021-11-13 03:38:44 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/acacia_fancy_chest": {
+    "criteria": {
+      "has_chest": "2021-11-11 20:44:43 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/diorite_rooftiles_from_diorite": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/brown_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/stone_sword": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/light_gray_carpet": {
+    "criteria": {
+      "has_light_gray_wool": "2021-11-11 18:06:13 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/warped_diorite_pantry": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/paving_stones": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/cobblestone_wall": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/railing_diorite_wall": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/barrel": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/light_blue_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/black_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/stone_pickaxe": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/quartz_bricks": {
+    "criteria": {
+      "has_quartz_block": "2021-11-11 20:42:58 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/stone_pressure_plate": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/brown_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/purple_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/blue_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/oak_terrace_chair": {
+    "criteria": {
+      "has_oak_pressure_plate": "2021-11-12 22:00:40 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/cobblestone_wall_from_cobblestone_stonecutting": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/orange_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/light_gray_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/lime_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/light_gray_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/lime_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/pink_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/jungle_fancy_chest": {
+    "criteria": {
+      "has_chest": "2021-11-11 20:44:43 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/quartz_bricks_from_quartz_block_stonecutting": {
+    "criteria": {
+      "has_quartz_block": "2021-11-11 20:42:58 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/acacia_sign": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/brick_slab": {
+    "criteria": {
+      "has_brick_block": "2021-11-11 17:04:48 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/orange_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/white_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_western_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/cyan_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/blue_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/yellow_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/diorite_ornament_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/gray_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/sandstone_wall": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/lime_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/gold_nugget_from_smelting": {
+    "criteria": {
+      "has_golden_axe": "2021-11-12 03:48:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_diorite": {
+    "criteria": {
+      "has_stone": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/red_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/light_gray_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/light_blue_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/red_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/purple_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/acacia_stairs": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/red_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/stone/diorite_window": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/stone_axe": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/light_blue_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_japanese_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/pink_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/light_gray_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/blue_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/gray_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/spruce_tiki_torch": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:53:23 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/purple_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/quartz_pillar": {
+    "criteria": {
+      "has_chiseled_quartz_block": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cobblestone_stairs_from_cobblestone_stonecutting": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/jungle_diorite_pantry": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_four_panel_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/writable_book": {
+    "criteria": {
+      "has_book": "2021-11-11 21:49:26 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/white_bed": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/warped_tiki_torch": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:53:23 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cut_sandstone_from_sandstone_stonecutting": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/purple_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/gray_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/redstone": {
+    "criteria": {
+      "has_redstone_block": "2021-11-11 18:12:09 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/purpur_stairs_from_purpur_block_stonecutting": {
+    "criteria": {
+      "has_purpur_block": "2021-11-13 03:38:44 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/diorite_slab_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_stone": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/light_gray_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/black_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/planks/oak_plank_window": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/lime_stained_glass_pane": {
+    "criteria": {
+      "has_glass": "2021-11-11 18:04:11 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/classic_street_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:53:23 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_slab_from_stone_stonecutting": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/black_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/planks/acacia_plank_window": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/birch_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/immersivecooking/diorite_countertop_from_polished_diorite_stonecutting": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/blue_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/blue_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/cyan_stained_glass_pane": {
+    "criteria": {
+      "has_glass": "2021-11-11 18:33:02 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/blue_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/brown_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cyan_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/spruce_boat": {
+    "criteria": {
+      "in_water": "2021-11-10 18:10:28 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/diorite_paving": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/oak_granite_pantry": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_stable_head_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/quartz_stairs_from_quartz_block_stonecutting": {
+    "criteria": {
+      "has_quartz_block": "2021-11-11 20:42:58 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/crimson_granite_pantry": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/oak_large_suspended_stairs": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/immersivecooking/granite_countertop_from_polished_granite_slab_stonecutting": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/gray_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/light_gray_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_mystic_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/jungle_granite_pantry": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/gray_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cobblestone_stairs": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/diorite_slab": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/chiseled_sandstone_from_sandstone_stonecutting": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/yellow_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/magenta_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/note_block": {
+    "criteria": {
+      "has_redstone": "2021-11-11 20:45:10 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/brown_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/white_banner": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/green_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_diorite_slab_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/red_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "survive:recipes/main/wool_pants": {
+    "criteria": {
+      "has_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/red_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/bow": {
+    "criteria": {
+      "has_string": "2021-11-12 21:46:11 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/oak_fence_gate": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/acacia_slab": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_sandstone": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/white_table_lamp": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cut_sandstone_slab_from_cut_sandstone_stonecutting": {
+    "criteria": {
+      "has_cut_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_stone_slab": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/crimson_diorite_pantry": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/diorite_wall_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/orange_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/print_acacia": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/red_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/lime_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/oak_diorite_pantry": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "minecraft:story/mine_stone": {
+    "criteria": {
+      "get_stone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/target": {
+    "criteria": {
+      "has_redstone": "2021-11-11 20:45:10 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/furnace": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/birch_fancy_chest": {
+    "criteria": {
+      "has_chest": "2021-11-11 20:44:43 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/dark_oak_fancy_chest": {
+    "criteria": {
+      "has_chest": "2021-11-11 20:44:43 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/acacia_wooden_crate": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/green_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/sandstone_rooftiles_from_sandstone_stonecutting": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/charcoal": {
+    "criteria": {
+      "has_log": "2021-11-11 18:05:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/orange_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/yellow_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/yellow_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/redstone_torch": {
+    "criteria": {
+      "has_redstone": "2021-11-11 20:45:10 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/birch_boat": {
+    "criteria": {
+      "in_water": "2021-11-10 18:10:28 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:recipes/farmersdelight/dark_oak_pantry": {
+    "criteria": {
+      "has_dark_oak_trapdoor": "2021-11-12 20:59:40 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/cyan_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/acacia_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/orange_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/light_blue_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/cyan_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/magenta_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/yellow_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:main/root": {
+    "criteria": {
+      "seeds": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/lime_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/pink_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/stone_hoe": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/clock": {
+    "criteria": {
+      "has_redstone": "2021-11-11 20:45:10 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/cyan_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/spectral_arrow": {
+    "criteria": {
+      "has_glowstone_dust": "2021-11-11 21:49:25 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/white_stained_glass_pane": {
+    "criteria": {
+      "has_glass": "2021-11-11 18:03:14 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_granite_slab_from_polished_granite_stonecutting": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/pink_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/green_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/yellow_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/red_glazed_terracotta": {
+    "criteria": {
+      "has_red_terracotta": "2021-11-12 19:47:37 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/orange_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/purple_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/sandstone_rooftiles_from_sandstone": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/lime_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/white_carpet": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/black_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/oak_horse_fence": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/acacia_wired_fence": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/pink_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_cottage_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/orange_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/light_gray_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/jack_o_lantern": {
+    "criteria": {
+      "has_carved_pumpkin": "2021-11-17 20:27:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/glass_pane": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/magenta_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/smooth_diorite": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/snow": {
+    "criteria": {
+      "has_snowball": "2021-11-17 20:27:01 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/oak_boat": {
+    "criteria": {
+      "in_water": "2021-11-10 18:10:28 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/smooth_granite": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/gray_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/blue_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/sandstone_wall_from_sandstone_stonecutting": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/pink_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/magenta_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_stone_slab_from_smooth_stone_stonecutting": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/oak_fancy_table": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/orange_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/immersivecooking/stone_countertop_from_smooth_stone_stonecutting": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/gray_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/oak_wooden_crate": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/lime_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/purple_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/light_blue_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/planks/oak_plank_window2": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_diorite_stairs_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_bricks_from_stone_stonecutting": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/loom": {
+    "criteria": {
+      "has_string": "2021-11-12 21:46:11 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/chiseled_sandstone": {
+    "criteria": {
+      "has_stone_slab": "2021-11-12 22:02:05 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/stone/diorite_window2": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/green_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/cyan_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/purple_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/black_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/cyan_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/brown_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "farmersdelight:recipes/farmersdelight/acacia_pantry": {
+    "criteria": {
+      "has_acacia_trapdoor": "2021-11-11 18:01:53 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/black_couch": {
+    "criteria": {
+      "has_black_wool": "2021-11-11 20:40:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/brown_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/acacia_terrace_chair": {
+    "criteria": {
+      "has_acacia_pressure_plate": "2021-11-11 18:30:38 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/painting": {
+    "criteria": {
+      "has_wool": "2021-11-11 18:06:13 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/orange_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/white_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/blue_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/immersivecooking/diorite_countertop_from_polished_diorite_slab_stonecutting": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_paper_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/cyan_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/black_carpet": {
+    "criteria": {
+      "has_black_wool": "2021-11-11 20:40:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_slab": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/acacia_fence_gate": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "pitg:recipes/pitg/glass_pane_table": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_stable_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/diorite_button_from_diorite_stonecutting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/orange_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/purple_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/gold_nugget_from_blasting": {
+    "criteria": {
+      "has_golden_axe": "2021-11-12 03:48:03 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_glass_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_stable_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/green_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/stone_shovel": {
+    "criteria": {
+      "has_cobblestone": "2021-11-11 17:00:18 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/brown_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/black_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "survive:recipes/main/wool_boots": {
+    "criteria": {
+      "has_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/diorite_stairs": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cyan_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/green_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_stable_head_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/cyan_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/andesite": {
+    "criteria": {
+      "has_stone": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/red_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cut_sandstone_slab_from_sandstone_stonecutting": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/acacia_trapdoor": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_barn_glass_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/oak_pressure_plate": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/modern_diorite_wall": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/white_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "survive:recipes/main/wool_jacket": {
+    "criteria": {
+      "has_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/cut_sandstone": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/brick_slab_from_bricks_stonecutting": {
+    "criteria": {
+      "has_bricks": "2021-11-11 17:04:48 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/yellow_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/black_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_quartz_stairs": {
+    "criteria": {
+      "has_smooth_quartz": "2021-11-11 20:42:56 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/dropper": {
+    "criteria": {
+      "has_redstone": "2021-11-11 20:45:10 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/sandstone_slab_from_sandstone_stonecutting": {
+    "criteria": {
+      "has_sandstone": "2021-11-12 20:44:56 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/purple_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/diorite_button": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/dark_oak_terrace_table": {
+    "criteria": {
+      "has_dark_oak_pressure_plate": "2021-11-12 22:07:38 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/black_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/polished_granite_slab": {
+    "criteria": {
+      "has_polished_granite": "2021-11-12 22:13:21 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/spruce_diorite_pantry": {
+    "criteria": {
+      "has_polished_diorite": "2021-11-12 04:09:04 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/compass": {
+    "criteria": {
+      "has_redstone": "2021-11-11 20:45:10 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/white_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/blinds/oak_blinds": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/oak_button": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/red_acacia_fancy_bed": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/purple_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/light_blue_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/black_pillow": {
+    "criteria": {
+      "has_black_wool": "2021-11-11 20:40:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_quartz_stairs_from_smooth_quartz_stonecutting": {
+    "criteria": {
+      "has_smooth_quartz": "2021-11-11 20:42:56 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/dark_bricks": {
+    "criteria": {
+      "has_bricks": "2021-11-11 17:04:48 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/double_street_lamp": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:53:23 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_nether_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/crimson_tiki_torch": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:53:23 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/lime_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/brown_oak_fancy_bed": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/orange_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/snow_block": {
+    "criteria": {
+      "has_snowball": "2021-11-17 20:27:01 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_mystic_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/acacia/acacia_nether_door": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_modern_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "immersivecooking:recipes/immersivecooking/spruce_stone_pantry": {
+    "criteria": {
+      "has_smooth_stone": "2021-11-11 18:00:43 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/oak_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_paper_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/oak_terrace_table": {
+    "criteria": {
+      "has_oak_pressure_plate": "2021-11-12 22:00:40 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/oak_fancy_door": {
+    "criteria": {
+      "has_oak_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/jungle_boat": {
+    "criteria": {
+      "in_water": "2021-11-10 18:10:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/stone_brick_walls_from_stone_stonecutting": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_barn_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/magenta_couch_from_white": {
+    "criteria": {
+      "has_white_couch": "2021-11-12 04:01:22 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/birch_tiki_torch": {
+    "criteria": {
+      "has_planks": "2021-11-12 20:53:23 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/dark_oak_boat": {
+    "criteria": {
+      "in_water": "2021-11-10 18:10:28 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/purpur_pillar": {
+    "criteria": {
+      "has_purpur_block": "2021-11-13 03:38:44 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/pumpkin_pie": {
+    "criteria": {
+      "has_carved_pumpkin": "2021-11-17 20:27:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/glass_panes_in_blast_furnace": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/pink_wool": {
+    "criteria": {
+      "has_white_wool": "2021-11-12 21:17:24 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/magenta_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/oak_stockade_fence": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/brown_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/green_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/oak_picket_fence": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/light_gray_birch_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_birch_fancy_bed": "2021-11-12 05:25:31 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/piston": {
+    "criteria": {
+      "has_redstone": "2021-11-11 20:45:10 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_stairs": {
+    "criteria": {
+      "has_stone": "2021-11-12 04:57:24 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/smooth_diorite_from_smelting": {
+    "criteria": {
+      "has_diorite": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_tropical_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/light_gray_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/gray_stained_glass_pane_from_glass_pane": {
+    "criteria": {
+      "has_glass_pane": "2021-11-14 21:08:55 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/purpur_slab_from_purpur_block_stonecutting": {
+    "criteria": {
+      "has_purpur_block": "2021-11-13 03:38:44 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/brown_stained_glass_pane": {
+    "criteria": {
+      "has_glass": "2021-11-11 18:02:52 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/pink_spruce_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_spruce_fancy_bed": "2021-11-12 05:31:14 +0000"
+    },
+    "done": true
+  },
+  "mcwlights:recipes/pink_ceiling_light": {
+    "criteria": {
+      "has_planks": "2021-11-11 18:01:54 +0000"
+    },
+    "done": true
+  },
+  "mcwfences:recipes/oak_highley_gate": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "mcwdoors:recipes/oak/oak_japanese2_door": {
+    "criteria": {
+      "has_planks": "2021-11-17 20:26:37 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/weared_bricks": {
+    "criteria": {
+      "has_bricks": "2021-11-11 17:04:48 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_pane/black_mosaic_glass_pane": {
+    "criteria": {
+      "has_mosaic_glass": "2021-11-10 17:54:47 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/parapet/diorite_parapet": {
+    "criteria": {
+      "has_planks": "2021-11-11 20:40:18 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/embellishcraft_group/green_oak_fancy_bed_from_white": {
+    "criteria": {
+      "has_white_oak_fancy_bed": "2021-11-12 05:27:51 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/pink_stained_glass": {
+    "criteria": {
+      "has_glass": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/light_gray_stained_glass_pane": {
+    "criteria": {
+      "has_glass": "2021-11-11 18:04:14 +0000"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/light_gray_bed_from_white_bed": {
+    "criteria": {
+      "has_bed": "2021-11-11 21:42:49 +0000"
+    },
+    "done": true
+  },
+  "embellishcraft:recipes/embellishcraft_group/acacia_fancy_table": {
+    "criteria": {
+      "has_acacia_planks": "2021-11-12 20:58:03 +0000"
+    },
+    "done": true
+  },
+  "mcwwindows:recipes/mosaic_block/red_mosaic_glass": {
+    "criteria": {
+      "has_planks": "2021-11-12 05:20:42 +0000"
+    },
+    "done": true
+  },
+  "DataVersion": 2586
+}
