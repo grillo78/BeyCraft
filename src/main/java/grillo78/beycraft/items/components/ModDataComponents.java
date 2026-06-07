@@ -13,13 +13,33 @@ import java.util.function.Supplier;
 public class ModDataComponents {
     public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Beycraft.MOD_ID);
 
+    public static final Supplier<DataComponentType<ItemContent>> LAUNCHER_BEY = DATA_COMPONENTS.registerComponentType(
+            "launcher_bey", builder -> builder.persistent(ItemContent.CODEC).networkSynchronized(ItemContent.STREAM_CODEC).cacheEncoding()
+    );
+
     public static final Supplier<DataComponentType<ResourceLocation>> BEYPART = DATA_COMPONENTS.registerComponentType(
             "beypart", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC).cacheEncoding()
     );
     public static final Supplier<DataComponentType<ItemContent>> BURST_DISC = DATA_COMPONENTS.registerComponentType(
             "burst_disc", builder -> builder.persistent(ItemContent.CODEC).networkSynchronized(ItemContent.STREAM_CODEC).cacheEncoding()
     );
+    public static final Supplier<DataComponentType<ItemContent>> BURST_FRAME = DATA_COMPONENTS.registerComponentType(
+            "burst_frame", builder -> builder.persistent(ItemContent.CODEC).networkSynchronized(ItemContent.STREAM_CODEC).cacheEncoding()
+    );
     public static final Supplier<DataComponentType<ItemContent>> BURST_DRIVER = DATA_COMPONENTS.registerComponentType(
             "burst_driver", builder -> builder.persistent(ItemContent.CODEC).networkSynchronized(ItemContent.STREAM_CODEC).cacheEncoding()
+    );
+
+    public static final Supplier<DataComponentType<ItemContent>> METAL_FACEBOLT = DATA_COMPONENTS.registerComponentType(
+            "metal_facebolt", builder -> builder.persistent(ItemContent.CODEC).networkSynchronized(ItemContent.STREAM_CODEC).cacheEncoding()
+    );
+    public static final Supplier<DataComponentType<ItemContent>> METAL_FUSION_WHEEL = DATA_COMPONENTS.registerComponentType(
+            "metal_fusion_wheel", builder -> builder.persistent(ItemContent.CODEC).networkSynchronized(ItemContent.STREAM_CODEC).cacheEncoding()
+    );
+    public static final Supplier<DataComponentType<ItemContent>> METAL_SPIN_TRACK = DATA_COMPONENTS.registerComponentType(
+            "metal_spin_track", builder -> builder.persistent(ItemContent.CODEC).networkSynchronized(ItemContent.STREAM_CODEC).cacheEncoding()
+    );
+    public static final Supplier<DataComponentType<ItemContent>> METAL_PERFORMANCE_TIP = DATA_COMPONENTS.registerComponentType(
+            "metal_performance_tip", builder -> builder.persistent(ItemContent.CODEC).networkSynchronized(ItemContent.STREAM_CODEC).cacheEncoding()
     );
 }

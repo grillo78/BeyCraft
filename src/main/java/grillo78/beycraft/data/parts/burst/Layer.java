@@ -2,11 +2,18 @@ package grillo78.beycraft.data.parts.burst;
 
 import com.google.gson.JsonObject;
 import grillo78.beycraft.data.parts.Beypart;
+import grillo78.beycraft.data.parts.metal.EnergyRing;
 import grillo78.beycraft.items.ModItems;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 public class Layer extends Beypart {
+    public Layer(ResourceLocation id, CompoundTag compound) {
+        super(id, compound);
+    }
 
     public Layer(ResourceLocation id, JsonObject jsonObject) {
         super(id, jsonObject);
@@ -15,6 +22,15 @@ public class Layer extends Beypart {
     @Override
     public Item getPartItem() {
         return ModItems.BURST_LAYER.get();
+    }
+
+    @Override
+    public CompoundTag toCompound() {
+        CompoundTag compoundTag = super.toCompound();
+
+        compoundTag.putString("type", "layer");
+
+        return compoundTag;
     }
 
     @Override

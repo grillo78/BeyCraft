@@ -4,8 +4,6 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [],
   "client": [
-    "client.ReloadableResourceManagerMixin",
-    "client.MinecraftMixin"
   ],
   "injectors": {
     "defaultRequire": 1

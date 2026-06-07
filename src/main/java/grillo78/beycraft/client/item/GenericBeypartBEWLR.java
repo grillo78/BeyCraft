@@ -12,8 +12,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-public class BurstDiscBEWLR extends BlockEntityWithoutLevelRenderer {
-    public BurstDiscBEWLR() {
+public class GenericBeypartBEWLR extends BlockEntityWithoutLevelRenderer {
+    public GenericBeypartBEWLR() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
     }
 

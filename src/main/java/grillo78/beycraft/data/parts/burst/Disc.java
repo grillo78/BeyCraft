@@ -3,13 +3,27 @@ package grillo78.beycraft.data.parts.burst;
 import com.google.gson.JsonObject;
 import grillo78.beycraft.data.parts.Beypart;
 import grillo78.beycraft.items.ModItems;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 public class Disc extends Beypart {
 
+    public Disc(ResourceLocation id, CompoundTag compound) {
+        super(id, compound);
+    }
+
     public Disc(ResourceLocation id, JsonObject jsonObject) {
         super(id, jsonObject);
+    }
+
+    @Override
+    public CompoundTag toCompound() {
+        CompoundTag compoundTag = super.toCompound();
+
+        compoundTag.putString("type", "disc");
+
+        return compoundTag;
     }
 
     @Override
@@ -19,6 +33,6 @@ public class Disc extends Beypart {
 
     @Override
     public ResourceLocation getModel() {
-        return ResourceLocation.fromNamespaceAndPath(getId().getNamespace(), "beyparts/burst/discs/"+ getId().getPath() + ".obj");
+        return ResourceLocation.fromNamespaceAndPath(getId().getNamespace(), "beyparts/burst/discs/" + getId().getPath() + ".obj");
     }
 }

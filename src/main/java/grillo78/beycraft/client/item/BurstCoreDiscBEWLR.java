@@ -12,8 +12,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-public class BurstDriverBEWLR extends BlockEntityWithoutLevelRenderer {
-    public BurstDriverBEWLR() {
+public class BurstCoreDiscBEWLR extends BlockEntityWithoutLevelRenderer {
+    public BurstCoreDiscBEWLR() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
     }
 
@@ -21,11 +21,14 @@ public class BurstDriverBEWLR extends BlockEntityWithoutLevelRenderer {
     public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         super.renderByItem(stack, displayContext, poseStack, buffer, packedLight, packedOverlay);
         Beypart beypart = BeypartsReloadListener.BEYPARTS.get(stack.get(ModDataComponents.BEYPART));
-        if(beypart == null) return;
+        if (beypart == null) return;
         ObjMesh mesh = MeshRegistry.get(beypart.getModel());
         if (mesh == null) return;
         poseStack.pushPose();
         mesh.render(poseStack, packedLight, 1);
-        poseStack.popPose();
+        poseStack.translate(0.5,0.5,0.5);
+        if (stack.has(ModDataComponents.BURST_FRAME))
+            Minecraft.getInstance().getItemRenderer().renderStatic(stack.get(ModDataComponents.BURST_FRAME).getStack(), ItemDisplayContext.NONE, packedLight, packedOverlay, poseStack, buffer, null, 0);
+
     }
 }

@@ -3,13 +3,45 @@ package grillo78.beycraft.data.parts.burst;
 import com.google.gson.JsonObject;
 import grillo78.beycraft.data.parts.Beypart;
 import grillo78.beycraft.items.ModItems;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 public class Driver extends Beypart {
+    private float friction = 1;
+    private float height = 0;
+
+    public Driver(ResourceLocation id, CompoundTag compoundTag) {
+        super(id, compoundTag);
+        height = compoundTag.getFloat("height");
+        friction = compoundTag.getFloat("friction");
+    }
 
     public Driver(ResourceLocation id, JsonObject jsonObject) {
         super(id, jsonObject);
+        if (jsonObject.has("height"))
+            height = jsonObject.get("height").getAsFloat();
+        if (jsonObject.has("friction"))
+            friction = jsonObject.get("friction").getAsFloat();
+    }
+
+    @Override
+    public CompoundTag toCompound() {
+        CompoundTag compoundTag = super.toCompound();
+
+        compoundTag.putFloat("height", height);
+        compoundTag.putFloat("friction", friction);
+        compoundTag.putString("type", "driver");
+
+        return compoundTag;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public float getFriction() {
+        return friction;
     }
 
     @Override
@@ -19,6 +51,6 @@ public class Driver extends Beypart {
 
     @Override
     public ResourceLocation getModel() {
-        return ResourceLocation.fromNamespaceAndPath(getId().getNamespace(), "beyparts/burst/drivers/"+ getId().getPath() + ".obj");
+        return ResourceLocation.fromNamespaceAndPath(getId().getNamespace(), "beyparts/burst/drivers/" + getId().getPath() + ".obj");
     }
 }

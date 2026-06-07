@@ -1,31 +1,29 @@
 package grillo78.beycraft.client;
 
 import grillo78.beycraft.Beycraft;
-import grillo78.beycraft.client.item.BurstDiscClientExtensions;
-import grillo78.beycraft.client.item.BurstDriverClientExtensions;
+import grillo78.beycraft.client.entity.BeybladeRenderer;
+import grillo78.beycraft.client.item.BurstCoreDiscClientExtensions;
 import grillo78.beycraft.client.item.BurstLayerClientExtensions;
+import grillo78.beycraft.client.item.GenericBeypartClientExtensions;
+import grillo78.beycraft.client.item.MetalEnergyRingClientExtensions;
 import grillo78.beycraft.client.render.MeshRegistry;
 import grillo78.beycraft.client.render.ObjMesh;
 import grillo78.beycraft.client.render.ObjVertexFormat;
+import grillo78.beycraft.entities.ModEntities;
 import grillo78.beycraft.items.ModItems;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.minecraft.world.level.LightLayer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import java.io.IOException;
 
@@ -42,12 +40,20 @@ public class BeycraftClient {
         container.getEventBus().addListener(this::onRegisterShaders);
         container.getEventBus().addListener(this::onRegisterReloadListeners);
         container.getEventBus().addListener(this::registerClientExtensions);
+        container.getEventBus().addListener(this::registerRenderers);
     }
 
     private void registerClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerItem(new BurstLayerClientExtensions(), ModItems.BURST_LAYER);
-        event.registerItem(new BurstDiscClientExtensions(), ModItems.BURST_DISC);
-        event.registerItem(new BurstDriverClientExtensions(), ModItems.BURST_DRIVER);
+        event.registerItem(new GenericBeypartClientExtensions(), ModItems.BURST_DISC);
+        event.registerItem(new BurstCoreDiscClientExtensions(), ModItems.BURST_CORE_DISC);
+        event.registerItem(new GenericBeypartClientExtensions(), ModItems.BURST_FRAME);
+        event.registerItem(new GenericBeypartClientExtensions(), ModItems.BURST_DRIVER);
+        event.registerItem(new GenericBeypartClientExtensions(), ModItems.METAL_FACEBOLT);
+        event.registerItem(new MetalEnergyRingClientExtensions(), ModItems.METAL_ENERGY_RING);
+        event.registerItem(new GenericBeypartClientExtensions(), ModItems.METAL_FUSION_WHEEL);
+        event.registerItem(new GenericBeypartClientExtensions(), ModItems.METAL_SPIN_TRACK);
+        event.registerItem(new GenericBeypartClientExtensions(), ModItems.METAL_PERFORMANCE_TIP);
     }
 
     // ── Registro de shaders (mod bus) ─────────────────────────────────────────
@@ -69,13 +75,6 @@ public class BeycraftClient {
                                 case 3 -> "UV2";
                                 default -> "unknown_" + i;
                             });
-                            Beycraft.LOGGER.info("Attrib '{}' → location {}", switch (i) {
-                                case 0 -> "Position";
-                                case 1 -> "Normal";
-                                case 2 -> "UV0";
-                                case 3 -> "UV2";
-                                default -> "unknown_" + i;
-                            }, loc);
                         }
                     }
             );
@@ -84,8 +83,16 @@ public class BeycraftClient {
         }
     }
 
+    private void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+//        event.registerBlockEntityRenderer(ModBlockEntities.FORGE.get(), ForgeBlockEntityRenderer::new);
+        event.registerEntityRenderer(ModEntities.BEYBLADE.get(), BeybladeRenderer::new);
+    }
+
     // ── Registro de reload listeners (mod bus) ────────────────────────────────
-    public void onRegisterReloadListeners(ModelEvent.BakingCompleted event) {
-//        MeshRegistry.registerAll();
+    public void onRegisterReloadListeners(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener((ResourceManagerReloadListener) rm -> {
+            MeshRegistry.cleanup();
+            MeshRegistry.registerAll();
+        });
     }
 }
