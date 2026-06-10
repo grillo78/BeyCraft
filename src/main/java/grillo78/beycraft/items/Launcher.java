@@ -1,5 +1,6 @@
 package grillo78.beycraft.items;
 
+import grillo78.beycraft.Beycraft;
 import grillo78.beycraft.data.parts.LaunchersReloadListener;
 import grillo78.beycraft.entities.Beyblade;
 import grillo78.beycraft.entities.ModEntities;
@@ -69,10 +70,12 @@ public class Launcher extends Item {
             result = InteractionResultHolder.success(stack);
         } else {
             if (!level.isClientSide) {
+                Beycraft.LOGGER.debug("Player X Rot: {}", player.getXRot());
                 if (stack.has(ModDataComponents.LAUNCHER_BEY)) {
                     Beyblade beyblade = new Beyblade(ModEntities.BEYBLADE.get(), level);
                     beyblade.setPos(player.getEyePosition().add(player.getViewVector(0)));
                     beyblade.setBeybladeItem(stack.get(ModDataComponents.LAUNCHER_BEY).getStack());
+                    beyblade.setFlowerPattern(player.getXRot()>15);
                     level.addFreshEntity(beyblade);
                     stack.remove(ModDataComponents.LAUNCHER_BEY);
                 }

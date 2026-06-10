@@ -9,7 +9,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,9 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class Beyblade extends LivingEntity {
     public static final float MAX_ROTATION_SPEED = 500F;
@@ -34,6 +31,10 @@ public class Beyblade extends LivingEntity {
     private static final EntityDataAccessor<ItemStack> BEYBLADE_ITEM = SynchedEntityData.defineId(Beyblade.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<Float> ROTATION_ANGLE = SynchedEntityData.defineId(Beyblade.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> ROTATION_SPEED = SynchedEntityData.defineId(Beyblade.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> FLOWER_PATTERN = SynchedEntityData.defineId(Beyblade.class, EntityDataSerializers.BOOLEAN);
+
+    private Vec3 petalOffset = null;
+    private int flowerPatternAngleTick = 0;
 
     public Beyblade(EntityType<Beyblade> entityType, Level level) {
         super(entityType, level);
@@ -44,6 +45,7 @@ public class Beyblade extends LivingEntity {
         super.defineSynchedData(builder);
         builder.define(BEYBLADE_ITEM, ItemStack.EMPTY);
         builder.define(ROTATION_ANGLE, 0F);
+        builder.define(FLOWER_PATTERN, false);
         builder.define(ROTATION_SPEED, MAX_ROTATION_SPEED);
     }
 
@@ -90,6 +92,14 @@ public class Beyblade extends LivingEntity {
         entityData.set(ROTATION_SPEED, rotationSpeed);
     }
 
+    public boolean isFlowerPattern() {
+        return entityData.get(FLOWER_PATTERN) && getRotationSpeed() > 30;
+    }
+
+    public void setFlowerPattern(boolean flowerPattern) {
+        entityData.set(FLOWER_PATTERN, flowerPattern);
+    }
+
     @Override
     public HumanoidArm getMainArm() {
         return HumanoidArm.LEFT;
@@ -133,18 +143,19 @@ public class Beyblade extends LivingEntity {
         super.tick();
         if (!level().isClientSide) {
             if (getBeybladeItem().getItem() instanceof MainBeyPart) {
-//                if(onGround() && level().getBlockState(blockPosition()).getBlock() instanceof StadiumBlock)
-//                    setPos(getStadiumCenter().add(position().subtract(getStadiumCenter()).normalize().multiply(1.15, 0, 1.15).yRot(0.1F).add(0,0.45,0)));
-                setRotationAngle((getRotationSpeed()>30? 30 : getRotationSpeed()) + getRotationAngle());
+                setRotationAngle((getRotationSpeed() > 30 ? 30 : getRotationSpeed()) + getRotationAngle());
                 if (getRotationSpeed() > 0) {
                     float friction = (((MainBeyPart) getBeybladeItem().getItem()).getFriction(getBeybladeItem()));
                     float weight = ((MainBeyPart) getBeybladeItem().getItem()).getWeight(getBeybladeItem());
-                    float radiusReduction = ((MainBeyPart) getBeybladeItem().getItem()).getRadiusReduction(getBeybladeItem())*0.2F;
+                    float radiusReduction = ((MainBeyPart) getBeybladeItem().getItem()).getRadiusReduction(getBeybladeItem()) * 0.2F;
                     float speed = ((MainBeyPart) getBeybladeItem().getItem()).getSpeed(getBeybladeItem());
-                    setRotationSpeed(getRotationSpeed() - (friction / 2 - weight / 50)/10);
+                    setRotationSpeed(getRotationSpeed() - (friction / 2 - weight / 50) / 10);
                     BlockState state = level().getBlockState(blockPosition());
                     if (onGround() && state.getBlock() instanceof StadiumBlock) {
-                        basicLaunchMove(friction, radiusReduction, speed, weight);
+                        if (isFlowerPattern())
+                            flowerPatterLaunchMove(friction, radiusReduction, speed, weight);
+                        else
+                            basicLaunchMove(friction, radiusReduction, speed, weight);
                     }
                 } else if (getRotationSpeed() < 0)
                     setRotationSpeed(0);
@@ -162,6 +173,21 @@ public class Beyblade extends LivingEntity {
         Vec3 desiredPosition = stadiumCenter.add(offsetToCenter.normalize().yRot((float) 0.5 * speed * weight * 0.1F * friction).multiply(distanceToCenter, 1, distanceToCenter));
 
         move(MoverType.SELF, desiredPosition.subtract(position()));
+    }
+
+    private void flowerPatterLaunchMove(float friction, float radiusReduction, float speed, float weight) {
+        double distanceToOffset = 1.2;
+        if (petalOffset == null) {
+            petalOffset = position().subtract(getStadiumCenter());
+        } else if (getStadiumCenter().distanceTo(position()) > distanceToOffset) {
+            petalOffset.yRot((float) Math.toRadians(-45));
+            flowerPatternAngleTick = 0;
+        }
+
+        Vec3 desiredPosition = getStadiumCenter().add(petalOffset).add(petalOffset.reverse().yRot(((float) Math.toRadians(flowerPatternAngleTick - 45))));
+
+        move(MoverType.SELF, desiredPosition.subtract(position()));
+        flowerPatternAngleTick += speed * 2;
     }
 
     @Override
@@ -187,7 +213,7 @@ public class Beyblade extends LivingEntity {
             }
             if (canBurst) {
                 float burtsResistance = (((MainBeyPart) ((Beyblade) entity).getBeybladeItem().getItem()).getBurstResistance(((Beyblade) entity).getBeybladeItem()));
-                entity.hurt(damageSources().generic(), (attack - defense) * (1- burtsResistance));
+                entity.hurt(damageSources().generic(), (attack - defense) * (1 - burtsResistance));
             }
         }
     }
