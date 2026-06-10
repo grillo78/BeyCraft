@@ -2,6 +2,7 @@ package grillo78.beycraft.client.render;
 
 import grillo78.beycraft.Beycraft;
 import grillo78.beycraft.data.parts.BeypartsReloadListener;
+import grillo78.beycraft.data.parts.LaunchersReloadListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -10,6 +11,8 @@ import org.lwjgl.assimp.Assimp;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static grillo78.beycraft.Beycraft.MOD_ID;
 
 /**
  * Registro central de meshes cargados en GPU.
@@ -112,8 +115,12 @@ public class MeshRegistry {
 
     public static void registerAll() {
         MeshRegistry.cleanup();
+        ResourceManager rm = Minecraft.getInstance().getResourceManager();
         BeypartsReloadListener.BEYPARTS.forEach(((resourceLocation, beypart) -> {
-            MeshRegistry.register(Minecraft.getInstance().getResourceManager(), beypart.getModel());
+            MeshRegistry.register(rm, beypart.getModel());
+        }));
+        LaunchersReloadListener.LAUNCHERS.forEach(((resourceLocation, launcher) -> {
+            MeshRegistry.register(rm, launcher.getModel());
         }));
     }
 }

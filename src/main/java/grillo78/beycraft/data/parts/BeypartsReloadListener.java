@@ -6,6 +6,9 @@ import com.google.gson.JsonObject;
 import grillo78.beycraft.Beycraft;
 import grillo78.beycraft.data.parts.burst.*;
 import grillo78.beycraft.data.parts.metal.*;
+import grillo78.beycraft.data.parts.x.Bit;
+import grillo78.beycraft.data.parts.x.Blade;
+import grillo78.beycraft.data.parts.x.Ratchet;
 import grillo78.beycraft.network.SyncBeyparts;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -30,6 +33,9 @@ public class BeypartsReloadListener extends SimpleJsonResourceReloadListener {
     public static List<Beypart> METAL_FUSION_WHEELS = new ArrayList<>();
     public static List<Beypart> METAL_SPIN_TRACKS = new ArrayList<>();
     public static List<Beypart> METAL_PERFORMANCE_TIPS = new ArrayList<>();
+    public static List<Beypart> X_BLADES = new ArrayList<>();
+    public static List<Beypart> X_RATCHETS = new ArrayList<>();
+    public static List<Beypart> X_BITS = new ArrayList<>();
     private static final Gson GSON = new Gson();
 
     public BeypartsReloadListener() {
@@ -83,6 +89,18 @@ public class BeypartsReloadListener extends SimpleJsonResourceReloadListener {
                     case "performance_tip":
                         part = new PerformanceTip(partId, compound);
                         METAL_PERFORMANCE_TIPS.add(part);
+                        break;
+                    case "blade":
+                        part = new Blade(partId, compound);
+                        X_BLADES.add(part);
+                        break;
+                    case "ratchet":
+                        part = new Ratchet(partId, compound);
+                        X_RATCHETS.add(part);
+                        break;
+                    case "bit":
+                        part = new Bit(partId, compound);
+                        X_BITS.add(part);
                         break;
                     default:
                         throw new Exception("Unkown beypart type.");
@@ -142,6 +160,18 @@ public class BeypartsReloadListener extends SimpleJsonResourceReloadListener {
                     case "performance_tip":
                         part = new PerformanceTip(partId, object);
                         METAL_PERFORMANCE_TIPS.add(part);
+                        break;
+                    case "blade":
+                        part = new Blade(partId, object);
+                        X_BLADES.add(part);
+                        break;
+                    case "ratchet":
+                        part = new Ratchet(partId, object);
+                        X_RATCHETS.add(part);
+                        break;
+                    case "bit":
+                        part = new Bit(partId, object);
+                        X_BITS.add(part);
                         break;
                     default:
                         throw new Exception("Unkown beypart type.");

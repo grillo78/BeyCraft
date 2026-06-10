@@ -1,12 +1,15 @@
 package grillo78.beycraft;
 
 import com.mojang.logging.LogUtils;
+import grillo78.beycraft.blocks.ModBlocks;
 import grillo78.beycraft.data.parts.BeypartsReloadListener;
+import grillo78.beycraft.data.parts.LaunchersReloadListener;
 import grillo78.beycraft.entities.Beyblade;
 import grillo78.beycraft.entities.ModEntities;
 import grillo78.beycraft.items.ModItems;
 import grillo78.beycraft.items.components.ModDataComponents;
 import grillo78.beycraft.network.SyncBeyparts;
+import grillo78.beycraft.network.SyncLaunchers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.IEventBus;
@@ -35,6 +38,7 @@ public class Beycraft {
     public Beycraft(IEventBus modEventBus, ModContainer modContainer) {
         ModDataComponents.DATA_COMPONENTS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+        ModBlocks.BLOCKS.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModTabs.CREATIVE_MODE_TABS.register(modEventBus);
 
@@ -53,6 +57,7 @@ public class Beycraft {
 
     private void addReloadListeners(AddReloadListenerEvent event) {
         event.addListener(new BeypartsReloadListener());
+        event.addListener(new LaunchersReloadListener());
     }
 
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
@@ -62,7 +67,11 @@ public class Beycraft {
                 BeypartsReloadListener.addSerializedPart(beypart, serializedParts);
             }));
             PacketDistributor.sendToPlayer(player, new SyncBeyparts(serializedParts));
-//            PacketDistributor.sendToPlayer(player, new SyncBeyparts(BeypartsReloadListener.BEYPARTS.values().stream().toList()));
+            List<CompoundTag> serializedLaunchers = new ArrayList<>();
+            LaunchersReloadListener.LAUNCHERS.forEach(((resourceLocation, launcher) -> {
+                LaunchersReloadListener.addSerializedPart(launcher, serializedLaunchers);
+            }));
+            PacketDistributor.sendToPlayer(player, new SyncLaunchers(serializedLaunchers));
         }
     }
 
@@ -70,6 +79,7 @@ public class Beycraft {
         final PayloadRegistrar registrar = event.registrar(MOD_ID);
 
         registrar.commonToClient(SyncBeyparts.TYPE, SyncBeyparts.STREAM_CODEC, SyncBeyparts::handle);
+        registrar.commonToClient(SyncLaunchers.TYPE, SyncLaunchers.STREAM_CODEC, SyncLaunchers::handle);
     }
 
 }

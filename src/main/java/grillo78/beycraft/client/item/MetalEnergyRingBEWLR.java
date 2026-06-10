@@ -26,7 +26,7 @@ public class MetalEnergyRingBEWLR extends BlockEntityWithoutLevelRenderer {
         ObjMesh mesh = MeshRegistry.get(beypart.getModel());
         if (mesh == null) return;
         poseStack.pushPose();
-        mesh.render(poseStack, packedLight, 1);
+        mesh.renderBeyPart(poseStack, packedLight);
         poseStack.translate(0.5, 0.5, 0.5);
         if (stack.has(ModDataComponents.METAL_FACEBOLT))
             Minecraft.getInstance().getItemRenderer().renderStatic(stack.get(ModDataComponents.METAL_FACEBOLT).getStack(), ItemDisplayContext.NONE, packedLight, packedOverlay, poseStack, buffer, null, 0);

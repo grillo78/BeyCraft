@@ -1,11 +1,7 @@
 package grillo78.beycraft.client;
 
-import grillo78.beycraft.Beycraft;
 import grillo78.beycraft.client.entity.BeybladeRenderer;
-import grillo78.beycraft.client.item.BurstCoreDiscClientExtensions;
-import grillo78.beycraft.client.item.BurstLayerClientExtensions;
-import grillo78.beycraft.client.item.GenericBeypartClientExtensions;
-import grillo78.beycraft.client.item.MetalEnergyRingClientExtensions;
+import grillo78.beycraft.client.item.*;
 import grillo78.beycraft.client.render.MeshRegistry;
 import grillo78.beycraft.client.render.ObjMesh;
 import grillo78.beycraft.client.render.ObjVertexFormat;
@@ -44,16 +40,24 @@ public class BeycraftClient {
     }
 
     private void registerClientExtensions(RegisterClientExtensionsEvent event) {
-        event.registerItem(new BurstLayerClientExtensions(), ModItems.BURST_LAYER);
-        event.registerItem(new GenericBeypartClientExtensions(), ModItems.BURST_DISC);
-        event.registerItem(new BurstCoreDiscClientExtensions(), ModItems.BURST_CORE_DISC);
-        event.registerItem(new GenericBeypartClientExtensions(), ModItems.BURST_FRAME);
-        event.registerItem(new GenericBeypartClientExtensions(), ModItems.BURST_DRIVER);
+
         event.registerItem(new GenericBeypartClientExtensions(), ModItems.METAL_FACEBOLT);
         event.registerItem(new MetalEnergyRingClientExtensions(), ModItems.METAL_ENERGY_RING);
         event.registerItem(new GenericBeypartClientExtensions(), ModItems.METAL_FUSION_WHEEL);
         event.registerItem(new GenericBeypartClientExtensions(), ModItems.METAL_SPIN_TRACK);
         event.registerItem(new GenericBeypartClientExtensions(), ModItems.METAL_PERFORMANCE_TIP);
+
+        event.registerItem(new BurstLayerClientExtensions(), ModItems.BURST_LAYER);
+        event.registerItem(new GenericBeypartClientExtensions(), ModItems.BURST_DISC);
+        event.registerItem(new BurstCoreDiscClientExtensions(), ModItems.BURST_CORE_DISC);
+        event.registerItem(new GenericBeypartClientExtensions(), ModItems.BURST_FRAME);
+        event.registerItem(new GenericBeypartClientExtensions(), ModItems.BURST_DRIVER);
+
+        event.registerItem(new XBladeClientExtensions(), ModItems.X_BLADE);
+        event.registerItem(new GenericBeypartClientExtensions(), ModItems.X_RATCHET);
+        event.registerItem(new GenericBeypartClientExtensions(), ModItems.X_BIT);
+
+        event.registerItem(new LauncherClientExtensions(), ModItems.LAUNCHER);
     }
 
     // ── Registro de shaders (mod bus) ─────────────────────────────────────────

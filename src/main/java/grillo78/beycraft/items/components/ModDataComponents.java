@@ -13,6 +13,9 @@ import java.util.function.Supplier;
 public class ModDataComponents {
     public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Beycraft.MOD_ID);
 
+    public static final Supplier<DataComponentType<ResourceLocation>> LAUNCHER = DATA_COMPONENTS.registerComponentType(
+            "launcher", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC).cacheEncoding()
+    );
     public static final Supplier<DataComponentType<ItemContent>> LAUNCHER_BEY = DATA_COMPONENTS.registerComponentType(
             "launcher_bey", builder -> builder.persistent(ItemContent.CODEC).networkSynchronized(ItemContent.STREAM_CODEC).cacheEncoding()
     );
@@ -41,5 +44,11 @@ public class ModDataComponents {
     );
     public static final Supplier<DataComponentType<ItemContent>> METAL_PERFORMANCE_TIP = DATA_COMPONENTS.registerComponentType(
             "metal_performance_tip", builder -> builder.persistent(ItemContent.CODEC).networkSynchronized(ItemContent.STREAM_CODEC).cacheEncoding()
+    );
+    public static final Supplier<DataComponentType<ItemContent>> X_RATCHET = DATA_COMPONENTS.registerComponentType(
+            "x_ratchet", builder -> builder.persistent(ItemContent.CODEC).networkSynchronized(ItemContent.STREAM_CODEC).cacheEncoding()
+    );
+    public static final Supplier<DataComponentType<ItemContent>> X_BIT = DATA_COMPONENTS.registerComponentType(
+            "x_bit", builder -> builder.persistent(ItemContent.CODEC).networkSynchronized(ItemContent.STREAM_CODEC).cacheEncoding()
     );
 }

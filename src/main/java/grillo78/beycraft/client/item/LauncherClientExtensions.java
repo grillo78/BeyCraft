@@ -1,5 +1,6 @@
 package grillo78.beycraft.client.item;
 
+import grillo78.beycraft.items.components.ModDataComponents;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.InteractionHand;
@@ -19,6 +20,6 @@ public class LauncherClientExtensions implements IClientItemExtensions {
 
     @Override
     public HumanoidModel.@Nullable ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-        return HumanoidModel.ArmPose.CROSSBOW_CHARGE;
+        return hand ==InteractionHand.MAIN_HAND && itemStack.has(ModDataComponents.LAUNCHER_BEY)? HumanoidModel.ArmPose.CROSSBOW_CHARGE : null;
     }
 }

@@ -1,12 +1,12 @@
 package grillo78.beycraft;
 
-import grillo78.beycraft.data.parts.Beypart;
+import grillo78.beycraft.blocks.ModBlocks;
 import grillo78.beycraft.data.parts.BeypartsReloadListener;
+import grillo78.beycraft.data.parts.LaunchersReloadListener;
 import grillo78.beycraft.items.ModItems;
 import grillo78.beycraft.items.components.ModDataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -15,6 +15,23 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Beycraft.MOD_ID);
 
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> LAUNCHERS = CREATIVE_MODE_TABS.register(Beycraft.MOD_ID + "_launchers", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup." + Beycraft.MOD_ID + "_launchers")).icon(() -> {
+        ItemStack stack = ModItems.BURST_LAYER.get().getDefaultInstance();
+        if (!BeypartsReloadListener.BURST_LAYERS.isEmpty())
+            stack.set(ModDataComponents.BEYPART, BeypartsReloadListener.BURST_LAYERS.get(0).getId());
+        return stack;
+    }).displayItems((parameters, output) -> {
+        LaunchersReloadListener.LAUNCHERS.forEach(((id, launcher) -> {
+            ItemStack stack = ModItems.LAUNCHER.get().getDefaultInstance();
+            stack.set(ModDataComponents.LAUNCHER, id);
+            output.accept(stack);
+        }));
+    }).build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BLOCKS = CREATIVE_MODE_TABS.register(Beycraft.MOD_ID + "_blocks", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup." + Beycraft.MOD_ID + "_blocks")).icon(() -> {
+        return new ItemStack(ModBlocks.STADIUM.get());
+    }).displayItems((parameters, output) -> {
+            output.accept(ModBlocks.STADIUM.get());
+    }).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BURST_LAYERS = CREATIVE_MODE_TABS.register(Beycraft.MOD_ID + "_burst_layers", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup." + Beycraft.MOD_ID + "_burst_layers")).icon(() -> {
         ItemStack stack = ModItems.BURST_LAYER.get().getDefaultInstance();
         if (!BeypartsReloadListener.BURST_LAYERS.isEmpty())
@@ -119,4 +136,42 @@ public class ModTabs {
         }));
     }).build());
 
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> X_BLADES = CREATIVE_MODE_TABS.register(Beycraft.MOD_ID + "_x_blades", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup." + Beycraft.MOD_ID + "_x_blades")).icon(() -> {
+        ItemStack stack = ModItems.X_BLADE.get().getDefaultInstance();
+        if (!BeypartsReloadListener.X_BLADES.isEmpty())
+            stack.set(ModDataComponents.BEYPART, BeypartsReloadListener.X_BLADES.get(0).getId());
+        return stack;
+    }).displayItems((parameters, output) -> {
+        BeypartsReloadListener.X_BLADES.forEach(((beypart) -> {
+            ItemStack stack = beypart.getPartItem().getDefaultInstance();
+            stack.set(ModDataComponents.BEYPART, beypart.getId());
+            output.accept(stack);
+        }));
+    }).build());
+
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> X_RATCHETS = CREATIVE_MODE_TABS.register(Beycraft.MOD_ID + "_x_ratchets", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup." + Beycraft.MOD_ID + "_x_ratchets")).icon(() -> {
+        ItemStack stack = ModItems.X_RATCHET.get().getDefaultInstance();
+        if (!BeypartsReloadListener.X_RATCHETS.isEmpty())
+            stack.set(ModDataComponents.BEYPART, BeypartsReloadListener.X_RATCHETS.get(0).getId());
+        return stack;
+    }).displayItems((parameters, output) -> {
+        BeypartsReloadListener.X_RATCHETS.forEach(((beypart) -> {
+            ItemStack stack = beypart.getPartItem().getDefaultInstance();
+            stack.set(ModDataComponents.BEYPART, beypart.getId());
+            output.accept(stack);
+        }));
+    }).build());
+
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> X_BITS = CREATIVE_MODE_TABS.register(Beycraft.MOD_ID + "_x_bits", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup." + Beycraft.MOD_ID + "_x_bits")).icon(() -> {
+        ItemStack stack = ModItems.X_BIT.get().getDefaultInstance();
+        if (!BeypartsReloadListener.X_BITS.isEmpty())
+            stack.set(ModDataComponents.BEYPART, BeypartsReloadListener.X_BITS.get(0).getId());
+        return stack;
+    }).displayItems((parameters, output) -> {
+        BeypartsReloadListener.X_BITS.forEach(((beypart) -> {
+            ItemStack stack = beypart.getPartItem().getDefaultInstance();
+            stack.set(ModDataComponents.BEYPART, beypart.getId());
+            output.accept(stack);
+        }));
+    }).build());
 }

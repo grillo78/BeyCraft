@@ -26,9 +26,11 @@ public class EnergyRing extends MainBeyPart {
 
     @Override
     public boolean isBeyAssembled(ItemStack stack) {
-        boolean validDisc = stack.has(ModDataComponents.BURST_DISC) && stack.get(ModDataComponents.BURST_DISC).getStack().getItem() instanceof FusionWheel;
-        boolean validDriver = stack.has(ModDataComponents.BURST_DRIVER) && stack.get(ModDataComponents.BURST_DRIVER).getStack().getItem() instanceof SpinTrack;
-        return validDisc && validDriver;
+        boolean validFacebolt = stack.has(ModDataComponents.METAL_FACEBOLT) && stack.get(ModDataComponents.METAL_FACEBOLT).getStack().getItem() instanceof Facebolt;
+        boolean validFusionWheel = stack.has(ModDataComponents.METAL_FUSION_WHEEL) && stack.get(ModDataComponents.METAL_FUSION_WHEEL).getStack().getItem() instanceof FusionWheel;
+        boolean validSpinTrack = stack.has(ModDataComponents.METAL_SPIN_TRACK) && stack.get(ModDataComponents.METAL_SPIN_TRACK).getStack().getItem() instanceof SpinTrack;
+        boolean validPerformanceTip = stack.has(ModDataComponents.METAL_PERFORMANCE_TIP) && stack.get(ModDataComponents.METAL_PERFORMANCE_TIP).getStack().getItem() instanceof PerformanceTip;
+        return validFacebolt && validFusionWheel && validSpinTrack && validPerformanceTip;
     }
 
     @Override
@@ -65,7 +67,7 @@ public class EnergyRing extends MainBeyPart {
     }
 
     @Override
-    public boolean canBurst() {
+    public boolean canBurst(ItemStack beybladeItem) {
         return false;
     }
 
@@ -133,15 +135,19 @@ public class EnergyRing extends MainBeyPart {
 
     @Override
     public double getTotalHeight(ItemStack beybladeStack) {
-        grillo78.beycraft.data.parts.metal.SpinTrack spinTrack = (grillo78.beycraft.data.parts.metal.SpinTrack) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_SPIN_TRACK).getStack().get(ModDataComponents.BEYPART));
-        grillo78.beycraft.data.parts.metal.PerformanceTip performanceTip = (grillo78.beycraft.data.parts.metal.PerformanceTip) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_PERFORMANCE_TIP).getStack().get(ModDataComponents.BEYPART));
         float spinTrackHeight = 0;
         float performanceTipHeight = 0;
-        if(spinTrack != null) {
-            spinTrackHeight = spinTrack.getHeight();
+        if(beybladeStack.has(ModDataComponents.METAL_SPIN_TRACK)){
+            grillo78.beycraft.data.parts.metal.SpinTrack spinTrack = (grillo78.beycraft.data.parts.metal.SpinTrack) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_SPIN_TRACK).getStack().get(ModDataComponents.BEYPART));
+            if (spinTrack != null) {
+                spinTrackHeight = spinTrack.getHeight();
+            }
         }
-        if(spinTrack != null) {
-            performanceTipHeight = performanceTip.getHeight();
+        if(beybladeStack.has(ModDataComponents.METAL_PERFORMANCE_TIP)){
+            grillo78.beycraft.data.parts.metal.PerformanceTip performanceTip = (grillo78.beycraft.data.parts.metal.PerformanceTip) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_PERFORMANCE_TIP).getStack().get(ModDataComponents.BEYPART));
+            if (performanceTip != null) {
+                performanceTipHeight = performanceTip.getHeight();
+            }
         }
         return spinTrackHeight + performanceTipHeight;
     }
@@ -158,33 +164,82 @@ public class EnergyRing extends MainBeyPart {
     }
 
     @Override
+    public float getRadiusReduction(ItemStack beybladeStack) {
+
+        grillo78.beycraft.data.parts.metal.PerformanceTip performanceTip = (grillo78.beycraft.data.parts.metal.PerformanceTip) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_PERFORMANCE_TIP).getStack().get(ModDataComponents.BEYPART));
+        float radiusReduction = 0;
+        if (performanceTip != null) {
+            radiusReduction = performanceTip.getRadiusReduction();
+        }
+        return radiusReduction;
+    }
+
+    @Override
+    public float getSpeed(ItemStack beybladeStack) {
+
+        grillo78.beycraft.data.parts.metal.PerformanceTip performanceTip = (grillo78.beycraft.data.parts.metal.PerformanceTip) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_PERFORMANCE_TIP).getStack().get(ModDataComponents.BEYPART));
+        float speed = 0;
+        if (performanceTip != null) {
+            speed = performanceTip.getSpeed();
+        }
+        return speed;
+    }
+
+    @Override
     public float getWeight(ItemStack beybladeStack) {
 
-        Beypart performanceTip = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_PERFORMANCE_TIP).getStack().get(ModDataComponents.BEYPART));
-        Beypart spinTrack = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_SPIN_TRACK).getStack().get(ModDataComponents.BEYPART));
-        Beypart fusionWheel = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_FUSION_WHEEL).getStack().get(ModDataComponents.BEYPART));
-        Beypart energyRing = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BEYPART));
-        Beypart facebolt = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_FACEBOLT).getStack().get(ModDataComponents.BEYPART));
         float performanceTipWeight = 0;
-        if (performanceTip != null) {
-            performanceTipWeight = performanceTip.getWeight(beybladeStack.get(ModDataComponents.METAL_PERFORMANCE_TIP).getStack());
-        }
         float spinTrackWeight = 0;
-        if (spinTrack != null) {
-            spinTrackWeight = spinTrack.getWeight(beybladeStack.get(ModDataComponents.METAL_SPIN_TRACK).getStack());
-        }
         float fusionWheelWeight = 0;
-        if (spinTrack != null) {
-            fusionWheelWeight = fusionWheel.getWeight(beybladeStack.get(ModDataComponents.METAL_FUSION_WHEEL).getStack());
-        }
         float energyRingWeight = 0;
-        if (spinTrack != null) {
-            energyRingWeight = energyRing.getWeight(beybladeStack);
-        }
         float faceboltWeight = 0;
-        if (spinTrack != null) {
-            faceboltWeight = facebolt.getWeight(beybladeStack.get(ModDataComponents.METAL_FACEBOLT).getStack());
+        if(beybladeStack.has(ModDataComponents.METAL_PERFORMANCE_TIP)){
+            Beypart performanceTip = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_PERFORMANCE_TIP).getStack().get(ModDataComponents.BEYPART));
+            if (performanceTip != null) {
+                performanceTipWeight = performanceTip.getWeight(beybladeStack.get(ModDataComponents.METAL_PERFORMANCE_TIP).getStack());
+            }
         }
+        if(beybladeStack.has(ModDataComponents.METAL_SPIN_TRACK)){
+            Beypart spinTrack = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_SPIN_TRACK).getStack().get(ModDataComponents.BEYPART));
+            if (spinTrack != null) {
+                spinTrackWeight = spinTrack.getWeight(beybladeStack.get(ModDataComponents.METAL_SPIN_TRACK).getStack());
+            }
+        }
+        if(beybladeStack.has(ModDataComponents.METAL_FUSION_WHEEL)){
+            Beypart fusionWheel = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_FUSION_WHEEL).getStack().get(ModDataComponents.BEYPART));
+            if (fusionWheel != null) {
+                fusionWheelWeight = fusionWheel.getWeight(beybladeStack.get(ModDataComponents.METAL_FUSION_WHEEL).getStack());
+            }
+        }
+        if(beybladeStack.has(ModDataComponents.BEYPART)){
+            Beypart energyRing = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BEYPART));
+            if (energyRing != null) {
+                energyRingWeight = energyRing.getWeight(beybladeStack);
+            }
+        }
+        if (beybladeStack.has(ModDataComponents.METAL_FACEBOLT)){
+            Beypart facebolt = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.METAL_FACEBOLT).getStack().get(ModDataComponents.BEYPART));
+            if (facebolt != null) {
+                faceboltWeight = facebolt.getWeight(beybladeStack.get(ModDataComponents.METAL_FACEBOLT).getStack());
+            }
+        }
+
         return faceboltWeight + energyRingWeight + fusionWheelWeight + spinTrackWeight + performanceTipWeight;
     }
+
+    @Override
+    public boolean canAbsorb(ItemStack beybladeItem) {
+        return false;
+    }
+
+    @Override
+    public float getAttack(ItemStack beybladeItem) {
+        return 0;
+    }
+
+    @Override
+    public float getDefense(ItemStack beybladeItem) {
+        return 0;
+    }
+
 }

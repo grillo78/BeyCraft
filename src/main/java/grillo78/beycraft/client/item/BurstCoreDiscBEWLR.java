@@ -25,7 +25,7 @@ public class BurstCoreDiscBEWLR extends BlockEntityWithoutLevelRenderer {
         ObjMesh mesh = MeshRegistry.get(beypart.getModel());
         if (mesh == null) return;
         poseStack.pushPose();
-        mesh.render(poseStack, packedLight, 1);
+        mesh.renderBeyPart(poseStack, packedLight);
         poseStack.translate(0.5,0.5,0.5);
         if (stack.has(ModDataComponents.BURST_FRAME))
             Minecraft.getInstance().getItemRenderer().renderStatic(stack.get(ModDataComponents.BURST_FRAME).getStack(), ItemDisplayContext.NONE, packedLight, packedOverlay, poseStack, buffer, null, 0);

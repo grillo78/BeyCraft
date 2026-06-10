@@ -13,13 +13,16 @@ import net.minecraft.world.item.Item;
 public class PerformanceTip extends Beypart {
 
     private float friction = 1;
-
+    private float speed = 1;
     private float height = 0;
+    private float radiusReduction = 1;
 
     public PerformanceTip(ResourceLocation id, CompoundTag compoundTag) {
         super(id, compoundTag);
         height = compoundTag.getFloat("height");
         friction = compoundTag.getFloat("friction");
+        speed = compoundTag.getFloat("speed");
+        radiusReduction = compoundTag.getFloat("radiusReduction");
     }
 
     public PerformanceTip(ResourceLocation id, JsonObject jsonObject) {
@@ -28,6 +31,14 @@ public class PerformanceTip extends Beypart {
             height = jsonObject.get("height").getAsFloat();
         if(jsonObject.has("friction"))
             friction = jsonObject.get("friction").getAsFloat();
+        if(jsonObject.has("speed"))
+            speed = jsonObject.get("speed").getAsFloat();
+        if (jsonObject.has("radiusReduction"))
+            radiusReduction = jsonObject.get("radiusReduction").getAsFloat();
+    }
+
+    public float getRadiusReduction() {
+        return radiusReduction;
     }
 
     @Override
@@ -36,9 +47,15 @@ public class PerformanceTip extends Beypart {
 
         compoundTag.putFloat("height", height);
         compoundTag.putFloat("friction", friction);
+        compoundTag.putFloat("speed", speed);
+        compoundTag.putFloat("radiusReduction", radiusReduction);
         compoundTag.putString("type", "performance_tip");
 
         return compoundTag;
+    }
+
+    public float getSpeed() {
+        return speed;
     }
 
     public float getHeight() {

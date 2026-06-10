@@ -25,7 +25,7 @@ public class GenericBeypartBEWLR extends BlockEntityWithoutLevelRenderer {
         ObjMesh mesh = MeshRegistry.get(beypart.getModel());
         if (mesh == null) return;
         poseStack.pushPose();
-        mesh.render(poseStack, packedLight, 1);
+        mesh.renderBeyPart(poseStack, packedLight);
         poseStack.popPose();
     }
 }

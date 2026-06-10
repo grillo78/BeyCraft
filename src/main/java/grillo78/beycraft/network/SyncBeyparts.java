@@ -2,13 +2,10 @@ package grillo78.beycraft.network;
 
 import grillo78.beycraft.Beycraft;
 import grillo78.beycraft.client.render.MeshRegistry;
-import grillo78.beycraft.data.parts.Beypart;
 import grillo78.beycraft.data.parts.BeypartsReloadListener;
-import grillo78.beycraft.data.parts.metal.SpinTrack;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -35,7 +32,5 @@ public record SyncBeyparts(List<CompoundTag> parts) implements CustomPacketPaylo
 
     public static void handle(final SyncBeyparts data, final IPayloadContext context) {
         BeypartsReloadListener.loadFromCompoundList(data.parts);
-        CreativeModeTabs.tryRebuildTabContents(FeatureFlags.DEFAULT_FLAGS, true, Minecraft.getInstance().player.registryAccess());
-        MeshRegistry.registerAll();
     }
 }

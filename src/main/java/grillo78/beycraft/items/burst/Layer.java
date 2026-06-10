@@ -35,14 +35,17 @@ public class Layer extends MainBeyPart {
     }
 
     @Override
-    public void die(ItemStack beybladeItem, ServerLevel level, Vec3 position) {
-        ItemStack layer = beybladeItem;
-        ItemStack disc = beybladeItem.remove(ModDataComponents.BURST_DISC).getStack();
-        ItemStack driver = beybladeItem.remove(ModDataComponents.BURST_DRIVER).getStack();
-
-        level.addFreshEntity(new ItemEntity(level, position.x, position.y, position.z, driver));
-        level.addFreshEntity(new ItemEntity(level, position.x, position.y, position.z, disc));
+    public void die(ItemStack beybladeStack, ServerLevel level, Vec3 position) {
+        ItemStack layer = beybladeStack;
         level.addFreshEntity(new ItemEntity(level, position.x, position.y, position.z, layer));
+        if (beybladeStack.has(ModDataComponents.BURST_DISC)){
+            ItemStack disc = beybladeStack.remove(ModDataComponents.BURST_DISC).getStack();
+            level.addFreshEntity(new ItemEntity(level, position.x, position.y, position.z, disc));
+        }
+        if (beybladeStack.has(ModDataComponents.BURST_DRIVER)){
+            ItemStack driver = beybladeStack.remove(ModDataComponents.BURST_DRIVER).getStack();
+            level.addFreshEntity(new ItemEntity(level, position.x, position.y, position.z, driver));
+        }
     }
 
     @Override
@@ -74,7 +77,7 @@ public class Layer extends MainBeyPart {
     }
 
     @Override
-    public boolean canBurst() {
+    public boolean canBurst(ItemStack beybladeStack) {
         return true;
     }
 
@@ -119,43 +122,126 @@ public class Layer extends MainBeyPart {
 
     @Override
     public double getTotalHeight(ItemStack beybladeStack) {
-        grillo78.beycraft.data.parts.burst.Driver driver = (grillo78.beycraft.data.parts.burst.Driver) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DRIVER).getStack().get(ModDataComponents.BEYPART));
         float driverHeight = 0;
-        if (driver != null) {
-            driverHeight = driver.getHeight();
+        if(beybladeStack.has(ModDataComponents.BURST_DRIVER)){
+            grillo78.beycraft.data.parts.burst.Driver driver = (grillo78.beycraft.data.parts.burst.Driver) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DRIVER).getStack().get(ModDataComponents.BEYPART));
+            if (driver != null) {
+                driverHeight = driver.getHeight();
+            }
         }
         return driverHeight;
     }
 
     @Override
     public float getFriction(ItemStack beybladeStack) {
-        grillo78.beycraft.data.parts.burst.Driver driver = (grillo78.beycraft.data.parts.burst.Driver) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DRIVER).getStack().get(ModDataComponents.BEYPART));
         float driverHeight = 0;
-        if (driver != null) {
-            driverHeight = driver.getFriction();
+        if(beybladeStack.has(ModDataComponents.BURST_DRIVER)){
+            grillo78.beycraft.data.parts.burst.Driver driver = (grillo78.beycraft.data.parts.burst.Driver) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DRIVER).getStack().get(ModDataComponents.BEYPART));
+            if (driver != null) {
+                driverHeight = driver.getFriction();
+            }
         }
         return driverHeight;
     }
 
     @Override
+    public float getRadiusReduction(ItemStack beybladeStack) {
+        float radiusReduction = 0;
+        if(beybladeStack.has(ModDataComponents.BURST_DRIVER)){
+            grillo78.beycraft.data.parts.burst.Driver driver = (grillo78.beycraft.data.parts.burst.Driver) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DRIVER).getStack().get(ModDataComponents.BEYPART));
+            if (driver != null) {
+                radiusReduction = driver.getRadiusReduction();
+            }
+        }
+        return radiusReduction;
+    }
+
+    @Override
+    public float getSpeed(ItemStack beybladeStack) {
+        float speed = 0;
+        if(beybladeStack.has(ModDataComponents.BURST_DRIVER)){
+            grillo78.beycraft.data.parts.burst.Driver driver = (grillo78.beycraft.data.parts.burst.Driver) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DRIVER).getStack().get(ModDataComponents.BEYPART));
+            if (driver != null) {
+                speed = driver.getSpeed();
+            }
+        }
+        return speed;
+    }
+
+    @Override
     public float getWeight(ItemStack beybladeStack) {
-        Beypart layer = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BEYPART));
-        Beypart disc = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DRIVER).getStack().get(ModDataComponents.BEYPART));
-        Beypart driver = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DRIVER).getStack().get(ModDataComponents.BEYPART));
-
         float layerWeight = 0;
-        if (layer != null) {
-            layerWeight = layer.getWeight(beybladeStack);
-        }
         float discWeight = 0;
-        if (disc != null) {
-            discWeight = disc.getWeight(beybladeStack.get(ModDataComponents.BURST_DISC).getStack());
-        }
         float driverWeight = 0;
-        if (driver != null) {
-            driverWeight = driver.getWeight(beybladeStack.get(ModDataComponents.BURST_DRIVER).getStack());
+        if(beybladeStack.has(ModDataComponents.BEYPART)){
+            Beypart layer = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BEYPART));
+            if (layer != null) {
+                layerWeight = layer.getWeight(beybladeStack);
+            }
         }
-
+        if (beybladeStack.has(ModDataComponents.BURST_DISC)){
+            Beypart disc = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DISC).getStack().get(ModDataComponents.BEYPART));
+            if (disc != null) {
+                discWeight = disc.getWeight(beybladeStack.get(ModDataComponents.BURST_DISC).getStack());
+            }
+        }
+        if(beybladeStack.has(ModDataComponents.BURST_DRIVER)){
+            Beypart driver = BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DRIVER).getStack().get(ModDataComponents.BEYPART));
+            if (driver != null) {
+                driverWeight = driver.getWeight(beybladeStack.get(ModDataComponents.BURST_DRIVER).getStack());
+            }
+        }
         return layerWeight + discWeight + driverWeight;
     }
+
+    @Override
+    public boolean canAbsorb(ItemStack beybladeStack) {
+        return false;
+    }
+
+    @Override
+    public float getAttack(ItemStack beybladeStack) {
+        float layerAttack = 0;
+        float discAttack = 0;
+        if(beybladeStack.has(ModDataComponents.BEYPART)) {
+            grillo78.beycraft.data.parts.burst.Layer layer = (grillo78.beycraft.data.parts.burst.Layer) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BEYPART));
+            layerAttack = layer.getAttack();
+        }
+        if (beybladeStack.has(ModDataComponents.BURST_DISC)) {
+            grillo78.beycraft.data.parts.burst.Disc disc = (grillo78.beycraft.data.parts.burst.Disc) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DISC).getStack().get(ModDataComponents.BEYPART));
+            discAttack = disc.getAttack();
+        }
+        return layerAttack + discAttack;
+    }
+
+    @Override
+    public float getBurstResistance(ItemStack beybladeStack) {
+        float layerBurstResistance = 0;
+        float driverBurstResistance = 0;
+        if(beybladeStack.has(ModDataComponents.BEYPART)) {
+            grillo78.beycraft.data.parts.burst.Layer layer = (grillo78.beycraft.data.parts.burst.Layer) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BEYPART));
+            layerBurstResistance = layer.getAttack();
+        }
+        if (beybladeStack.has(ModDataComponents.BURST_DISC)) {
+            grillo78.beycraft.data.parts.burst.Driver disc = (grillo78.beycraft.data.parts.burst.Driver) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DRIVER).getStack().get(ModDataComponents.BEYPART));
+            driverBurstResistance = disc.getBurstResistance();
+        }
+        return layerBurstResistance + driverBurstResistance;
+    }
+
+    @Override
+    public float getDefense(ItemStack beybladeStack) {
+        float layerDefense = 0;
+        float discDefense = 0;
+        if(beybladeStack.has(ModDataComponents.BEYPART)) {
+            grillo78.beycraft.data.parts.burst.Layer layer = (grillo78.beycraft.data.parts.burst.Layer) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BEYPART));
+            layerDefense = layer.getDefense();
+        }
+        if (beybladeStack.has(ModDataComponents.BURST_DISC)) {
+            grillo78.beycraft.data.parts.burst.Disc disc = (grillo78.beycraft.data.parts.burst.Disc) BeypartsReloadListener.BEYPARTS.get(beybladeStack.get(ModDataComponents.BURST_DISC).getStack().get(ModDataComponents.BEYPART));
+            discDefense = disc.getDefense();
+        }
+        return layerDefense + discDefense;
+    }
+
 }

@@ -1,0 +1,6 @@
+{
+    "parent": "builtin/entity",
+    "loader": "forge:obj",
+    "flip-v": true,
+    "model": "beycraft:models/block/battle_informer.obj"
+}

@@ -1,4 +1,5 @@
 {
   "type": "performance_tip",
-  "height": 0.1
+  "height": 0.1,
+  "radiusReduction": 0.001
 }

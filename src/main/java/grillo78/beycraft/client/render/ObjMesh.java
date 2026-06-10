@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import grillo78.beycraft.Beycraft;
+import grillo78.beycraft.client.entity.BeybladeRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.AbstractTexture;
@@ -226,7 +227,7 @@ public class ObjMesh {
 
     // ── Draw call interno ─────────────────────────────────────────────────────
     private void drawSubMesh(SubMesh sub, ShaderInstance shader, Matrix4f modelView,
-                             float lightU, float lightV, int lightmapTexId) {
+                             float lightU, float lightV, int lightmapTexId, ResourceLocation texture) {
         int minecraftVAO = GL11.glGetInteger(GL30.GL_VERTEX_ARRAY_BINDING);
         if (sub.indexCount() <= 0) return;
 
@@ -260,7 +261,7 @@ public class ObjMesh {
         if (sub.hasTexture()) {
             AbstractTexture diffuseTex = Minecraft.getInstance()
                     .getTextureManager()
-                    .getTexture(sub.texture());
+                    .getTexture(texture != null ? texture : sub.texture());
             GL13.glActiveTexture(GL13.GL_TEXTURE0);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, diffuseTex.getId());
         }
@@ -277,7 +278,15 @@ public class ObjMesh {
         GL30.glBindVertexArray(minecraftVAO);
     }
 
+    public void renderBeyPart(PoseStack poseStack, int packedLight) {
+        render(poseStack, packedLight, BeybladeRenderer.RENDERING_CURRENT_STACK ? BeybladeRenderer.CURRENT_STACK_ALPHA : 1, null);
+    }
+
     public void render(PoseStack poseStack, int packedLight, float alpha) {
+        render(poseStack, packedLight, alpha, null);
+    }
+
+    public void render(PoseStack poseStack, int packedLight, float alpha, ResourceLocation texture) {
         if (OBJ_SHADER == null) return;
         if (subMeshes.isEmpty()) return;
 
@@ -316,7 +325,7 @@ public class ObjMesh {
         if (alphaUniform != null) alphaUniform.set(alpha);
 
         for (SubMesh sub : sorted) {
-            drawSubMesh(sub, shader, modelView, lightU, lightV, lightmapTexId);
+            drawSubMesh(sub, shader, modelView, lightU, lightV, lightmapTexId, texture);
         }
 
         // ── Restaurar estado ──────────────────────────────────────────────────

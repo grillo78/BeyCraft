@@ -25,12 +25,6 @@ sourceSets.main.resources {
     exclude("src/generated/**/.cache") // datagen cache files
 }
 
-repositories {
-    // Add here additional repositories if required by some of the dependencies below.
-    maven {
-        url "https://cursemaven.com"
-    }
-}
 
 base {
     archivesName = mod_id
@@ -110,6 +104,18 @@ configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
 
+repositories {
+    // Add here additional repositories if required by some of the dependencies below.
+    maven {
+        name = "Illusive Soulworks maven"
+        url = "https://maven.theillusivec4.top/"
+    }
+    maven {
+        url "https://cursemaven.com"
+    }
+    maven { url = "https://maven.firstdarkdev.xyz/snapshots" } // LDLib2, Photon2
+}
+
 dependencies {
     // Specify the version of Minecraft to use.
     // Depending on the plugin applied there are several options. We will assume you applied the userdev plugin as shown above.
@@ -118,8 +124,14 @@ dependencies {
     // And its provides the option to then use net.minecraft as the group, and one of; client, server or joined as the module name, plus the game version as version.
     // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
     implementation "net.neoforged:neoforge:${neo_version}"
-//    runtimeOnly "curse.maven:sodium-394468:8143565"
-//    runtimeOnly "curse.maven:irisshaders-455508:6661598"
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
+    runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+    runtimeOnly "curse.maven:sodium-394468:6382651"
+    runtimeOnly "curse.maven:irisshaders-455508:6661598"
+    runtimeOnly "curse.maven:reforgedplay-mod-1018692:6942967"
+    runtimeOnly "curse.maven:worldedit-225608:5830452"
+    implementation("com.lowdragmc.ldlib2:ldlib2-neoforge-${minecraft_version}:${ldlib2_version}:all") { transitive = false }
+    implementation("com.lowdragmc.photon:photon-neoforge-${minecraft_version}:${photon2_version}") { transitive = false }
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
