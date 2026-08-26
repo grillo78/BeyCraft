@@ -16,9 +16,9 @@ public class ModTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Beycraft.MOD_ID);
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> LAUNCHERS = CREATIVE_MODE_TABS.register(Beycraft.MOD_ID + "_launchers", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup." + Beycraft.MOD_ID + "_launchers")).icon(() -> {
-        ItemStack stack = ModItems.BURST_LAYER.get().getDefaultInstance();
-        if (!BeypartsReloadListener.BURST_LAYERS.isEmpty())
-            stack.set(ModDataComponents.BEYPART, BeypartsReloadListener.BURST_LAYERS.get(0).getId());
+        ItemStack stack = ModItems.LAUNCHER.get().getDefaultInstance();
+        if (!LaunchersReloadListener.LAUNCHERS.isEmpty())
+            stack.set(ModDataComponents.LAUNCHER, LaunchersReloadListener.LAUNCHERS.values().iterator().next().getId());
         return stack;
     }).displayItems((parameters, output) -> {
         LaunchersReloadListener.LAUNCHERS.forEach(((id, launcher) -> {

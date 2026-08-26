@@ -2,6 +2,6 @@
   "type": "performance_tip",
   "height": 0.1,
   "friction": 0.99,
-  "radiusReduction": 0.002,
+  "radiusReduction": 0.02,
   "speed": 0.8
 }

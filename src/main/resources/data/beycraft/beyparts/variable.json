@@ -1,4 +1,6 @@
 {
   "type": "driver",
-  "height": 0.21
+  "height": 0.21,
+  "speed": 1,
+  "radiusReduction": 1
 }

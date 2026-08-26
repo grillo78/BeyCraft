@@ -1,5 +1,9 @@
 package grillo78.beycraft.entities;
 
+import com.lowdragmc.photon.client.fx.EntityEffectExecutor;
+import com.lowdragmc.photon.client.fx.FX;
+import com.lowdragmc.photon.client.fx.FXHelper;
+import grillo78.beycraft.Beycraft;
 import grillo78.beycraft.blocks.StadiumBlock;
 import grillo78.beycraft.items.MainBeyPart;
 import net.minecraft.core.BlockPos;
@@ -8,7 +12,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -34,6 +41,7 @@ public class Beyblade extends LivingEntity {
     private static final EntityDataAccessor<Boolean> FLOWER_PATTERN = SynchedEntityData.defineId(Beyblade.class, EntityDataSerializers.BOOLEAN);
 
     private Vec3 petalOffset = null;
+    private double maxFlowerDistanceToCenter = -1;
     private int flowerPatternAngleTick = 0;
 
     public Beyblade(EntityType<Beyblade> entityType, Level level) {
@@ -50,7 +58,7 @@ public class Beyblade extends LivingEntity {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return LivingEntity.createLivingAttributes().add(Attributes.STEP_HEIGHT, 1.5 / 16F);
+        return LivingEntity.createLivingAttributes().add(Attributes.STEP_HEIGHT, 1.5 / 16F).add(Attributes.KNOCKBACK_RESISTANCE, 0.01F);
     }
 
     @Override
@@ -147,7 +155,7 @@ public class Beyblade extends LivingEntity {
                 if (getRotationSpeed() > 0) {
                     float friction = (((MainBeyPart) getBeybladeItem().getItem()).getFriction(getBeybladeItem()));
                     float weight = ((MainBeyPart) getBeybladeItem().getItem()).getWeight(getBeybladeItem());
-                    float radiusReduction = ((MainBeyPart) getBeybladeItem().getItem()).getRadiusReduction(getBeybladeItem()) * 0.2F;
+                    float radiusReduction = ((MainBeyPart) getBeybladeItem().getItem()).getRadiusReduction(getBeybladeItem()) * 0.015F + 0.01F;
                     float speed = ((MainBeyPart) getBeybladeItem().getItem()).getSpeed(getBeybladeItem());
                     setRotationSpeed(getRotationSpeed() - (friction / 2 - weight / 50) / 10);
                     BlockState state = level().getBlockState(blockPosition());
@@ -166,28 +174,40 @@ public class Beyblade extends LivingEntity {
     private void basicLaunchMove(float friction, float radiusReduction, float speed, float weight) {
         Vec3 stadiumCenter = getStadiumCenter();
         Vec3 offsetToCenter = position().subtract(stadiumCenter);
-        double distanceToCenter = offsetToCenter.length() - radiusReduction;
-        if (distanceToCenter < 0)
-            distanceToCenter = 0;
-
+        double desiredDistanceToCenter = 1.2 * getRotationSpeed() / MAX_ROTATION_SPEED;
+        desiredDistanceToCenter = Math.clamp(desiredDistanceToCenter, 0.1F, 1.2F);
+        double distanceToCenter = (desiredDistanceToCenter < offsetToCenter.length() ? radiusReduction : -radiusReduction);
+        distanceToCenter = offsetToCenter.length() - distanceToCenter;
+        distanceToCenter = Math.clamp(distanceToCenter, 0.1F, desiredDistanceToCenter);
+        if (offsetToCenter.normalize().horizontalDistance() == 0)
+            offsetToCenter = offsetToCenter.add(0, 0, 0.01);
         Vec3 desiredPosition = stadiumCenter.add(offsetToCenter.normalize().yRot((float) 0.5 * speed * weight * 0.1F * friction).multiply(distanceToCenter, 1, distanceToCenter));
 
         move(MoverType.SELF, desiredPosition.subtract(position()));
     }
 
     private void flowerPatterLaunchMove(float friction, float radiusReduction, float speed, float weight) {
-        double distanceToOffset = 1.2;
+        float angle = 60 + (random.nextFloat()*20)-10;
         if (petalOffset == null) {
-            petalOffset = position().subtract(getStadiumCenter());
-        } else if (getStadiumCenter().distanceTo(position()) > distanceToOffset) {
-            petalOffset.yRot((float) Math.toRadians(-45));
+            maxFlowerDistanceToCenter = position().distanceTo(getStadiumCenter());
+            petalOffset = position().subtract(getStadiumCenter()).yRot((float) Math.toRadians(-angle));
+        } else if (getStadiumCenter().distanceTo(position()) > maxFlowerDistanceToCenter) {
+            petalOffset = position().subtract(getStadiumCenter()).yRot((float) Math.toRadians(-angle));
             flowerPatternAngleTick = 0;
         }
 
-        Vec3 desiredPosition = getStadiumCenter().add(petalOffset).add(petalOffset.reverse().yRot(((float) Math.toRadians(flowerPatternAngleTick - 45))));
+        Vec3 localPosition = position().subtract(getStadiumCenter());
+        Vec3 petalRadius = petalOffset.subtract(localPosition);
+        Vec3 rotatedPetalRadius = petalRadius.yRot((float) Math.toRadians(speed*20));
+        Vec3 movement = petalRadius.subtract(rotatedPetalRadius);
 
-        move(MoverType.SELF, desiredPosition.subtract(position()));
+        move(MoverType.SELF, movement);
         flowerPatternAngleTick += speed * 2;
+    }
+
+    @Override
+    protected void playHurtSound(DamageSource source) {
+
     }
 
     @Override
@@ -196,23 +216,51 @@ public class Beyblade extends LivingEntity {
             super.push(entity);
         else {
             double scale = random.nextDouble() < 0.25 ? (random.nextDouble() < 0.05 ? 0.25 : 0.15) : 0.25 * (1.3 - getStadiumCenter().subtract(position()).length());
-            Vec3 force = entity.position().subtract(position()).normalize().add(0, onGround() && random.nextDouble() < 0.25 ? (random.nextDouble() < 0.25 ? 1 : 0.5) : 0.2, 0).scale(scale);
-            entity.push(force);
-            push(force.multiply(-1, 1, -1));
-            boolean canBurst = (((MainBeyPart) ((Beyblade) entity).getBeybladeItem().getItem()).canBurst(getBeybladeItem()));
-            boolean canAbsorb = (((MainBeyPart) ((Beyblade) entity).getBeybladeItem().getItem()).canAbsorb(getBeybladeItem()));
+            Vec3 force = entity.position().subtract(position()).normalize().multiply(random.nextDouble() * 0.5 + 0.5, 0, random.nextDouble() * 0.5 + 0.5).scale(scale * 5).add(0, onGround() ? 0.1 : 0, 0);
+            if (force.horizontalDistance()<0.001F)
+                force.add(0,0,0.001);
+            entity.move(MoverType.SELF, force);
+            FX fx = FXHelper.getFX(ResourceLocation.fromNamespaceAndPath(Beycraft.MOD_ID,"sparking"));
+
+            EntityEffectExecutor effectExecutor = new EntityEffectExecutor(fx, level(), entity, EntityEffectExecutor.AutoRotate.NONE);
+            effectExecutor.setOffset(position().subtract(entity.position()).toVector3f());
+            effectExecutor.setAllowMulti(true);
+            effectExecutor.start();
+            move(MoverType.SELF, force.multiply(-1, 1, -1));
+            boolean canEnemyBurst = (((MainBeyPart) ((Beyblade) entity).getBeybladeItem().getItem()).canBurst(((Beyblade) entity).getBeybladeItem()));
+            boolean canBurst = (((MainBeyPart) getBeybladeItem().getItem()).canBurst(getBeybladeItem()));
+            boolean canEnemyAbsorb = (((MainBeyPart) ((Beyblade) entity).getBeybladeItem().getItem()).canAbsorb(((Beyblade) entity).getBeybladeItem()));
+            boolean canAbsorb = (((MainBeyPart) getBeybladeItem().getItem()).canAbsorb(getBeybladeItem()));
             float attack = (((MainBeyPart) getBeybladeItem().getItem()).getAttack(getBeybladeItem()));
+            float enemyAttack = (((MainBeyPart) ((Beyblade) entity).getBeybladeItem().getItem()).getAttack(((Beyblade) entity).getBeybladeItem()));
             float defense = (((MainBeyPart) ((Beyblade) entity).getBeybladeItem().getItem()).getDefense(((Beyblade) entity).getBeybladeItem()));
-            if (canAbsorb)
-                ((Beyblade) entity).setRotationSpeed(((Beyblade) entity).getRotationSpeed() + attack);
+            float enemyDefense = (((MainBeyPart) getBeybladeItem().getItem()).getDefense(getBeybladeItem()));
+            float damageScale = 10;
+            if (canEnemyAbsorb)
+                ((Beyblade) entity).setRotationSpeed(((Beyblade) entity).getRotationSpeed() + attack * damageScale);
             else {
-                float damage = attack - defense;
+                float damage = (attack - defense) * damageScale;
                 if (damage <= 0)
                     damage = 1;
                 ((Beyblade) entity).setRotationSpeed(((Beyblade) entity).getRotationSpeed() - damage);
             }
-            if (canBurst) {
+            if (random.nextDouble() < 0.5) {
+                if (canAbsorb)
+                    setRotationSpeed(((Beyblade) entity).getRotationSpeed() + enemyAttack * damageScale);
+                else {
+                    float damage = (enemyAttack - enemyDefense) * damageScale;
+                    if (damage <= 0)
+                        damage = 1;
+                    ((Beyblade) entity).setRotationSpeed(((Beyblade) entity).getRotationSpeed() - damage);
+                    ((Beyblade) entity).playSound(getHurtSound(damageSources().generic()));
+                }
+            }
+            if (canEnemyBurst) {
                 float burtsResistance = (((MainBeyPart) ((Beyblade) entity).getBeybladeItem().getItem()).getBurstResistance(((Beyblade) entity).getBeybladeItem()));
+                entity.hurt(damageSources().generic(), (attack - defense) * (1 - burtsResistance));
+            }
+            if (canBurst) {
+                float burtsResistance = (((MainBeyPart) getBeybladeItem().getItem()).getBurstResistance(getBeybladeItem()));
                 entity.hurt(damageSources().generic(), (attack - defense) * (1 - burtsResistance));
             }
         }
